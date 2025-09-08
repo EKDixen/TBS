@@ -21,7 +21,7 @@ class JourneyManager
     public void ChoseTravelDestination()
     {
         Console.WriteLine($"You currently know: ");
-        for (int i = 0; i < knownLocations.Count; i++) 
+        for (int i = 0; i < knownLocations.Count; i++)  
         { 
             Console.WriteLine(knownLocations[i].name+" : " + i);
         }
