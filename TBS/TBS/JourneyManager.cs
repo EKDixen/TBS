@@ -42,6 +42,7 @@ class JourneyManager
                 return;
             }
         }
+        else
         {
             Console.WriteLine("you gotta type a number \n");
             ChoseTravelDestination();
