@@ -25,8 +25,7 @@ class JourneyManager
         { 
             Console.WriteLine(knownLocations[i].name+" : " + (i+1));
         }
-        Console.WriteLine("");
-        Console.WriteLine("which one do you wish to travel to? (type out the number next to it)");
+        Console.WriteLine("\nwhich one do you wish to travel to? (type out the number next to it)");
         Console.WriteLine("Or do you wish to explore for a new location? ( if so type 0 )");
         
 
@@ -38,21 +37,25 @@ class JourneyManager
             else if(targetDes <= knownLocations.Count) Travel(knownLocations[targetDes]);
             else
             {
-                Console.WriteLine("you dont know any location with that number");
+                Console.WriteLine("you dont know any location with that number \n");
                 ChoseTravelDestination();
                 return;
             }
+        }
+        {
+            Console.WriteLine("you gotta type a number \n");
+            ChoseTravelDestination();
+            return;
         }
 
     }
     public void Travel(Location TtargetDis)
     {
-        Console.WriteLine("");
-        Console.WriteLine("going to "+ TtargetDis.name);
+        Console.WriteLine("\ngoing to " + TtargetDis.name);
     }
     public void Explore()
     {
-        Console.WriteLine("exploring");
+        Console.WriteLine("\nexploring");
     }
 
 
