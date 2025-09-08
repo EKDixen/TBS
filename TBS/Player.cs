@@ -3,25 +3,25 @@
 class Player
 {
     //stats 
-    string playerName;
-    string password;
-    string playerClass;
-    int level;
-    int exp;
-    int HP;
-    int DMG;
-    int speed;
-    int armor;
+    public string playerName;
+    public string password;
+    public string playerClass;
+    public int level;
+    public int exp;
+    public int HP;
+    public int DMG;
+    public int speed;
+    public int armor;
 
     //Extra stats (regnet i %)
-    int dodge;
-    int dodgeNegation;
-    int critChance;
-    int critDamage;
-    int stun;
-    int stunNegation;
+    public int dodge;
+    public int dodgeNegation;
+    public int critChance;
+    public int critDamage;
+    public int stun;
+    public int stunNegation;
 
-    int luck;
+    public int luck;
 
     public Player(string TplayerName, string Tpassword, string TplayerClass, int Tlevel, int Texp, int THP, int TDMG, int Tspeed, int Tarmor, 
         int Tdodge, int TdodgeNegation, int Tcritchance, int TcritDamage, int Tstun, int TstunNegation, int Tluck)
