@@ -34,7 +34,7 @@ class JourneyManager
         {
             Console.WriteLine("");
             if (targetDes == 0) Explore();
-            else if(targetDes <= knownLocations.Count) Travel(knownLocations[targetDes]);
+            else if(targetDes <= knownLocations.Count) Travel(knownLocations[targetDes-1]);
             else
             {
                 Console.WriteLine("you dont know any location with that number \n");
