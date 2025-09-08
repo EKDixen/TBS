@@ -7,5 +7,12 @@
         Player player = creator.PlayerCreatorFunction();
 
         Console.WriteLine($"Player created: {player.playerName}, Class: {player.playerClass}");
+        Console.WriteLine("");
+
+
+        JourneyManager journeyManager = new JourneyManager();
+        journeyManager.AddLocations();
+        journeyManager.ChoseTravelDestination();
     }
 }
+
