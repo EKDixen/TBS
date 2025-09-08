@@ -20,14 +20,23 @@ class JourneyManager
     }
     public void ChoseTravelDestination()
     {
-        Console.WriteLine($"You currently know: ");
+        Console.WriteLine("Locations you currently know: ");
         for (int i = 0; i < knownLocations.Count; i++)  
         { 
-            Console.WriteLine(knownLocations[i].name+" : " + i);
+            Console.WriteLine(knownLocations[i].name+" : " + (i+1));
         }
+        Console.WriteLine("");
         Console.WriteLine("which one do you wish to travel to? (type out the number next to it)");
+        Console.WriteLine("Or do you wish to explore for a new location? ( if so type 0 )");
+        
+
         int targetDes;
-        if (int.TryParse(Console.ReadLine(), out targetDes)) Travel(locations[targetDes]);
+        if (int.TryParse(Console.ReadLine(), out targetDes)) 
+        {
+            Console.WriteLine("");
+            if (targetDes == 0) Explore();
+            else if(targetDes <= knownLocations.Count) Travel(knownLocations[targetDes]); 
+        }
         else
         {
             ChoseTravelDestination();
@@ -39,6 +48,10 @@ class JourneyManager
     {
         Console.WriteLine("");
         Console.WriteLine("going to "+ TtargetDis.name);
+    }
+    public void Explore()
+    {
+        Console.WriteLine("exploring");
     }
 
 
