@@ -2,7 +2,7 @@
 
 class Player
 {
-    //stats
+    //stats 
     string playerName;
     string password;
     string playerClass;
@@ -13,6 +13,7 @@ class Player
     int speed;
     int armor;
 
+    //Extra stats (regnet i %)
     int dodge;
     int dodgeNegation;
     int critChance;
