@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-class Player
+public class Player
 {
     //stats 
     public string playerName;
