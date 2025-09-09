@@ -1,11 +1,9 @@
 ﻿using System.Diagnostics;
 
-public class Player
+public class Enemy
 {
     //stats 
-    public string playerName;
-    public string password;
-    public string playerClass;
+    public string enemyName;
     public int level;
     public int exp;
     public int HP;
@@ -22,14 +20,10 @@ public class Player
     public int stunNegation;
 
     public int money;
-    public int luck;
-
-    public Player(string TplayerName, string Tpassword, string TplayerClass, int Tlevel, int Texp, int THP, int TDMG, int Tspeed, int Tarmor, 
-        int Tdodge, int TdodgeNegation, int Tcritchance, int TcritDamage, int Tstun, int TstunNegation, int Tmoney, int Tluck)
+    public Enemy(string TplayerName, int Tlevel, int Texp, int THP, int TDMG, int Tspeed, int Tarmor,
+        int Tdodge, int TdodgeNegation, int Tcritchance, int TcritDamage, int Tstun, int TstunNegation, int Tmoney)
     {
-        playerName = TplayerName;
-        password = Tpassword;
-        playerClass = TplayerClass;
+        enemyName = TplayerName;
         level = Tlevel;
         exp = Texp;
         HP = THP;
@@ -43,6 +37,5 @@ public class Player
         stun = Tstun;
         stunNegation = TstunNegation;
         money = Tmoney;
-        luck = Tluck;
     }
 }
