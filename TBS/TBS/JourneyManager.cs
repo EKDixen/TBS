@@ -63,11 +63,7 @@ class JourneyManager
     }
     public void Explore()
     {
-        Console.WriteLine("\nexploring");
-
         List<Location> explorableLocations= new List<Location>();
-
-
 
         for (int i = 0; i < locations.Count; i++)
         {
@@ -80,18 +76,25 @@ class JourneyManager
         {
             Random rand = new Random();
             int randomDir = rand.Next(0, explorableLocations.Count);
-        
-            Console.WriteLine("exploring: " + explorableLocations[randomDir].name);
+            
+            Console.WriteLine("\nexploring: " + explorableLocations[randomDir].name);
             knownLocations.Add(explorableLocations[randomDir]);
 
+
+            /*int randomOdds = rand.Next(0, 100);
+            randomOdds *= 2;                                    ---lwk til at ting skal ske yk
+            if (randomOdds <= 50) StartEncounter();*/
         }
         else
         {
-            Console.WriteLine("cant explore from here");
+            Console.WriteLine("\ncant explore from here");
         }
 
     }
+    public void StartEncounter()
+    {
 
+    }
 
 
 
