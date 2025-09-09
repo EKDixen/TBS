@@ -1,5 +1,9 @@
 ﻿
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 class JourneyManager
 {
     public Location currentLocation;
@@ -15,6 +19,7 @@ class JourneyManager
     {
         locations.Add(starterTown);
         knownLocations.Add(starterTown);
+        currentLocation = starterTown;
         locations.Add(forest);
         locations.Add(mountain);
         locations.Add(lake);
@@ -59,19 +64,32 @@ class JourneyManager
     public void Explore()
     {
         Console.WriteLine("\nexploring");
-        Random random = new Random();
-        int locationFound = random.Next(1,4);
-        if (locationFound == 1)
-        {
-            for (int i = 0; i < knownLocations.Count - 1; i++)
-            {
-                if (locations[i].location == currentLocation.location + new System.Numerics.Vector2(1, 0) && 
-                (knownLocations[i].location == currentLocation.location + new System.Numerics.Vector2(1, 0)))
-                {
 
-                }
-            }
+        List<Location> explorableLocations= new List<Location>();
+
+
+
+        for (int i = 0; i < locations.Count; i++)
+        {
+            if (currentLocation.location + new System.Numerics.Vector2(0, 1) == locations[i].location && !locations[i].known) explorableLocations.Add(locations[i]);
+            if (currentLocation.location + new System.Numerics.Vector2(0, -1) == locations[i].location && !locations[i].known) explorableLocations.Add(locations[i]);
+            if (currentLocation.location + new System.Numerics.Vector2(1, 0) == locations[i].location && !locations[i].known) explorableLocations.Add(locations[i]);
+            if (currentLocation.location + new System.Numerics.Vector2(-1, 0) == locations[i].location && !locations[i].known) explorableLocations.Add(locations[i]);
         }
+        if (explorableLocations.Count != 0)
+        {
+            Random rand = new Random();
+            int randomDir = rand.Next(0, explorableLocations.Count);
+        
+            Console.WriteLine("exploring: " + explorableLocations[randomDir].name);
+            knownLocations.Add(explorableLocations[randomDir]);
+
+        }
+        else
+        {
+            Console.WriteLine("cant explore from here");
+        }
+
     }
 
 
