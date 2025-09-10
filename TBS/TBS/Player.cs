@@ -21,11 +21,12 @@ public class Player
     public int stun;
     public int stunNegation;
 
+    public float[] location;
     public int money;
     public int luck;
 
     public Player(string TplayerName, string Tpassword, string TplayerClass, int Tlevel, int Texp, int THP, int TDMG, int Tspeed, int Tarmor, 
-        int Tdodge, int TdodgeNegation, int Tcritchance, int TcritDamage, int Tstun, int TstunNegation, int Tmoney, int Tluck)
+        int Tdodge, int TdodgeNegation, int Tcritchance, int TcritDamage, int Tstun, int TstunNegation, float[] Tlocation, int Tmoney, int Tluck)
     {
         playerName = TplayerName;
         password = Tpassword;
@@ -42,6 +43,7 @@ public class Player
         critDamage = TcritDamage;
         stun = Tstun;
         stunNegation = TstunNegation;
+        location = Tlocation;
         money = Tmoney;
         luck = Tluck;
     }

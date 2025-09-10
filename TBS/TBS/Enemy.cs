@@ -19,9 +19,10 @@ public class Enemy
     public int stun;
     public int stunNegation;
 
+    public int[] location;
     public int money;
     public Enemy(string TenemyName, int Tlevel, int Texp, int THP, int TDMG, int Tspeed, int Tarmor,
-        int Tdodge, int TdodgeNegation, int Tcritchance, int TcritDamage, int Tstun, int TstunNegation, int Tmoney)
+        int Tdodge, int TdodgeNegation, int Tcritchance, int TcritDamage, int Tstun, int TstunNegation, int[] Tlocation, int Tmoney)
     {
         enemyName = TenemyName;
         level = Tlevel;
@@ -36,6 +37,7 @@ public class Enemy
         critDamage = TcritDamage;
         stun = Tstun;
         stunNegation = TstunNegation;
+        location = Tlocation;
         money = Tmoney;
     }
 }
