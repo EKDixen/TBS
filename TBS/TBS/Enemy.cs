@@ -20,10 +20,10 @@ public class Enemy
     public int stunNegation;
 
     public int money;
-    public Enemy(string TplayerName, int Tlevel, int Texp, int THP, int TDMG, int Tspeed, int Tarmor,
+    public Enemy(string TenemyName, int Tlevel, int Texp, int THP, int TDMG, int Tspeed, int Tarmor,
         int Tdodge, int TdodgeNegation, int Tcritchance, int TcritDamage, int Tstun, int TstunNegation, int Tmoney)
     {
-        enemyName = TplayerName;
+        enemyName = TenemyName;
         level = Tlevel;
         exp = Texp;
         HP = THP;
