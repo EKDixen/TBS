@@ -25,7 +25,9 @@ public class Player
     public int money;
     public int luck;
 
-    public Player(string TplayerName, string Tpassword, string TplayerClass, int Tlevel, int Texp, int THP, int TDMG, int Tspeed, int Tarmor, 
+    public Player() { }
+
+    public Player(string TplayerName, string Tpassword, string TplayerClass, int Tlevel, int Texp, int THP, int TDMG, int Tspeed, int Tarmor,
         int Tdodge, int TdodgeNegation, int Tcritchance, int TcritDamage, int Tstun, int TstunNegation, float[] Tlocation, int Tmoney, int Tluck)
     {
         playerName = TplayerName;
