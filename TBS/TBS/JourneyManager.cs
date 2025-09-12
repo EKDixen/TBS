@@ -95,8 +95,4 @@ class JourneyManager
     {
 
     }
-
-
-
 }
-
