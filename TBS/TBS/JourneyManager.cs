@@ -22,7 +22,6 @@ class JourneyManager
 
         Program.player.knownLocations.Add(starterTown);
         Program.player.currentLocation = starterTown;
-        Console.WriteLine(Program.player.currentLocation.name);
         
         locations.Add(forest);
         locations.Add(mountain);
@@ -30,15 +29,16 @@ class JourneyManager
     }
     public void ChoseTravelDestination()
     {
-        if (Program.player.currentLocation != null) Console.WriteLine("your current location is "+Program.player.currentLocation.name);
+        Console.WriteLine("\nwhere do you wish to travel (type out the number next to it)");
         Console.WriteLine("Locations you currently know: ");
+
         for (int i = 0; i < Program.player.knownLocations.Count; i++)  
         { 
             Console.WriteLine(Program.player.knownLocations[i].name+" : " + (i+1));
         }
-        Console.WriteLine("\nwhich one do you wish to travel to? (type out the number next to it)");
-        Console.WriteLine("Or do you wish to explore for a new location? ( if so type 0 )");
-        
+        Console.WriteLine("\nor explore : 0");
+        //Console.WriteLine("Or do you wish to explore for a new location? ( if so type 0 )");
+
 
         int targetDes;
         if (int.TryParse(Console.ReadLine(), out targetDes)) 
