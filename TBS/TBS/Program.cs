@@ -1,5 +1,6 @@
-﻿public class Program
+﻿namespace Game.Class
 {
+<<<<<<< Updated upstream
     public static void Main(string[] args)
     {
         PlayerDatabase db = new PlayerDatabase();
@@ -12,40 +13,58 @@
         string choice = Console.ReadLine();
 
         if (choice == "1")
+=======
+    public class Program
+    {
+        public static Player? player = null;
+        public static void Main(string[] args)
+>>>>>>> Stashed changes
         {
-            Console.Write("Enter username: ");
-            string username = Console.ReadLine();
+            PlayerDatabase db = new PlayerDatabase();
 
-            Console.Write("Enter password: ");
-            string password = Console.ReadLine();
 
-            player = db.LoadPlayer(username, password);
+            Console.WriteLine("Welcome! Do you want to:");
+            Console.WriteLine("1. Login");
+            Console.WriteLine("2. Create a new character");
 
-            if (player != null)
+            string choice = Console.ReadLine();
+
+            if (choice == "1")
             {
-                Console.WriteLine($"Welcome back, {player.playerName} (Level {player.level})!");
+                Console.Write("Enter username: ");
+                string username = Console.ReadLine();
+
+                Console.Write("Enter password: ");
+                string password = Console.ReadLine();
+
+                player = db.LoadPlayer(username, password);
+
+                if (player != null)
+                {
+                    Console.WriteLine($"Welcome back, {player.playerName} (Level {player.level})!");
+                }
+                else
+                {
+                    Console.WriteLine("Invalid username or password.");
+                    return;
+                }
+            }
+            else if (choice == "2")
+            {
+                PlayerCreator creator = new PlayerCreator();
+                player = creator.PlayerCreatorFunction();
+                db.SavePlayer(player);
+                Console.WriteLine("New character created and saved!");
             }
             else
             {
-                Console.WriteLine("Invalid username or password.");
+                Console.WriteLine("Invalid choice, exiting.");
                 return;
             }
-        }
-        else if (choice == "2")
-        {
-            PlayerCreator creator = new PlayerCreator();
-            player = creator.PlayerCreatorFunction();
-            db.SavePlayer(player);
-            Console.WriteLine("New character created and saved!");
-        }
-        else
-        {
-            Console.WriteLine("Invalid choice, exiting.");
-            return;
-        }
 
-        JourneyManager journeyManager = new JourneyManager();
-        journeyManager.AddLocations();
-        journeyManager.ChoseTravelDestination();
+            JourneyManager journeyManager = new JourneyManager();
+            journeyManager.AddLocations();
+            journeyManager.ChoseTravelDestination();
+        }
     }
 }
