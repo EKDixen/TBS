@@ -1,9 +1,10 @@
 ﻿public class Program
 {
+    public static Player? player = null;
     public static void Main(string[] args)
     {
         PlayerDatabase db = new PlayerDatabase();
-        Player? player = null;
+        
 
         Console.WriteLine("Welcome! Do you want to:");
         Console.WriteLine("1. Login");

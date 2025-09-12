@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-class Location
+public class Location
 {
     public string name;
     public bool known;
