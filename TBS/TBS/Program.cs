@@ -50,6 +50,10 @@
             journeyManager.AddLocations();
             journeyManager.ChoseTravelDestination();
         }
+        public static void SavePlayer()
+        {
+            db.SavePlayer(player);
+        }
 
     }
 }

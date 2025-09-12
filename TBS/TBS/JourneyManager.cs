@@ -65,6 +65,7 @@ class JourneyManager
         Console.WriteLine("\ngoing to " + TtargetDis.name);
         Program.player.currentLocation = TtargetDis;
         //Program.db.SavePlayer(Program.player);
+        Program.SavePlayer();
     }
     public void Explore()
     {
@@ -85,6 +86,7 @@ class JourneyManager
             Console.WriteLine("\nexploring: " + explorableLocations[randomDir].name);
             Program.player.knownLocations.Add(explorableLocations[randomDir]);
             //Program.db.SavePlayer(Program.player);
+            Program.SavePlayer();
         }
         else
         {
