@@ -25,7 +25,7 @@ public class Player
     public int money;
     public int luck;
 
-    public Player() { } // IK SLET
+    public Player() { } // IK SLET (Brugt til saving)
 
     public Player(string TplayerName, string Tpassword, string TplayerClass, int Tlevel, int Texp, int THP, int TDMG, int Tspeed, int Tarmor,
         int Tdodge, int TdodgeNegation, int Tcritchance, int TcritDamage, int Tstun, int TstunNegation, float[] Tlocation, int Tmoney, int Tluck)
