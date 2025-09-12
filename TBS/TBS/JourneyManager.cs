@@ -30,6 +30,7 @@ class JourneyManager
     }
     public void ChoseTravelDestination()
     {
+        if (Program.player.currentLocation != null) Console.WriteLine("your current location is "+Program.player.currentLocation.name);
         Console.WriteLine("Locations you currently know: ");
         for (int i = 0; i < Program.player.knownLocations.Count; i++)  
         { 
