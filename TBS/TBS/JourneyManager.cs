@@ -1,9 +1,10 @@
 ﻿
 
+using Game.Class;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Game.Class;
+using System.Numerics;
 
 class JourneyManager
 {
@@ -21,7 +22,8 @@ class JourneyManager
 
         Program.player.knownLocations.Add(starterTown);
         Program.player.currentLocation = starterTown;
-
+        Console.WriteLine(Program.player.currentLocation.name);
+        
         locations.Add(forest);
         locations.Add(mountain);
         locations.Add(lake);
@@ -45,14 +47,14 @@ class JourneyManager
             else if(targetDes <= Program.player.knownLocations.Count) Travel(Program.player.knownLocations[targetDes-1]);
             else
             {
-                Console.WriteLine("you dont know any location with that number \n");
+                Console.WriteLine("--------dude you dont know any location with that number------- \n");
                 ChoseTravelDestination();
                 return;
             }
         }
         else
         {
-            Console.WriteLine("you gotta type a number \n");
+            Console.WriteLine("--------look mate you gotta type a number----------- \n");
             ChoseTravelDestination();
             return;
         }
@@ -62,6 +64,7 @@ class JourneyManager
     {
         Console.WriteLine("\ngoing to " + TtargetDis.name);
         Program.player.currentLocation = TtargetDis;
+        Program.db.SavePlayer(Program.player);
     }
     public void Explore()
     {
@@ -81,7 +84,7 @@ class JourneyManager
             
             Console.WriteLine("\nexploring: " + explorableLocations[randomDir].name);
             Program.player.knownLocations.Add(explorableLocations[randomDir]);
-
+            Program.db.SavePlayer(Program.player);
 
             /*int randomOdds = rand.Next(0, 100);
             randomOdds *= 2;                                    ---lwk til at ting skal ske yk

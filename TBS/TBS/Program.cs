@@ -3,11 +3,9 @@
     public class Program
     {
         public static Player? player = null;
+        public static PlayerDatabase db = new PlayerDatabase();
         public static void Main(string[] args)
-
         {
-            PlayerDatabase db = new PlayerDatabase();
-
 
             Console.WriteLine("Welcome! Do you want to:");
             Console.WriteLine("1. Login");
@@ -52,5 +50,6 @@
             journeyManager.AddLocations();
             journeyManager.ChoseTravelDestination();
         }
+
     }
 }
