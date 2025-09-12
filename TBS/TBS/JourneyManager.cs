@@ -65,7 +65,7 @@ class JourneyManager
     public void Travel(Location TtargetDis)
     {
         Console.WriteLine("\ngoing to " + TtargetDis.name);
-        currentLocation = TtargetDis;
+        Program.player.currentLocation = TtargetDis;
     }
     public void Explore()
     {
@@ -73,10 +73,10 @@ class JourneyManager
 
         for (int i = 0; i < locations.Count; i++)
         {
-            if (currentLocation.location + new System.Numerics.Vector2(0, 1) == locations[i].location && !locations[i].known) explorableLocations.Add(locations[i]);
-            if (currentLocation.location + new System.Numerics.Vector2(0, -1) == locations[i].location && !locations[i].known) explorableLocations.Add(locations[i]);
-            if (currentLocation.location + new System.Numerics.Vector2(1, 0) == locations[i].location && !locations[i].known) explorableLocations.Add(locations[i]);
-            if (currentLocation.location + new System.Numerics.Vector2(-1, 0) == locations[i].location && !locations[i].known) explorableLocations.Add(locations[i]);
+            if (Program.player.currentLocation.location + new System.Numerics.Vector2(0, 1) == locations[i].location && !locations[i].known) explorableLocations.Add(locations[i]);
+            if (Program.player.currentLocation.location + new System.Numerics.Vector2(0, -1) == locations[i].location && !locations[i].known) explorableLocations.Add(locations[i]);
+            if (Program.player.currentLocation.location + new System.Numerics.Vector2(1, 0) == locations[i].location && !locations[i].known) explorableLocations.Add(locations[i]);
+            if (Program.player.currentLocation.location + new System.Numerics.Vector2(-1, 0) == locations[i].location && !locations[i].known) explorableLocations.Add(locations[i]);
         }
         if (explorableLocations.Count != 0)
         {

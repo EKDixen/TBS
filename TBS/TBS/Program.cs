@@ -1,19 +1,5 @@
 ﻿namespace Game.Class
 {
-
-    public static void Main(string[] args)
-    {
-        PlayerDatabase db = new PlayerDatabase();
-        Player? player = null;
-
-        Console.WriteLine("Welcome! Do you want to:");
-        Console.WriteLine("1. Login");
-        Console.WriteLine("2. Create a new character");
-
-        string choice = Console.ReadLine();
-
-        if (choice == "1")
-
     public class Program
     {
         public static Player? player = null;
