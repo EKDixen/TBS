@@ -22,6 +22,8 @@ public class Player
     public int stunNegation;
 
     public Location currentLocation;
+    public List<Location> knownLocations = new List<Location>();
+
     public int money;
     public int luck;
 
