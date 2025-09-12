@@ -21,11 +21,11 @@ public class Player
     public int stun;
     public int stunNegation;
 
-    public Location currentLocation;
-    public List<Location> knownLocations = new List<Location>();
-
     public int money;
     public int luck;
+
+    public Location currentLocation;
+    public List<Location> knownLocations = new List<Location>();
 
     public Player() { } // IK SLET (Brugt til saving)
 

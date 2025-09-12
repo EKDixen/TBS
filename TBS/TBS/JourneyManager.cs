@@ -85,10 +85,6 @@ class JourneyManager
             Console.WriteLine("\nexploring: " + explorableLocations[randomDir].name);
             Program.player.knownLocations.Add(explorableLocations[randomDir]);
             Program.db.SavePlayer(Program.player);
-
-            /*int randomOdds = rand.Next(0, 100);
-            randomOdds *= 2;                                    ---lwk til at ting skal ske yk
-            if (randomOdds <= 50) StartEncounter();*/
         }
         else
         {
