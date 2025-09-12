@@ -1,6 +1,6 @@
 ﻿namespace Game.Class
 {
-<<<<<<< Updated upstream
+
     public static void Main(string[] args)
     {
         PlayerDatabase db = new PlayerDatabase();
@@ -13,12 +13,12 @@
         string choice = Console.ReadLine();
 
         if (choice == "1")
-=======
+
     public class Program
     {
         public static Player? player = null;
         public static void Main(string[] args)
->>>>>>> Stashed changes
+
         {
             PlayerDatabase db = new PlayerDatabase();
 

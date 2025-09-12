@@ -7,7 +7,7 @@ using Game.Class;
 
 class JourneyManager
 {
-    public Location currentLocation;
+    //public Location currentLocation;
     public List<Location> locations = new List<Location>();
     public List<Location> knownLocations = new List<Location>();
 
@@ -16,20 +16,16 @@ class JourneyManager
     Location mountain = new Location(false, "Mountain",new System.Numerics.Vector2(-1, 0));
     Location lake = new Location(false, "Lake",new System.Numerics.Vector2(0, -1));
 
-<<<<<<< Updated upstream
-=======
-    
 
->>>>>>> Stashed changes
     public void AddLocations()
     {
         locations.Add(starterTown);
         knownLocations.Add(starterTown);
-<<<<<<< Updated upstream
-        currentLocation = starterTown;
-=======
+
+        //currentLocation = starterTown;
+
         Program.player.currentLocation = starterTown;
->>>>>>> Stashed changes
+
         locations.Add(forest);
         locations.Add(mountain);
         locations.Add(lake);
