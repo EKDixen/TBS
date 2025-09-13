@@ -36,7 +36,7 @@
             else if (choice == "2")
             {
                 PlayerCreator creator = new PlayerCreator();
-                player = creator.PlayerCreatorFunction();
+                player = creator.PlayerCreatorFunction(db);
                 db.SavePlayer(player);
                 Console.WriteLine("New character created and saved!");
             }

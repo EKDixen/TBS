@@ -59,4 +59,17 @@ public class PlayerDatabase
 
         return null;
     }
+    public bool PlayerExists(string username)
+    {
+        using var con = new SqliteConnection(connectionString);
+        con.Open();
+
+        string sql = "SELECT COUNT(*) FROM Players WHERE PlayerName = @name";
+        using var cmd = new SqliteCommand(sql, con);
+        cmd.Parameters.AddWithValue("@name", username);
+
+        long count = (long)cmd.ExecuteScalar();
+        return count > 0;
+    }
+
 }
