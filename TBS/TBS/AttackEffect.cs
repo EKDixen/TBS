@@ -5,6 +5,8 @@
     public int duration;        // 0 = instant, >0 = lasts until X turns
     public string targetType;   // "self", "enemy", or "allEnemies"
 
+    public AttackEffect() { } // Deserialization
+
     public AttackEffect(string Ttype, int TValue, int Tduration, string TtargetType)
     {
         type = Ttype;

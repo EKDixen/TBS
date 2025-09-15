@@ -6,6 +6,7 @@
         public static PlayerDatabase db = new PlayerDatabase();
         static JourneyManager journeyManager = new JourneyManager();
         static Inventory Inventory = new Inventory();
+        static AttackManager atkManager;
         public static void Main(string[] args)
         {
 
@@ -48,7 +49,7 @@
                 return;
             }
 
-
+            atkManager = new AttackManager(player);
             journeyManager.AddLocations();
             MainMenu();
         }
@@ -65,7 +66,9 @@
             }
             else if (input == 0) journeyManager.ChoseTravelDestination();
             else if (input == 1) Inventory.ShowInventory();
-            else if (input == 2) { Console.WriteLine("this hasnt been added yet"); MainMenu();}
+            else if (input == 2) atkManager.ShowMovesMenu();
+            else if (input == 3) { Console.WriteLine("this hasnt been added yet"); MainMenu(); }
+            db.SavePlayer(player);
         }
 
 
