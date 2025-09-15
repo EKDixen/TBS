@@ -33,7 +33,7 @@ public class PlayerDatabase
         string sql = "REPLACE INTO Players (PlayerName, Data) VALUES (@name, @data)";
 
         using var cmd = new SqliteCommand(sql, con);
-        cmd.Parameters.AddWithValue("@name", p.playerName);
+        cmd.Parameters.AddWithValue("@name", p.name);
         cmd.Parameters.AddWithValue("@data", json);
         cmd.ExecuteNonQuery();
     }
