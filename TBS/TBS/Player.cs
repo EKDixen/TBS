@@ -11,9 +11,12 @@ public class Player : Combatant
     public Location starterTown = new Location(true, "StarterTown", new System.Numerics.Vector2(0, 0));
 
     public List<Item> ownedItems = new List<Item>();
+
+    public List<Attack> ownedAttacks = new List<Attack>();
+
     public List<Attack> equippedAttacks = new List<Attack>(4);
 
-    public Player() { } // Deserialize
+    public Player() { } //Deserialize
 
     public Player(string TplayerName, string Tpassword, string TplayerClass, int Tlevel, int Texp, int THP, int TDMG,
         int Tspeed, int Tarmor, int Tdodge, int TdodgeNegation, int Tcritchance, int TcritDamage, int Tstun,

@@ -14,6 +14,9 @@
         Console.WriteLine("Write a password for you character (needed to login)");
         string password = Console.ReadLine();
         Player newPlayer = new Player(name, password, "Pathfinder", 1, 0, 100, 10, 10, 0, 105, 100, 105, 200, 105, 100, null, 10, 100);
+        AttackManager atkManager = new AttackManager(newPlayer);
+        atkManager.LearnAttack(AttackLibrary.ThrowHands);
+        atkManager.EquipAttack(AttackLibrary.ThrowHands, 1);
         players.Add(newPlayer);
         return newPlayer;
     }
