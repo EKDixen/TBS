@@ -1,27 +1,9 @@
 ﻿using System.Diagnostics;
 
-public class Player
+public class Player : Combatant
 {
-    //stats 
-    public string playerName;
     public string password;
     public string playerClass;
-    public int level;
-    public int exp;
-    public int HP;
-    public int DMG;
-    public int speed;
-    public int armor;
-
-    //Extra stats (regnet i %)
-    public int dodge;
-    public int dodgeNegation;
-    public int critChance;
-    public int critDamage;
-    public int stun;
-    public int stunNegation;
-
-    public int money;
     public int luck;
 
     public Location currentLocation;
@@ -29,13 +11,15 @@ public class Player
     public Location starterTown = new Location(true, "StarterTown", new System.Numerics.Vector2(0, 0));
 
     public List<Item> ownedItems = new List<Item>();
-    
-    public Player() { } // IK SLET (Brugt til saving)
+    public List<Attack> equippedAttacks = new List<Attack>(4);
 
-    public Player(string TplayerName, string Tpassword, string TplayerClass, int Tlevel, int Texp, int THP, int TDMG, int Tspeed, int Tarmor,
-        int Tdodge, int TdodgeNegation, int Tcritchance, int TcritDamage, int Tstun, int TstunNegation, Location Tlocation, int Tmoney, int Tluck)
+    public Player() { } // Deserialize
+
+    public Player(string TplayerName, string Tpassword, string TplayerClass, int Tlevel, int Texp, int THP, int TDMG,
+        int Tspeed, int Tarmor, int Tdodge, int TdodgeNegation, int Tcritchance, int TcritDamage, int Tstun,
+        int TstunNegation, Location Tlocation, int Tmoney, int Tluck)
     {
-        playerName = TplayerName;
+        name = TplayerName;
         password = Tpassword;
         playerClass = TplayerClass;
         level = Tlevel;

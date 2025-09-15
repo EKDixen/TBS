@@ -1,30 +1,15 @@
 ﻿using System.Diagnostics;
 
-public class Enemy
+public class Enemy : Combatant
 {
-    //stats 
-    public string enemyName;
-    public int level;
-    public int exp;
-    public int HP;
-    public int DMG;
-    public int speed;
-    public int armor;
-
-    //Extra stats (regnet i %)
-    public int dodge;
-    public int dodgeNegation;
-    public int critChance;
-    public int critDamage;
-    public int stun;
-    public int stunNegation;
-
     public int[] location;
-    public int money;
+    public List<Attack> attacks = new List<Attack>();
+
     public Enemy(string TenemyName, int Tlevel, int Texp, int THP, int TDMG, int Tspeed, int Tarmor,
-        int Tdodge, int TdodgeNegation, int Tcritchance, int TcritDamage, int Tstun, int TstunNegation, int[] Tlocation, int Tmoney)
+        int Tdodge, int TdodgeNegation, int Tcritchance, int TcritDamage, int Tstun,
+        int TstunNegation, int[] Tlocation, int Tmoney)
     {
-        enemyName = TenemyName;
+        name = TenemyName;
         level = Tlevel;
         exp = Texp;
         HP = THP;
@@ -40,4 +25,6 @@ public class Enemy
         location = Tlocation;
         money = Tmoney;
     }
+
+    public Enemy() { }
 }
