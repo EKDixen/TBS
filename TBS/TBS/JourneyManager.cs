@@ -10,7 +10,7 @@ class JourneyManager
 {
     public List<Location> locations = new List<Location>();
 
-    Location starterTown = new Location(true,"StarterTown",new System.Numerics.Vector2(0,0));
+
     Location forest = new Location(false, "Forest",new System.Numerics.Vector2(1, 0));  
     Location mountain = new Location(false, "Mountain",new System.Numerics.Vector2(-1, 0));
     Location lake = new Location(false, "Lake",new System.Numerics.Vector2(0, -1));
@@ -19,8 +19,6 @@ class JourneyManager
     public void AddLocations()
     {
         locations.Add(starterTown);
-
-        Program.player.knownLocations.Add(starterTown);
         Program.player.currentLocation = starterTown;
         
         locations.Add(forest);
