@@ -4,6 +4,8 @@
     {
         public static Player? player = null;
         public static PlayerDatabase db = new PlayerDatabase();
+        static JourneyManager journeyManager = new JourneyManager();
+        static Inventory Inventory = new Inventory();
         public static void Main(string[] args)
         {
 
@@ -46,10 +48,27 @@
                 return;
             }
 
-            JourneyManager journeyManager = new JourneyManager();
+
             journeyManager.AddLocations();
-            journeyManager.ChoseTravelDestination();
+
         }
+        public static void MainMenu()
+        {
+            Console.WriteLine($"what do you wish to do? (type the number next to it) \n Go somewhere : 0 \n Check Inventory : 1 \n " +
+                $"do something here current location {player.currentLocation.name} : 2 \n");
+            int.TryParse(Console.ReadLine(), out int input);
+            if (input == null || input > 2)
+            {
+                MainMenu();
+                return;
+            }
+            else if (input == 0) journeyManager.ChoseTravelDestination();
+            else if (input == 1) Inventory.ShowInventory();
+            else if (input == 2) { Console.WriteLine("this hasnt been added yet"); MainMenu();}
+        }
+
+
+
         public static void SavePlayer()
         {
             db.SavePlayer(player);

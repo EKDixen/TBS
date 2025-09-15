@@ -9,6 +9,7 @@ public class Item
 
     public string name;
     public string amount;
+    public string description;
     public Item itemType;
 
     public int HP;
@@ -27,11 +28,13 @@ public class Item
     public int luck;
 
 
-    public Item(string Tname, string Tamount, Item Ttype, int Thp, int Tdmg, int Tspeed, int Tarmor, 
+    public Item(string Tname, string Tamount,string tDescription, Item Ttype, int Thp, int Tdmg, int Tspeed, int Tarmor, 
         int Tdodge, int TdodgeNegation, int TcritChance, int TcritDamage, int Tstun, int TstunNegation, int Tluck)
     {
+
         name = Tname;
         amount = Tamount;
+        description = tDescription;
         itemType = Ttype;
         HP = Thp;
         DMG = Tdmg;
