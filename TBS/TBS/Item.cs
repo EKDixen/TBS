@@ -7,47 +7,23 @@ public enum ItemType
 public class Item
 {
 
-    public string name;
-    public string amount;
-    public string description;
-    public Item itemType;
+    public string name { get; set; }
+    public string description { get; set; }
+    public int amount { get; set; }
 
-    public int HP;
-    public int DMG;
-    public int speed;
-    public int armor;
+    public ItemType type { get; set; }
 
-    //Extra stats (regnet i %)
-    public int dodge;
-    public int dodgeNegation;
-    public int critChance;
-    public int critDamage;
-    public int stun;
-    public int stunNegation;
+    // Flexible stats
+    public Dictionary<string, int> stats { get; set; } = new();
 
-    public int luck;
-
-
-    public Item(string Tname, string Tamount,string tDescription, Item Ttype, int Thp, int Tdmg, int Tspeed, int Tarmor, 
-        int Tdodge, int TdodgeNegation, int TcritChance, int TcritDamage, int Tstun, int TstunNegation, int Tluck)
+    public Item(string name, string description,int amount, ItemType type)
     {
-
-        name = Tname;
-        amount = Tamount;
-        description = tDescription;
-        itemType = Ttype;
-        HP = Thp;
-        DMG = Tdmg;
-        speed = Tspeed;
-        armor = Tarmor;
-        dodge = Tdodge;
-        dodgeNegation = TdodgeNegation;
-        critChance = TcritChance;
-        critDamage = TcritDamage;
-        stun = Tstun;
-        stunNegation = TstunNegation;
-        luck = Tluck;
+        this.name = name;
+        this.description = description;
+        this.amount = amount;
+        this.type = type;
     }
+    
 
 }
 

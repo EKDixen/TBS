@@ -50,15 +50,16 @@
 
 
             journeyManager.AddLocations();
-
+            MainMenu();
         }
         public static void MainMenu()
         {
-            Console.WriteLine($"what do you wish to do? (type the number next to it) \n Go somewhere : 0 \n Check Inventory : 1 \n " +
+            Console.WriteLine($"what do you wish to do? (type the number next to it) \nGo somewhere : 0 \nCheck Inventory : 1 \n" +
                 $"do something here current location {player.currentLocation.name} : 2 \n");
             int.TryParse(Console.ReadLine(), out int input);
             if (input == null || input > 2)
             {
+                Console.WriteLine("\n");
                 MainMenu();
                 return;
             }
