@@ -27,7 +27,7 @@
 
                 if (player != null)
                 {
-                    Console.WriteLine($"Welcome back, {player.playerName} (Level {player.level})!");
+                    Console.WriteLine($"Welcome back, {player.name} (Level {player.level})!");
                 }
                 else
                 {
