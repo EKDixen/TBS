@@ -18,8 +18,7 @@ class JourneyManager
 
     public void AddLocations()
     {
-        locations.Add(starterTown);
-        Program.player.currentLocation = starterTown;
+        locations.Add(Program.player.starterTown);
         
         locations.Add(forest);
         locations.Add(mountain);

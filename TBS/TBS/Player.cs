@@ -26,7 +26,7 @@ public class Player
 
     public Location currentLocation;
     public List<Location> knownLocations = new List<Location>();
-    Location starterTown = new Location(true, "StarterTown", new System.Numerics.Vector2(0, 0));
+    public Location starterTown = new Location(true, "StarterTown", new System.Numerics.Vector2(0, 0));
 
     public Player() { } // IK SLET (Brugt til saving)
 
@@ -53,5 +53,6 @@ public class Player
         luck = Tluck;
 
         knownLocations.Add(starterTown);
+        currentLocation = starterTown;
     }
 }
