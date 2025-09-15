@@ -28,6 +28,8 @@ public class Player
     public List<Location> knownLocations = new List<Location>();
     public Location starterTown = new Location(true, "StarterTown", new System.Numerics.Vector2(0, 0));
 
+    public List<Item> ownedItems = new List<Item>();
+    
     public Player() { } // IK SLET (Brugt til saving)
 
     public Player(string TplayerName, string Tpassword, string TplayerClass, int Tlevel, int Texp, int THP, int TDMG, int Tspeed, int Tarmor,
