@@ -3,7 +3,7 @@ public class Inventory
 {
     /*Item item = new Item("name","description",1,ItemType.equipment);
     Item item2 = new Item("name2", "description2", 16,ItemType.equipment);
-                                                                             ------this is just for test
+    item.Stats["DMG"] = 10;                                                                        ------this is just for test
     public void AddItems()
     {
         Program.player.ownedItems.Add(item);
