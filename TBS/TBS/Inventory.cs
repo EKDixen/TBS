@@ -51,6 +51,7 @@ public class Inventory
         else if (ik ==1) 
         {
             Console.WriteLine($"\nyou drop the {Program.player.ownedItems[input].name}");
+            RemoveEffects(Program.player.ownedItems[input]);
             Program.player.ownedItems.Remove(Program.player.ownedItems[input]);
         }
         else if (ik == 2)
@@ -85,5 +86,24 @@ public class Inventory
             }
         }
     }
+    public void RemoveEffects(Item Titem)
+    {
+        foreach (var stat in Titem.stats)
+        {
+            switch (stat.Key)
+            {
+                case "HP": Program.player.HP -= Titem.stats["HP"]; break;
+                case "DMG": Program.player.DMG -= Titem.stats["DMG"]; break;
+                case "speed": Program.player.speed -= Titem.stats["speed"]; break;
+                case "armor": Program.player.armor -= Titem.stats["armor"]; break;
+                case "dodge": Program.player.dodge -= Titem.stats["dodge"]; break;
+                case "dodgeNegation": Program.player.dodgeNegation -= Titem.stats["dodgeNegation"]; break;
+                case "critChance": Program.player.critChance -= Titem.stats["critChance"]; break;
+                case "critDamage": Program.player.critDamage -= Titem.stats["critDamage"]; break;
+                case "stun": Program.player.stun -= Titem.stats["stun"]; break;
+                case "stunNegation": Program.player.stunNegation -= Titem.stats["stunNegation"]; break;
 
+            }
+        }
+    }
 }
