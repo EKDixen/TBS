@@ -30,11 +30,17 @@ class JourneyManager
         Console.WriteLine("Locations you currently know: ");
 
         for (int i = 0; i < Program.player.knownLocations.Count; i++)  
-        { 
-            Console.WriteLine(Program.player.knownLocations[i].name+" : " + (i+1));
+        {
+            if (Program.player.knownLocations[i] != Program.player.currentLocation)
+            {
+                Console.WriteLine(Program.player.knownLocations[i].name + " : " + (i + 1));
+            }
+            else
+            {
+                Console.WriteLine(Program.player.knownLocations[i].name + " : " + (i + 1) + "(your current location)");
+            }
         }
-        Console.WriteLine("\nor explore : 0");
-        //Console.WriteLine("Or do you wish to explore for a new location? ( if so type 0 )");
+        Console.WriteLine("\nor explore for a new location : 0");
 
 
         int targetDes;
