@@ -9,45 +9,50 @@
         static AttackManager atkManager;
         public static void Main(string[] args)
         {
-
-            Console.WriteLine("Welcome! Do you want to:");
-            Console.WriteLine("1. Login");
-            Console.WriteLine("2. Create a new character");
-
-            string choice = Console.ReadLine();
-
-            if (choice == "1")
+            while (true)
             {
-                Console.Write("Enter username: ");
-                string username = Console.ReadLine();
+                Console.WriteLine("Welcome! Do you want to:");
+                Console.WriteLine("1. Login");
+                Console.WriteLine("2. Create a new character");
 
-                Console.Write("Enter password: ");
-                string password = Console.ReadLine();
+                string choice = Console.ReadLine();
 
-                player = db.LoadPlayer(username, password);
-
-                if (player != null)
+                if (choice == "1")
                 {
-                    Console.WriteLine($"Welcome back, {player.name} (Level {player.level})!");
+                    Console.Write("Enter username: ");
+                    string username = Console.ReadLine();
+
+                    Console.Write("Enter password: ");
+                    string password = Console.ReadLine();
+
+                    player = db.LoadPlayer(username, password);
+
+                    if (player != null)
+                    {
+                        Console.WriteLine($"Welcome back, {player.name} (Level {player.level})!");
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nInvalid username or password.");
+                        continue;
+                    }
+                }
+                else if (choice == "2")
+                {
+                    PlayerCreator creator = new PlayerCreator();
+                    player = creator.PlayerCreatorFunction(db);
+                    db.SavePlayer(player);
+                    Console.WriteLine("New character created and saved!");
+                    break;
                 }
                 else
                 {
-                    Console.WriteLine("Invalid username or password.");
-                    return;
+                    Console.WriteLine("\nInvalid choice, write 1 or 2 please.");
+                    continue;
                 }
             }
-            else if (choice == "2")
-            {
-                PlayerCreator creator = new PlayerCreator();
-                player = creator.PlayerCreatorFunction(db);
-                db.SavePlayer(player);
-                Console.WriteLine("New character created and saved!");
-            }
-            else
-            {
-                Console.WriteLine("Invalid choice, exiting.");
-                return;
-            }
+          
 
             atkManager = new AttackManager(player);
             journeyManager.AddLocations();
