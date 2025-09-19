@@ -63,10 +63,10 @@
         {
             Console.WriteLine($"\nwhat do you wish to do? (type the number next to it) \nGo somewhere : 0 \nCheck Inventory : 1 \n" +
                 $"Check Moves : 2\ndo something here current location {player.currentLocation.name} : 3 \n");
-            int.TryParse(Console.ReadLine(), out int input);
-            if (input == null || input > 3)
+            //int.TryParse(Console.ReadLine(), out int input);
+            if (int.TryParse(Console.ReadLine(), out int input) == false || input > 3)
             {
-                Console.WriteLine("\n");
+                Console.WriteLine("\nyou gotta type 0, 1, 2 or 3");
                 MainMenu();
                 return;
             }
