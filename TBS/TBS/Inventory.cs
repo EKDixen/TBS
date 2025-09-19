@@ -1,14 +1,12 @@
 ﻿using Game.Class;
 public class Inventory
 {
-    /*Item item = new Item("name","description",1,ItemType.equipment);
-    Item item2 = new Item("name2", "description2", 16,ItemType.equipment);
-    item.Stats["DMG"] = 10;                                                                        ------this is just for test
-    public void AddItems()
-    {
-        Program.player.ownedItems.Add(item);
-        Program.player.ownedItems.Add(item2);
-    } */
+    // THIS IS HOW YOU MAKE ITEM DUMB DUMB <3
+    //
+    //
+    //        item = new Item("name2", "description2", 16, ItemType.equipment);
+    //        item.stats["DMG"] = 10;
+
     public void ShowInventory()
     {
         Console.WriteLine("\n     Name            Qty   Description");
@@ -62,6 +60,30 @@ public class Inventory
         Program.SavePlayer();
         Program.MainMenu();
     }
-    
+    public void AddItem(Item Titem) 
+    {
+        Program.player.ownedItems.Add(Titem);
+        ApplyEffects(Titem);
+    }
+    public void ApplyEffects(Item Titem)
+    {
+        foreach (var stat in Titem.stats)
+        {
+            switch (stat.Key)
+            {
+                case "HP":Program.player.HP += Titem.stats["HP"];break;
+                case "DMG":Program.player.DMG += Titem.stats["DMG"];break;
+                case "speed":Program.player.speed += Titem.stats["speed"];break;
+                case "armor":Program.player.armor += Titem.stats["armor"];break;
+                case "dodge":Program.player.dodge += Titem.stats["dodge"];break;
+                case "dodgeNegation":Program.player.dodgeNegation += Titem.stats["dodgeNegation"];break;
+                case "critChance":Program.player.critChance += Titem.stats["critChance"];break;
+                case "critDamage":Program.player.critDamage += Titem.stats["critDamage"]; break;
+                case "stun":Program.player.stun += Titem.stats["stun"];break;
+                case "stunNegation":Program.player.stunNegation += Titem.stats["stunNegation"];break;
+
+            }
+        }
+    }
 
 }
