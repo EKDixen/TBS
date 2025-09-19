@@ -64,6 +64,7 @@ class JourneyManager
         Program.player.currentLocation = TtargetDis;
         //Program.db.SavePlayer(Program.player);
         Program.SavePlayer();
+        Program.MainMenu();
     }
     public void Explore()
     {
@@ -86,10 +87,12 @@ class JourneyManager
             Program.player.currentLocation = explorableLocations[randomDir];
             //Program.db.SavePlayer(Program.player);
             Program.SavePlayer();
+            Program.MainMenu();
         }
         else
         {
             Console.WriteLine("\ncant explore from here");
+            Program.MainMenu();
         }
 
     }

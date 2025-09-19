@@ -55,8 +55,8 @@
         }
         public static void MainMenu()
         {
-            Console.WriteLine($"what do you wish to do? (type the number next to it) \nGo somewhere : 0 \nCheck Inventory : 1 \n" +
-                $"do something here current location {player.currentLocation.name} : 2 \n");
+            Console.WriteLine($"\nwhat do you wish to do? (type the number next to it) \nGo somewhere : 0 \nCheck Inventory : 1 \n" +
+                $"Check Moves : 2\ndo something here current location {player.currentLocation.name} : 3 \n");
             int.TryParse(Console.ReadLine(), out int input);
             if (input == null || input > 2)
             {
