@@ -14,7 +14,7 @@ class JourneyManager
     Location forest = new Location(false, "Forest",new System.Numerics.Vector2(1, 0));  
     Location mountain = new Location(false, "Mountain",new System.Numerics.Vector2(-1, 0));
     Location lake = new Location(false, "Lake",new System.Numerics.Vector2(0, -1));
-
+    Location swamp = new Location(false, "Swamp", new System.Numerics.Vector2(-1, -1));
 
     public void AddLocations()
     {
@@ -23,6 +23,7 @@ class JourneyManager
         locations.Add(forest);
         locations.Add(mountain);
         locations.Add(lake);
+        locations.Add(swamp);
     }
     public void ChoseTravelDestination()
     {
