@@ -63,7 +63,7 @@
             Console.WriteLine($"\nwhat do you wish to do? (type the number next to it) \nGo somewhere : 0 \nCheck Inventory : 1 \n" +
                 $"Check Moves : 2\ndo something here current location {player.currentLocation.name} : 3 \n");
             int.TryParse(Console.ReadLine(), out int input);
-            if (input == null || input > 2)
+            if (input == null || input > 3)
             {
                 Console.WriteLine("\n");
                 MainMenu();
@@ -72,7 +72,7 @@
             else if (input == 0) journeyManager.ChoseTravelDestination();
             else if (input == 1) Inventory.ShowInventory();
             else if (input == 2) atkManager.ShowMovesMenu();
-            else if (input == 3) { Console.WriteLine("this hasnt been added yet"); MainMenu(); }
+            else if (input == 3) { Console.WriteLine("\nthis hasnt been added yet\n"); MainMenu(); }
             db.SavePlayer(player);
         }
 

@@ -51,7 +51,7 @@ public class Inventory
         else if (ik ==1) 
         {
             Console.WriteLine($"\nyou drop the {Program.player.ownedItems[input].name}");
-            RemoveEffects(Program.player.ownedItems[input]);
+            if(Program.player.ownedItems[input].type != ItemType.consumable) RemoveEffects(Program.player.ownedItems[input]);
             Program.player.ownedItems.Remove(Program.player.ownedItems[input]);
         }
         else if (ik == 2)
