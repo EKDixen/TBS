@@ -5,7 +5,7 @@
         public static Player? player = null;
         public static PlayerDatabase db = new PlayerDatabase();
         static JourneyManager journeyManager = new JourneyManager();
-        static Inventory Inventory = new Inventory();
+        static Inventory Inventory;
         static AttackManager atkManager;
         public static void Main(string[] args)
         {
@@ -55,6 +55,7 @@
           
 
             atkManager = new AttackManager(player);
+            Inventory = new Inventory(player);
             journeyManager.AddLocations();
             MainMenu();
         }
