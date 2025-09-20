@@ -33,6 +33,7 @@ public class Inventory
         }
         else if (input == 0) { Program.MainMenu(); return; }
 
+        input--;
         Console.WriteLine($"you've picked{player.ownedItems[input].name}");
 
 
