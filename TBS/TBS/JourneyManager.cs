@@ -30,11 +30,11 @@ class JourneyManager
         Console.WriteLine("Locations you currently know: ");
 
         for (int i = 0; i < Program.player.knownLocations.Count; i++)  
-        { 
-            Console.WriteLine(Program.player.knownLocations[i].name+" : " + (i+1));
+        {
+            if (Program.player.knownLocations[i] != Program.player.currentLocation) Console.WriteLine(Program.player.knownLocations[i].name + " : " + (i + 1));
+            else Console.WriteLine(Program.player.knownLocations[i].name + " : " + (i + 1)+" (current location)");
         }
-        Console.WriteLine("\nor explore : 0");
-        //Console.WriteLine("Or do you wish to explore for a new location? ( if so type 0 )");
+        Console.WriteLine("\nor explore for a new location : 0");
 
 
         int targetDes;
@@ -66,6 +66,7 @@ class JourneyManager
         Program.SavePlayer();
 
         Encounter.TravelEncounter(100 ,TtargetDis);
+        Program.MainMenu(); //remove when encounters are done
     }
     public void Explore()
     {
@@ -95,7 +96,7 @@ class JourneyManager
         {
             Console.WriteLine("\ncant explore from here");
         }
-
+        Program.MainMenu(); //remove when encounters are done
     }
     public void StartEncounter()
     {
