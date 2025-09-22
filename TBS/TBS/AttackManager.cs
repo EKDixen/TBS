@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Game.Class;
+using System;
 using System.Collections.Generic;
 
 public class AttackManager
@@ -115,5 +116,6 @@ public class AttackManager
             player.equippedAttacks[slot - 1] = chosen;
             Console.WriteLine($"{chosen.name} equipped into Slot {slot}!");
         }
+        Program.MainMenu();
     }
 }

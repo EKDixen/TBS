@@ -1,25 +1,28 @@
 ﻿using Game.Class;
 public class Inventory
 {
-    /*Item item = new Item("name","description",1,ItemType.equipment);
-    Item item2 = new Item("name2", "description2", 16,ItemType.equipment);
-    item.Stats["DMG"] = 10;                                                                        ------this is just for test
-    public void AddItems()
+    // THIS IS HOW YOU MAKE ITEM DUMB DUMB <3
+    //
+    //
+    //        item = new Item("name2", "description2", 16, ItemType.equipment);
+    //        item.stats["DMG"] = 10;
+    private Player player;
+
+    public Inventory(Player p)
     {
-        Program.player.ownedItems.Add(item);
-        Program.player.ownedItems.Add(item2);
-    } */
+        player = p;
+    }
     public void ShowInventory()
     {
-        Console.WriteLine("\n     Name            Qty   Description");
-        Console.WriteLine("--------------------------------------");
-        int i = 1;
-        foreach (var item in Program.player.ownedItems)
+        Console.WriteLine("\nnr     Name            Qty   Description");
+        Console.WriteLine("----------------------------------------");
+        int i = 0;
+        foreach (var item in player.ownedItems)
         {
             i++;
-            Console.WriteLine($"{i,-5}{item.name,-15} {item.amount,-5} {item.description}");
+            Console.WriteLine($"{i,-7}{item.name,-15} {item.amount,-5} {item.description}");
         }
-        Console.WriteLine("if you want to interact with anything type its corresponding number \nif not type 0");
+        Console.WriteLine("\nif you want to interact with anything type its corresponding number \nif not type 0");
         var n = int.TryParse(Console.ReadLine(), out int input);
         if (input == null)
         {
@@ -30,12 +33,13 @@ public class Inventory
         }
         else if (input == 0) { Program.MainMenu(); return; }
 
-        Console.WriteLine($"you've picked{Program.player.ownedItems[input].name}");
+        input--;
+        Console.WriteLine($"you've picked{player.ownedItems[input].name}");
 
 
         Console.WriteLine("0 : details");
         Console.WriteLine("1 : drop");
-        if (Program.player.ownedItems[input].type == ItemType.consumable)  Console.WriteLine("2 : consume");
+        if (player.ownedItems[input].type == ItemType.consumable)  Console.WriteLine("2 : consume");
         Console.WriteLine("\ntype out the number next to the action you want to perform");
         var k = int.TryParse(Console.ReadLine(), out int ik);
         if (ik == null)
@@ -52,8 +56,9 @@ public class Inventory
         }
         else if (ik ==1) 
         {
-            Console.WriteLine($"\nyou drop the {Program.player.ownedItems[input].name}");
-            Program.player.ownedItems.Remove(Program.player.ownedItems[input]);
+            Console.WriteLine($"\nyou drop the {player.ownedItems[input].name}");
+            if(player.ownedItems[input].type != ItemType.consumable) RemoveEffects(player.ownedItems[input]);
+            player.ownedItems.Remove(player.ownedItems[input]);
         }
         else if (ik == 2)
         {
@@ -62,6 +67,49 @@ public class Inventory
         Program.SavePlayer();
         Program.MainMenu();
     }
-    
+    public void AddItem(Item Titem) 
+    {
+        player.ownedItems.Add(Titem);
+        if(Titem.type != ItemType.consumable)ApplyEffects(Titem);
+    }
+    public void ApplyEffects(Item Titem)
+    {
+        foreach (var stat in Titem.stats)
+        {
+            switch (stat.Key)
+            {
+                case "HP":player.HP += Titem.stats["HP"];break;
+                case "DMG":player.DMG += Titem.stats["DMG"];break;
+                case "speed":player.speed += Titem.stats["speed"];break;
+                case "armor":player.armor += Titem.stats["armor"];break;
+                case "dodge":player.dodge += Titem.stats["dodge"];break;
+                case "dodgeNegation":player.dodgeNegation += Titem.stats["dodgeNegation"];break;
+                case "critChance":player.critChance += Titem.stats["critChance"];break;
+                case "critDamage":player.critDamage += Titem.stats["critDamage"]; break;
+                case "stun":player.stun += Titem.stats["stun"];break;
+                case "stunNegation":player.stunNegation += Titem.stats["stunNegation"];break;
 
+            }
+        }
+    }
+    public void RemoveEffects(Item Titem)
+    {
+        foreach (var stat in Titem.stats)
+        {
+            switch (stat.Key)
+            {
+                case "HP": player.HP -= Titem.stats["HP"]; break;
+                case "DMG": player.DMG -= Titem.stats["DMG"]; break;
+                case "speed": player.speed -= Titem.stats["speed"]; break;
+                case "armor": player.armor -= Titem.stats["armor"]; break;
+                case "dodge": player.dodge -= Titem.stats["dodge"]; break;
+                case "dodgeNegation": player.dodgeNegation -= Titem.stats["dodgeNegation"]; break;
+                case "critChance": player.critChance -= Titem.stats["critChance"]; break;
+                case "critDamage": player.critDamage -= Titem.stats["critDamage"]; break;
+                case "stun": player.stun -= Titem.stats["stun"]; break;
+                case "stunNegation": player.stunNegation -= Titem.stats["stunNegation"]; break;
+
+            }
+        }
+    }
 }
