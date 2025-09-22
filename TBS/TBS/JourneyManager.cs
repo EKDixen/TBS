@@ -64,6 +64,8 @@ class JourneyManager
         Program.player.currentLocation = TtargetDis;
         //Program.db.SavePlayer(Program.player);
         Program.SavePlayer();
+
+        Encounter.TravelEncounter(100 ,TtargetDis);
     }
     public void Explore()
     {
@@ -80,7 +82,9 @@ class JourneyManager
         {
             Random rand = new Random();
             int randomDir = rand.Next(0, explorableLocations.Count);
-            
+
+            Encounter.TravelEncounter(100, explorableLocations[randomDir]);
+
             Console.WriteLine("\nexploring: " + explorableLocations[randomDir].name);
             Program.player.knownLocations.Add(explorableLocations[randomDir]);
             Program.player.currentLocation = explorableLocations[randomDir];
