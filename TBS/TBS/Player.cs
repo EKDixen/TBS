@@ -8,7 +8,6 @@ public class Player : Combatant
 
     public Location currentLocation;
     public List<Location> knownLocations = new List<Location>();
-    public Location starterTown = new Location(true, "StarterTown", new System.Numerics.Vector2(0, 0));
 
     public List<Item> ownedItems = new List<Item>();
 
@@ -41,7 +40,7 @@ public class Player : Combatant
         money = Tmoney;
         luck = Tluck;
 
-        knownLocations.Add(starterTown);
-        currentLocation = starterTown;
+        knownLocations.Add(LocationLibrary.starterTown);
+        currentLocation = LocationLibrary.starterTown;
     }
 }

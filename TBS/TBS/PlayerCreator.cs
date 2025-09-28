@@ -18,7 +18,7 @@
         atkManager.LearnAttack(AttackLibrary.ThrowHands);
         atkManager.EquipAttack(AttackLibrary.ThrowHands, 1);
         Inventory inv = new Inventory(newPlayer);
-        Item rock = new Item("Rock","Useless",1,ItemType.equipment);
+        Item rock = new Item("Rock","Useless",1, 3, ItemType.equipment);
         inv.AddItem(rock);
         players.Add(newPlayer);
         return newPlayer;

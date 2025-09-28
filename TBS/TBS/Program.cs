@@ -73,7 +73,46 @@
             else if (input == 0) journeyManager.ChoseTravelDestination();
             else if (input == 1) Inventory.ShowInventory();
             else if (input == 2) atkManager.ShowMovesMenu();
-            else if (input == 3) { Console.WriteLine("\nthis hasnt been added yet\n"); MainMenu(); }
+            else if (input == 3) 
+            {
+                Console.WriteLine("all establisments in your current location");
+                int i = 0;
+                foreach (var subLocation in player.currentLocation.subLocationsHere) 
+                {
+                    Console.WriteLine($"{subLocation.name} : {i}");
+                    i++;
+                }
+                if(i == 0)
+                {
+                    Console.Clear();
+                    Console.WriteLine("there arent any establisments in your current location sorry");
+                    MainMenu();
+                    return;
+                }
+                
+                Console.WriteLine("\ntype out the number next to the location you want to go to");
+
+                int targetDes;
+                if (int.TryParse(Console.ReadLine(), out targetDes))
+                {
+                    if (targetDes > player.currentLocation.subLocationsHere.Count) 
+                    {
+                        Console.WriteLine("that number is wrong mate");
+                        MainMenu();
+                        return;
+                    }
+                    player.currentLocation.subLocationsHere[targetDes].DoSubLocation();
+                }
+                else 
+                { 
+                    Console.WriteLine("write a number dumb dumb");
+                    MainMenu();
+                    return;
+                }
+
+            }
+
+
             db.SavePlayer(player);
         }
 

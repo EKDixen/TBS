@@ -9,20 +9,20 @@ using System.Numerics;
 class JourneyManager
 {
     public List<Location> locations = new List<Location>();
+    
 
-
-    Location forest = new Location(false, "Forest",new System.Numerics.Vector2(1, 0));  
+    /*Location forest = new Location(false, "Forest",new System.Numerics.Vector2(1, 0));  
     Location mountain = new Location(false, "Mountain",new System.Numerics.Vector2(-1, 0));
-    Location lake = new Location(false, "Lake",new System.Numerics.Vector2(0, -1));
+    Location lake = new Location(false, "Lake",new System.Numerics.Vector2(0, -1));*/
 
 
     public void AddLocations()
     {
-        locations.Add(Program.player.starterTown);
+        locations.Add(LocationLibrary.starterTown);
         
-        locations.Add(forest);
-        locations.Add(mountain);
-        locations.Add(lake);
+        locations.Add(LocationLibrary.forest);
+        locations.Add(LocationLibrary.mountain);
+        locations.Add(LocationLibrary.lake);
     }
     public void ChoseTravelDestination()
     {
@@ -86,9 +86,10 @@ class JourneyManager
 
             Encounter.TravelEncounter(100, explorableLocations[randomDir]);
 
-            Console.WriteLine("\nexploring: " + explorableLocations[randomDir].name);
+            //Console.WriteLine("\nexploring: " + explorableLocations[randomDir].name);
             Program.player.knownLocations.Add(explorableLocations[randomDir]);
             Program.player.currentLocation = explorableLocations[randomDir];
+            locations[randomDir].known = true;
             //Program.db.SavePlayer(Program.player);
             Program.SavePlayer();
         }

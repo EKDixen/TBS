@@ -4,7 +4,7 @@ public class Inventory
     // THIS IS HOW YOU MAKE ITEM DUMB DUMB <3
     //
     //
-    //        item = new Item("name2", "description2", 16, ItemType.equipment);
+    //        item = new Item("name2", "description2", 16,2 , ItemType.equipment);
     //        item.stats["DMG"] = 10;
     private Player player;
 
@@ -14,13 +14,13 @@ public class Inventory
     }
     public void ShowInventory()
     {
-        Console.WriteLine("\nnr     Name            Qty   Description");
-        Console.WriteLine("----------------------------------------");
+        Console.WriteLine("\nnr     Name            Qty   Description     value");
+        Console.WriteLine("--------------------------------------------------");
         int i = 0;
         foreach (var item in player.ownedItems)
         {
             i++;
-            Console.WriteLine($"{i,-7}{item.name,-15} {item.amount,-5} {item.description}");
+            Console.WriteLine($"{i,-7}{item.name,-15} {item.amount,-5} {item.description,-16} {item.value}");
         }
         Console.WriteLine("\nif you want to interact with anything type its corresponding number \nif not type 0");
         var n = int.TryParse(Console.ReadLine(), out int input);
@@ -71,6 +71,7 @@ public class Inventory
     {
         player.ownedItems.Add(Titem);
         if(Titem.type != ItemType.consumable)ApplyEffects(Titem);
+
     }
     public void ApplyEffects(Item Titem)
     {
