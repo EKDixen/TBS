@@ -15,6 +15,8 @@ public class SubLocation
     public string name;
     public List<Item> shopItems = new List<Item>();
 
+    public SubLocation() { } //Deserialize
+
     public SubLocation(string tName,SubLocationType tType)
     {
         name = tName;
