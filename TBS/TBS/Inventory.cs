@@ -37,7 +37,7 @@ public class Inventory
         else if (input == 0) { Program.MainMenu(); return; }
 
         input--;
-        Console.WriteLine($"you've picked{player.ownedItems[input].name}");
+        Console.WriteLine($"you've picked {player.ownedItems[input].name}");
 
 
         Console.WriteLine("0 : details");
@@ -54,8 +54,8 @@ public class Inventory
         }
         else if (ik == 0)
         {
-            Console.WriteLine("lwk dont know what to put here:3");
-            //Console.WriteLine($"the name is {Program.player.ownedItems[input].name} and its ");
+            Console.WriteLine($"\nyou've picked {player.ownedItems[input].name}");
+            Console.WriteLine($"{player.ownedItems[input].details}\n");
         }
         else if (ik ==1) 
         {

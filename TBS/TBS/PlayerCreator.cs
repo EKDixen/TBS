@@ -19,6 +19,7 @@
         atkManager.EquipAttack(AttackLibrary.ThrowHands, 1);
         Inventory inv = new Inventory(newPlayer);
         Item rock = new Item("Rock","Useless",1, 3, ItemType.equipment);
+        rock.details = "its just a small pebble, doesn't hold much of worth... unless you want to fight the king ofc";
         inv.AddItem(rock);
         players.Add(newPlayer);
         return newPlayer;

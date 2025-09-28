@@ -9,6 +9,7 @@ public class Item
 
     public string name { get; set; }
     public string description { get; set; }
+
     public int amount { get; set; }
 
     public int value { get; set; }
@@ -17,6 +18,8 @@ public class Item
 
     // Flexible stats
     public Dictionary<string, int> stats { get; set; } = new();
+
+    public string details { get; set; }
 
     public Item(string name, string description,int amount,int value ,ItemType type)
     {
