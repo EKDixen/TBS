@@ -14,6 +14,9 @@ public class Inventory
     }
     public void ShowInventory()
     {
+        Console.Clear();
+        Console.WriteLine($"you have {player.money} money\n\nand these are your items");
+
         Console.WriteLine("\nnr     Name            Qty   Description     value");
         Console.WriteLine("--------------------------------------------------");
         int i = 0;

@@ -50,8 +50,7 @@ public class SubLocation
             }
             else if (input == 0) { Program.MainMenu(); return; }
             input--;
-            Console.WriteLine($"you've picked {shopItems[input].name}");
-
+            Console.WriteLine($"you've picked {shopItems[input].name}\nit costs {shopItems[input].value}\nyou have {Program.player.money} money");
 
             Console.WriteLine("0 : details");
             Console.WriteLine("1 : buy");
