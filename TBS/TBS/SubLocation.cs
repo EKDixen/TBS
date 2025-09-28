@@ -72,8 +72,19 @@ public class SubLocation
             }
             else if (ik == 1)
             {
-                inventory.AddItem(shopItems[input]);
-                //add payment
+                if ((Program.player.money - shopItems[input].value) >= 0)
+                {
+                    inventory.AddItem(shopItems[input]);
+                    Program.player.money -= shopItems[input].value;
+                }
+                else 
+                { 
+                    Console.Clear();
+                    Console.WriteLine("you dont have enough money for that");
+                    Program.MainMenu();
+                    return;
+                }
+
             }
             Program.SavePlayer();
             Program.MainMenu();
