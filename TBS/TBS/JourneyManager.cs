@@ -61,7 +61,7 @@ class JourneyManager
     }
     public void Explore()
     {
-        List<Location> explorableLocations= new List<Location>();
+        /*List<Location> explorableLocations= new List<Location>();
 
         for (int i = 0; i < LocationLibrary.locations.Count; i++)
         {
@@ -81,11 +81,37 @@ class JourneyManager
 
             Encounter.TravelEncounter(100, explorableLocations[randomDir]);
 
-            //Console.WriteLine("\nexploring: " + explorableLocations[randomDir].name);
+
             Program.player.knownLocations.Add(explorableLocations[randomDir]);
             Program.player.currentLocation = explorableLocations[randomDir];
             LocationLibrary.locations[randomDir].known = true;
-            //Program.db.SavePlayer(Program.player);
+
+            Program.SavePlayer();
+        }*/
+        List<int> explorableLocations = new List<int>();
+
+        for (int i = 0; i < LocationLibrary.locations.Count; i++)
+        {
+            if (Program.player.currentLocation.location + new System.Numerics.Vector2(0, 1) == LocationLibrary.locations[i].location
+                && !LocationLibrary.locations[i].known) explorableLocations.Add(i);
+            if (Program.player.currentLocation.location + new System.Numerics.Vector2(0, -1) == LocationLibrary.locations[i].location
+                && !LocationLibrary.locations[i].known) explorableLocations.Add(i);
+            if (Program.player.currentLocation.location + new System.Numerics.Vector2(1, 0) == LocationLibrary.locations[i].location
+                && !LocationLibrary.locations[i].known) explorableLocations.Add(i);
+            if (Program.player.currentLocation.location + new System.Numerics.Vector2(-1, 0) == LocationLibrary.locations[i].location
+                && !LocationLibrary.locations[i].known) explorableLocations.Add(i);
+        }
+        if (explorableLocations.Count != 0)
+        {
+            Random rand = new Random();
+            int randomDir = rand.Next(0, explorableLocations.Count);
+
+            Encounter.TravelEncounter(100, LocationLibrary.locations[explorableLocations[randomDir]]);
+
+            Program.player.knownLocations.Add(LocationLibrary.locations[explorableLocations[randomDir]]);
+            Program.player.currentLocation = LocationLibrary.locations[explorableLocations[randomDir]];
+            LocationLibrary.locations[explorableLocations[randomDir]].known = true;
+
             Program.SavePlayer();
         }
         else
