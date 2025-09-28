@@ -56,7 +56,6 @@
 
             atkManager = new AttackManager(player);
             Inventory = new Inventory(player);
-            journeyManager.AddLocations();
             MainMenu();
         }
         public static void MainMenu()

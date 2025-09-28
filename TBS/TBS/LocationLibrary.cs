@@ -1,6 +1,7 @@
 ﻿public static class LocationLibrary
 {
 
+
     public static Location starterTown = new Location(true, "StarterTown", new System.Numerics.Vector2(0, 0), new List<SubLocation>
     {
         /*new SubLocation("StoreName", SubLocationType.Shop)
@@ -21,6 +22,7 @@
             }
         }*/
     });
+    
 
     public static Location forest = new Location(false, "Forest", new System.Numerics.Vector2(1, 0), new List<SubLocation>
     {
@@ -54,6 +56,12 @@
     });
 
 
+
+
+    public static List<Location> locations = new List<Location>
+    {
+        starterTown, forest, mountain, lake
+    };
 
 }
 
