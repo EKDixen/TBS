@@ -8,22 +8,13 @@ using System.Numerics;
 
 class JourneyManager
 {
-    public List<Location> locations = new List<Location>();
+
     
 
     /*Location forest = new Location(false, "Forest",new System.Numerics.Vector2(1, 0));  
     Location mountain = new Location(false, "Mountain",new System.Numerics.Vector2(-1, 0));
     Location lake = new Location(false, "Lake",new System.Numerics.Vector2(0, -1));*/
 
-
-    public void AddLocations()
-    {
-        locations.Add(LocationLibrary.starterTown);
-        
-        locations.Add(LocationLibrary.forest);
-        locations.Add(LocationLibrary.mountain);
-        locations.Add(LocationLibrary.lake);
-    }
     public void ChoseTravelDestination()
     {
         Console.WriteLine("\nwhere do you wish to travel (type out the number next to it)");
@@ -72,12 +63,16 @@ class JourneyManager
     {
         List<Location> explorableLocations= new List<Location>();
 
-        for (int i = 0; i < locations.Count; i++)
+        for (int i = 0; i < LocationLibrary.locations.Count; i++)
         {
-            if (Program.player.currentLocation.location + new System.Numerics.Vector2(0, 1) == locations[i].location && !locations[i].known) explorableLocations.Add(locations[i]);
-            if (Program.player.currentLocation.location + new System.Numerics.Vector2(0, -1) == locations[i].location && !locations[i].known) explorableLocations.Add(locations[i]);
-            if (Program.player.currentLocation.location + new System.Numerics.Vector2(1, 0) == locations[i].location && !locations[i].known) explorableLocations.Add(locations[i]);
-            if (Program.player.currentLocation.location + new System.Numerics.Vector2(-1, 0) == locations[i].location && !locations[i].known) explorableLocations.Add(locations[i]);
+            if (Program.player.currentLocation.location + new System.Numerics.Vector2(0, 1) == LocationLibrary.locations[i].location 
+                && !LocationLibrary.locations[i].known) explorableLocations.Add(LocationLibrary.locations[i]);
+            if (Program.player.currentLocation.location + new System.Numerics.Vector2(0, -1) == LocationLibrary.locations[i].location 
+                && !LocationLibrary.locations[i].known) explorableLocations.Add(LocationLibrary.locations[i]);
+            if (Program.player.currentLocation.location + new System.Numerics.Vector2(1, 0) == LocationLibrary.locations[i].location 
+                && !LocationLibrary.locations[i].known) explorableLocations.Add(LocationLibrary.locations[i]);
+            if (Program.player.currentLocation.location + new System.Numerics.Vector2(-1, 0) == LocationLibrary.locations[i].location 
+                && !LocationLibrary.locations[i].known) explorableLocations.Add(LocationLibrary.locations[i]);
         }
         if (explorableLocations.Count != 0)
         {
@@ -89,7 +84,7 @@ class JourneyManager
             //Console.WriteLine("\nexploring: " + explorableLocations[randomDir].name);
             Program.player.knownLocations.Add(explorableLocations[randomDir]);
             Program.player.currentLocation = explorableLocations[randomDir];
-            locations[randomDir].known = true;
+            LocationLibrary.locations[randomDir].known = true;
             //Program.db.SavePlayer(Program.player);
             Program.SavePlayer();
         }
