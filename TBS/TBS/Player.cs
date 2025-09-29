@@ -41,6 +41,5 @@ public class Player : Combatant
         luck = Tluck;
 
         knownLocations.Add(LocationLibrary.starterTown);
-        currentLocation = LocationLibrary.starterTown;
     }
 }
