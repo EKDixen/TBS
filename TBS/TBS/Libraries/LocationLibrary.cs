@@ -3,23 +3,10 @@
 
     public static Location starterTown = new Location(true, "StarterTown", new System.Numerics.Vector2(0, 0), new List<SubLocation>
     {
-        /*new SubLocation("StoreName", SubLocationType.Shop)
+        new SubLocation("bank", SubLocationType.bank)
         {
-            shopItems = new List<Item>
-            {
-                new Item("lwk test item", "+10 DMG", 16,2 , ItemType.equipment)
-                {
-                    stats= {["DMG"] = 10 }
-                    //details="shi this lwk just a test"
-                },
-                new Item("lwk test item 2", "+15 speed", 16,2 , ItemType.equipment)
-                {
-                    stats= {["speed"] = 15 }
-                    //details=" yeah lwk just a test mate"
-                }
-
-            }
-        }*/
+            
+        }
     });
     
 

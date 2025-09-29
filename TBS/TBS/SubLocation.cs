@@ -19,7 +19,12 @@ public class SubLocation
 {
     public SubLocationType type;
     public string name;
+
+
     public List<Item> shopItems = new List<Item>();
+
+
+
     public List<Item> bankItems = new List<Item>();
     public int bankMoney = 0;
     public SubLocation() { } //Deserialize
@@ -111,7 +116,7 @@ public class SubLocation
                 i++;
                 Console.WriteLine($" {i,-7}{item.name,-15} {item.amount,-5} {item.description,-16} {item.value}");
             }
-            Console.WriteLine("if you want to grab something type its nr \nif you want to deposit something or leave then type 0");
+            Console.WriteLine("\nif you want to grab something type its nr \nif you want to deposit something or leave then type 0");
             var n = int.TryParse(Console.ReadLine(), out int input);
             if (input == null || input > bankItems.Count || input < 0)
             {
@@ -144,7 +149,7 @@ public class SubLocation
                         id++;
                         Console.WriteLine($"{id,-7}{item.name,-15} {item.amount,-5} {item.description,-16} {item.value}");
                     }
-                    Console.WriteLine("\ntypeo ut the nr of the item you want to diposit");
+                    Console.WriteLine("\ntype out the nr of the item you want to diposit");
                     var n3 = int.TryParse(Console.ReadLine(), out int input3);
                     if (input3 == null || input3 > Program.player.ownedItems.Count || input3 < 0)
                     {
@@ -153,10 +158,10 @@ public class SubLocation
                         DoSubLocation();
                         return;
                     }
-                    input--;
+                    input3--;
 
-                    bankItems.Add(Program.player.ownedItems[input]);
-                    inventory.DropItem(Program.player.ownedItems[input]);
+                    bankItems.Add(Program.player.ownedItems[input3]);
+                    inventory.DropItem(Program.player.ownedItems[input3]);
 
                 }
             }
