@@ -10,6 +10,7 @@ public enum SubLocationType
     resturant,
     blacksmith,
     arena,
+    bank
 
 
 
@@ -19,7 +20,8 @@ public class SubLocation
     public SubLocationType type;
     public string name;
     public List<Item> shopItems = new List<Item>();
-
+    public List<Item> bankItems = new List<Item>();
+    public int bankMoney = 0;
     public SubLocation() { } //Deserialize
 
     public SubLocation(string tName,SubLocationType tType)
@@ -96,7 +98,58 @@ public class SubLocation
             Program.SavePlayer();
             Program.MainMenu();
         }
+        if (type == SubLocationType.bank)
+        {
 
+
+
+            Console.WriteLine($"you have {bankMoney} money stored here and heres all the items you have stored here:");
+            Console.WriteLine("\n nr     Name            Qty   Description    value");
+            Console.WriteLine(" --------------------------------------------------");
+            int i = 0;
+            foreach (var item in bankItems)
+            {
+                i++;
+                Console.WriteLine($" {i,-7}{item.name,-15} {item.amount,-5} {item.description,-16} {item.value}");
+            }
+            Console.WriteLine("if you want to grab something type its nr \nif you want to deposit something or leave then type 0");
+            var n = int.TryParse(Console.ReadLine(), out int input);
+            if (input == null || input > bankItems.Count || input < 0)
+            {
+                Console.Clear();
+                Console.WriteLine("sweetie you gotta type a number that we can use\n ");
+                DoSubLocation();
+                return;
+            }
+            else if (input == 0) 
+            {
+                Console.WriteLine("do you want to leave type 0, if you want to diposit type 1");
+                var n2 = int.TryParse(Console.ReadLine(), out int input2);
+                if (input2 == null || input2 > 1 || input2 < 0)
+                {
+                    Console.Clear();
+                    Console.WriteLine("sweetie you gotta type a number that we can use\n ");
+                    DoSubLocation();
+                    return;
+                }
+                else if (input2 == 0) { Program.MainMenu(); return; }
+                else 
+                {
+                    Console.WriteLine($"you have {Program.player.money} money\n\nand these are your items");
+
+                    Console.WriteLine("\nnr     Name            Qty   Description     value");
+                    Console.WriteLine("--------------------------------------------------");
+                    int id = 0;
+                    foreach (var item in Program.player.ownedItems)
+                    {
+                        id++;
+                        Console.WriteLine($"{id,-7}{item.name,-15} {item.amount,-5} {item.description,-16} {item.value}");
+                    }
+
+
+                }
+            }
+        }
 
     }
 
