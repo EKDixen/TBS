@@ -48,10 +48,10 @@ public class SubLocation
             }
             Console.WriteLine("\nif you want to interact with anything type its corresponding number \nif not type 0");
             var n = int.TryParse(Console.ReadLine(), out int input);
-            if (input == null)
+            if (input == null || input > shopItems.Count || input < 0)
             {
                 Console.Clear();
-                Console.WriteLine("sweetie you gotta type a number\n ");
+                Console.WriteLine("sweetie you gotta type a number that we can use\n ");
                 DoSubLocation();
                 return;
             }
@@ -64,10 +64,10 @@ public class SubLocation
             Console.WriteLine("\ntype out the number next to the action you want to perform");
 
             var k = int.TryParse(Console.ReadLine(), out int ik);
-            if (ik == null)
+            if (ik == null || ik < 0 || ik > 1)
             {
                 Console.Clear();
-                Console.WriteLine("my love would you please type a number this time\n ");
+                Console.WriteLine("my love would you please type a functional number this time\n ");
                 DoSubLocation();
                 return;
             }
