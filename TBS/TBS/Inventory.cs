@@ -27,10 +27,10 @@ public class Inventory
         }
         Console.WriteLine("\nif you want to interact with anything type its corresponding number \nif not type 0");
         var n = int.TryParse(Console.ReadLine(), out int input);
-        if (input == null)
+        if (input == null || input < 0 || input > player.ownedItems.Count)
         {
             Console.Clear();
-            Console.WriteLine("sweetie you gotta type a number\n ");
+            Console.WriteLine("sweetie you gotta type a usable number\n ");
             ShowInventory();
             return;
         }
@@ -45,7 +45,7 @@ public class Inventory
         if (player.ownedItems[input].type == ItemType.consumable)  Console.WriteLine("2 : consume");
         Console.WriteLine("\ntype out the number next to the action you want to perform");
         var k = int.TryParse(Console.ReadLine(), out int ik);
-        if (ik == null)
+        if (ik == null || ik <0 || ik > 2)
         {
             Console.Clear();
             Console.WriteLine("my love would you please type a number this time\n ");
