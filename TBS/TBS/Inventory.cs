@@ -60,8 +60,7 @@ public class Inventory
         else if (ik ==1) 
         {
             Console.WriteLine($"\nyou drop the {player.ownedItems[input].name}");
-            if(player.ownedItems[input].type != ItemType.consumable) RemoveEffects(player.ownedItems[input]);
-            player.ownedItems.Remove(player.ownedItems[input]);
+            DropItem(player.ownedItems[input]);
         }
         else if (ik == 2)
         {
@@ -75,6 +74,11 @@ public class Inventory
         player.ownedItems.Add(Titem);
         if(Titem.type != ItemType.consumable)ApplyEffects(Titem);
 
+    }
+    public void DropItem(Item Titem)
+    {
+        if (Titem.type != ItemType.consumable) RemoveEffects(Titem);
+        player.ownedItems.Remove(Titem);
     }
     public void ApplyEffects(Item Titem)
     {

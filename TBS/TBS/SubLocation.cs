@@ -100,8 +100,7 @@ public class SubLocation
         }
         if (type == SubLocationType.bank)
         {
-
-
+            Inventory inventory = new Inventory(Program.player);
 
             Console.WriteLine($"you have {bankMoney} money stored here and heres all the items you have stored here:");
             Console.WriteLine("\n nr     Name            Qty   Description    value");
@@ -145,11 +144,32 @@ public class SubLocation
                         id++;
                         Console.WriteLine($"{id,-7}{item.name,-15} {item.amount,-5} {item.description,-16} {item.value}");
                     }
+                    Console.WriteLine("\ntypeo ut the nr of the item you want to diposit");
+                    var n3 = int.TryParse(Console.ReadLine(), out int input3);
+                    if (input3 == null || input3 > Program.player.ownedItems.Count || input3 < 0)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("sweetie you gotta type a number that we can use\n ");
+                        DoSubLocation();
+                        return;
+                    }
+                    input--;
 
+                    bankItems.Add(Program.player.ownedItems[input]);
+                    inventory.DropItem(Program.player.ownedItems[input]);
 
                 }
             }
+            else
+            {
+                bankItems.Remove(Program.player.ownedItems[input]);
+                inventory.AddItem(Program.player.ownedItems[input]);
+            }
+            Program.SavePlayer();
+            Program.MainMenu();
         }
+
+
 
     }
 
