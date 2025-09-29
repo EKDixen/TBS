@@ -9,12 +9,7 @@ using System.Numerics;
 class JourneyManager
 {
 
-    
-
-    /*Location forest = new Location(false, "Forest",new System.Numerics.Vector2(1, 0));  
-    Location mountain = new Location(false, "Mountain",new System.Numerics.Vector2(-1, 0));
-    Location lake = new Location(false, "Lake",new System.Numerics.Vector2(0, -1));*/
-
+   
     public void ChoseTravelDestination()
     {
         Console.WriteLine("\nwhere do you wish to travel (type out the number next to it)");
@@ -33,7 +28,7 @@ class JourneyManager
         {
             Console.WriteLine("");
             if (targetDes == 0) Explore();
-            else if(targetDes <= Program.player.knownLocations.Count) Travel(Program.player.knownLocations[targetDes-1]);
+            else if(targetDes <= Program.player.knownLocations.Count && targetDes >= 0) Travel(Program.player.knownLocations[targetDes-1]);
             else
             {
                 Console.WriteLine("--------dude you dont know any location with that number------- \n");
@@ -61,33 +56,6 @@ class JourneyManager
     }
     public void Explore()
     {
-        /*List<Location> explorableLocations= new List<Location>();
-
-        for (int i = 0; i < LocationLibrary.locations.Count; i++)
-        {
-            if (Program.player.currentLocation.location + new System.Numerics.Vector2(0, 1) == LocationLibrary.locations[i].location 
-                && !LocationLibrary.locations[i].known) explorableLocations.Add(LocationLibrary.locations[i]);
-            if (Program.player.currentLocation.location + new System.Numerics.Vector2(0, -1) == LocationLibrary.locations[i].location 
-                && !LocationLibrary.locations[i].known) explorableLocations.Add(LocationLibrary.locations[i]);
-            if (Program.player.currentLocation.location + new System.Numerics.Vector2(1, 0) == LocationLibrary.locations[i].location 
-                && !LocationLibrary.locations[i].known) explorableLocations.Add(LocationLibrary.locations[i]);
-            if (Program.player.currentLocation.location + new System.Numerics.Vector2(-1, 0) == LocationLibrary.locations[i].location 
-                && !LocationLibrary.locations[i].known) explorableLocations.Add(LocationLibrary.locations[i]);
-        }
-        if (explorableLocations.Count != 0)
-        {
-            Random rand = new Random();
-            int randomDir = rand.Next(0, explorableLocations.Count);
-
-            Encounter.TravelEncounter(100, explorableLocations[randomDir]);
-
-
-            Program.player.knownLocations.Add(explorableLocations[randomDir]);
-            Program.player.currentLocation = explorableLocations[randomDir];
-            LocationLibrary.locations[randomDir].known = true;
-
-            Program.SavePlayer();
-        }*/
         List<int> explorableLocations = new List<int>();
 
         for (int i = 0; i < LocationLibrary.locations.Count; i++)

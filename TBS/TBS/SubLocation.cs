@@ -5,9 +5,14 @@ using Game.Class;
 
 public enum SubLocationType
 {
-    Shop,
-    Bar,
-    Hotel
+    shop,
+    tavern,
+    resturant,
+    blacksmith,
+    arena,
+
+
+
 }
 public class SubLocation
 {
@@ -27,7 +32,7 @@ public class SubLocation
     
     public void DoSubLocation()
     {
-        if (type == SubLocationType.Shop)
+        if (type == SubLocationType.shop)
         {
             Inventory inventory = new Inventory(Program.player);
 
