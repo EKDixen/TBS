@@ -173,7 +173,50 @@ public class SubLocation
             Program.SavePlayer();
             Program.MainMenu();
         }
+        
+        
+        // not done
+        if (type == SubLocationType.tavern)
+        {
+            Console.WriteLine("do you want to buy something to drink : 1  \nor do you want to rent a room : 2  \nor leave : 0");
+            int.TryParse(Console.ReadLine(), out int input);
+            if (input == null || input > 2 || input < 0)
+            {
+                Console.Clear();
+                Console.WriteLine("sweetie you gotta type a number that we can use\n ");
+                DoSubLocation();
+                return;
+            }
+            else if(input == 1)
+            {
+                Console.WriteLine("\n nr     Name            Qty   Description    Price");
+                Console.WriteLine(" --------------------------------------------------");
+                int i = 0;
+                foreach (var item in shopItems)
+                {
+                    i++;
+                    Console.WriteLine($" {i,-7}{item.name,-15} {item.amount,-5} {item.description,-16} {item.value}");
+                }
+                Console.WriteLine("\ntype the number of the of the one you want to buy");
+                int.TryParse(Console.ReadLine(), out int input2);
+                if (input2 == null || input2 > shopItems.Count || input2 < 0)
+                {
+                    Console.Clear();
+                    Console.WriteLine("sweetie you gotta type a number that we can use\n ");
+                    DoSubLocation();
+                    return;
+                }
 
+
+
+            }
+            else if (input == 2)
+            {
+
+            }
+
+
+        }
 
 
     }
