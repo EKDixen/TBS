@@ -10,7 +10,8 @@ public enum SubLocationType
     resturant,
     blacksmith,
     arena,
-    bank
+    bank,
+    casino
 
 
 
@@ -174,7 +175,42 @@ public class SubLocation
             Program.MainMenu();
         }
         
-        
+        //not done
+        if(type == SubLocationType.casino)
+        {
+            Console.WriteLine("what game do you want to play, \nBlackjack : 1  \nor leave : 0");
+            int.TryParse(Console.ReadLine(), out int input);
+            if (input == null || input > 1 || input < 0)
+            {
+                Console.Clear();
+                Console.WriteLine("sweetie you gotta type a number that we can use\n ");
+                DoSubLocation();
+                return;
+            }
+            else if (input == 1)
+            {
+                Console.WriteLine("\nhow much do you want to bet?");
+                int.TryParse(Console.ReadLine(),out int bet);
+                if (bet == null || bet < 0)
+                {
+                    Console.Clear();
+                    Console.WriteLine("sweetie you gotta type a number that we can use\n ");
+                    DoSubLocation();
+                    return;
+                }
+                else if (bet > Program.player.money) 
+                {
+                    Console.WriteLine("\nyou dont have that much money\n ");
+                    DoSubLocation();
+                    return;
+                }
+                Console.WriteLine($"you bet: {bet}");
+                
+
+
+
+            }
+        }
         // not done
         if (type == SubLocationType.tavern)
         {
@@ -217,6 +253,8 @@ public class SubLocation
 
 
         }
+
+
 
 
     }
