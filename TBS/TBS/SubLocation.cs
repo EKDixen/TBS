@@ -211,6 +211,8 @@ public class SubLocation
                     return;
                 }
                 Console.WriteLine($"you bet: {bet}");
+                Program.player.money -= bet;
+
                 Random rand = new Random();
                 int dealer1 = rand.Next(1,14);
                 int dealer1Suit = rand.Next(1,4);
@@ -317,8 +319,8 @@ public class SubLocation
                 }
                 if (playerValue > 21)
                 {
-                    Program.player.money -= bet;
                     Console.WriteLine($"\nyou lose your bet of {bet} cash");
+                    Program.SavePlayer();
 
                     Console.WriteLine("do you wish to play again : 1\n or leave : 0");
                     int.TryParse(Console.ReadLine(), out int input3);
@@ -344,8 +346,9 @@ public class SubLocation
                 }
                 else if (dealerValue > 21)
                 {
-                    Program.player.money += bet;
+                    Program.player.money += bet*2;
                     Console.WriteLine($"\nyou win your bet of {bet} cash");
+                    Program.SavePlayer();
 
                     Console.WriteLine("do you wish to play again : 1\n or leave : 0");
                     int.TryParse(Console.ReadLine(), out int input3);
@@ -371,8 +374,9 @@ public class SubLocation
                 }
                 else if (playerValue > dealerValue)
                 {
-                    Program.player.money += bet;
+                    Program.player.money += bet*2;
                     Console.WriteLine($"\nyou win your bet of {bet} cash");
+                    Program.SavePlayer();
 
                     Console.WriteLine("do you wish to play again : 1\n or leave : 0");
                     int.TryParse(Console.ReadLine(), out int input3);
@@ -398,8 +402,8 @@ public class SubLocation
                 }
                 else if(playerValue < dealerValue)
                 {
-                    Program.player.money -= bet;
                     Console.WriteLine($"\nyou lose your bet of {bet} cash");
+                    Program.SavePlayer();
 
                     Console.WriteLine("do you wish to play again : 1\n or leave : 0");
                     int.TryParse(Console.ReadLine(), out int input3);
@@ -425,8 +429,8 @@ public class SubLocation
                 }
                 else if (playerValue == dealerValue)
                 {
-                    Program.player.money -= bet;
                     Console.WriteLine($"\nyou lose your bet of {bet} cash");
+                    Program.SavePlayer();
 
                     Console.WriteLine("do you wish to play again : 1\n or leave : 0");
                     int.TryParse(Console.ReadLine(), out int input3);
