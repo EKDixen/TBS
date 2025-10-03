@@ -21,14 +21,15 @@ class JourneyManager
             else Console.WriteLine(Program.player.knownLocations[i].name + " : " + (i + 1)+" (current location)");
         }
         Console.WriteLine("\nor explore for a new location : 0");
-
+        Console.WriteLine("or go back : -1");
 
         int targetDes;
         if (int.TryParse(Console.ReadLine(), out targetDes)) 
         {
             Console.WriteLine("");
             if (targetDes == 0) Explore();
-            else if(targetDes <= Program.player.knownLocations.Count && targetDes >= 0) Travel(Program.player.knownLocations[targetDes-1]);
+            else if(targetDes <= Program.player.knownLocations.Count && targetDes >= 0 && Program.player.knownLocations[targetDes - 1] != Program.player.currentLocation) Travel(Program.player.knownLocations[targetDes-1]);
+            else if(targetDes == -1){ Console.Clear(); Program.MainMenu(); return; }
             else
             {
                 Console.WriteLine("--------dude you dont know any location with that number------- \n");

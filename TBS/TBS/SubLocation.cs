@@ -194,10 +194,16 @@ public class SubLocation
                 DoSubLocation();
                 return;
             }
+            else if(input == 0)
+            {
+                Console.Clear();
+                Program.MainMenu();
+                return;
+            }
             else if (input == 1)
             {
                 Console.WriteLine($"\nhow much do you want to bet?  current cash: {Program.player.money}");
-                int.TryParse(Console.ReadLine(),out int bet);
+                int.TryParse(Console.ReadLine(), out int bet);
                 if (bet == null || bet < 0)
                 {
                     Console.Clear();
@@ -205,7 +211,7 @@ public class SubLocation
                     DoSubLocation();
                     return;
                 }
-                else if (bet > Program.player.money) 
+                else if (bet > Program.player.money)
                 {
                     Console.WriteLine("\nyou dont have that much money\n ");
                     DoSubLocation();
@@ -215,15 +221,15 @@ public class SubLocation
                 Program.player.money -= bet;
 
                 Random rand = new Random();
-                int dealer1 = rand.Next(1,14);
-                int dealer1Suit = rand.Next(1,4);
-                
+                int dealer1 = rand.Next(1, 14);
+                int dealer1Suit = rand.Next(1, 4);
+
                 Console.Write($"\n\ndealer shows a");
                 if (dealer1 == 1) Console.Write($"n ace of {suits[dealer1Suit]} (worth 11 and 1)");
                 else if (dealer1 < 11) Console.Write($" {dealer1} of {suits[dealer1Suit]}");
                 else Console.Write($" 10 of {suits[dealer1Suit]}");
 
-                
+
                 int player1 = rand.Next(1, 14);
                 int player1Suit = rand.Next(1, 4);
 
@@ -256,11 +262,11 @@ public class SubLocation
 
                 while (true)
                 {
-                    if(playerValue > 21)
+                    if (playerValue > 21)
                     {
-                        if (player1 == 1)  {playerValue -= 10; player1 = 0; continue; }
-                        if (player2 == 1)  {playerValue -= 10; player2 = 0; continue; }
-                        if (player3 == 1)  {playerValue -= 10; player3 = 0; continue; }
+                        if (player1 == 1) { playerValue -= 10; player1 = 0; continue; }
+                        if (player2 == 1) { playerValue -= 10; player2 = 0; continue; }
+                        if (player3 == 1) { playerValue -= 10; player3 = 0; continue; }
                         Console.WriteLine("\nyou bust");
                         break;
                     }
@@ -364,7 +370,7 @@ public class SubLocation
                         DoSubLocation();
                         return;
                     }
-                    else 
+                    else
                     {
                         Console.Clear();
                         Program.MainMenu();
@@ -373,7 +379,7 @@ public class SubLocation
                 }
                 else if (dealerValue > 21)
                 {
-                    Program.player.money += bet*2;
+                    Program.player.money += bet * 2;
                     Console.WriteLine($"\nyou win your bet of {bet} cash");
                     Program.SavePlayer();
 
@@ -401,7 +407,7 @@ public class SubLocation
                 }
                 else if (playerValue > dealerValue)
                 {
-                    Program.player.money += bet*2;
+                    Program.player.money += bet * 2;
                     Console.WriteLine($"\nyou win your bet of {bet} cash");
                     Program.SavePlayer();
 
@@ -427,7 +433,7 @@ public class SubLocation
                         return;
                     }
                 }
-                else if(playerValue < dealerValue)
+                else if (playerValue < dealerValue)
                 {
                     Console.WriteLine($"\nyou lose your bet of {bet} cash");
                     Program.SavePlayer();
@@ -520,8 +526,8 @@ public class SubLocation
                         }
                         break;
                 }
-                
-                
+
+
 
 
             }
