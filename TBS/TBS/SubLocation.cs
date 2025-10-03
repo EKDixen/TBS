@@ -217,7 +217,7 @@ public class SubLocation
                 int dealer1 = rand.Next(1,14);
                 int dealer1Suit = rand.Next(1,4);
                 
-                Console.Write($"dealer shows a");
+                Console.Write($"\n\ndealer shows a");
                 if (dealer1 == 1) Console.Write($"n ace of {suits[dealer1Suit]} (worth 11 and 1)");
                 else if (dealer1 < 11) Console.Write($" {dealer1} of {suits[dealer1Suit]}");
                 else Console.Write($" 10 of {suits[dealer1Suit]}");
@@ -239,16 +239,27 @@ public class SubLocation
                 else if (player2 < 11) Console.Write($" {player2} of {suits[player2Suit]}");
                 else Console.Write($" 10 of {suits[player2Suit]}");
 
-                if(player1 > 10) player1 = 10;
-                if (player2 > 10) player2 = 10;
-                int playerValue = player1 + player2;
+                int playerValue = 0;
                 int dealerValue = 0;
+                if (player1 > 10) playerValue += 10;
+                else if (player1 == 1 && playerValue + 11 <= 21) playerValue += 11;
+                else { playerValue += player1; player1 = 0; }
+
+                if (player2 > 10) playerValue += 10;
+                else if (player2 == 1 && playerValue + 11 <= 21) playerValue += 11;
+                else { playerValue += player2; player2 = 0; }
+
+                int player3 = 0;
+
                 Console.WriteLine($"\nyour card sum: {playerValue}");
 
                 while (true)
                 {
                     if(playerValue > 21)
                     {
+                        if (player1 == 1)  {playerValue -= 10; player1 = 0; continue; }
+                        if (player2 == 1)  {playerValue -= 10; player2 = 0; continue; }
+                        if (player3 == 1)  {playerValue -= 10; player3 = 0; continue; }
                         Console.WriteLine("\nyou bust");
                         break;
                     }
@@ -270,7 +281,7 @@ public class SubLocation
                     }
                     else if (input2 == 1)
                     {
-                        int player3 = rand.Next(1, 14);
+                        player3 = rand.Next(1, 14);
                         int player3Suit = rand.Next(1, 4);
 
                         Console.Write($"\nyou get a");
@@ -278,8 +289,10 @@ public class SubLocation
                         else if (player3 < 11) Console.Write($" {player3} of {suits[player3Suit]}");
                         else Console.Write($" 10 of {suits[player3Suit]}");
 
-                        if (player3 > 10) player3 = 10;
-                        playerValue += player3;
+                        if (player3 > 10) playerValue += 10;
+                        else if (player3 == 1 && playerValue + 11 <= 21) playerValue += 11;
+                        else { playerValue += player3; player3 = 0; }
+
                         Console.WriteLine($"\nyour card sum: {playerValue}");
                         continue;
                     }
@@ -293,9 +306,13 @@ public class SubLocation
                         else if (dealer2 < 11) Console.Write($" {dealer2} of {suits[dealer2Suit]}");
                         else Console.Write($" 10 of {suits[dealer2Suit]}");
 
-                        if(dealer1 > 10)dealer1 = 10;
-                        if (dealer2 > 10) dealer2 = 10;
-                        dealerValue = dealer1 + dealer2;
+                        if (dealer1 > 10) dealerValue += 10;
+                        else if (dealer1 == 1 && dealerValue + 11 <= 21) dealerValue += 11;
+                        else { dealerValue += dealer1; dealer1 = 0; }
+
+                        if (dealer2 > 10) dealerValue += 10;
+                        else if (dealer2 == 1 && dealerValue + 11 <= 21) dealerValue += 11;
+                        else { dealerValue += dealer2; dealer2 = 0; }
 
                         Console.WriteLine($"\ndealer card sum: {dealerValue}");
                         while (dealerValue < 17)
@@ -309,8 +326,17 @@ public class SubLocation
                             else if (dealer3 < 11) Console.Write($" {dealer3} of {suits[dealer3Suit]}");
                             else Console.Write($" 10 of {suits[dealer3Suit]}");
 
-                            if (dealer3 > 10) dealer3 = 10;
-                            dealerValue += dealer3;
+                            if (dealer3 > 10) dealerValue += 10;
+                            else if (dealer3 == 1 && dealerValue + 11 <= 21) dealerValue += 11;
+                            else { dealerValue += dealer3; dealer3 = 0; }
+
+                            if (dealerValue > 21)
+                            {
+                                if (dealer1 == 1) { dealerValue -= 10; dealer1 = 0; continue; }
+                                if (dealer2 == 1) { dealerValue -= 10; dealer2 = 0; continue; }
+                                if (dealer3 == 1) { dealerValue -= 10; dealer3 = 0; continue; }
+                            }
+
                             Console.WriteLine($"\ndealer card sum: {dealerValue}");
                         }
 
@@ -322,7 +348,7 @@ public class SubLocation
                     Console.WriteLine($"\nyou lose your bet of {bet} cash");
                     Program.SavePlayer();
 
-                    Console.WriteLine("do you wish to play again : 1\n or leave : 0");
+                    Console.WriteLine("\ndo you wish to play again : 1\n or leave : 0");
                     int.TryParse(Console.ReadLine(), out int input3);
                     if (input3 == null || input3 > 2 || input3 < 0)
                     {
@@ -350,7 +376,7 @@ public class SubLocation
                     Console.WriteLine($"\nyou win your bet of {bet} cash");
                     Program.SavePlayer();
 
-                    Console.WriteLine("do you wish to play again : 1\n or leave : 0");
+                    Console.WriteLine("\ndo you wish to play again : 1\n or leave : 0");
                     int.TryParse(Console.ReadLine(), out int input3);
                     if (input3 == null || input3 > 2 || input3 < 0)
                     {
@@ -378,7 +404,7 @@ public class SubLocation
                     Console.WriteLine($"\nyou win your bet of {bet} cash");
                     Program.SavePlayer();
 
-                    Console.WriteLine("do you wish to play again : 1\n or leave : 0");
+                    Console.WriteLine("\ndo you wish to play again : 1\n or leave : 0");
                     int.TryParse(Console.ReadLine(), out int input3);
                     if (input3 == null || input3 > 2 || input3 < 0)
                     {
@@ -405,7 +431,7 @@ public class SubLocation
                     Console.WriteLine($"\nyou lose your bet of {bet} cash");
                     Program.SavePlayer();
 
-                    Console.WriteLine("do you wish to play again : 1\n or leave : 0");
+                    Console.WriteLine("\ndo you wish to play again : 1\n or leave : 0");
                     int.TryParse(Console.ReadLine(), out int input3);
                     if (input3 == null || input3 > 2 || input3 < 0)
                     {
@@ -432,7 +458,7 @@ public class SubLocation
                     Console.WriteLine($"\nyou lose your bet of {bet} cash");
                     Program.SavePlayer();
 
-                    Console.WriteLine("do you wish to play again : 1\n or leave : 0");
+                    Console.WriteLine("\ndo you wish to play again : 1\n or leave : 0");
                     int.TryParse(Console.ReadLine(), out int input3);
                     if (input3 == null || input3 > 2 || input3 < 0)
                     {

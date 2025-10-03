@@ -78,8 +78,8 @@
                 int i = 0;
                 foreach (var subLocation in player.currentLocation.subLocationsHere) 
                 {
-                    Console.WriteLine($"{subLocation.name} : {i}");
                     i++;
+                    Console.WriteLine($"{subLocation.name} : {i}");
                 }
                 if(i == 0)
                 {
@@ -89,18 +89,24 @@
                     return;
                 }
                 
-                Console.WriteLine("\ntype out the number next to the location you want to go to");
+                Console.WriteLine("\ntype out the number next to the location you want to go to\n or leave : 0");
 
                 int targetDes;
                 if (int.TryParse(Console.ReadLine(), out targetDes))
                 {
-                    if (targetDes > player.currentLocation.subLocationsHere.Count || targetDes < 0) 
+                    if (targetDes == 0)
+                    {
+                        Console.Clear();
+                        MainMenu();
+                        return;
+                    }
+                    else if (targetDes > player.currentLocation.subLocationsHere.Count || targetDes < 0) 
                     {
                         Console.WriteLine("that number is wrong mate");
                         MainMenu();
                         return;
                     }
-                    player.currentLocation.subLocationsHere[targetDes].DoSubLocation();
+                    player.currentLocation.subLocationsHere[targetDes-1].DoSubLocation();
                 }
                 else 
                 { 
