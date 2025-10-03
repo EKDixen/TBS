@@ -3,9 +3,13 @@
 
     public static Location starterTown = new Location(true, "StarterTown", new System.Numerics.Vector2(0, 0), new List<SubLocation>
     {
+        new SubLocation("casino", SubLocationType.casino)
+        {
+
+        },
         new SubLocation("bank", SubLocationType.bank)
         {
-            
+
         }
     });
     

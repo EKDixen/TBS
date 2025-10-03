@@ -24,7 +24,13 @@ public class SubLocation
 
     public List<Item> shopItems = new List<Item>();
 
-
+    List<string> suits = new List<string>
+    {
+        new string("hearts"),
+        new string("diamonds"),
+        new string("clubs"),
+        new string("spades")
+    };
 
     public List<Item> bankItems = new List<Item>();
     public int bankMoney = 0;
@@ -189,7 +195,7 @@ public class SubLocation
             }
             else if (input == 1)
             {
-                Console.WriteLine("\nhow much do you want to bet?");
+                Console.WriteLine($"\nhow much do you want to bet?  current cash: {Program.player.money}");
                 int.TryParse(Console.ReadLine(),out int bet);
                 if (bet == null || bet < 0)
                 {
@@ -205,9 +211,245 @@ public class SubLocation
                     return;
                 }
                 Console.WriteLine($"you bet: {bet}");
+                Random rand = new Random();
+                int dealer1 = rand.Next(1,14);
+                int dealer1Suit = rand.Next(1,4);
                 
+                Console.Write($"dealer shows a");
+                if (dealer1 == 1) Console.Write($"n ace of {suits[dealer1Suit]} (worth 11 and 1)");
+                else if (dealer1 < 11) Console.Write($" {dealer1} of {suits[dealer1Suit]}");
+                else Console.Write($" 10 of {suits[dealer1Suit]}");
 
+                
+                int player1 = rand.Next(1, 14);
+                int player1Suit = rand.Next(1, 4);
 
+                int player2 = rand.Next(1, 14);
+                int player2Suit = rand.Next(1, 4);
+
+                Console.Write($"\n\nyou have a");
+                if (player1 == 1) Console.Write($"n ace of {suits[player1Suit]} (worth 11 and 1)");
+                else if (player1 < 11) Console.Write($" {player1} of {suits[player1Suit]}");
+                else Console.Write($" 10 of {suits[player1Suit]}");
+
+                Console.Write($"\nand a");
+                if (player2 == 1) Console.Write($"n ace of {suits[player2Suit]} (worth 11 and 1)");
+                else if (player2 < 11) Console.Write($" {player2} of {suits[player2Suit]}");
+                else Console.Write($" 10 of {suits[player2Suit]}");
+
+                if(player1 > 10) player1 = 10;
+                if (player2 > 10) player2 = 10;
+                int playerValue = player1 + player2;
+                int dealerValue = 0;
+                Console.WriteLine($"\nyour card sum: {playerValue}");
+
+                while (true)
+                {
+                    if(playerValue > 21)
+                    {
+                        Console.WriteLine("\nyou bust");
+                        break;
+                    }
+                    else if (playerValue == 21)
+                    {
+                        Console.WriteLine("\nblackjack!");
+                        break;
+                    }
+
+                    Console.WriteLine("\ndo you wish to hit : 1\nor stand : 2");
+
+                    int.TryParse(Console.ReadLine(), out int input2);
+                    if (input2 == null || input2 > 2 || input2 < 0)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("sweetie you gotta type a number that we can use\n ");
+                        DoSubLocation();
+                        return;
+                    }
+                    else if (input2 == 1)
+                    {
+                        int player3 = rand.Next(1, 14);
+                        int player3Suit = rand.Next(1, 4);
+
+                        Console.Write($"\nyou get a");
+                        if (player3 == 1) Console.Write($"n ace of {suits[player3Suit]} (worth 11 and 1)");
+                        else if (player3 < 11) Console.Write($" {player3} of {suits[player3Suit]}");
+                        else Console.Write($" 10 of {suits[player3Suit]}");
+
+                        if (player3 > 10) player3 = 10;
+                        playerValue += player3;
+                        Console.WriteLine($"\nyour card sum: {playerValue}");
+                        continue;
+                    }
+                    else if (input2 == 2)
+                    {
+                        int dealer2 = rand.Next(1, 14);
+                        int dealer2Suit = rand.Next(1, 4);
+
+                        Console.Write($"\ndealer shows a");
+                        if (dealer2 == 1) Console.Write($"n ace of {suits[dealer2Suit]} (worth 11 and 1)");
+                        else if (dealer2 < 11) Console.Write($" {dealer2} of {suits[dealer2Suit]}");
+                        else Console.Write($" 10 of {suits[dealer2Suit]}");
+
+                        if(dealer1 > 10)dealer1 = 10;
+                        if (dealer2 > 10) dealer2 = 10;
+                        dealerValue = dealer1 + dealer2;
+
+                        Console.WriteLine($"\ndealer card sum: {dealerValue}");
+                        while (dealerValue < 17)
+                        {
+
+                            int dealer3 = rand.Next(1, 14);
+                            int dealer3Suit = rand.Next(1, 4);
+
+                            Console.Write($"\ndealer shows a");
+                            if (dealer3 == 1) Console.Write($"n ace of {suits[dealer3Suit]} (worth 11 and 1)");
+                            else if (dealer3 < 11) Console.Write($" {dealer3} of {suits[dealer3Suit]}");
+                            else Console.Write($" 10 of {suits[dealer3Suit]}");
+
+                            if (dealer3 > 10) dealer3 = 10;
+                            dealerValue += dealer3;
+                            Console.WriteLine($"\ndealer card sum: {dealerValue}");
+                        }
+
+                        break;
+                    }
+                }
+                if (playerValue > 21)
+                {
+                    Program.player.money -= bet;
+                    Console.WriteLine($"\nyou lose your bet of {bet} cash");
+
+                    Console.WriteLine("do you wish to play again : 1\n or leave : 0");
+                    int.TryParse(Console.ReadLine(), out int input3);
+                    if (input3 == null || input3 > 2 || input3 < 0)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("sweetie you gotta type a number that we can use\n ");
+                        DoSubLocation();
+                        return;
+                    }
+                    else if (input3 == 1)
+                    {
+                        Console.Clear();
+                        DoSubLocation();
+                        return;
+                    }
+                    else 
+                    {
+                        Console.Clear();
+                        Program.MainMenu();
+                        return;
+                    }
+                }
+                else if (dealerValue > 21)
+                {
+                    Program.player.money += bet;
+                    Console.WriteLine($"\nyou win your bet of {bet} cash");
+
+                    Console.WriteLine("do you wish to play again : 1\n or leave : 0");
+                    int.TryParse(Console.ReadLine(), out int input3);
+                    if (input3 == null || input3 > 2 || input3 < 0)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("sweetie you gotta type a number that we can use\n ");
+                        DoSubLocation();
+                        return;
+                    }
+                    else if (input3 == 1)
+                    {
+                        Console.Clear();
+                        DoSubLocation();
+                        return;
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Program.MainMenu();
+                        return;
+                    }
+                }
+                else if (playerValue > dealerValue)
+                {
+                    Program.player.money += bet;
+                    Console.WriteLine($"\nyou win your bet of {bet} cash");
+
+                    Console.WriteLine("do you wish to play again : 1\n or leave : 0");
+                    int.TryParse(Console.ReadLine(), out int input3);
+                    if (input3 == null || input3 > 2 || input3 < 0)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("sweetie you gotta type a number that we can use\n ");
+                        DoSubLocation();
+                        return;
+                    }
+                    else if (input3 == 1)
+                    {
+                        Console.Clear();
+                        DoSubLocation();
+                        return;
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Program.MainMenu();
+                        return;
+                    }
+                }
+                else if(playerValue < dealerValue)
+                {
+                    Program.player.money -= bet;
+                    Console.WriteLine($"\nyou lose your bet of {bet} cash");
+
+                    Console.WriteLine("do you wish to play again : 1\n or leave : 0");
+                    int.TryParse(Console.ReadLine(), out int input3);
+                    if (input3 == null || input3 > 2 || input3 < 0)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("sweetie you gotta type a number that we can use\n ");
+                        DoSubLocation();
+                        return;
+                    }
+                    else if (input3 == 1)
+                    {
+                        Console.Clear();
+                        DoSubLocation();
+                        return;
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Program.MainMenu();
+                        return;
+                    }
+                }
+                else if (playerValue == dealerValue)
+                {
+                    Program.player.money -= bet;
+                    Console.WriteLine($"\nyou lose your bet of {bet} cash");
+
+                    Console.WriteLine("do you wish to play again : 1\n or leave : 0");
+                    int.TryParse(Console.ReadLine(), out int input3);
+                    if (input3 == null || input3 > 2 || input3 < 0)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("sweetie you gotta type a number that we can use\n ");
+                        DoSubLocation();
+                        return;
+                    }
+                    else if (input3 == 1)
+                    {
+                        Console.Clear();
+                        DoSubLocation();
+                        return;
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Program.MainMenu();
+                        return;
+                    }
+                }
 
             }
         }
