@@ -115,10 +115,17 @@ public class SubLocation
         {
             Inventory inventory = new Inventory(Program.player);
 
-            Console.WriteLine($"you have {bankMoney} money stored here and heres all the items you have stored here:");
+            Console.WriteLine($"\n\n\nyou have {bankMoney} money stored here and here is all the items you have stored here:");
             Console.WriteLine("\n nr     Name            Qty   Description    value");
             Console.WriteLine(" --------------------------------------------------");
-            int i = 0;
+            int i = 1;
+            int extraMoneyNumber = 0;
+            if (bankMoney != 0)
+            {
+                Console.WriteLine($" {i,-7}{"money",-15} {bankMoney,-5}");
+                extraMoneyNumber = 1;
+            }
+
             foreach (var item in bankItems)
             {
                 i++;
@@ -126,7 +133,7 @@ public class SubLocation
             }
             Console.WriteLine("\nif you want to grab something type its nr \nif you want to deposit something or leave then type 0");
             var n = int.TryParse(Console.ReadLine(), out int input);
-            if (input == null || input > bankItems.Count || input < 0)
+            if (input == null || input > bankItems.Count+extraMoneyNumber || input < 0)
             {
                 Console.Clear();
                 Console.WriteLine("sweetie you gotta type a number that we can use\n ");
@@ -147,7 +154,7 @@ public class SubLocation
                 else if (input2 == 0) { Program.MainMenu(); return; }
                 else 
                 {
-                    Console.WriteLine($"you have {Program.player.money} money\n\nand these are your items");
+                    Console.WriteLine($"\n\nyou have {Program.player.money} money\n\nand these are your items");
 
                     Console.WriteLine("\nnr     Name            Qty   Description     value");
                     Console.WriteLine("--------------------------------------------------");
@@ -157,8 +164,8 @@ public class SubLocation
                         id++;
                         Console.WriteLine($"{id,-7}{item.name,-15} {item.amount,-5} {item.description,-16} {item.value}");
                     }
-                    Console.WriteLine("\ntype out the nr of the item you want to diposit");
-                    var n3 = int.TryParse(Console.ReadLine(), out int input3);
+                    Console.WriteLine("\ntype out the nr of the item you want to diposit or type 0 if you want to deposit money");
+                    int.TryParse(Console.ReadLine(), out int input3);
                     if (input3 == null || input3 > Program.player.ownedItems.Count || input3 < 0)
                     {
                         Console.Clear();
@@ -166,12 +173,45 @@ public class SubLocation
                         DoSubLocation();
                         return;
                     }
-                    input3--;
+                    if (input3 == 0) 
+                    { 
+                        Console.WriteLine($"how much would you like to deposit? you have {Program.player.money}");
+                        int.TryParse(Console.ReadLine(), out int moneyAmount);
+                        if(moneyAmount == null || moneyAmount > Program.player.money || moneyAmount < 0)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("sweetie you gotta type a number that we can use\n ");
+                            DoSubLocation();
+                            return;
+                        }
+                        Program.player.money -= moneyAmount;
+                        bankMoney += moneyAmount;
 
-                    bankItems.Add(Program.player.ownedItems[input3]);
-                    inventory.DropItem(Program.player.ownedItems[input3]);
+                    }
+                    else
+                    {
+                        input3--;
 
+                        bankItems.Add(Program.player.ownedItems[input3]);
+                        inventory.DropItem(Program.player.ownedItems[input3]);
+                    }
                 }
+            }
+            else if (input == 1)
+            {
+
+                    Console.WriteLine($"how much would you like to grab? theres {bankMoney} stored");
+                    int.TryParse(Console.ReadLine(), out int moneyAmount);
+                    if (moneyAmount == null || moneyAmount > bankMoney || moneyAmount < 0)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("sweetie you gotta type a number that we can use\n ");
+                        DoSubLocation();
+                        return;
+                    }
+                    Program.player.money += moneyAmount;
+                    bankMoney -= moneyAmount;
+
             }
             else
             {
