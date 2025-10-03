@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Game.Class;
 
 public enum SubLocationType
@@ -184,9 +185,9 @@ public class SubLocation
         //not done
         if(type == SubLocationType.casino)
         {
-            Console.WriteLine("what game do you want to play, \nBlackjack : 1  \nor leave : 0");
+            Console.WriteLine("what game do you want to play, \nBlackjack : 1 \nRoulette : 2 (not done) \nor leave : 0");
             int.TryParse(Console.ReadLine(), out int input);
-            if (input == null || input > 1 || input < 0)
+            if (input == null || input > 2 || input < 0)
             {
                 Console.Clear();
                 Console.WriteLine("sweetie you gotta type a number that we can use\n ");
@@ -480,6 +481,48 @@ public class SubLocation
                         return;
                     }
                 }
+
+            }
+            else if (input == 2)
+            {
+                Console.WriteLine($"\nhow much do you want to bet?  current cash: {Program.player.money}");
+                int.TryParse(Console.ReadLine(), out int bet);
+                if (bet == null || bet < 0)
+                {
+                    Console.Clear();
+                    Console.WriteLine("sweetie you gotta type a number that we can use\n ");
+                    DoSubLocation();
+                    return;
+                }
+                Console.WriteLine($"where would you like to bet, \nblack : 1 \nred : 2 \neven : 3 \nodd : 4 \n1st 12 : 5 " +
+                    $"\n2nd 12 : 6 \n3rd : 7 \n 1 to 18 : 8 \n19 to 36 : 9 \nspecific number : 10");
+
+
+                Random rand = new Random();
+                int result = rand.Next(1, 37);
+
+                int.TryParse(Console.ReadLine(), out int betPlace);
+                switch (betPlace)
+                {
+                    case 1:
+                        Console.WriteLine($"you bet black \nthe number rolled is {result}");
+                        //win logic
+                        break;
+                    case 2:
+                        Console.WriteLine($"you bet black \nthe number rolled is {result}");
+                        //win logic
+                        break;
+                    case 3:
+                        Console.WriteLine($"you bet black \nthe number rolled is {result}");
+                        if (result % 2 == 0)
+                        {
+
+                        }
+                        break;
+                }
+                
+                
+
 
             }
         }
