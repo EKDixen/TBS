@@ -5,6 +5,7 @@
     public int level;
     public int exp;
     public int HP;
+    public int maxHP;
     public int DMG;
     public int speed;
     public int armor;
@@ -19,5 +20,13 @@
 
     public int money;
 
+    public double ActionGauge;
+    public bool IsPlayer;
+
     public Combatant() { } // Deserialize
+
+    public bool IsAlive()
+    {
+        return HP > 0;
+    }
 }

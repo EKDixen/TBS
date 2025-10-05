@@ -31,6 +31,7 @@
             case "armor": target.armor += value; break;
             case "stun": target.stun += value; break;
             case "stunNegation": target.stunNegation += value; break;
+            case "speed": target.speed += value; break;
             default: Console.WriteLine($"Unknown effect: {type}"); break;
         }
     }

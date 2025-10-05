@@ -58,6 +58,7 @@ public class Attack
                 "dodgeNegation" => $"Increase dodge resistance by {effect.value}%{(effect.duration > 0 ? $" for {effect.duration} turns" : "")}",
                 "stun" => $"Increase stun chance by {effect.value}%{(effect.duration > 0 ? $" for {effect.duration} turns" : "")}",
                 "stunNegation" => $"Increase stun resistance by {effect.value}%{(effect.duration > 0 ? $" for {effect.duration} turns" : "")}",
+                "speed" => $"Increase speed by {effect.value}{(effect.duration > 0 ? $" for {effect.duration} turns" : "")}",
                 _ => $"{effect.type} {effect.value} {(effect.duration > 0 ? $"({effect.duration} turns)" : "")}"
             };
 
