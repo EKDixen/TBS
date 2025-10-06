@@ -650,8 +650,17 @@ public class SubLocation
                         }
                         break;
                     case 10:
-                        Console.WriteLine("what number?");
-                        int.TryParse(Console.ReadLine(), out int betNumber);
+                        int betNumber;
+                        while (true)
+                        {
+                            Console.WriteLine("what number?");
+                            int.TryParse(Console.ReadLine(), out betNumber);
+                            if (betNumber != null && betNumber < 36)
+                            {
+                                break;
+                            }
+                            Console.WriteLine("type a number please");
+                        }
 
                         Console.WriteLine($"you bet {betNumber} \nthe number rolled is {result}");
                         if (result == betNumber)
