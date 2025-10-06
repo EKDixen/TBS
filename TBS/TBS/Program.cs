@@ -7,6 +7,7 @@
         static JourneyManager journeyManager = new JourneyManager();
         static Inventory Inventory;
         static AttackManager atkManager;
+        static Random rng = new Random();
         public static void Main(string[] args)
         {
             while (true)
@@ -61,9 +62,11 @@
         public static void MainMenu()
         {
             Console.WriteLine($"\nwhat do you wish to do? (type the number next to it) \nGo somewhere : 0 \nCheck Inventory : 1 \n" +
-                $"Check Moves : 2\ndo something here current location {player.currentLocation.name} : 3 \n");
+                $"Check Moves : 2\ndo something here current location {player.currentLocation.name} : 3 \n" +
+                $"Start test combat (1v1) : 4\nStart test combat (1v2) : 5\n" +
+                $"Start zone encounter StarterTown <-> Mountain (3 enemies) : 6\n");
             //int.TryParse(Console.ReadLine(), out int input);
-            if (int.TryParse(Console.ReadLine(), out int input) == false || input > 3 || input < 0)
+            if (int.TryParse(Console.ReadLine(), out int input) == false || input > 6 || input < 0)
             {
                 Console.WriteLine("\nyou gotta type 0, 1, 2 or 3");
                 MainMenu();
@@ -72,6 +75,9 @@
             else if (input == 0) journeyManager.ChoseTravelDestination();
             else if (input == 1) Inventory.ShowInventory();
             else if (input == 2) atkManager.ShowMovesMenu();
+            else if (input == 4) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug) });
+            else if (input == 5) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug), CloneEnemy(EnemyLibrary.VampireSpawn) });
+            else if (input == 6) StartZoneEncounter(LocationLibrary.starterTown, LocationLibrary.mountain, 3);
             else if (input == 3) 
             {
                 Console.WriteLine("all establisments in your current location");
@@ -126,6 +132,71 @@
         public static void SavePlayer()
         {
             db.SavePlayer(player);
+        }
+
+        // Temp under bare for at teste shit, ikke permenent
+
+        private static Enemy CloneEnemy(Enemy e)
+        {
+            var clone = new Enemy(e.name, e.level, e.exp, e.HP, e.DMG, e.speed, e.armor, e.dodge, e.dodgeNegation, e.critChance, e.critDamage, e.stun, e.stunNegation, e.money)
+            {
+                maxHP = e.maxHP > 0 ? e.maxHP : e.HP,
+                attacks = e.attacks?.ToList() ?? new List<Attack>()
+            };
+            return clone;
+        }
+
+        private static void StartTestCombat(List<Enemy> testEnemies)
+        {
+            var cm = new CombatManager(player, testEnemies);
+            cm.StartCombat();
+            Console.WriteLine("\nReturning to main menu...\n");
+            MainMenu();
+        }
+
+        private static void StartZoneEncounter(Location a, Location b, int count)
+        {
+            var combined = new Dictionary<Enemy, int>();
+            void addAll(Dictionary<Enemy,int> src)
+            {
+                if (src == null) return;
+                foreach (var kv in src)
+                {
+                    if (combined.ContainsKey(kv.Key)) combined[kv.Key] += kv.Value;
+                    else combined[kv.Key] = kv.Value;
+                }
+            }
+            addAll(a.PossibleEncounters);
+            addAll(b.PossibleEncounters);
+
+            if (combined.Count == 0)
+            {
+                Console.WriteLine("No enemies in these zones.");
+                MainMenu();
+                return;
+            }
+
+            int total = combined.Values.Sum();
+            var picks = new List<Enemy>();
+            for (int i = 0; i < count; i++)
+            {
+                int r = rng.Next(0, total);
+                int accum = 0;
+                foreach (var kv in combined)
+                {
+                    accum += kv.Value;
+                    if (r < accum)
+                    {
+                        picks.Add(CloneEnemy(kv.Key));
+                        break;
+                    }
+                }
+            }
+
+            var cm = new CombatManager(player, picks);
+            cm.StartCombat();
+            Console.WriteLine("\nReturning to main menu...\n");
+            MainMenu();
         }
 
     }

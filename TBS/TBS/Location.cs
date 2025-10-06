@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
+using System.Text.Json.Serialization;
 
 public class Location
 {
@@ -8,6 +9,7 @@ public class Location
     public Vector2 location;
 
     public List<SubLocation> subLocationsHere = new List<SubLocation>();
+    [JsonIgnore]
     public Dictionary<Enemy, int> PossibleEncounters { get; set; }
 
     public Location() { } // Deserialize
