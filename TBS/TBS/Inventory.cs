@@ -115,16 +115,16 @@ public class Inventory
         {
             switch (stat.Key)
             {
-                case "HP": player.HP -= Titem.stats["HP"]; break;
-                case "DMG": player.DMG -= Titem.stats["DMG"]; break;
-                case "speed": player.speed -= Titem.stats["speed"]; break;
-                case "armor": player.armor -= Titem.stats["armor"]; break;
-                case "dodge": player.dodge -= Titem.stats["dodge"]; break;
-                case "dodgeNegation": player.dodgeNegation -= Titem.stats["dodgeNegation"]; break;
-                case "critChance": player.critChance -= Titem.stats["critChance"]; break;
-                case "critDamage": player.critDamage -= Titem.stats["critDamage"]; break;
-                case "stun": player.stun -= Titem.stats["stun"]; break;
-                case "stunNegation": player.stunNegation -= Titem.stats["stunNegation"]; break;
+                case "HP": player.HP -= Titem.stats["HP"] * Titem.amount; break;
+                case "DMG": player.DMG -= Titem.stats["DMG"] * Titem.amount; break;
+                case "speed": player.speed -= Titem.stats["speed"] * Titem.amount; break;
+                case "armor": player.armor -= Titem.stats["armor"] * Titem.amount; break;
+                case "dodge": player.dodge -= Titem.stats["dodge"] * Titem.amount; break;
+                case "dodgeNegation": player.dodgeNegation -= Titem.stats["dodgeNegation"] * Titem.amount; break;
+                case "critChance": player.critChance -= Titem.stats["critChance"] * Titem.amount; break;
+                case "critDamage": player.critDamage -= Titem.stats["critDamage"] * Titem.amount; break;
+                case "stun": player.stun -= Titem.stats["stun"] * Titem.amount; break;
+                case "stunNegation": player.stunNegation -= Titem.stats["stunNegation"] * Titem.amount; break;
 
             }
         }
