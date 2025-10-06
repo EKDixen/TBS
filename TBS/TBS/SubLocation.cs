@@ -222,8 +222,6 @@ public class SubLocation
             Program.SavePlayer();
             Program.MainMenu();
         }
-        
-        //not done
         if(type == SubLocationType.casino)
         {
             Console.WriteLine("what game do you want to play, \nBlackjack : 1 \nRoulette : 2 \nor leave : 0");
@@ -739,6 +737,10 @@ public class SubLocation
 
             }
         }
+
+
+
+
         // not done
         if (type == SubLocationType.tavern)
         {
