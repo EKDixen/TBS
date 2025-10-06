@@ -578,7 +578,10 @@ public class SubLocation
                             Console.WriteLine("you win!!!");
                             Program.player.money += bet * 2;
                         }
-
+                        else
+                        {
+                            Console.WriteLine("you lose\n");
+                        }
                         break;
                     case 2:
                         Console.WriteLine($"you bet red \nthe number rolled is {result}");
@@ -589,7 +592,10 @@ public class SubLocation
                             Console.WriteLine("you win!!!");
                             Program.player.money += bet * 2;
                         }
-
+                        else
+                        {
+                            Console.WriteLine("you lose\n");
+                        }
                         break;
                     case 3:
                         Console.WriteLine($"you bet even \nthe number rolled is {result}");
@@ -598,6 +604,10 @@ public class SubLocation
                             Console.WriteLine("you win!!!");
                             Program.player.money += bet * 2;
 
+                        }
+                        else
+                        {
+                            Console.WriteLine("you lose\n");
                         }
                         break;
                     case 4:
@@ -608,6 +618,11 @@ public class SubLocation
                             Program.player.money += bet * 2;
 
                         }
+                        else
+                        {
+                            Console.WriteLine("you lose\n");
+                        }
+
                         break;
                     case 5:
                         Console.WriteLine($"you bet 1st 12 \nthe number rolled is {result}");
@@ -615,6 +630,10 @@ public class SubLocation
                         {
                             Console.WriteLine("you win!!!");
                             Program.player.money += bet * 3;
+                        }
+                        else
+                        {
+                            Console.WriteLine("you lose\n");
                         }
                         break;
                     case 6:
@@ -624,6 +643,10 @@ public class SubLocation
                             Console.WriteLine("you win!!!");
                             Program.player.money += bet * 3;
                         }
+                        else
+                        {
+                            Console.WriteLine("you lose\n");
+                        }
                         break;
                     case 7:
                         Console.WriteLine($"you bet 3rd 12 \nthe number rolled is {result}");
@@ -631,6 +654,10 @@ public class SubLocation
                         {
                             Console.WriteLine("you win!!!");
                             Program.player.money += bet * 3;
+                        }
+                        else
+                        {
+                            Console.WriteLine("you lose\n");
                         }
                         break;
                     case 8:
@@ -640,6 +667,10 @@ public class SubLocation
                             Console.WriteLine("you win!!!");
                             Program.player.money += bet * 2;
                         }
+                        else
+                        {
+                            Console.WriteLine("you lose\n");
+                        }
                         break;
                     case 9:
                         Console.WriteLine($"you bet 2nd 18(half) \nthe number rolled is {result}");
@@ -647,6 +678,10 @@ public class SubLocation
                         {
                             Console.WriteLine("you win!!!");
                             Program.player.money += bet * 2;
+                        }
+                        else
+                        {
+                            Console.WriteLine("you lose\n");
                         }
                         break;
                     case 10:
@@ -667,6 +702,10 @@ public class SubLocation
                         {
                             Console.WriteLine("you win!!!");
                             Program.player.money += bet * 34;
+                        }
+                        else
+                        {
+                            Console.WriteLine("you lose\n");
                         }
                         break;
 
