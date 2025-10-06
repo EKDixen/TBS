@@ -1,11 +1,6 @@
 ﻿using Game.Class;
 public class Inventory
 {
-    // THIS IS HOW YOU MAKE ITEM DUMB DUMB <3
-    //
-    //
-    //        item = new Item("name2", "description2", 16,2 , ItemType.equipment);
-    //        item.stats["DMG"] = 10;
     private Player player;
 
     public Inventory(Player p)
