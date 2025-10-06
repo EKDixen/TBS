@@ -17,7 +17,7 @@ public static class LocationLibrary
     new Dictionary<Enemy, int>
     {
         { EnemyLibrary.Thug, 80 },
-        { EnemyLibrary.VampireSpawn, 20 }
+        { EnemyLibrary.Goblin, 20 }
     });
 
 
