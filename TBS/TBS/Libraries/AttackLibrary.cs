@@ -25,7 +25,11 @@ public static class AttackLibrary
         new AttackEffect("heal", 10, 0, "self")
     });
 
+    public static Attack Slash = new Attack("Slash", new List<AttackEffect> {
+        new AttackEffect("damage", 10, 0, "enemy")
+    });
+
     public static List<Attack> AllAttacks = new List<Attack> {
-        ThrowHands, FirstAid, Focus, ManUp, VampiricSlash
+        ThrowHands, FirstAid, Focus, ManUp, VampiricSlash, Slash
     };
 }

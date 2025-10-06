@@ -20,4 +20,13 @@ public static class EnemyLibrary
             AttackLibrary.VampiricSlash
         }
     };
+
+    public static Enemy Goblin = new Enemy("Goblin", 2, 5, 5, 20, 16, 0, 25, 0, 10, 100, 5, 0, 5)
+    {
+        attacks = new List<Attack>
+        {
+            AttackLibrary.Slash,
+            AttackLibrary.ThrowHands
+        }
+    };
 }

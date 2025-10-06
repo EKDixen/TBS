@@ -74,7 +74,7 @@
             else if (input == 0) journeyManager.ChoseTravelDestination();
             else if (input == 1) Inventory.ShowInventory();
             else if (input == 2) atkManager.ShowMovesMenu();
-            else if (input == 4) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug) });
+            else if (input == 4) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug), CloneEnemy(EnemyLibrary.Goblin) });
             else if (input == 5) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug), CloneEnemy(EnemyLibrary.VampireSpawn) });
             else if (input == 6) StartZoneEncounter(LocationLibrary.starterTown, LocationLibrary.mountain, 3);
             else if (input == 3) 
