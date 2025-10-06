@@ -1,8 +1,9 @@
-﻿using System.Diagnostics;
+﻿using Game.Class;
+using System;
+using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Game.Class;
 
 public enum SubLocationType
 {
@@ -225,7 +226,7 @@ public class SubLocation
         //not done
         if(type == SubLocationType.casino)
         {
-            Console.WriteLine("what game do you want to play, \nBlackjack : 1 \nRoulette : 2 (not done) \nor leave : 0");
+            Console.WriteLine("what game do you want to play, \nBlackjack : 1 \nRoulette : 2 \nor leave : 0");
             int.TryParse(Console.ReadLine(), out int input);
             if (input == null || input > 2 || input < 0)
             {
@@ -312,7 +313,9 @@ public class SubLocation
                     }
                     else if (playerValue == 21)
                     {
-                        Console.WriteLine("\nblackjack!");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nheat");
+                        Console.ForegroundColor = ConsoleColor.White;
                         break;
                     }
 
@@ -446,8 +449,9 @@ public class SubLocation
                     }
                 }
                 else if (playerValue > dealerValue)
-                {
+                {                    
                     Program.player.money += bet * 2;
+                                        
                     Console.WriteLine($"\nyou win your bet of {bet} cash");
                     Program.SavePlayer();
 
@@ -540,33 +544,148 @@ public class SubLocation
                     DoSubLocation();
                     return;
                 }
+                else if(bet > Program.player.money)
+                {
+                    Console.WriteLine("\nyou dont have that much money\n ");
+                    DoSubLocation();
+                    return;
+                }
+                Console.WriteLine($"you bet: {bet}\n");
+                Program.player.money -= bet;
+
                 Console.WriteLine($"where would you like to bet, \nblack : 1 \nred : 2 \neven : 3 \nodd : 4 \n1st 12 : 5 " +
-                    $"\n2nd 12 : 6 \n3rd : 7 \n 1 to 18 : 8 \n19 to 36 : 9 \nspecific number : 10");
+                    $"\n2nd 12 : 6 \n3rd 12 : 7 \n1 to 18(half) : 8 \n19 to 36(half) : 9 \nspecific number : 10\n");
 
 
                 Random rand = new Random();
-                int result = rand.Next(1, 37);
+                int result = rand.Next(0, 35);
+
+                HashSet<int> red = new HashSet<int>
+                {
+                    1, 3, 5, 7, 9, 12, 14, 16, 18,
+                    19, 21, 23, 25, 27, 30, 32, 34, 36
+                };
 
                 int.TryParse(Console.ReadLine(), out int betPlace);
                 switch (betPlace)
                 {
                     case 1:
                         Console.WriteLine($"you bet black \nthe number rolled is {result}");
-                        //win logic
+
+                        if (result == 0) ;
+                        else if (!red.Contains(result) && result != 0)
+                        {
+                            Console.WriteLine("you win!!!");
+                            Program.player.money += bet * 2;
+                        }
+
                         break;
                     case 2:
-                        Console.WriteLine($"you bet black \nthe number rolled is {result}");
-                        //win logic
+                        Console.WriteLine($"you bet red \nthe number rolled is {result}");
+
+                        if (result == 0) ;
+                        else if (red.Contains(result))
+                        {
+                            Console.WriteLine("you win!!!");
+                            Program.player.money += bet * 2;
+                        }
+
                         break;
                     case 3:
-                        Console.WriteLine($"you bet black \nthe number rolled is {result}");
-                        if (result % 2 == 0)
+                        Console.WriteLine($"you bet even \nthe number rolled is {result}");
+                        if (result % 2 == 0 && result != 0)
                         {
+                            Console.WriteLine("you win!!!");
+                            Program.player.money += bet * 2;
 
                         }
                         break;
-                }
+                    case 4:
+                        Console.WriteLine($"you bet odd \nthe number rolled is {result}");
+                        if (result % 2 == 1)
+                        {
+                            Console.WriteLine("you win!!!");
+                            Program.player.money += bet * 2;
 
+                        }
+                        break;
+                    case 5:
+                        Console.WriteLine($"you bet 1st 12 \nthe number rolled is {result}");
+                        if (result <= 12 && result != 0)
+                        {
+                            Console.WriteLine("you win!!!");
+                            Program.player.money += bet * 3;
+                        }
+                        break;
+                    case 6:
+                        Console.WriteLine($"you bet 2nd 12 \nthe number rolled is {result}");
+                        if (result > 12 && result <= 24)
+                        {
+                            Console.WriteLine("you win!!!");
+                            Program.player.money += bet * 3;
+                        }
+                        break;
+                    case 7:
+                        Console.WriteLine($"you bet 3rd 12 \nthe number rolled is {result}");
+                        if (result > 24)
+                        {
+                            Console.WriteLine("you win!!!");
+                            Program.player.money += bet * 3;
+                        }
+                        break;
+                    case 8:
+                        Console.WriteLine($"you bet 1st 18(half) \nthe number rolled is {result}");
+                        if (result <= 18 && result != 0)
+                        {
+                            Console.WriteLine("you win!!!");
+                            Program.player.money += bet * 2;
+                        }
+                        break;
+                    case 9:
+                        Console.WriteLine($"you bet 2nd 18(half) \nthe number rolled is {result}");
+                        if (result > 18)
+                        {
+                            Console.WriteLine("you win!!!");
+                            Program.player.money += bet * 2;
+                        }
+                        break;
+                    case 10:
+                        Console.WriteLine("what number?");
+                        int.TryParse(Console.ReadLine(), out int betNumber);
+
+                        Console.WriteLine($"you bet {betNumber} \nthe number rolled is {result}");
+                        if (result == betNumber)
+                        {
+                            Console.WriteLine("you win!!!");
+                            Program.player.money += bet * 34;
+                        }
+                        break;
+
+                }
+                
+                Console.WriteLine($"you have {Program.player.money} money");
+
+                Console.WriteLine("\ndo you wish to play again : 1\n or leave : 0");
+                int.TryParse(Console.ReadLine(), out int input3);
+                if (input3 == null || input3 > 2 || input3 < 0)
+                {
+                    Console.Clear();
+                    Console.WriteLine("sweetie you gotta type a number that we can use\n ");
+                    DoSubLocation();
+                    return;
+                }
+                else if (input3 == 1)
+                {
+                    Console.Clear();
+                    DoSubLocation();
+                    return;
+                }
+                else
+                {
+                    Console.Clear();
+                    Program.MainMenu();
+                    return;
+                }
 
 
 

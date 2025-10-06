@@ -54,7 +54,6 @@
                 }
             }
           
-
             atkManager = new AttackManager(player);
             Inventory = new Inventory(player);
             MainMenu();
