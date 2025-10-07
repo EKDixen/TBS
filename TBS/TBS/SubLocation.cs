@@ -9,7 +9,6 @@ public enum SubLocationType
 {
     shop,
     tavern,
-    resturant,
     blacksmith, 
     arena,
     bank,
