@@ -77,13 +77,16 @@ public class SubLocation
             }
             else if (input == 1)
             {
+                Console.Clear();
                 BlackjackLogic();
 
             }
             else if (input == 2)
             {
+                Console.Clear();
                 RouletteLogic();
             }
+
         }
 
 
@@ -368,9 +371,6 @@ public class SubLocation
             }
             else if (playerValue == 21)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\nheat");
-                Console.ForegroundColor = ConsoleColor.White;
                 break;
             }
 
@@ -406,6 +406,8 @@ public class SubLocation
                 int dealer2 = rand.Next(1, 14);
                 int dealer2Suit = rand.Next(1, 4);
 
+                Thread.Sleep(200);
+
                 Console.Write($"\ndealer shows a");
                 if (dealer2 == 1) Console.Write($"n ace of {suits[dealer2Suit]} (worth 11 and 1)");
                 else if (dealer2 < 11) Console.Write($" {dealer2} of {suits[dealer2Suit]}");
@@ -419,12 +421,17 @@ public class SubLocation
                 else if (dealer2 == 1 && dealerValue + 11 <= 21) dealerValue += 11;
                 else { dealerValue += dealer2; dealer2 = 0; }
 
+                Thread.Sleep(200);
+
                 Console.WriteLine($"\ndealer card sum: {dealerValue}");
                 while (dealerValue < 17)
                 {
+                    
 
                     int dealer3 = rand.Next(1, 14);
                     int dealer3Suit = rand.Next(1, 4);
+
+                    Thread.Sleep(200);
 
                     Console.Write($"\ndealer shows a");
                     if (dealer3 == 1) Console.Write($"n ace of {suits[dealer3Suit]} (worth 11 and 1)");
@@ -441,7 +448,7 @@ public class SubLocation
                         if (dealer2 == 1) { dealerValue -= 10; dealer2 = 0; continue; }
                         if (dealer3 == 1) { dealerValue -= 10; dealer3 = 0; continue; }
                     }
-
+                    Thread.Sleep(200);
                     Console.WriteLine($"\ndealer card sum: {dealerValue}");
                 }
 
