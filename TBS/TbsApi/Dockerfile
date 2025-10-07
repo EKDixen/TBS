@@ -1,16 +1,14 @@
-﻿# Multi-stage build for TbsApi (.NET)
+﻿# Dockerfile for TbsApi when the build context is the TbsApi folder
 # Build stage
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
-# Copy project files and restore dependencies
-COPY *.sln ./
-COPY TbsApi/*.csproj TbsApi/
-RUN dotnet restore TbsApi/TbsApi.csproj
+# Copy project file and restore dependencies (context = TbsApi)
+COPY *.csproj ./
+RUN dotnet restore TbsApi.csproj
 
 # Copy source and publish
-COPY TbsApi/ TbsApi/
-WORKDIR /src/TbsApi
+COPY . .
 RUN dotnet publish -c Release -o /app/out
 
 # Runtime stage
