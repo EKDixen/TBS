@@ -7,7 +7,7 @@ public static class LocationLibrary
     {
         new SubLocation("casino", SubLocationType.casino)
         {
-
+            casinoMaxBet = 50
         },
         new SubLocation("bank", SubLocationType.bank)
         {

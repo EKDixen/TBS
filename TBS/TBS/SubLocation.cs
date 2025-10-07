@@ -36,6 +36,9 @@ public class SubLocation
 
     public List<Item> bankItems = new List<Item>();
     public int bankMoney = 0;
+
+    public int casinoMaxBet = 0;
+
     public SubLocation() { } //Deserialize
 
     public SubLocation(string tName,SubLocationType tType)
@@ -222,7 +225,7 @@ public class SubLocation
             Program.SavePlayer();
             Program.MainMenu();
         }
-        if(type == SubLocationType.casino)
+        if (type == SubLocationType.casino)
         {
             Console.WriteLine("what game do you want to play, \nBlackjack : 1 \nRoulette : 2 \nor leave : 0");
             int.TryParse(Console.ReadLine(), out int input);
@@ -241,9 +244,9 @@ public class SubLocation
             }
             else if (input == 1)
             {
-                Console.WriteLine($"\nhow much do you want to bet?  current cash: {Program.player.money}");
+                Console.WriteLine($"\nhow much do you want to bet?  current cash: {Program.player.money} \nthe max bet is {casinoMaxBet}");
                 int.TryParse(Console.ReadLine(), out int bet);
-                if (bet == null || bet < 0)
+                if (bet == null || bet > casinoMaxBet || bet < 0)
                 {
                     Console.Clear();
                     Console.WriteLine("sweetie you gotta type a number that we can use\n ");
@@ -533,9 +536,9 @@ public class SubLocation
             }
             else if (input == 2)
             {
-                Console.WriteLine($"\nhow much do you want to bet?  current cash: {Program.player.money}");
+                Console.WriteLine($"\nhow much do you want to bet?  current cash: {Program.player.money} \nthe max bet is {casinoMaxBet}");
                 int.TryParse(Console.ReadLine(), out int bet);
-                if (bet == null || bet < 0)
+                if (bet == null || bet > casinoMaxBet || bet < 0)
                 {
                     Console.Clear();
                     Console.WriteLine("sweetie you gotta type a number that we can use\n ");
