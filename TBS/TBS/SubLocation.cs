@@ -568,7 +568,9 @@ public class SubLocation
         }
         else if (playerValue == dealerValue)
         {
-            Console.WriteLine($"\nyou lose your bet of {bet} cash");
+            Program.player.money += bet;
+            Console.WriteLine($"\nyou draw");
+
             Program.SavePlayer();
 
             Console.WriteLine("\ndo you wish to play again : 1\n or leave : 0");
