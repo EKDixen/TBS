@@ -37,7 +37,9 @@ builder.Services.AddSingleton(new BucketOptions(bucket!));
 var app = builder.Build();
 
 // Health check
+app.MapGet("/", () => Results.Text("pong", "text/plain"));
 app.MapGet("/ping", () => Results.Text("pong", "text/plain"));
+app.MapGet("/health", () => Results.Text("pong", "text/plain"));
 
 // PUT /players/{name} -> uploads JSON to players/{name}.json
 app.MapPut("/players/{name}", async (string name, HttpRequest request, IAmazonS3 s3, BucketOptions bucketOpt, CancellationToken ct) =>

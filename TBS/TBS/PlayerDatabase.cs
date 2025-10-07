@@ -10,15 +10,29 @@ public class PlayerDatabase
     // baseUrl example: http://localhost:5076
     public PlayerDatabase(string? baseUrl = null)
     {
-        var url = string.IsNullOrWhiteSpace(baseUrl)
-            ? (Environment.GetEnvironmentVariable("TBS_API_BASEURL") ?? "https://tbs-jgfg.onrender.com")
+        // Build base URL from argument or environment, sanitize and validate
+        var raw = string.IsNullOrWhiteSpace(baseUrl)
+            ? Environment.GetEnvironmentVariable("TBS_API_BASEURL")
             : baseUrl;
 
+        var url = (raw ?? "https://tbs-wlt8.onrender.com").Trim();
+        url = url.Trim('\"', '\'').Trim(); // remove accidental quotes
         url = url.TrimEnd('/');
-        if (!url.StartsWith("http://") && !url.StartsWith("https://"))
-            url = "http://" + url;
 
-        _baseUrl = url;
+        if (!url.StartsWith("http://", StringComparison.OrdinalIgnoreCase) &&
+            !url.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+        {
+            // prefer https for hosted API URLs
+            url = "https://" + url;
+        }
+
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var parsed) ||
+            (parsed.Scheme != Uri.UriSchemeHttp && parsed.Scheme != Uri.UriSchemeHttps))
+        {
+            throw new InvalidOperationException($"Invalid API base URL: '{url}'. Set TBS_API_BASEURL to a valid http(s) URL.");
+        }
+
+        _baseUrl = parsed.ToString().TrimEnd('/');
         _http = new HttpClient
         {
             Timeout = TimeSpan.FromSeconds(15)
