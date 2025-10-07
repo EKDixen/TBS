@@ -8,7 +8,7 @@ using System.Numerics;
 
 class JourneyManager
 {
-
+    
    
     public void ChoseTravelDestination()
     {
@@ -27,7 +27,13 @@ class JourneyManager
 
             for (int i = 0; i < Program.player.knownLocations.Count; i++)
             {
-                if (Program.player.knownLocations[i] != Program.player.currentLocation) Console.WriteLine(Program.player.knownLocations[i].name + " : " + (i + 1));
+                if (Program.player.knownLocations[i] != Program.player.currentLocation) 
+                {
+                    float price = (Program.player.currentLocation.location - Program.player.knownLocations[i].location).Length() * 2 + 
+                        Program.player.currentLocation.travelPrize + Program.player.knownLocations[i].travelPrize;
+                    Console.WriteLine($"{Program.player.knownLocations[i].name}  :  {(i + 1)}  (price: {price})"); 
+                    
+                }
                 else Console.WriteLine(Program.player.knownLocations[i].name + " : " + (i + 1) + " (current location)");
             }
             Console.WriteLine("or go back : 0");
@@ -35,9 +41,28 @@ class JourneyManager
             int targetDes;
             if (int.TryParse(Console.ReadLine(), out targetDes))
             {
+
                 Console.WriteLine("");
                 if (targetDes == 0) { Console.Clear(); Program.MainMenu(); return; }
-                else if (targetDes <= Program.player.knownLocations.Count && targetDes >= 0 && Program.player.knownLocations[targetDes - 1] != Program.player.currentLocation) Travel(Program.player.knownLocations[targetDes - 1], true);
+                else if (targetDes <= Program.player.knownLocations.Count && targetDes >= 0 && Program.player.knownLocations[targetDes - 1] != Program.player.currentLocation) 
+                {
+                    float price = (Program.player.currentLocation.location - Program.player.knownLocations[targetDes - 1].location).Length() * 2 +
+                        Program.player.currentLocation.travelPrize + Program.player.knownLocations[targetDes - 1].travelPrize;
+
+                    if (Program.player.money >= price)
+                    {
+                        Program.player.money -= (int)Math.Floor(price);
+                        Travel(Program.player.knownLocations[targetDes - 1], true);
+                    }
+                    else
+                    {
+                        Console.WriteLine("--------you dont have enough money for that------- \n");
+                        ChoseTravelDestination();
+                        return;
+                    }
+
+                
+                }
                 else
                 {
                     Console.WriteLine("--------dude you dont know any location with that number------- \n");
