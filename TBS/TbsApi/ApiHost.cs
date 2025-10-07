@@ -6,11 +6,12 @@ using Amazon.S3.Model;
 var builder = WebApplication.CreateBuilder(args);
 
 // Read required configuration from environment variables (available via builder.Configuration)
-string? endpoint = builder.Configuration["B2_S3_ENDPOINT"];       // e.g. https://s3.us-east-005.backblazeb2.com
-string? region = builder.Configuration["B2_REGION"];              // e.g. us-east-005
-string? bucket = builder.Configuration["B2_BUCKET"];              // e.g. TBS-playerdatabase
-string? keyId = builder.Configuration["B2_KEY_ID"];              // Application Key ID
-string? appKey = builder.Configuration["B2_APP_KEY"];            // Application Key Secret
+var cfg = builder.Configuration;
+string? endpoint = cfg["B2_S3_ENDPOINT"];       // e.g. https://s3.us-east-005.backblazeb2.com
+string? region  = cfg["B2_REGION"];             // e.g. us-east-005
+string? bucket  = cfg["B2_BUCKET"];             // e.g. TBS-playerdatabase
+string? keyId   = cfg["B2_KEY_ID"];             // Application Key ID
+string? appKey  = cfg["B2_APP_KEY"];            // Application Key Secret
 
 if (string.IsNullOrWhiteSpace(endpoint) ||
     string.IsNullOrWhiteSpace(region) ||
@@ -31,7 +32,7 @@ var s3Config = new AmazonS3Config
 IAmazonS3 s3Client = new AmazonS3Client(keyId, appKey, s3Config);
 
 builder.Services.AddSingleton(s3Client);
-builder.Services.AddSingleton(new BucketOptions(bucket));
+builder.Services.AddSingleton(new BucketOptions(bucket!));
 
 var app = builder.Build();
 
@@ -54,7 +55,7 @@ app.MapPut("/players/{name}", async (string name, HttpRequest request, IAmazonS3
         BucketName = bucketOpt.Name,
         Key = key,
         ContentType = "application/json",
-        ServerSideEncryptionMethod = ServerSideEncryptionMethod.AES256,
+        // Omit SSE AES256 to avoid Backblaze rejection
         InputStream = new MemoryStream(Encoding.UTF8.GetBytes(json))
     };
 
