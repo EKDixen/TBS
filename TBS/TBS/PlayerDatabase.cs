@@ -1,75 +1,61 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using System.Net;
+using System.Net.Http;
+using System.Text;
 
 public class PlayerDatabase
 {
-    private string connectionString = "Data Source=game.db";
+    private readonly HttpClient _http;
+    private readonly string _baseUrl;
 
-    public PlayerDatabase()
+    // baseUrl example: http://localhost:5076
+    public PlayerDatabase(string? baseUrl = null)
     {
-        CreateTable();
+        var url = string.IsNullOrWhiteSpace(baseUrl)
+            ? (Environment.GetEnvironmentVariable("TBS_API_BASEURL") ?? "http://localhost:5076")
+            : baseUrl;
+
+        url = url.TrimEnd('/');
+        if (!url.StartsWith("http://") && !url.StartsWith("https://"))
+            url = "http://" + url;
+
+        _baseUrl = url;
+        _http = new HttpClient
+        {
+            Timeout = TimeSpan.FromSeconds(15)
+        };
     }
 
-    private void CreateTable()
-    {
-        using var con = new SqliteConnection(connectionString);
-        con.Open();
-
-        string sql = @"CREATE TABLE IF NOT EXISTS Players (
-                        PlayerName TEXT PRIMARY KEY,
-                        Data TEXT
-                       )";
-
-        using var cmd = new SqliteCommand(sql, con);
-        cmd.ExecuteNonQuery();
-    }
-
+    // Synchronous wrapper around HttpClient to avoid changing existing callers
     public void SavePlayer(Player p)
     {
-        using var con = new SqliteConnection(connectionString);
-        con.Open();
-
         string json = Serializer.ToJson(p);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var url = $"{_baseUrl}/players/{Uri.EscapeDataString(p.name)}";
 
-        string sql = "REPLACE INTO Players (PlayerName, Data) VALUES (@name, @data)";
-
-        using var cmd = new SqliteCommand(sql, con);
-        cmd.Parameters.AddWithValue("@name", p.name);
-        cmd.Parameters.AddWithValue("@data", json);
-        cmd.ExecuteNonQuery();
+        using var resp = _http.PutAsync(url, content).GetAwaiter().GetResult();
+        resp.EnsureSuccessStatusCode();
     }
 
     public Player? LoadPlayer(string username, string password)
     {
-        using var con = new SqliteConnection(connectionString);
-        con.Open();
+        var url = $"{_baseUrl}/players/{Uri.EscapeDataString(username)}";
+        using var resp = _http.GetAsync(url).GetAwaiter().GetResult();
 
-        string sql = "SELECT Data FROM Players WHERE PlayerName = @name";
-        using var cmd = new SqliteCommand(sql, con);
-        cmd.Parameters.AddWithValue("@name", username);
+        if (resp.StatusCode == HttpStatusCode.NotFound)
+            return null;
 
-        using var reader = cmd.ExecuteReader();
-        if (reader.Read())
-        {
-            string json = reader.GetString(0);
-            var player = Serializer.FromJson<Player>(json);
-
-            if (player.password == password)
-                return player;
-        }
-
+        resp.EnsureSuccessStatusCode();
+        string json = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+        var player = Serializer.FromJson<Player>(json);
+        if (player.password == password)
+            return player;
         return null;
     }
+
     public bool PlayerExists(string username)
     {
-        using var con = new SqliteConnection(connectionString);
-        con.Open();
-
-        string sql = "SELECT COUNT(*) FROM Players WHERE PlayerName = @name";
-        using var cmd = new SqliteCommand(sql, con);
-        cmd.Parameters.AddWithValue("@name", username);
-
-        long count = (long)cmd.ExecuteScalar();
-        return count > 0;
+        var url = $"{_baseUrl}/players/{Uri.EscapeDataString(username)}";
+        using var resp = _http.GetAsync(url).GetAwaiter().GetResult();
+        return resp.StatusCode == HttpStatusCode.OK;
     }
-
 }
