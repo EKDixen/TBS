@@ -11,7 +11,7 @@ public class PlayerDatabase
     public PlayerDatabase(string? baseUrl = null)
     {
         var url = string.IsNullOrWhiteSpace(baseUrl)
-            ? (Environment.GetEnvironmentVariable("TBS_API_BASEURL") ?? "http://localhost:5076")
+            ? (Environment.GetEnvironmentVariable("TBS_API_BASEURL") ?? "https://tbs-jgfg.onrender.com")
             : baseUrl;
 
         url = url.TrimEnd('/');
