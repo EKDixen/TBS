@@ -61,7 +61,6 @@ namespace Game.Class
             Inventory = new Inventory(player);
             settings = new Settings();
             settings.ChangeTextColor();
-            MainMenu();
         }
         public static void MainMenu()
         {

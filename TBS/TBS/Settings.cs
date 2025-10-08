@@ -52,7 +52,7 @@ public class Settings
         };
         Console.ForegroundColor = colors[result - 1];
 
-        //Program.MainMenu();
+        Program.MainMenu();
     }
 
 
