@@ -76,12 +76,13 @@ public class CombatManager
             player.exp += totalExp;
             Console.WriteLine("\n--- VICTORY! ---");
             Console.WriteLine($"Rewards: +{totalExp} EXP, +{totalMoney} money");
-            Thread.Sleep(800);
             Program.SavePlayer();
+            Thread.Sleep(800);
         }
         else
         {
             Console.WriteLine("\nYou died.");
+            Program.SavePlayer();
             Thread.Sleep(800);
         }
     }
