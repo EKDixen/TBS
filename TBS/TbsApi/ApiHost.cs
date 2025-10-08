@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text;
+using System.IO;
 using Amazon.S3;
 using Amazon.S3.Model;
 
@@ -34,15 +35,77 @@ IAmazonS3 s3Client = new AmazonS3Client(keyId, appKey, s3Config);
 builder.Services.AddSingleton(s3Client);
 builder.Services.AddSingleton(new BucketOptions(bucket!));
 
+static string Canonical(string name) => (name ?? string.Empty).Trim().ToLowerInvariant();
+static string PlayerKey(string canonical) => $"players/{canonical}.json";
+
+static async Task DeleteKeyWithVersionsAsync(IAmazonS3 s3, string bucket, string key, CancellationToken ct)
+{
+    try
+    {
+        var verReq = new ListVersionsRequest { BucketName = bucket, Prefix = key };
+        ListVersionsResponse verResp;
+        do
+        {
+            verResp = await s3.ListVersionsAsync(verReq, ct);
+            foreach (var v in verResp.Versions)
+            {
+                if (!string.Equals(v.Key, key, StringComparison.Ordinal)) continue;
+                try
+                {
+                    var delReq = new DeleteObjectRequest
+                    {
+                        BucketName = bucket,
+                        Key = key,
+                        VersionId = v.VersionId
+                    };
+                    await s3.DeleteObjectAsync(delReq, ct);
+                }
+                catch { }
+            }
+            foreach (var d in verResp.DeleteMarkers)
+            {
+                if (!string.Equals(d.Key, key, StringComparison.Ordinal)) continue;
+                try
+                {
+                    var delReq = new DeleteObjectRequest
+                    {
+                        BucketName = bucket,
+                        Key = key,
+                        VersionId = d.VersionId
+                    };
+                    await s3.DeleteObjectAsync(delReq, ct);
+                }
+                catch { }
+            }
+            verReq.KeyMarker = verResp.NextKeyMarker;
+            verReq.VersionIdMarker = verResp.NextVersionIdMarker;
+        } while (verResp.IsTruncated);
+    }
+    catch { }
+
+    try { await s3.DeleteObjectAsync(bucket, key, ct); } catch { }
+}
+
 var app = builder.Build();
 
 // Health check
-app.MapGet("/", () => Results.Text("pong", "text/plain"));
-app.MapGet("/ping", () => Results.Text("pong", "text/plain"));
-app.MapGet("/health", () => Results.Text("pong", "text/plain"));
+app.MapGet("/", (HttpResponse resp) => { resp.Headers["Cache-Control"] = "no-store"; return Results.Text("testing", "text/plain"); });
+app.MapGet("/ping", (HttpResponse resp) => { resp.Headers["Cache-Control"] = "no-store"; return Results.Text("pong", "text/plain"); });
+app.MapGet("/health", (HttpResponse resp) => { resp.Headers["Cache-Control"] = "no-store"; return Results.Text("i am health (trust)", "text/plain"); });
 
-// PUT /players/{name} -> uploads JSON to players/{name}.json
-app.MapPut("/players/{name}", async (string name, HttpRequest request, IAmazonS3 s3, BucketOptions bucketOpt, CancellationToken ct) =>
+app.MapGet("/debug/info", (BucketOptions bucketOpt, HttpResponse resp) =>
+{
+    resp.Headers["Cache-Control"] = "no-store";
+    return Results.Json(new
+    {
+        storage = "backblaze-b2-s3",
+        bucket = bucketOpt.Name,
+        endpoint,
+        region
+    });
+});
+
+app.MapPut("/players/{name}", async (string name, HttpRequest request, IAmazonS3 s3, BucketOptions bucketOpt, CancellationToken ct, HttpResponse resp) =>
 {
     using var reader = new StreamReader(request.Body, Encoding.UTF8, leaveOpen: false);
     string json = await reader.ReadToEndAsync();
@@ -50,7 +113,8 @@ app.MapPut("/players/{name}", async (string name, HttpRequest request, IAmazonS3
     if (string.IsNullOrWhiteSpace(json))
         return Results.BadRequest("Request body must contain player JSON.");
 
-    string key = $"players/{name}.json";
+    var canonical = Canonical(name);
+    string key = PlayerKey(canonical);
 
     var putReq = new PutObjectRequest
     {
@@ -62,24 +126,48 @@ app.MapPut("/players/{name}", async (string name, HttpRequest request, IAmazonS3
     };
 
     await s3.PutObjectAsync(putReq, ct);
+
+    resp.Headers["Cache-Control"] = "no-store";
+    resp.Headers["X-TBS-Bucket"] = bucketOpt.Name;
+    resp.Headers["X-TBS-Key"] = key;
     return Results.NoContent();
 });
 
-// GET /players/{name} -> downloads and returns JSON
-app.MapGet("/players/{name}", async (string name, IAmazonS3 s3, BucketOptions bucketOpt, CancellationToken ct) =>
+app.MapGet("/players/{name}", async (string name, IAmazonS3 s3, BucketOptions bucketOpt, CancellationToken ct, HttpResponse resp) =>
 {
-    string key = $"players/{name}.json";
+    var canonical = Canonical(name);
+    string key = PlayerKey(canonical);
+
     try
     {
-        using var resp = await s3.GetObjectAsync(bucketOpt.Name, key, ct);
-        using var reader = new StreamReader(resp.ResponseStream, Encoding.UTF8);
+        using var s3resp = await s3.GetObjectAsync(bucketOpt.Name, key, ct);
+        using var reader = new StreamReader(s3resp.ResponseStream, Encoding.UTF8);
         string json = await reader.ReadToEndAsync();
+        resp.Headers["Cache-Control"] = "no-store";
+        resp.Headers["X-TBS-Bucket"] = bucketOpt.Name;
+        resp.Headers["X-TBS-Key"] = key;
         return Results.Text(json, "application/json", Encoding.UTF8);
     }
     catch (AmazonS3Exception ex) when (ex.StatusCode == HttpStatusCode.NotFound || ex.ErrorCode == "NoSuchKey")
     {
+        resp.Headers["Cache-Control"] = "no-store";
+        resp.Headers["X-TBS-Bucket"] = bucketOpt.Name;
+        resp.Headers["X-TBS-Key"] = key;
         return Results.NotFound();
     }
+});
+
+app.MapDelete("/players/{name}", async (string name, IAmazonS3 s3, BucketOptions bucketOpt, CancellationToken ct, HttpResponse resp) =>
+{
+    var canonical = Canonical(name);
+    string key = PlayerKey(canonical);
+
+    await DeleteKeyWithVersionsAsync(s3, bucketOpt.Name, key, ct);
+
+    resp.Headers["Cache-Control"] = "no-store";
+    resp.Headers["X-TBS-Bucket"] = bucketOpt.Name;
+    resp.Headers["X-TBS-Deleted-Canonical"] = canonical;
+    return Results.NoContent();
 });
 
 app.Run();
