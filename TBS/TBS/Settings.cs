@@ -8,8 +8,33 @@ public class Settings
 
     public void ChangeTextColor()
     {
-        Console.WriteLine($"\nwhat text color would you like to use \nGray : 1, \nBlack : 2, \nDarkBlue : 3, \nDarkGreen : 4, \nDarkCyan : 5, \nDarkRed : 6, \nDarkMagenta : 7, \nDarkYellow : 8, \nDarkGray : 9," +
-            $" \nBlue : 10, \nGreen : 11, \nCyan : 12, \nRed : 13, \nMagenta : 14, \nYellow : 15, \nWhite : 16");
+        Console.WriteLine($"\nwhat text color would you like to use");
+        void ShowColor(ConsoleColor color, int number)
+        {
+            Console.ForegroundColor = color;
+            Console.Write($"{color,-12}");
+            Console.ResetColor();
+            Console.WriteLine($": {number}");
+        }
+
+        ShowColor(ConsoleColor.Gray, 1);
+        ShowColor(ConsoleColor.Black, 2);
+        ShowColor(ConsoleColor.DarkBlue, 3);
+        ShowColor(ConsoleColor.DarkGreen, 4);
+        ShowColor(ConsoleColor.DarkCyan, 5);
+        ShowColor(ConsoleColor.DarkRed, 6);
+        ShowColor(ConsoleColor.DarkMagenta, 7);
+        ShowColor(ConsoleColor.DarkYellow, 8);
+        ShowColor(ConsoleColor.DarkGray, 9);
+        ShowColor(ConsoleColor.Blue, 10);
+        ShowColor(ConsoleColor.Green, 11);
+        ShowColor(ConsoleColor.Cyan, 12);
+        ShowColor(ConsoleColor.Red, 13);
+        ShowColor(ConsoleColor.Magenta, 14);
+        ShowColor(ConsoleColor.Yellow, 15);
+        ShowColor(ConsoleColor.White, 16);
+
+
 
         int.TryParse(Console.ReadLine(), out int result);
         if(result == null || result > 16||result < 1)
