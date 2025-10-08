@@ -8,7 +8,7 @@ public class Location
     public bool known;
     public Vector2 location;
 
-    public int travelPrize;
+    public int travelPrice;
 
     public List<SubLocation> subLocationsHere = new List<SubLocation>();
     [JsonIgnore]
@@ -22,7 +22,7 @@ public class Location
         location = Tlocation;
         subLocationsHere = subLocations;
         PossibleEncounters = TpossibleEncounters ?? new Dictionary<Enemy, int>();
-        this.travelPrize = travelPrize;
+        this.travelPrice = travelPrize;
     }
 
 }

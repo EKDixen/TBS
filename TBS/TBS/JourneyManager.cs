@@ -30,7 +30,7 @@ class JourneyManager
                 if (Program.player.knownLocations[i] != Program.player.currentLocation) 
                 {
                     float price = (Program.player.currentLocation.location - Program.player.knownLocations[i].location).Length() * 2 + 
-                        Program.player.currentLocation.travelPrize + Program.player.knownLocations[i].travelPrize;
+                        Program.player.currentLocation.travelPrice + Program.player.knownLocations[i].travelPrice;
                     Console.WriteLine($"{Program.player.knownLocations[i].name}  :  {(i + 1)}  (price: {price})"); 
                     
                 }
@@ -47,7 +47,7 @@ class JourneyManager
                 else if (targetDes <= Program.player.knownLocations.Count && targetDes >= 0 && Program.player.knownLocations[targetDes - 1] != Program.player.currentLocation) 
                 {
                     float price = (Program.player.currentLocation.location - Program.player.knownLocations[targetDes - 1].location).Length() * 2 +
-                        Program.player.currentLocation.travelPrize + Program.player.knownLocations[targetDes - 1].travelPrize;
+                        Program.player.currentLocation.travelPrice + Program.player.knownLocations[targetDes - 1].travelPrice;
 
                     if (Program.player.money >= price)
                     {
