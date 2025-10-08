@@ -380,7 +380,12 @@ public class CombatManager
             var tag0 = primary.IsAlive() ? "" : " (dead)";
             int e0AG = (int)Math.Min(100, Math.Round(primary.ActionGauge / ActionThreshold * 100));
             int e0HP = Math.Max(primary.HP, 0);
-            Console.WriteLine($"{playerStr,-35}{primary.name}{tag0} [{e0HP}/{primary.maxHP} | AG:{e0AG}%]");
+
+            int baseColumnStart = 35;
+            int padding = Math.Max(7, baseColumnStart - playerStr.Length);
+            string spaces = new string(' ', padding);
+
+            Console.WriteLine($"{playerStr}{spaces}{primary.name}{tag0} [{e0HP}/{primary.maxHP} | AG:{e0AG}%]");
             for (int i = 0; i < enemies.Count; i++)
             {
             if (i == primaryIndex) continue;
@@ -388,7 +393,8 @@ public class CombatManager
             var tag = e.IsAlive() ? "" : " (dead)";
             int ag = (int)Math.Min(100, Math.Round(e.ActionGauge / ActionThreshold * 100));
             int eHP = Math.Max(e.HP, 0);
-            Console.WriteLine($"{"",-35}{e.name}{tag} [{eHP}/{e.maxHP} | AG:{ag}%]");
+            spaces = new string(' ', padding + playerStr.Length);
+            Console.WriteLine($"{spaces}{e.name}{tag} [{eHP}/{e.maxHP} | AG:{ag}%]");
             }
             }
             else
