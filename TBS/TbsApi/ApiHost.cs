@@ -62,21 +62,6 @@ static async Task DeleteKeyWithVersionsAsync(IAmazonS3 s3, string bucket, string
                 }
                 catch { }
             }
-            foreach (var d in verResp.DeleteMarkers)
-            {
-                if (!string.Equals(d.Key, key, StringComparison.Ordinal)) continue;
-                try
-                {
-                    var delReq = new DeleteObjectRequest
-                    {
-                        BucketName = bucket,
-                        Key = key,
-                        VersionId = d.VersionId
-                    };
-                    await s3.DeleteObjectAsync(delReq, ct);
-                }
-                catch { }
-            }
             verReq.KeyMarker = verResp.NextKeyMarker;
             verReq.VersionIdMarker = verResp.NextVersionIdMarker;
         } while (verResp.IsTruncated);
@@ -89,9 +74,9 @@ static async Task DeleteKeyWithVersionsAsync(IAmazonS3 s3, string bucket, string
 var app = builder.Build();
 
 // Health check
-app.MapGet("/", (HttpResponse resp) => { resp.Headers["Cache-Control"] = "no-store"; return Results.Text("testing", "text/plain"); });
+app.MapGet("/", (HttpResponse resp) => { resp.Headers["Cache-Control"] = "no-store"; return Results.Text("pong", "text/plain"); });
 app.MapGet("/ping", (HttpResponse resp) => { resp.Headers["Cache-Control"] = "no-store"; return Results.Text("pong", "text/plain"); });
-app.MapGet("/health", (HttpResponse resp) => { resp.Headers["Cache-Control"] = "no-store"; return Results.Text("i am health (trust)", "text/plain"); });
+app.MapGet("/health", (HttpResponse resp) => { resp.Headers["Cache-Control"] = "no-store"; return Results.Text("pong", "text/plain"); });
 
 app.MapGet("/debug/info", (BucketOptions bucketOpt, HttpResponse resp) =>
 {
