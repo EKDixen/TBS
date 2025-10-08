@@ -1,4 +1,6 @@
-﻿namespace Game.Class
+﻿using System.Drawing;
+
+namespace Game.Class
 {
     public class Program
     {
@@ -6,6 +8,7 @@
         public static PlayerDatabase db = new PlayerDatabase();
         static JourneyManager journeyManager = new JourneyManager();
         static Inventory Inventory;
+        static Settings settings;
         static AttackManager atkManager;
         static Random rng = new Random();
         public static void Main(string[] args)
@@ -56,14 +59,17 @@
           
             atkManager = new AttackManager(player);
             Inventory = new Inventory(player);
+            settings = new Settings();
+            settings.ChangeTextColor();
             MainMenu();
         }
         public static void MainMenu()
         {
             Console.WriteLine($"\nwhat do you wish to do? (type the number next to it) \nGo somewhere : 0 \nCheck Inventory : 1 \n" +
                 $"Check Moves : 2\ndo something here current location {player.currentLocation.name} : 3 \n" +
-                $"Start test combat (1v1) : 4\nStart test combat (1v2) : 5\n" +
-                $"Start zone encounter StarterTown <-> Mountain (3 enemies) : 6\n");
+                $"change settings : 4 \n" +
+                $"Start test combat (1v1) : 5\nStart test combat (1v2) : 6\n" +
+                $"Start zone encounter StarterTown <-> Mountain (3 enemies) : 7\n");
             //int.TryParse(Console.ReadLine(), out int input);
             if (int.TryParse(Console.ReadLine(), out int input) == false || input > 6 || input < 0)
             {
@@ -74,26 +80,23 @@
             else if (input == 0) journeyManager.ChoseTravelDestination();
             else if (input == 1) Inventory.ShowInventory();
             else if (input == 2) atkManager.ShowMovesMenu();
-            else if (input == 4) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug), CloneEnemy(EnemyLibrary.Goblin) });
-            else if (input == 5) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug), CloneEnemy(EnemyLibrary.VampireSpawn) });
-            else if (input == 6) StartZoneEncounter(LocationLibrary.starterTown, LocationLibrary.mountain, 3);
-            else if (input == 3) 
+            else if (input == 3)
             {
                 Console.WriteLine("all establisments in your current location");
                 int i = 0;
-                foreach (var subLocation in player.currentLocation.subLocationsHere) 
+                foreach (var subLocation in player.currentLocation.subLocationsHere)
                 {
                     i++;
                     Console.WriteLine($"{subLocation.name} : {i}");
                 }
-                if(i == 0)
+                if (i == 0)
                 {
                     Console.Clear();
                     Console.WriteLine("there arent any establisments in your current location sorry");
                     MainMenu();
                     return;
                 }
-                
+
                 Console.WriteLine("\ntype out the number next to the location you want to go to\n or leave : 0");
 
                 int targetDes;
@@ -105,22 +108,27 @@
                         MainMenu();
                         return;
                     }
-                    else if (targetDes > player.currentLocation.subLocationsHere.Count || targetDes < 0) 
+                    else if (targetDes > player.currentLocation.subLocationsHere.Count || targetDes < 0)
                     {
                         Console.WriteLine("that number is wrong mate");
                         MainMenu();
                         return;
                     }
-                    player.currentLocation.subLocationsHere[targetDes-1].DoSubLocation();
+                    player.currentLocation.subLocationsHere[targetDes - 1].DoSubLocation();
                 }
-                else 
-                { 
+                else
+                {
                     Console.WriteLine("write a number dumb dumb");
                     MainMenu();
                     return;
                 }
 
             }
+            else if (input == 4) settings.ChangeTextColor();
+            else if (input == 5) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug), CloneEnemy(EnemyLibrary.Goblin) });
+            else if (input == 6) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug), CloneEnemy(EnemyLibrary.VampireSpawn) });
+            else if (input == 7) StartZoneEncounter(LocationLibrary.starterTown, LocationLibrary.mountain, 3);
+
 
 
             db.SavePlayer(player);
