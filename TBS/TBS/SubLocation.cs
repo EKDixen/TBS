@@ -23,7 +23,7 @@ public class SubLocation
     public string name;
 
 
-    public List<Item> shopItems = new List<Item>();
+    public List<(Item item,int quantity)> shopItems = new List<(Item,int)>();
 
     List<string> suits = new List<string>
     {
@@ -127,13 +127,13 @@ public class SubLocation
 
 
 
-        Console.WriteLine("\n nr     Name            Qty   Description    Price");
-        Console.WriteLine(" --------------------------------------------------");
+        Console.WriteLine("\n nr     Name                      Qty   Description    Price");
+        Console.WriteLine(" ------------------------------------------------------------");
         int i = 0;
         foreach (var item in shopItems)
         {
             i++;
-            Console.WriteLine($" {i,-7}{item.name,-15} {item.amount,-5} {item.description,-16} {item.value}");
+            Console.WriteLine($" {i,-7}{item.item.name,-25} {item.quantity,-5} {item.item.description,-16} {item.item.value * item.quantity}");
         }
         Console.WriteLine("\nif you want to interact with anything type its corresponding number \nif not type 0");
         var n = int.TryParse(Console.ReadLine(), out int input);
@@ -146,7 +146,7 @@ public class SubLocation
         }
         else if (input == 0) { Program.MainMenu(); return; }
         input--;
-        Console.WriteLine($"\nyou've picked {shopItems[input].name}\nit costs {shopItems[input].value}\nyou have {Program.player.money} money");
+        Console.WriteLine($"\nyou've picked {shopItems[input].item.name}\nit costs {shopItems[input].item.value * shopItems[input].quantity}\nyou have {Program.player.money} money");
 
         Console.WriteLine("0 : details");
         Console.WriteLine("1 : buy");
@@ -163,15 +163,15 @@ public class SubLocation
         else if (ik == 0)
         {
             Console.Clear();
-            Console.WriteLine($"\nyou've picked {shopItems[input].name}");
-            Console.WriteLine($"{shopItems[input].details}\n");
+            Console.WriteLine($"\nyou've picked {shopItems[input].item.name}");
+            Console.WriteLine($"{shopItems[input].item.details}\n");
         }
         else if (ik == 1)
         {
-            if ((Program.player.money - shopItems[input].value) >= 0)
+            if ((Program.player.money - shopItems[input].item.value * shopItems[input].quantity) >= 0)
             {
-                inventory.AddItem(shopItems[input]);
-                Program.player.money -= shopItems[input].value;
+                inventory.AddItem(shopItems[input].item);
+                Program.player.money -= shopItems[input].item.value * shopItems[input].quantity;
             }
             else
             {

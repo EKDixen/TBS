@@ -23,20 +23,11 @@ public static class LocationLibrary
 
     public static Location forest = new Location(false, "Forest", new System.Numerics.Vector2(1, 0),0, new List<SubLocation>
     {
-        new SubLocation("name", SubLocationType.shop)
+        new SubLocation("Store", SubLocationType.shop)
         {
-            shopItems = new List<Item>
+            shopItems = new List<(Item,int)>
             {
-                new Item("lwk test item", "+10 DMG", 16,2 , ItemType.equipment)
-                {
-                    stats= {["DMG"] = 10 },
-                    details="shi this lwk just a test"
-                },
-                new Item("lwk test item 2", "+15 speed", 16,2 , ItemType.equipment)
-                {
-                    stats= {["speed"] = 15 },
-                    details=" yeah lwk just a test mate"
-                }
+                (ItemLibrary.smallHealthPotion,2),
 
             }
         }

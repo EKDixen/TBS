@@ -1,18 +1,33 @@
 ﻿public static class ItemLibrary
 {
-    public static Item rock = new Item("Rock", "Useless", 1, 3, ItemType.equipment)
+
+    /*    
+    name;
+    level;
+    exp;
+    HP;
+    maxHP;
+    DMG;
+    speed;
+    armor;
+
+    dodge;
+    dodgeNegation;
+    critChance;
+    critDamage;
+    stun;
+    stunNegation;
+*/
+    public static Item rock = new Item("Rock", "Useless", 3, ItemType.equipment)
     {
         details = "its just a small pebble, doesn't hold much of worth... unless you want to fight the king ofc"
     };
-    public static Item lwktestitem2 = new Item("lwk test item 2", "+15 speed", 16, 2, ItemType.equipment)
+
+    public static Item smallHealthPotion = new Item("Small Health Potion", "+20 Health", 2, ItemType.consumable)
     {
-        stats = { ["speed"] = 15 },
-        details = " yeah lwk just a test mate"
-    };
-    public static Item lwktestitem1 = new Item("lwk test item", "+10 DMG", 16, 2, ItemType.equipment)
-    {
-        stats = { ["DMG"] = 10 },
-        details = "shi this lwk just a test"
+        stats = { ["HP"] = 20 },
+        duration = 0,
+        details = "simple Health potion, drink it and you regain some health.. not much but being alive is nice"
     };
 
 

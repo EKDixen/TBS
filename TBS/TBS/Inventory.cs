@@ -12,13 +12,13 @@ public class Inventory
         Console.Clear();
         Console.WriteLine($"you have {player.money} money\n\nand these are your items");
 
-        Console.WriteLine("\nnr     Name            Qty   Description     value");
+        Console.WriteLine("\nnr     Name                      Qty   Description     value");
         Console.WriteLine("--------------------------------------------------");
         int i = 0;
         foreach (var item in player.ownedItems)
         {
             i++;
-            Console.WriteLine($"{i,-7}{item.name,-15} {item.amount,-5} {item.description,-16} {item.value}");
+            Console.WriteLine($"{i,-7}{item.name,-25} {item.amount,-5} {item.description,-16} {item.value}");
         }
         Console.WriteLine("\nif you want to interact with anything type its corresponding number \nif not type 0");
         var n = int.TryParse(Console.ReadLine(), out int input);
@@ -59,7 +59,7 @@ public class Inventory
         }
         else if (ik == 2)
         {
-            Console.WriteLine("this functionally hasnt been added yet");
+            Consume(player.ownedItems[input]);
         }
         Program.SavePlayer();
         Program.MainMenu();
@@ -90,7 +90,7 @@ public class Inventory
         {
             switch (stat.Key)
             {
-                case "HP":player.HP += Titem.stats["HP"]*Titem.amount;break;
+                case "HP":if((player.HP += Titem.stats["HP"] * Titem.amount) > player.maxHP) player.HP = player.maxHP; else player.HP += Titem.stats["HP"]*Titem.amount;break;
                 case "DMG":player.DMG += Titem.stats["DMG"] * Titem.amount; break;
                 case "speed":player.speed += Titem.stats["speed"] * Titem.amount; break;
                 case "armor":player.armor += Titem.stats["armor"] * Titem.amount; break;
@@ -122,6 +122,18 @@ public class Inventory
                 case "stunNegation": player.stunNegation -= Titem.stats["stunNegation"] * Titem.amount; break;
 
             }
+        }
+    }
+    public void Consume(Item Titem)
+    {
+        if (Titem.duration == 0)
+        {
+            ApplyEffects(Titem);
+            DropItem(Titem);
+        }
+        else
+        {
+            Console.WriteLine("not done");
         }
     }
 }
