@@ -133,7 +133,7 @@ class JourneyManager
         Program.SavePlayer();
         if(cartin != true)
         {
-            List<Encounter> encounters = EncounterManager.GetTravelEncounters(TtargetDis);
+            List<Encounter> encounters = Encounter.StartTravelEncounters(TtargetDis, Program.player.currentLocation);
 
             if (encounters.Count == 0)
             {
@@ -174,7 +174,7 @@ class JourneyManager
             Random rand = new Random();
             int randomDir = rand.Next(0, explorableLocations.Count);
 
-            List<Encounter> encounters = EncounterManager.GetTravelEncounters(LocationLibrary.locations[explorableLocations[randomDir]]);
+            List<Encounter> encounters = Encounter.StartTravelEncounters(LocationLibrary.locations[explorableLocations[randomDir]], Program.player.currentLocation);
 
             if (encounters.Count == 0)
             {

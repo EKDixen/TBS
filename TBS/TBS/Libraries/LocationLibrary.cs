@@ -18,6 +18,11 @@ public static class LocationLibrary
     {
         { EnemyLibrary.Thug, 80 },
         { EnemyLibrary.Goblin, 20 }
+    },
+    new Dictionary<Encounter, int>
+    {
+        { EncounterLibrary.FoundCoins, 50},
+        { EncounterLibrary.LostCoins, 40}
     });
 
 
@@ -35,17 +40,38 @@ public static class LocationLibrary
     new Dictionary<Enemy, int>
     {
         { EnemyLibrary.VampireSpawn, 100 }
+    },
+    new Dictionary<Encounter, int>
+    {
+        { EncounterLibrary.WildGoblin, 50},
+        { EncounterLibrary.StrangeMushrooms, 40},
+        { EncounterLibrary.FoundCoins, 20 },
+        { EncounterLibrary.LostCoins, 10 }
     });
 
     public static Location mountain = new Location(false, "Mountain", new System.Numerics.Vector2(-1, 0),0, new List<SubLocation>
     {
 
-    }, new Dictionary<Enemy, int>());
+    }, 
+    new Dictionary<Enemy, int>()
+    {
+
+    },
+    new Dictionary<Encounter, int>
+    {
+        { EncounterLibrary.FoundCoins, 50},
+        { EncounterLibrary.LostCoins, 40}
+    });
 
     public static Location lake = new Location(false, "Lake", new System.Numerics.Vector2(0, -1),0, new List<SubLocation>
     {
 
-    }, new Dictionary<Enemy, int>());
+    }, new Dictionary<Enemy, int>(),
+    new Dictionary<Encounter, int>
+    {
+        { EncounterLibrary.FoundCoins, 50},
+        { EncounterLibrary.LostCoins, 40}
+    });
 
 
 

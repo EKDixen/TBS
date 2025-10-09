@@ -12,16 +12,19 @@ public class Location
 
     public List<SubLocation> subLocationsHere = new List<SubLocation>();
     [JsonIgnore]
-    public Dictionary<Enemy, int> PossibleEncounters { get; set; }
+    public Dictionary<Enemy, int> possibleEnemy { get; set; }
+    [JsonIgnore]
+    public Dictionary<Encounter, int> possibleEncounters { get; set; }
 
     public Location() { } // Deserialize
-    public Location(bool Tknown, string Tname, Vector2 Tlocation, int travelPrize, List<SubLocation> subLocations, Dictionary<Enemy, int> TpossibleEncounters = null)
+    public Location(bool Tknown, string Tname, Vector2 Tlocation, int travelPrize, List<SubLocation> subLocations, Dictionary<Enemy, int> TpossibleEnemy = null, Dictionary<Encounter, int> TpossibleEncounters = null)
     {
         known = Tknown;
         name = Tname;
         location = Tlocation;
         subLocationsHere = subLocations;
-        PossibleEncounters = TpossibleEncounters ?? new Dictionary<Enemy, int>();
+        possibleEnemy = TpossibleEnemy ?? new Dictionary<Enemy, int>();
+        possibleEncounters = TpossibleEncounters ?? new Dictionary<Encounter, int>();
         this.travelPrice = travelPrize;
     }
 

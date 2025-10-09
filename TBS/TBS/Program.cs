@@ -172,8 +172,8 @@ namespace Game.Class
                     else combined[kv.Key] = kv.Value;
                 }
             }
-            addAll(a.PossibleEncounters);
-            addAll(b.PossibleEncounters);
+            addAll(a.possibleEnemy);
+            addAll(b.possibleEnemy);
 
             if (combined.Count == 0)
             {
