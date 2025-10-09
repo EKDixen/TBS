@@ -133,7 +133,24 @@ class JourneyManager
         Program.SavePlayer();
         if(cartin != true)
         {
-            Encounter.TravelEncounter(100, TtargetDis);
+            List<Encounter> encounters = EncounterManager.GetTravelEncounters(TtargetDis);
+
+            if (encounters.Count == 0)
+            {
+                Console.WriteLine("Your travel was peaceful.");
+            }
+            else
+            {
+                foreach (var e in encounters)
+                {
+                    Console.WriteLine(e.Description);
+                    if (e.IsEnemyEncounter)
+                    {
+                        // Start combat
+                        Console.WriteLine("Start Combat");
+                    }
+                }
+            }
         }
         Program.MainMenu(); 
     }
@@ -157,7 +174,23 @@ class JourneyManager
             Random rand = new Random();
             int randomDir = rand.Next(0, explorableLocations.Count);
 
-            Encounter.TravelEncounter(100, LocationLibrary.locations[explorableLocations[randomDir]]);
+            List<Encounter> encounters = EncounterManager.GetTravelEncounters(LocationLibrary.locations[explorableLocations[randomDir]]);
+
+            if (encounters.Count == 0)
+            {
+                Console.WriteLine("Your journey was peaceful.");
+            }
+            else
+            {
+                foreach (var e in encounters)
+                {
+                    Console.WriteLine(e.Description);
+                    if (e.IsEnemyEncounter)
+                    {
+                        // Handle combat here
+                    }
+                }
+            }
 
             Program.player.knownLocations.Add(LocationLibrary.locations[explorableLocations[randomDir]]);
             Program.player.currentLocation = LocationLibrary.locations[explorableLocations[randomDir]];
