@@ -98,7 +98,7 @@ class JourneyManager
 
             for (int i = 0; i < travelLocations.Count; i++)
             {
-                Console.WriteLine($"{LocationLibrary.locations[travelLocations[i]].name} : {i+1}");
+                Console.WriteLine($"\n{LocationLibrary.locations[travelLocations[i]].name} : {i+1}");
             }
             Console.WriteLine("\nor explore for a new location : 0");
             Console.WriteLine("or go back : -1");
