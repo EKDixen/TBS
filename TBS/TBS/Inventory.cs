@@ -18,6 +18,12 @@ public class Inventory
         {
             Console.Clear();
 
+            Console.WriteLine("Equiped items:");
+            for (int j = 0; j < player.equippedItems.Capacity; j++)
+            {
+                Console.WriteLine($"{j + 1} : {player.equippedItems[j]?.name ?? "Empty"}");
+            }
+
             Console.WriteLine($"\nyou have {player.money} money\n\nand these are your items");
 
             Console.WriteLine("\nnr     Name                      Qty   Description     value");

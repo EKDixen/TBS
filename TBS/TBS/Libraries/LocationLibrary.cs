@@ -12,6 +12,16 @@ public static class LocationLibrary
         new SubLocation("bank", SubLocationType.bank)
         {
 
+        },
+        new SubLocation("Store", SubLocationType.shop)
+        {
+            shopItems = new List<(Item,int)>
+            {
+                (ItemLibrary.smallHealthPotion,2),
+                (ItemLibrary.bigHealthPotion,1),
+                (ItemLibrary.baseballCap,1)
+
+            }
         }
     },
     new Dictionary<Enemy, int>
@@ -32,8 +42,8 @@ public static class LocationLibrary
         {
             shopItems = new List<(Item,int)>
             {
-                (ItemLibrary.smallHealthPotion,2),
-
+                (ItemLibrary.smallHealthPotion,3),
+                (ItemLibrary.bigHealthPotion,1)
             }
         }
     },
