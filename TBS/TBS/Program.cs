@@ -66,13 +66,13 @@ namespace Game.Class
         {
             Console.WriteLine($"\nwhat do you wish to do? (type the number next to it) \nGo somewhere : 0 \nCheck Inventory : 1 \n" +
                 $"Check Moves : 2\ndo something here current location {player.currentLocation.name} : 3 \n" +
-                $"change settings : 4 \n" +
-                $"Start test combat (1v1) : 5\nStart test combat (1v2) : 6\n" +
-                $"Start zone encounter StarterTown <-> Mountain (3 enemies) : 7\n");
+                $"Check stats : 4 \nchange settings : 5 \n" +
+                $"Start test combat (1v1) : 6\nStart test combat (1v2) : 7\n" +
+                $"Start zone encounter StarterTown <-> Mountain (3 enemies) : 8\n");
             //int.TryParse(Console.ReadLine(), out int input);
             if (int.TryParse(Console.ReadLine(), out int input) == false || input > 6 || input < 0)
             {
-                Console.WriteLine("\nyou gotta type 0, 1, 2 or 3");
+                Console.WriteLine("\nyou gotta type 0, 1, 2, 3, 4 or 5");
                 MainMenu();
                 return;
             }
@@ -123,10 +123,11 @@ namespace Game.Class
                 }
 
             }
-            else if (input == 4) settings.ChangeTextColor();
-            else if (input == 5) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug), CloneEnemy(EnemyLibrary.Goblin) });
-            else if (input == 6) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug), CloneEnemy(EnemyLibrary.VampireSpawn) });
-            else if (input == 7) StartZoneEncounter(LocationLibrary.starterTown, LocationLibrary.mountain, 3);
+            else if (input == 4) ShowPlayerStats();
+            else if (input == 5) settings.ChangeTextColor();
+            else if (input == 6) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug), CloneEnemy(EnemyLibrary.Goblin) });
+            else if (input == 7) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug), CloneEnemy(EnemyLibrary.VampireSpawn) });
+            else if (input == 8) StartZoneEncounter(LocationLibrary.starterTown, LocationLibrary.mountain, 3);
 
 
 
@@ -134,6 +135,16 @@ namespace Game.Class
         }
 
 
+        public static void ShowPlayerStats()
+        {
+            Console.WriteLine($"\n\nAccount: {player.name} \n\nLevel: {player.level} \nClass: {player.playerClass} \nHP: {player.HP}/{player.maxHP} \nDMG: {player.DMG} \nSpeed: {player.speed} \narmor: {player.armor}" +
+                $"\nDodge: {player.dodge} \nDodgeNegation: {player.dodgeNegation} \nCrit-chance: {player.critChance} \nCrit-Damage: {player.critDamage} \nStun: {player.stun}" +
+                $"\nStunNegation: {player.stunNegation}\n\n");
+
+            Thread.Sleep(1000);
+            MainMenu();
+
+        }
 
         public static void SavePlayer()
         {
