@@ -2,7 +2,8 @@
 public enum ItemType
 {
     consumable,
-    equipment
+    equipment,
+    Artifact
 }
 public class Item
 {

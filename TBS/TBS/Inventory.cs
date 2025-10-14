@@ -6,63 +6,109 @@ public class Inventory
     public Inventory(Player p)
     {
         player = p;
+
+        while (player.equippedItems.Count < 4)
+        {
+            player.equippedItems.Add(null);
+        }
     }
     public void ShowInventory()
     {
-        Console.Clear();
-        Console.WriteLine($"you have {player.money} money\n\nand these are your items");
-
-        Console.WriteLine("\nnr     Name                      Qty   Description     value");
-        Console.WriteLine("--------------------------------------------------");
-        int i = 0;
-        foreach (var item in player.ownedItems)
-        {
-            i++;
-            Console.WriteLine($"{i,-7}{item.name,-25} {item.amount,-5} {item.description,-16} {item.value}");
-        }
-        Console.WriteLine("\nif you want to interact with anything type its corresponding number \nif not type 0");
-        var n = int.TryParse(Console.ReadLine(), out int input);
-        if (input == null || input < 0 || input > player.ownedItems.Count)
+        while (true)
         {
             Console.Clear();
-            Console.WriteLine("sweetie you gotta type a usable number\n ");
-            ShowInventory();
-            return;
-        }
-        else if (input == 0) { Program.MainMenu(); return; }
 
-        input--;
-        Console.WriteLine($"you've picked {player.ownedItems[input].name}");
+            Console.WriteLine($"\nyou have {player.money} money\n\nand these are your items");
+
+            Console.WriteLine("\nnr     Name                      Qty   Description     value");
+            Console.WriteLine("------------------------------------------------------------");
+            int i = 0;
+            foreach (var item in player.ownedItems)
+            {
+                i++;
+
+                // check if equipped
+                int slotIndex = player.equippedItems.IndexOf(item);
+                string equippedInfo = slotIndex >= 0 ? $"(Slot {slotIndex + 1})" : "";
 
 
-        Console.WriteLine("0 : details");
-        Console.WriteLine("1 : drop");
-        if (player.ownedItems[input].type == ItemType.consumable)  Console.WriteLine("2 : consume");
-        Console.WriteLine("\ntype out the number next to the action you want to perform");
-        var k = int.TryParse(Console.ReadLine(), out int ik);
-        if (ik == null || ik <0 || ik > 2)
-        {
-            Console.Clear();
-            Console.WriteLine("my love would you please type a number this time\n ");
-            ShowInventory();
-            return;
+                Console.WriteLine($"{i,-7}{item.name,-25} {item.amount,-5} {item.description,-16} {item.value} {equippedInfo}");
+            }
+            Console.WriteLine("\nif you want to interact with anything type its corresponding number \nif not type 0");
+            var n = int.TryParse(Console.ReadLine(), out int input);
+            if (input == null || input < 0 || input > player.ownedItems.Count)
+            {
+                Console.Clear();
+                Console.WriteLine("sweetie you gotta type a usable number\n ");
+                ShowInventory();
+                return;
+            }
+            else if (input == 0) { Program.MainMenu(); return; }
+
+            input--;
+            Console.WriteLine($"you've picked {player.ownedItems[input].name}");
+
+
+            Console.WriteLine("0 : details");
+            Console.WriteLine("1 : drop");
+            if (player.ownedItems[input].type == ItemType.equipment) Console.WriteLine("2 : Equip/Unequip");
+            if (player.ownedItems[input].type == ItemType.consumable) Console.WriteLine("2 : consume");
+            Console.WriteLine("\ntype out the number next to the action you want to perform");
+            var k = int.TryParse(Console.ReadLine(), out int ik);
+            if (ik == null || ik < 0 || ik > 2)
+            {
+                Console.Clear();
+                Console.WriteLine("my love would you please type a number this time\n ");
+                ShowInventory();
+                return;
+            }
+            else if (ik == 0)
+            {
+                Console.WriteLine($"\nyou've picked {player.ownedItems[input].name}");
+                Console.WriteLine($"{player.ownedItems[input].details}\n");
+            }
+            else if (ik == 1)
+            {
+                Console.WriteLine($"\nyou drop the {player.ownedItems[input].name}");
+                DropItem(player.ownedItems[input]);
+            }
+            else if (ik == 2 && player.ownedItems[input].type == ItemType.equipment)
+            {
+
+                Item chosen = player.ownedItems[input];
+
+                // if already equipped, unequip
+                int equippedSlot = player.equippedItems.IndexOf(chosen);
+                if (equippedSlot >= 0)
+                {
+                    Console.WriteLine($"{chosen.name} is currently in Slot {equippedSlot + 1}. Unequipping...");
+                    RemoveEffects(chosen);
+                    player.equippedItems[equippedSlot] = null;
+                }
+                else
+                {
+                    // equip
+                    Console.Write("Choose a slot (1-4) or 0 to cancel: ");
+                    if (!int.TryParse(Console.ReadLine(), out int slot) || slot < 0 || slot > 4) continue;
+                    if (slot == 0) continue;
+
+                    ApplyEffects(chosen);
+                    player.equippedItems[slot - 1] = chosen;
+                    Console.WriteLine($"{chosen.name} equipped into Slot {slot}!");
+
+                }
+
+
+
+            }
+            else if (ik == 2 && player.ownedItems[input].type == ItemType.consumable)
+            {
+                Consume(player.ownedItems[input]);
+            }
+            Program.SavePlayer();
+            Program.MainMenu();
+            break;
         }
-        else if (ik == 0)
-        {
-            Console.WriteLine($"\nyou've picked {player.ownedItems[input].name}");
-            Console.WriteLine($"{player.ownedItems[input].details}\n");
-        }
-        else if (ik ==1) 
-        {
-            Console.WriteLine($"\nyou drop the {player.ownedItems[input].name}");
-            DropItem(player.ownedItems[input]);
-        }
-        else if (ik == 2)
-        {
-            Consume(player.ownedItems[input]);
-        }
-        Program.SavePlayer();
-        Program.MainMenu();
     }
     public void AddItem(Item Titem) 
     {
@@ -70,18 +116,24 @@ public class Inventory
         {
             Item existingItem = player.ownedItems.First(i => i.Equals(Titem));
             existingItem.amount += Titem.amount;
-            if (Titem.type != ItemType.consumable) ApplyEffects(Titem);
+            if (Titem.type == ItemType.Artifact) ApplyEffects(Titem);
         }
         else
         {
             player.ownedItems.Add(Titem);
-            if (Titem.type != ItemType.consumable) ApplyEffects(Titem);
+            if (Titem.type == ItemType.Artifact) ApplyEffects(Titem);
         }
 
     }
     public void DropItem(Item Titem)
     {
-        if (Titem.type != ItemType.consumable) RemoveEffects(Titem);
+        if (Titem.type == ItemType.Artifact) RemoveEffects(Titem);
+        int equippedSlot = player.equippedItems.IndexOf(Titem);
+        if(equippedSlot >= 0)
+        {
+            UnequipItem(equippedSlot);
+            RemoveEffects(Titem);
+        }
         player.ownedItems.Remove(Titem);
     }
     public void ApplyEffects(Item Titem)
@@ -134,6 +186,15 @@ public class Inventory
         else
         {
             Console.WriteLine("not done");
+        }
+    }
+
+    public void UnequipItem(int slot)
+    {
+        if (player.equippedItems[slot] != null)
+        {
+            Console.WriteLine($"{player.equippedItems[slot].name} unequipped from Slot {slot}.");
+            player.equippedItems[slot] = null;
         }
     }
 }
