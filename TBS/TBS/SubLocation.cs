@@ -127,13 +127,13 @@ public class SubLocation
 
 
 
-        Console.WriteLine("\n nr     Name                      Qty   Description    Price");
-        Console.WriteLine(" ------------------------------------------------------------");
+        Console.WriteLine("\n nr     Name                      Qty   Description        Price");
+        Console.WriteLine(" ----------------------------------------------------------------");
         int i = 0;
         foreach (var item in shopItems)
         {
             i++;
-            Console.WriteLine($" {i,-7}{item.item.name,-25} {item.quantity,-5} {item.item.description,-16} {item.item.value * item.quantity}");
+            Console.WriteLine($" {i,-7}{item.item.name,-25} {item.quantity,-5} {item.item.description,-20} {item.item.value * item.quantity}");
         }
         Console.WriteLine("\nif you want to interact with anything type its corresponding number \nif not type 0");
         var n = int.TryParse(Console.ReadLine(), out int input);
@@ -192,8 +192,8 @@ public class SubLocation
         Inventory inventory = new Inventory(Program.player);
 
         Console.WriteLine($"\n\n\nyou have {bankMoney} money stored here and here is all the items you have stored here:");
-        Console.WriteLine("\n nr     Name            Qty   Description    value");
-        Console.WriteLine(" --------------------------------------------------");
+        Console.WriteLine("\n nr     Name            Qty   Description        value");
+        Console.WriteLine(" ------------------------------------------------------");
         int i = 1;
         int extraMoneyNumber = 0;
         if (bankMoney != 0)
@@ -205,7 +205,7 @@ public class SubLocation
         foreach (var item in bankItems)
         {
             i++;
-            Console.WriteLine($" {i,-7}{item.name,-15} {item.amount,-5} {item.description,-16} {item.value}");
+            Console.WriteLine($" {i,-7}{item.name,-15} {item.amount,-5} {item.description,-20} {item.value}");
         }
         Console.WriteLine("\nif you want to grab something type its nr \nif you want to deposit something or leave then type 0");
         var n = int.TryParse(Console.ReadLine(), out int input);

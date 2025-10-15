@@ -21,7 +21,6 @@ public static class LocationLibrary
                 (ItemLibrary.bigHealthPotion,1),
                 (ItemLibrary.baseballCap,1),
                 (ItemLibrary.sandals,1)
-
             }
         }
     },
@@ -45,8 +44,13 @@ public static class LocationLibrary
             {
                 (ItemLibrary.smallHealthPotion,3),
                 (ItemLibrary.bigHealthPotion,1),
-                (ItemLibrary.runningShoes,1)
+                (ItemLibrary.runningShoes,1),
+                (ItemLibrary.camoPants,1)
             }
+        },
+        new SubLocation("Bank", SubLocationType.bank)
+        {
+
         }
     },
     new Dictionary<Enemy, int>
@@ -68,7 +72,9 @@ public static class LocationLibrary
             shopItems = new List<(Item,int)>
             {
                 (ItemLibrary.bigHealthPotion,3),
-                (ItemLibrary.runningShoes,1)
+                (ItemLibrary.runningShoes,1),
+                (ItemLibrary.knightHelmet,1),
+                (ItemLibrary.constructionVest,1)
             }
         }
     },

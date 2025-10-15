@@ -36,8 +36,8 @@ public class Inventory
 
             Console.WriteLine($"\nyou have {player.money} money\n\nand these are your items");
 
-            Console.WriteLine("\nnr     Name                      Qty   Description     value");
-            Console.WriteLine("------------------------------------------------------------");
+            Console.WriteLine("\nnr     Name                      Qty   Description         value");
+            Console.WriteLine("----------------------------------------------------------------");
             int i = 0;
             foreach (var item in player.ownedItems)
             {
@@ -48,7 +48,7 @@ public class Inventory
                 string equippedInfo = slotIndex >= 0 ? $"(Slot {slotIndex + 1})" : "";
 
 
-                Console.WriteLine($"{i,-7}{item.name,-25} {item.amount,-5} {item.description,-16} {item.value} {equippedInfo}");
+                Console.WriteLine($"{i,-7}{item.name,-25} {item.amount,-5} {item.description,-20} {item.value} {equippedInfo}");
             }
             Console.WriteLine("\nif you want to interact with anything type its corresponding number \nif not type 0");
             var n = int.TryParse(Console.ReadLine(), out int input);
