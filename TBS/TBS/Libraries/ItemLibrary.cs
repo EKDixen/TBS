@@ -29,7 +29,20 @@
     public static Item baseballCap = new Item("Baseball Cap", "+1 armor", 5, ItemType.equipment)
     {
         stats = { ["armor"] = 1},
+        equipmentType = EquipmentType.head,
         details = "cool Cap.. somehow makes it harder to punch your head off"
+    };
+    public static Item sandals = new Item("Sandals", "+1 speed", 5, ItemType.equipment)
+    {
+        stats = { ["speed"] = 1 },
+        equipmentType = EquipmentType.feet,
+        details = "some nice sandals.. decently fine to run in"
+    };
+    public static Item runningShoes = new Item("Running Shoes", "+3 speed", 7, ItemType.equipment)
+    {
+        stats = { ["speed"] = 3 },
+        equipmentType = EquipmentType.feet,
+        details = "some beautiful running shoes.. really nice to run in"
     };
 
 

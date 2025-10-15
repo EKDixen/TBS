@@ -3,7 +3,7 @@
 public static class LocationLibrary
 {
 
-    public static Location starterTown = new Location(true, "StarterTown", new System.Numerics.Vector2(0, 0),0, new List<SubLocation>
+    public static Location starterTown = new Location(true, "StarterTown", new System.Numerics.Vector2(0, 0), 0, new List<SubLocation>
     {
         new SubLocation("casino", SubLocationType.casino)
         {
@@ -19,7 +19,8 @@ public static class LocationLibrary
             {
                 (ItemLibrary.smallHealthPotion,2),
                 (ItemLibrary.bigHealthPotion,1),
-                (ItemLibrary.baseballCap,1)
+                (ItemLibrary.baseballCap,1),
+                (ItemLibrary.sandals,1)
 
             }
         }
@@ -36,14 +37,15 @@ public static class LocationLibrary
     });
 
 
-    public static Location forest = new Location(false, "Forest", new System.Numerics.Vector2(1, 0),0, new List<SubLocation>
+    public static Location forest = new Location(false, "Forest", new System.Numerics.Vector2(1, 0), 0, new List<SubLocation>
     {
         new SubLocation("Store", SubLocationType.shop)
         {
             shopItems = new List<(Item,int)>
             {
                 (ItemLibrary.smallHealthPotion,3),
-                (ItemLibrary.bigHealthPotion,1)
+                (ItemLibrary.bigHealthPotion,1),
+                (ItemLibrary.runningShoes,1)
             }
         }
     },
@@ -59,10 +61,17 @@ public static class LocationLibrary
         { EncounterLibrary.LostCoins, 10 }
     });
 
-    public static Location mountain = new Location(false, "Mountain", new System.Numerics.Vector2(-1, 0),0, new List<SubLocation>
+    public static Location mountain = new Location(false, "Mountain", new System.Numerics.Vector2(-1, 0), 0, new List<SubLocation>
     {
-
-    }, 
+        new SubLocation("Store", SubLocationType.shop)
+        {
+            shopItems = new List<(Item,int)>
+            {
+                (ItemLibrary.bigHealthPotion,3),
+                (ItemLibrary.runningShoes,1)
+            }
+        }
+    },
     new Dictionary<Enemy, int>()
     {
 
@@ -73,10 +82,17 @@ public static class LocationLibrary
         { EncounterLibrary.LostCoins, 40}
     });
 
-    public static Location lake = new Location(false, "Lake", new System.Numerics.Vector2(0, -1),0, new List<SubLocation>
+    public static Location lake = new Location(false, "Lake", new System.Numerics.Vector2(0, -1), 0, new List<SubLocation>
     {
+        new SubLocation("Bank", SubLocationType.bank)
+        {
 
-    }, new Dictionary<Enemy, int>(),
+        }
+    },
+    new Dictionary<Enemy, int>()
+    {
+        
+    },
     new Dictionary<Encounter, int>
     {
         { EncounterLibrary.FoundCoins, 50},

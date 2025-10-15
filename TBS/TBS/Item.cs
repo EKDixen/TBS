@@ -5,6 +5,14 @@ public enum ItemType
     equipment,
     Artifact
 }
+public enum EquipmentType
+{
+    head,
+    torso,
+    legs,
+    feet
+}
+
 public class Item
 {
 
@@ -16,6 +24,7 @@ public class Item
     public int value { get; set; }
 
     public ItemType type { get; set; }
+    public EquipmentType equipmentType;
     public int duration;
 
     // Flexible stats

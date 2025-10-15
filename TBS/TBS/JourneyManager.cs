@@ -192,6 +192,7 @@ class JourneyManager
                 }
             }
 
+            Console.WriteLine("\ngoing to "+ LocationLibrary.locations[explorableLocations[randomDir]].name);
             Program.player.knownLocations.Add(LocationLibrary.locations[explorableLocations[randomDir]]);
             Program.player.currentLocation = LocationLibrary.locations[explorableLocations[randomDir]];
             LocationLibrary.locations[explorableLocations[randomDir]].known = true;

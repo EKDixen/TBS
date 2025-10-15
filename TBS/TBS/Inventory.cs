@@ -21,7 +21,17 @@ public class Inventory
             Console.WriteLine("Equiped items:");
             for (int j = 0; j < player.equippedItems.Capacity; j++)
             {
-                Console.WriteLine($"{j + 1} : {player.equippedItems[j]?.name ?? "Empty"}");
+                string place = "";
+                switch (j)
+                {
+                    case 0: place = "Head"; break;
+                    case 1: place = "Torso";break;
+                    case 2: place = "Legs"; break;
+                    case 3: place = "Feet"; break;
+                }
+                Console.WriteLine($"{j + 1} ({place}) : {player.equippedItems[j]?.name ?? "Empty"}");
+
+
             }
 
             Console.WriteLine($"\nyou have {player.money} money\n\nand these are your items");
@@ -97,6 +107,10 @@ public class Inventory
                     Console.Write("Choose a slot (1-4) or 0 to cancel: ");
                     if (!int.TryParse(Console.ReadLine(), out int slot) || slot < 0 || slot > 4) continue;
                     if (slot == 0) continue;
+                    if (slot == 1 && chosen.equipmentType != EquipmentType.head) continue;
+                    if (slot == 2 && chosen.equipmentType != EquipmentType.torso) continue;
+                    if (slot == 3 && chosen.equipmentType != EquipmentType.legs) continue;
+                    if (slot == 4 && chosen.equipmentType != EquipmentType.feet) continue;
 
                     ApplyEffects(chosen);
                     player.equippedItems[slot - 1] = chosen;
