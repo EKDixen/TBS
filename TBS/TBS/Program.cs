@@ -11,8 +11,13 @@ namespace Game.Class
         static Settings settings;
         static AttackManager atkManager;
         static Random rng = new Random();
+        
         public static void Main(string[] args)
         {
+            // Lock console window at startup (prevents resizing, which fucks up the UI)
+            var ui = new CombatUI();
+            ui.InitializeConsole();
+            
             while (true)
             {
                 Console.WriteLine("Welcome! Do you want to:");
@@ -62,6 +67,7 @@ namespace Game.Class
             settings = new Settings();
             settings.ChangeTextColor();
         }
+        
         public static void MainMenu()
         {
             Console.WriteLine($"\nwhat do you wish to do? (type the number next to it) \nGo somewhere : 0 \nCheck Inventory : 1 \n" +
@@ -69,10 +75,10 @@ namespace Game.Class
                 $"Check stats : 4 \nchange settings : 5 \n" +
                 $"Start test combat (1v1) : 6\nStart test combat (1v2) : 7\n" +
                 $"Start zone encounter StarterTown <-> Mountain (3 enemies) : 8\n");
-            //int.TryParse(Console.ReadLine(), out int input);
-            if (int.TryParse(Console.ReadLine(), out int input) == false || input > 6 || input < 0)
+            
+            if (int.TryParse(Console.ReadLine(), out int input) == false || input > 8 || input < 0)
             {
-                Console.WriteLine("\nyou gotta type 0, 1, 2, 3, 4 or 5");
+                Console.WriteLine("\nyou gotta type 0, 1, 2, 3, 4, 5, 6, 7, or 8");
                 MainMenu();
                 return;
             }
@@ -121,19 +127,15 @@ namespace Game.Class
                     MainMenu();
                     return;
                 }
-
             }
             else if (input == 4) ShowPlayerStats();
             else if (input == 5) settings.ChangeTextColor();
-            else if (input == 6) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug), CloneEnemy(EnemyLibrary.Goblin) });
+            else if (input == 6) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug) });
             else if (input == 7) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug), CloneEnemy(EnemyLibrary.VampireSpawn) });
             else if (input == 8) StartZoneEncounter(LocationLibrary.starterTown, LocationLibrary.mountain, 3);
 
-
-
             db.SavePlayer(player);
         }
-
 
         public static void ShowPlayerStats()
         {
@@ -143,15 +145,12 @@ namespace Game.Class
 
             Thread.Sleep(1000);
             MainMenu();
-
         }
 
         public static void SavePlayer()
         {
             db.SavePlayer(player);
         }
-
-        // Temp under bare for at teste shit, ikke permenent
 
         private static Enemy CloneEnemy(Enemy e)
         {
@@ -215,6 +214,5 @@ namespace Game.Class
             Console.WriteLine("\nReturning to main menu...\n");
             MainMenu();
         }
-
     }
 }

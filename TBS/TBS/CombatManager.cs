@@ -1,4 +1,4 @@
-Ôªøusing Game.Class;
+using Game.Class;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +12,7 @@ public class CombatManager
     private const double ActionThreshold = 100.0;
     private readonly Random rng = new Random();
     private readonly Dictionary<Combatant, int> stunnedTurns = new();
+    private CombatUI ui;
 
     public CombatManager(Player p, List<Enemy> initialEnemies)
     {
@@ -32,11 +33,16 @@ public class CombatManager
             if (combatant.maxHP <= 0) combatant.maxHP = combatant.HP;
             if (combatant.maxHP > 0 && combatant.HP > combatant.maxHP) combatant.HP = combatant.maxHP;
         }
+
+        ui = new CombatUI();
+        ui.InitializeConsole();
     }
 
     public void StartCombat()
     {
-        Console.WriteLine("--- Combat Started! ---");
+        ui.AddToLog("--- Combat Started! ---");
+        ui.RenderCombatScreen(player, combatants);
+        Thread.Sleep(1000);
 
         while (player.IsAlive() && enemies.Any(e => e.IsAlive()))
         {
@@ -58,11 +64,7 @@ public class CombatManager
             }
             else
             {
-                // WOOP WOOP TIERBREAKER (2 personer med samme score over 100)
-                Console.WriteLine("\n--- TIE BREAKER! ---");
-                Console.WriteLine("Multiple combatants are ready! Let's settle this with Rock, Paper, Scissors.");
-                currentActor = ResolveTieBreaker(topCombatants);
-                Console.WriteLine($"{currentActor.name} wins the tie-breaker and acts first!");
+                currentActor = topCombatants[rng.Next(topCombatants.Count)];
             }
 
             TakeTurn(currentActor);
@@ -74,17 +76,38 @@ public class CombatManager
             int totalExp = enemies.Sum(e => e.exp);
             player.money += totalMoney;
             player.exp += totalExp;
-            Console.WriteLine("\n--- VICTORY! ---");
-            Console.WriteLine($"Rewards: +{totalExp} EXP, +{totalMoney} money");
+            
+            ui.AddToLog("--- VICTORY! ---");
+            ui.AddToLog($"Rewards: +{totalExp} EXP, +{totalMoney} money");
+            ui.ClearMainArea();
+            ui.WriteInMainArea(8, "+----------------------------------------+");
+            ui.WriteInMainArea(9, "¶          VICTORY!                      ¶");
+            ui.WriteInMainArea(10, "+----------------------------------------+");
+            ui.WriteInMainArea(12, $"Rewards:");
+            ui.WriteInMainArea(13, $"  +{totalExp} EXP");
+            ui.WriteInMainArea(14, $"  +{totalMoney} Gold");
+            ui.WriteInMainArea(16, "Press Enter to continue...");
+            ui.RenderCombatScreen(player, combatants);
+            
             Program.SavePlayer();
-            Thread.Sleep(800);
+            Console.ReadLine();
         }
         else
         {
-            Console.WriteLine("\nYou died.");
+                        ui.ClearMainArea();
+            ui.WriteInMainArea(8, "+----------------------------------------+");
+            ui.WriteInMainArea(9, "¶          DEFEAT...                     ¶");
+            ui.WriteInMainArea(10, "+----------------------------------------+");
+            ui.WriteInMainArea(12, "You have been defeated.");
+            ui.WriteInMainArea(14, "Press Enter to continue...");
+            ui.RenderCombatScreen(player, combatants);
+            
             Program.SavePlayer();
-            Thread.Sleep(800);
+            Console.ReadLine();
         }
+
+        Console.Clear();
+        Console.CursorVisible = true;
     }
 
     private void AdvanceActionGauges()
@@ -118,101 +141,7 @@ public class CombatManager
         return combatants.Where(c => c.IsAlive() && c.ActionGauge >= ActionThreshold).ToList();
     }
 
-    private Combatant ResolveTieBreaker(List<Combatant> tiedCombatants)
-    {
-        // Hvis spilleren ikke er en del af tiebreaker v√¶lger den bare random
-        if (!tiedCombatants.Contains(player))
-        {
-            return tiedCombatants[rng.Next(tiedCombatants.Count)];
-        }
-
-        string[] choices = { "Rock", "Paper", "Scissors" };
-        int playerChoice = -1;
-
-        while (playerChoice == -1)
-        {
-            Console.WriteLine("Choose your move: Rock, Paper, or Scissors");
-            string input = Console.ReadLine().ToLower();
-
-            switch (input)
-            {
-                case "rock":
-                    playerChoice = 0;
-                    break;
-                case "paper":
-                    playerChoice = 1;
-                    break;
-                case "scissors":
-                    playerChoice = 2;
-                    break;
-                default:
-                    Console.WriteLine("Invalid choice. Please enter Rock, Paper, or Scissors.");
-                    break;
-            }
-        }
-
-        Console.WriteLine($"You chose {choices[playerChoice]}.");
-
-        var enemyChoices = new Dictionary<Combatant, int>();
-        foreach (var enemy in tiedCombatants.Where(c => !c.IsPlayer))
-        {
-            int enemyChoice = rng.Next(0, 3);
-            enemyChoices.Add(enemy, enemyChoice);
-            Console.WriteLine($"{enemy.name} chose {choices[enemyChoice]}.");
-        }
-
-        bool playerWinsOverall = true;
-        foreach (var enemyChoice in enemyChoices.Values)
-        {
-            if (playerChoice == enemyChoice) // Draw
-            {
-                continue;
-            }
-            if ((playerChoice == 0 && enemyChoice == 1) ||
-                (playerChoice == 1 && enemyChoice == 2) ||
-                (playerChoice == 2 && enemyChoice == 0))
-            {
-                playerWinsOverall = false;
-                break;
-            }
-        }
-
-        if (playerWinsOverall)
-        {
-            bool onlyDraws = enemyChoices.Values.All(ec => ec == playerChoice);
-            if (onlyDraws)
-            {
-                Console.WriteLine("It's a complete draw! Let's go again.");
-                return ResolveTieBreaker(tiedCombatants);
-            }
-            else
-            {
-                // Player vinder mindst mod 1 og taber ingen
-                Console.WriteLine("You win the tie-breaker!");
-                return player;
-            }
-        }
-        else
-        {
-            // Player taber til mindst en fjende
-            var winningEnemies = new List<Combatant>();
-            foreach (var entry in enemyChoices)
-            {
-                if ((playerChoice == 0 && entry.Value == 1) ||
-                    (playerChoice == 1 && entry.Value == 2) ||
-                    (playerChoice == 2 && entry.Value == 0))
-                {
-                    winningEnemies.Add(entry.Key);
-                }
-            }
-
-            // V√¶lg en fjende til at andgribe
-            var winner = winningEnemies[rng.Next(winningEnemies.Count)];
-            Console.WriteLine($"{winner.name} wins the tie-breaker!");
-            return winner;
-            }
-        }
-            
+                
             private bool RollChance(int chance)
             {
             chance = Math.Clamp(chance, 0, 100);
@@ -253,12 +182,14 @@ public class CombatManager
             
             private void ExecuteAttackSingle(Combatant attacker, Attack attack, Combatant defender)
             {
-            Console.WriteLine($"{attacker.name} uses {attack.name} on {defender.name}!");
+            string attackMsg = $"{attacker.name} uses {attack.name} on {defender.name}!";
+            ui.AddToLog(attackMsg);
+            ui.RenderCombatScreen(player, combatants);
             Thread.Sleep(400);
             
             foreach (var effect in attack.effects)
             {
-            if (effect.targetType == "allEnemies") continue; // skip AoE-flagged effects in single-target
+            if (effect.targetType == "allEnemies") continue;
             
             if (effect.type == "damage")
             {
@@ -267,19 +198,21 @@ public class CombatManager
             int dmg = ComputeDamage(attacker, defender, effect.value, out dodged, out crit, out stunInflicted, out int rawBeforeArmor, out int armorApplied, out double mult);
             if (dodged)
             {
-            Console.WriteLine($"{defender.name} dodged the attack!");
+            ui.AddToLog($"{defender.name} dodged the attack!");
+            ui.RenderCombatScreen(player, combatants);
             Thread.Sleep(350);
             continue;
             }
             defender.HP -= dmg;
             int after = Math.Max(defender.HP, 0);
-            Console.WriteLine($"{defender.name} takes {dmg} damage{(crit ? " (CRITICAL!)" : "")} ({before} -> {after})");
-            Console.WriteLine($"  Armor applied: base {effect.value} x {mult:0.##} = {rawBeforeArmor}, armor {armorApplied} -> {dmg}");
+            ui.AddToLog($"{defender.name} takes {dmg} damage{(crit ? " (CRIT!)" : "")} ({before} -> {after})");
+            ui.RenderCombatScreen(player, combatants);
             Thread.Sleep(350);
             if (stunInflicted)
             {
             stunnedTurns[defender] = Math.Max(stunnedTurns.ContainsKey(defender) ? stunnedTurns[defender] : 0, 1);
-            Console.WriteLine($"{defender.name} is stunned!");
+            ui.AddToLog($"{defender.name} is stunned!");
+            ui.RenderCombatScreen(player, combatants);
             Thread.Sleep(350);
             }
             }
@@ -290,7 +223,8 @@ public class CombatManager
             int max = target.maxHP > 0 ? target.maxHP : int.MaxValue;
             target.HP = Math.Min(before + effect.value, max);
             int healed = target.HP - before;
-            Console.WriteLine($"{target.name} heals {healed} ({before} -> {target.HP})");
+            ui.AddToLog($"{target.name} heals {healed} HP ({before} -> {target.HP})");
+            ui.RenderCombatScreen(player, combatants);
             Thread.Sleep(350);
             }
             else
@@ -299,7 +233,8 @@ public class CombatManager
             effect.Apply(attacker, defender);
             string sign = effect.value >= 0 ? "+" : "";
             string dur = effect.duration > 0 ? $" for {effect.duration} turns" : "";
-            Console.WriteLine($"{target.name}: {effect.type} {sign}{effect.value}{dur}");
+            ui.AddToLog($"{target.name}: {effect.type} {sign}{effect.value}{dur}");
+            ui.RenderCombatScreen(player, combatants);
             Thread.Sleep(300);
             }
             }
@@ -307,7 +242,8 @@ public class CombatManager
             
             private void ExecuteAttackAoE(Combatant attacker, Attack attack, List<Combatant> defenders)
             {
-            Console.WriteLine($"{attacker.name} uses {attack.name} on ALL enemies!");
+            ui.AddToLog($"{attacker.name} uses {attack.name} on ALL enemies!");
+            ui.RenderCombatScreen(player, combatants);
             Thread.Sleep(400);
             
             foreach (var effect in attack.effects)
@@ -323,19 +259,21 @@ public class CombatManager
             int dmg = ComputeDamage(attacker, d, effect.value, out dodged, out crit, out stunInflicted, out int rawBeforeArmor, out int armorApplied, out double mult);
             if (dodged)
             {
-            Console.WriteLine($"{d.name} dodged the attack!");
+            ui.AddToLog($"{d.name} dodged the attack!");
+            ui.RenderCombatScreen(player, combatants);
             Thread.Sleep(250);
             continue;
             }
             d.HP -= dmg;
             int after = Math.Max(d.HP, 0);
-            Console.WriteLine($"{d.name} takes {dmg} damage{(crit ? " (CRITICAL!)" : "")} ({before} -> {after})");
-            Console.WriteLine($"  Armor applied: base {effect.value} x {mult:0.##} = {rawBeforeArmor}, armor {armorApplied} -> {dmg}");
+            ui.AddToLog($"{d.name} takes {dmg} damage{(crit ? " (CRIT!)" : "")} ({before} -> {after})");
+            ui.RenderCombatScreen(player, combatants);
             Thread.Sleep(250);
             if (stunInflicted)
             {
             stunnedTurns[d] = Math.Max(stunnedTurns.ContainsKey(d) ? stunnedTurns[d] : 0, 1);
-            Console.WriteLine($"{d.name} is stunned!");
+            ui.AddToLog($"{d.name} is stunned!");
+            ui.RenderCombatScreen(player, combatants);
             Thread.Sleep(250);
             }
             }
@@ -350,7 +288,8 @@ public class CombatManager
                 int max = d.maxHP > 0 ? d.maxHP : int.MaxValue;
                 d.HP = Math.Min(before + effect.value, max);
                 int healed = d.HP - before;
-                Console.WriteLine($"{d.name} heals {healed} ({before} -> {d.HP})");
+                ui.AddToLog($"{d.name} heals {healed} HP ({before} -> {d.HP})");
+                ui.RenderCombatScreen(player, combatants);
                 Thread.Sleep(250);
             }
             else
@@ -358,7 +297,8 @@ public class CombatManager
                 effect.Apply(attacker, d);
                 string sign = effect.value >= 0 ? "+" : "";
                 string dur = effect.duration > 0 ? $" for {effect.duration} turns" : "";
-                Console.WriteLine($"{d.name}: {effect.type} {sign}{effect.value}{dur}");
+                ui.AddToLog($"{d.name}: {effect.type} {sign}{effect.value}{dur}");
+                ui.RenderCombatScreen(player, combatants);
                 Thread.Sleep(250);
             }
             }
@@ -366,60 +306,22 @@ public class CombatManager
             }
             }
             
-            private void PrintStatus()
-            {
-            int playerAG = (int)Math.Min(100, Math.Round(player.ActionGauge / ActionThreshold * 100));
-            int pHP = Math.Max(player.HP, 0);
-            string playerStr = $"{player.name} (You) [{pHP}/{player.maxHP} | AG:{playerAG}%]";
-            if (enemies.Count > 0)
-            {
-            // Prefer the first alive enemy on the first line; otherwise show the first entry
-            int primaryIndex = enemies.FindIndex(en => en.IsAlive());
-            if (primaryIndex < 0) primaryIndex = 0;
-            var primary = enemies[primaryIndex];
-            var tag0 = primary.IsAlive() ? "" : " (dead)";
-            int e0AG = (int)Math.Min(100, Math.Round(primary.ActionGauge / ActionThreshold * 100));
-            int e0HP = Math.Max(primary.HP, 0);
-
-            int baseColumnStart = 35;
-            int padding = Math.Max(7, baseColumnStart - playerStr.Length);
-            string spaces = new string(' ', padding);
-
-            Console.WriteLine($"{playerStr}{spaces}{primary.name}{tag0} [{e0HP}/{primary.maxHP} | AG:{e0AG}%]");
-            for (int i = 0; i < enemies.Count; i++)
-            {
-            if (i == primaryIndex) continue;
-            var e = enemies[i];
-            var tag = e.IsAlive() ? "" : " (dead)";
-            int ag = (int)Math.Min(100, Math.Round(e.ActionGauge / ActionThreshold * 100));
-            int eHP = Math.Max(e.HP, 0);
-            spaces = new string(' ', padding + playerStr.Length);
-            Console.WriteLine($"{spaces}{e.name}{tag} [{eHP}/{e.maxHP} | AG:{ag}%]");
-            }
-            }
-            else
-            {
-            Console.WriteLine(playerStr);
-            }
-            }
-
+            
         private void TakeTurn(Combatant actor)
         {
-            Console.Clear();
             actor.ActionGauge -= ActionThreshold;
             if (actor.ActionGauge < 0) actor.ActionGauge = 0;
             if (!actor.IsAlive()) return;
 
-            // Show current status
-            PrintStatus();
-            Console.WriteLine();
+            ui.RenderCombatScreen(player, combatants);
 
             // Stun check
             if (stunnedTurns.TryGetValue(actor, out int stunLeft) && stunLeft > 0)
             {
-                Console.WriteLine($"\n{actor.name} is stunned and cannot act this turn!");
+                ui.AddToLog($"{actor.name} is stunned and cannot act!");
+                ui.RenderCombatScreen(player, combatants);
                 stunnedTurns[actor] = stunLeft - 1;
-                Thread.Sleep(600);
+                Thread.Sleep(800);
                 return;
             }
 
@@ -428,22 +330,31 @@ public class CombatManager
                 var moves = player.equippedAttacks.Where(a => a != null).ToList();
                 if (moves.Count == 0)
                 {
-                    Console.WriteLine($"{player.name} has no moves equipped and skips the turn.");
+                    ui.AddToLog($"{player.name} has no moves equipped and skips turn.");
+                    ui.RenderCombatScreen(player, combatants);
+                    Thread.Sleep(800);
                     return;
                 }
 
-                Console.WriteLine("\n--- Your Turn ---");
+                // Display move selection in main area
+                ui.ClearMainArea();
+                ui.WriteInMainArea(0, "--- Your Turn ---");
+                ui.WriteInMainArea(1, "");
                 for (int i = 0; i < moves.Count; i++)
                 {
-                    Console.WriteLine($"{i + 1}. {moves[i].name} - {moves[i].GetDescription()}");
+                    ui.WriteInMainArea(2 + i, $"{i + 1}. {moves[i].name} - {moves[i].GetDescription()}");
                 }
+                ui.WriteInMainArea(2 + moves.Count + 1, "");
+                ui.SetCursorInMainArea(2 + moves.Count + 2);
+                Console.Write("Choose a move: ");
+
                 int choice = -1;
                 while (true)
                 {
-                    Console.Write("Choose a move: ");
                     if (int.TryParse(Console.ReadLine(), out choice) && choice >= 1 && choice <= moves.Count)
                         break;
-                    Console.WriteLine("Invalid choice. Please enter a valid move number.");
+                    ui.SetCursorInMainArea(2 + moves.Count + 3);
+                    Console.Write("Invalid choice. Try again: ");
                 }
                 var chosen = moves[choice - 1];
 
@@ -451,30 +362,33 @@ public class CombatManager
                 if (isAoE)
                 {
                     var allEnemies = enemies.Cast<Combatant>().ToList();
-                    Console.WriteLine();
                     ExecuteAttackAoE(player, chosen, allEnemies);
-                    Console.WriteLine();
                 }
                 else
                 {
+                    // Target selection
+                    ui.ClearMainArea();
+                    ui.WriteInMainArea(0, "Choose a target:");
+                    ui.WriteInMainArea(1, "");
+                    for (int i = 0; i < enemies.Count; i++)
+                    {
+                        var tag = enemies[i].IsAlive() ? "" : " (dead)";
+                        ui.WriteInMainArea(2 + i, $"{i + 1}. {enemies[i].name}{tag} [{enemies[i].HP}/{enemies[i].maxHP}]");
+                    }
+                    ui.WriteInMainArea(2 + enemies.Count + 1, "");
+                    ui.SetCursorInMainArea(2 + enemies.Count + 2);
+                    Console.Write("Target #: ");
+
                     while (true)
                     {
-                        Console.WriteLine("Choose a target:");
-                        for (int i = 0; i < enemies.Count; i++)
-                        {
-                            var tag = enemies[i].IsAlive() ? "" : " (dead)";
-                            Console.WriteLine($"{i + 1}. {enemies[i].name}{tag} [{enemies[i].HP}/{enemies[i].maxHP}]");
-                        }
-                        Console.Write("Target #: ");
                         if (!int.TryParse(Console.ReadLine(), out int t) || t < 1 || t > enemies.Count)
                         {
-                            Console.WriteLine("Invalid target. Please enter a valid target number.");
+                            ui.SetCursorInMainArea(2 + enemies.Count + 3);
+                            Console.Write("Invalid. Try again: ");
                             continue;
                         }
                         var target = enemies[t - 1];
-                        Console.WriteLine();
                         ExecuteAttackSingle(player, chosen, target);
-                        Console.WriteLine();
                         break;
                     }
                 }
@@ -482,33 +396,27 @@ public class CombatManager
             else
             {
                 var enemy = (Enemy)actor;
-                Console.WriteLine($"\n--- {enemy.name}'s Turn ---");
+                ui.ClearMainArea();
+                ui.WriteInMainArea(0, $"--- {enemy.name}'s Turn ---");
+                ui.RenderCombatScreen(player, combatants);
+                Thread.Sleep(500);
+
                 if (enemy.attacks == null || enemy.attacks.Count == 0)
                 {
-                    Console.WriteLine($"{enemy.name} hesitates and does nothing.");
+                    ui.AddToLog($"{enemy.name} hesitates and does nothing.");
+                    ui.RenderCombatScreen(player, combatants);
+                    Thread.Sleep(800);
                     return;
                 }
                 var chosen = enemy.attacks[rng.Next(enemy.attacks.Count)];
-                bool isAoE = chosen.effects.Any(e => e.targetType == "allEnemies");
-                if (isAoE)
-                {
-                    Console.WriteLine();
-                    ExecuteAttackSingle(enemy, chosen, player);
-                    Console.WriteLine();
-                }
-                else
-                {
-                    Console.WriteLine();
-                    ExecuteAttackSingle(enemy, chosen, player);
-                    Console.WriteLine();
-                }
-                            }
+                ExecuteAttackSingle(enemy, chosen, player);
+            }
 
-            PrintStatus();
-            Console.WriteLine("\nPress Enter to continue...");
+            ui.RenderCombatScreen(player, combatants);
+            ui.WriteInMainArea(20, "");
+            ui.WriteInMainArea(21, "Press Enter to continue...");
+            ui.SetCursorInMainArea(22);
             Console.ReadLine();
         }
     }
 
-
-    //private void TakeTurn(Combatant actor)
