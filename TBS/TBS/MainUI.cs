@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Game.Class
 {
-    public class MainUI
+    public static class MainUI
     {
         private static readonly object consoleLock = new();
-        private const int MaxLogLines = 5;
+        private static int mainAreaCurrentLine = 0;
 
         // Console dimensions
         private const int ConsoleWidth = 120;
@@ -45,7 +45,7 @@ namespace Game.Class
         const uint SWP_NOZORDER = 0x0004;
         const uint SWP_FRAMECHANGED = 0x0020;
         
-        public void InitializeConsole()
+        public static void InitializeConsole()
         {
             try
             {
@@ -73,7 +73,7 @@ namespace Game.Class
         
 
 
-        public void RenderMainMenuScreen(Player player, string mainAreaContent = "")
+        public static void RenderMainMenuScreen(Player player, string mainAreaContent = "")
         {
             lock (consoleLock)
             {
@@ -88,7 +88,7 @@ namespace Game.Class
             }
         }
 
-        private void DrawPlayerPanel(Player player)
+        private static void DrawPlayerPanel(Player player)
         {
             int x = MainAreaWidth + 1;
             int y = 0;
@@ -102,7 +102,7 @@ namespace Game.Class
             DrawHealthBar(player.HP, player.maxHP, RightPanelWidth - 4);
         }
 
-        private void DrawMiniMapPanel()
+        private static void DrawMiniMapPanel()
         {
             int x = MainAreaWidth + 1;
             int y = PlayerPanelHeight + 1;
@@ -120,9 +120,9 @@ namespace Game.Class
 
         }
 
-        private void DrawMainArea(string content)
+        private static void DrawMainArea(string content)
         {
-            DrawBox(0, 0, MainAreaWidth, ConsoleHeight - 2, "Combat");
+            DrawBox(0, 0, MainAreaWidth, ConsoleHeight - 2, "Main");
 
             if (!string.IsNullOrEmpty(content))
             {
@@ -140,7 +140,7 @@ namespace Game.Class
             }
         }
 
-        private void DrawHealthBar(int current, int max, int width)
+        private static void DrawHealthBar(int current, int max, int width)
         {
             int barWidth = width - 15;
             int filled = max > 0 ? (int)((double)current / max * barWidth) : 0;
@@ -152,7 +152,7 @@ namespace Game.Class
             Console.Write($" {Math.Max(0, current)}/{max}");
         }
 
-        private void DrawBox(int x, int y, int w, int h, string? title = null)
+        private static void DrawBox(int x, int y, int w, int h, string? title = null)
         {
             Console.SetCursorPosition(x, y);
             Console.Write("┌" + new string('─', w - 2) + "┐");
@@ -173,7 +173,7 @@ namespace Game.Class
             Console.Write("└" + new string('─', w - 2) + "┘");
         }
 
-        public void SetCursorInMainArea(int row, int col = 2)
+        public static void SetCursorInMainArea(int row, int col = 2)
         {
             lock (consoleLock)
             {
@@ -181,20 +181,33 @@ namespace Game.Class
             }
         }
 
-        public void WriteInMainArea(int row, string text, int col = 2)
+        public static void WriteInMainArea(string text, int col = 2)
         {
             lock (consoleLock)
             {
-                Console.SetCursorPosition(col, row + 2);
-                if (text.Length > MainAreaWidth - 4)
+                var lines = text.Split('\n');
+                int currentLineOffset = 0;
+
+                foreach (var line in lines)
                 {
-                    text = text.Substring(0, MainAreaWidth - 4);
+                    int row = mainAreaCurrentLine + currentLineOffset;
+
+                    Console.SetCursorPosition(2, row + 2);
+
+                    // The .Trim() is important to remove any lingering carriage return
+                    string cleanLine = line.Trim();
+
+                    // Write the line and pad it to clear any previous text
+                    Console.Write(cleanLine.PadRight(MainAreaWidth - 4));
+
+                    // Move to the next line for the next piece of the string
+                    currentLineOffset++;
                 }
-                Console.Write(text.PadRight(MainAreaWidth - 4));
+                mainAreaCurrentLine += currentLineOffset;
             }
         }
 
-        public void ClearMainArea()
+        public static void ClearMainArea()
         {
             lock (consoleLock)
             {
@@ -204,6 +217,7 @@ namespace Game.Class
                     Console.SetCursorPosition(2, 2 + i);
                     Console.Write(new string(' ', MainAreaWidth - 4));
                 }
+                mainAreaCurrentLine = 0;
             }
         }
     }

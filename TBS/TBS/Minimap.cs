@@ -34,15 +34,15 @@ public static class Minimap
             return s;
         }
 
-        Console.WriteLine(
+        MainUI.WriteInMainArea(
             $"{Cell(SafeLocationName(travelLocations, 1)),-10} | {Cell(SafeLocationName(travelLocations, 2)),-10} | {Cell(SafeLocationName(travelLocations, 3)),-10}"
         );
-        Console.WriteLine(new string('-', 34));
-        Console.WriteLine(
+        MainUI.WriteInMainArea(new string('-', 34));
+        MainUI.WriteInMainArea(
             $"{Cell(SafeLocationName(travelLocations, 4)),-10} | {"current",-10} | {Cell(SafeLocationName(travelLocations, 6)),-10}"
         );
-        Console.WriteLine(new string('-', 34));
-        Console.WriteLine(
+        MainUI.WriteInMainArea(new string('-', 34));
+        MainUI.WriteInMainArea(
             $"{Cell(SafeLocationName(travelLocations, 7)),-10} | {Cell(SafeLocationName(travelLocations, 8)),-10} | {Cell(SafeLocationName(travelLocations, 9)),-10}"
         );
 
