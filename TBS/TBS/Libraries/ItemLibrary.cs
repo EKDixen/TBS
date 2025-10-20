@@ -91,7 +91,7 @@
     };
     public static Item bigHealthPotion = new Item("Big Health Potion", "+50 Health", 4, ItemType.consumable)
     {
-        stats = { ["HP"] = 20},
+        stats = { ["HP"] = 50},
         duration = 0,
         details = "advanced health potion, drink it and you regain a major amount of health.. great for staying alive"
     };
