@@ -27,15 +27,26 @@ public static class Minimap
                 travelLocations[1] = i;
         }
 
+        string Cell(string s, int maxLength = 10)
+        {
+            if (s.Length > maxLength)
+                return s.Substring(0, maxLength - 2) + ".."; 
+            return s;
+        }
+
+        // Example printing the minimap
         Console.WriteLine(
-            $"{SafeLocationName(travelLocations, 1)} - {SafeLocationName(travelLocations, 2)} - {SafeLocationName(travelLocations, 3)}"
+            $"{Cell(SafeLocationName(travelLocations, 1)),-10} | {Cell(SafeLocationName(travelLocations, 2)),-10} | {Cell(SafeLocationName(travelLocations, 3)),-10}"
         );
+        Console.WriteLine(new string('-', 34));
         Console.WriteLine(
-            $"{SafeLocationName(travelLocations, 4)} - current - {SafeLocationName(travelLocations, 6)}"
+            $"{Cell(SafeLocationName(travelLocations, 4)),-10} | {"current",-10} | {Cell(SafeLocationName(travelLocations, 6)),-10}"
         );
+        Console.WriteLine(new string('-', 34));
         Console.WriteLine(
-            $"{SafeLocationName(travelLocations, 7)} - {SafeLocationName(travelLocations, 8)} - {SafeLocationName(travelLocations, 9)}"
+            $"{Cell(SafeLocationName(travelLocations, 7)),-10} | {Cell(SafeLocationName(travelLocations, 8)),-10} | {Cell(SafeLocationName(travelLocations, 9)),-10}"
         );
+
 
         static string SafeLocationName(List<int?> travelLocations, int travelIndex)
         {
