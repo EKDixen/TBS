@@ -152,7 +152,7 @@ class JourneyManager
                 }
             }
         }
-        Minimap.DisplayMinimap();
+        //Minimap.DisplayMinimap();
         Program.MainMenu(); 
     }
     public void Explore()
@@ -204,7 +204,7 @@ class JourneyManager
         {
             Console.WriteLine("\ncant explore from here");
         }
-        Minimap.DisplayMinimap();
+        //Minimap.DisplayMinimap();
         Program.MainMenu(); //remove when encounters are done
     }
     public void StartEncounter()

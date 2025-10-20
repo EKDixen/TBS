@@ -34,7 +34,6 @@ public static class Minimap
             return s;
         }
 
-        // Example printing the minimap
         Console.WriteLine(
             $"{Cell(SafeLocationName(travelLocations, 1)),-10} | {Cell(SafeLocationName(travelLocations, 2)),-10} | {Cell(SafeLocationName(travelLocations, 3)),-10}"
         );

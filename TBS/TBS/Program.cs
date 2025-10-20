@@ -11,7 +11,8 @@ namespace Game.Class
         static Settings settings;
         static AttackManager atkManager;
         static Random rng = new Random();
-        
+        private MainUI mainUI;
+
         public static void Main(string[] args)
         {
             // Lock console window at startup (prevents resizing, which fucks up the UI)
@@ -66,10 +67,15 @@ namespace Game.Class
             Inventory = new Inventory(player);
             settings = new Settings();
             settings.ChangeTextColor();
+            //mainUI = new MainUI();
         }
         
         public static void MainMenu()
         {
+            
+
+
+
             Console.WriteLine($"\nwhat do you wish to do? (type the number next to it) \nGo somewhere : 0 \nCheck Inventory : 1 \n" +
                 $"Check Moves : 2\ndo something here current location {player.currentLocation.name} : 3 \n" +
                 $"Check stats : 4 \nchange settings : 5 \n" +
