@@ -150,11 +150,17 @@ namespace Game.Class
 
         public static void ShowPlayerStats()
         {
-            MainUI.WriteInMainArea($"\n\nAccount: {player.name} \n\nLevel: {player.level} \nClass: {player.playerClass} \nHP: {player.HP}/{player.maxHP} \nDMG: {player.DMG} \nSpeed: {player.speed} \narmor: {player.armor}" +
+            MainUI.ClearMainArea();
+
+            MainUI.WriteInMainArea($"\n\nAccount Name: {player.name} \n\nLevel: {player.level} \nClass: {player.playerClass} \nHP: {player.HP}/{player.maxHP} \nDMG: {player.DMG} \nSpeed: {player.speed} \narmor: {player.armor}" +
                 $"\nDodge: {player.dodge} \nDodgeNegation: {player.dodgeNegation} \nCrit-chance: {player.critChance} \nCrit-Damage: {player.critDamage} \nStun: {player.stun}" +
                 $"\nStunNegation: {player.stunNegation}\n\n");
 
             Thread.Sleep(1000);
+            MainUI.WriteInMainArea("press Enter to continue");
+
+            Console.ReadLine();
+
             MainMenu();
         }
 
