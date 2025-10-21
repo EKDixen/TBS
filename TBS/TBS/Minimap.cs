@@ -4,7 +4,7 @@ public static class Minimap
 {
     public static void DisplayMinimap(int startX,int startY, int maxContentWidth)
     {
-        List<int?> travelLocations = new List<int?> { null, null, null, null, null, null, null, null, null };
+        List<int?> travelLocations = new List<int?> { null, null, null, null, null, null, null, null, null, null };
 
         for (int i = 0; i < LocationLibrary.locations.Count; i++)
         {

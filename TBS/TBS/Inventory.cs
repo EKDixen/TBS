@@ -161,7 +161,7 @@ public class Inventory
             UnequipItem(equippedSlot);
             RemoveEffects(Titem);
         }
-        if (Titem.amount == 1) player.ownedItems.Remove(Titem);
+        if (Titem.amount <= 1) player.ownedItems.Remove(Titem);
         else Titem.amount--;
     }
     public void ApplyEffects(Item Titem)
