@@ -137,16 +137,17 @@ public class Inventory
             break;
         }
     }
-    public void AddItem(Item Titem) 
+    public void AddItem(Item Titem, int tAmount) 
     {
         if (player.ownedItems.Contains(Titem))
         {
             Item existingItem = player.ownedItems.First(i => i.Equals(Titem));
-            existingItem.amount += Titem.amount;
+            existingItem.amount += tAmount;
             if (Titem.type == ItemType.Artifact) ApplyEffects(Titem);
         }
         else
         {
+            Titem.amount = tAmount;
             player.ownedItems.Add(Titem);
             if (Titem.type == ItemType.Artifact) ApplyEffects(Titem);
         }

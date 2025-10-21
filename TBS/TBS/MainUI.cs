@@ -186,7 +186,7 @@ namespace Game.Class
                 {
                     int row = mainAreaCurrentLine + currentLineOffset;
 
-                    Console.SetCursorPosition(2, row + 2);
+                    Console.SetCursorPosition(2, row + 1);
 
                     // The .Trim() is important to remove any lingering carriage return
                     string cleanLine = line.Trim();
@@ -196,7 +196,7 @@ namespace Game.Class
 
                     // Move to the next line for the next piece of the string
                     currentLineOffset++;
-                    Console.SetCursorPosition(2, row + 3);
+                    Console.SetCursorPosition(2, row + 2);
                 }
 
                 mainAreaCurrentLine += currentLineOffset;
@@ -210,7 +210,7 @@ namespace Game.Class
                 int maxLines = ConsoleHeight - 4;
                 for (int i = 0; i < maxLines; i++)
                 {
-                    Console.SetCursorPosition(2, 2 + i);
+                    Console.SetCursorPosition(2, 1 + i);
                     Console.Write(new string(' ', MainAreaWidth - 4));
                 }
                 mainAreaCurrentLine = 0;

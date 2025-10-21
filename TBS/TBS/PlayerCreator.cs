@@ -19,7 +19,7 @@
         atkManager.EquipAttack(AttackLibrary.ThrowHands, 1);
         Inventory inv = new Inventory(newPlayer);
 
-        inv.AddItem(ItemLibrary.rock);
+        inv.AddItem(ItemLibrary.rock,1);
         players.Add(newPlayer);
         return newPlayer;
     }

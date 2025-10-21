@@ -171,7 +171,7 @@ public class SubLocation
         {
             if ((Program.player.money - shopItems[input].item.value * shopItems[input].quantity) >= 0)
             {
-                inventory.AddItem(shopItems[input].item);
+                inventory.AddItem(shopItems[input].item, shopItems[input].quantity);
                 Program.player.money -= shopItems[input].item.value * shopItems[input].quantity;
             }
             else
@@ -293,7 +293,7 @@ public class SubLocation
         else
         {
             bankItems.Remove(Program.player.ownedItems[input]);
-            inventory.AddItem(Program.player.ownedItems[input]);
+            inventory.AddItem(Program.player.ownedItems[input], Program.player.ownedItems[input].amount);
         }
         Program.SavePlayer();
         Program.MainMenu();
@@ -302,7 +302,7 @@ public class SubLocation
     //casino --------------------------------
     void BlackjackLogic()
     {
-        MainUI.WriteInMainArea($"\nhow much do you want to bet?  current cash: {Program.player.money} \nthe max bet is {casinoMaxBet}");
+        MainUI.WriteInMainArea($"how much do you want to bet?  current cash: {Program.player.money} \nthe max bet is {casinoMaxBet}");
         int.TryParse(Console.ReadLine(), out int bet);
         if (bet == null || bet > casinoMaxBet || bet < 0)
         {
@@ -324,10 +324,14 @@ public class SubLocation
         int dealer1 = rand.Next(1, 14);
         int dealer1Suit = rand.Next(1, 4);
 
-        Console.Write($"\n\ndealer shows a");
-        if (dealer1 == 1) Console.Write($"n ace of {suits[dealer1Suit]} (worth 11 and 1)");
-        else if (dealer1 < 11) Console.Write($" {dealer1} of {suits[dealer1Suit]}");
-        else Console.Write($" 10 of {suits[dealer1Suit]}");
+
+        string dealString = "\ndealer shows a";
+        
+        if (dealer1 == 1) dealString += $"n ace of {suits[dealer1Suit]} (worth 11 and 1)";
+        else if (dealer1 < 11) dealString += $" {dealer1} of {suits[dealer1Suit]}";
+        else dealString += $" 10 of {suits[dealer1Suit]}";
+
+        MainUI.WriteInMainArea(dealString);
 
 
         int player1 = rand.Next(1, 14);
@@ -336,15 +340,20 @@ public class SubLocation
         int player2 = rand.Next(1, 14);
         int player2Suit = rand.Next(1, 4);
 
-        Console.Write($"\n\nyou have a");
-        if (player1 == 1) Console.Write($"n ace of {suits[player1Suit]} (worth 11 and 1)");
-        else if (player1 < 11) Console.Write($" {player1} of {suits[player1Suit]}");
-        else Console.Write($" 10 of {suits[player1Suit]}");
+        string playString = $"\nyou have a";
 
-        Console.Write($"\nand a");
-        if (player2 == 1) Console.Write($"n ace of {suits[player2Suit]} (worth 11 and 1)");
-        else if (player2 < 11) Console.Write($" {player2} of {suits[player2Suit]}");
-        else Console.Write($" 10 of {suits[player2Suit]}");
+        if (player1 == 1) playString += $"n ace of {suits[player1Suit]} (worth 11 and 1)";
+        else if (player1 < 11) playString +=($" {player1} of {suits[player1Suit]}");
+        else playString +=($" 10 of {suits[player1Suit]}");
+
+        MainUI.WriteInMainArea(playString);
+
+        playString =$"and a";
+        if (player2 == 1) playString += $"n ace of {suits[player2Suit]} (worth 11 and 1)";
+        else if (player2 < 11) playString += ($" {player2} of {suits[player2Suit]}");
+        else playString += ($" 10 of {suits[player2Suit]}");
+
+        MainUI.WriteInMainArea(playString);
 
         int playerValue = 0;
         int dealerValue = 0;
@@ -358,7 +367,7 @@ public class SubLocation
 
         int player3 = 0;
 
-        MainUI.WriteInMainArea($"\nyour card sum: {playerValue}");
+        MainUI.WriteInMainArea($"your card sum: {playerValue}");
 
         while (true)
         {
@@ -390,16 +399,18 @@ public class SubLocation
                 player3 = rand.Next(1, 14);
                 int player3Suit = rand.Next(1, 4);
 
-                Console.Write($"\nyou get a");
-                if (player3 == 1) Console.Write($"n ace of {suits[player3Suit]} (worth 11 and 1)");
-                else if (player3 < 11) Console.Write($" {player3} of {suits[player3Suit]}");
-                else Console.Write($" 10 of {suits[player3Suit]}");
+                playString=($"\nyou get a");
+                if (player3 == 1) playString += ($"n ace of {suits[player3Suit]} (worth 11 and 1)");
+                else if (player3 < 11) playString += ($" {player3} of {suits[player3Suit]}");
+                else playString += ($" 10 of {suits[player3Suit]}");
+
+                MainUI.WriteInMainArea(playString);
 
                 if (player3 > 10) playerValue += 10;
                 else if (player3 == 1 && playerValue + 11 <= 21) playerValue += 11;
                 else { playerValue += player3; player3 = 0; }
 
-                MainUI.WriteInMainArea($"\nyour card sum: {playerValue}");
+                MainUI.WriteInMainArea($"your card sum: {playerValue}");
                 continue;
             }
             else if (input2 == 2)
@@ -407,12 +418,14 @@ public class SubLocation
                 int dealer2 = rand.Next(1, 14);
                 int dealer2Suit = rand.Next(1, 4);
 
-                Thread.Sleep(200);
+                Thread.Sleep(700);
 
-                Console.Write($"\ndealer shows a");
-                if (dealer2 == 1) Console.Write($"n ace of {suits[dealer2Suit]} (worth 11 and 1)");
-                else if (dealer2 < 11) Console.Write($" {dealer2} of {suits[dealer2Suit]}");
-                else Console.Write($" 10 of {suits[dealer2Suit]}");
+                dealString = ($"\ndealer shows a");
+                if (dealer2 == 1) dealString += ($"n ace of {suits[dealer2Suit]} (worth 11 and 1)");
+                else if (dealer2 < 11) dealString += ($" {dealer2} of {suits[dealer2Suit]}");
+                else dealString += ($" 10 of {suits[dealer2Suit]}");
+
+                MainUI.WriteInMainArea(dealString);
 
                 if (dealer1 > 10) dealerValue += 10;
                 else if (dealer1 == 1 && dealerValue + 11 <= 21) dealerValue += 11;
@@ -422,9 +435,9 @@ public class SubLocation
                 else if (dealer2 == 1 && dealerValue + 11 <= 21) dealerValue += 11;
                 else { dealerValue += dealer2; dealer2 = 0; }
 
-                Thread.Sleep(200);
+                Thread.Sleep(700);
 
-                MainUI.WriteInMainArea($"\ndealer card sum: {dealerValue}");
+                MainUI.WriteInMainArea($"dealer card sum: {dealerValue}");
                 while (dealerValue < 17)
                 {
                     
@@ -432,12 +445,14 @@ public class SubLocation
                     int dealer3 = rand.Next(1, 14);
                     int dealer3Suit = rand.Next(1, 4);
 
-                    Thread.Sleep(200);
+                    Thread.Sleep(700);
 
-                    Console.Write($"\ndealer shows a");
-                    if (dealer3 == 1) Console.Write($"n ace of {suits[dealer3Suit]} (worth 11 and 1)");
-                    else if (dealer3 < 11) Console.Write($" {dealer3} of {suits[dealer3Suit]}");
-                    else Console.Write($" 10 of {suits[dealer3Suit]}");
+                    dealString=($"\ndealer shows a");
+                    if (dealer3 == 1) dealString+=($"n ace of {suits[dealer3Suit]} (worth 11 and 1)");
+                    else if (dealer3 < 11) dealString+=($" {dealer3} of {suits[dealer3Suit]}");
+                    else dealString+=($" 10 of {suits[dealer3Suit]}");
+
+                    MainUI.WriteInMainArea(dealString);
 
                     if (dealer3 > 10) dealerValue += 10;
                     else if (dealer3 == 1 && dealerValue + 11 <= 21) dealerValue += 11;
@@ -449,8 +464,8 @@ public class SubLocation
                         if (dealer2 == 1) { dealerValue -= 10; dealer2 = 0; continue; }
                         if (dealer3 == 1) { dealerValue -= 10; dealer3 = 0; continue; }
                     }
-                    Thread.Sleep(200);
-                    MainUI.WriteInMainArea($"\ndealer card sum: {dealerValue}");
+                    Thread.Sleep(500);
+                    MainUI.WriteInMainArea($"dealer card sum: {dealerValue}");
                 }
 
                 break;
