@@ -10,7 +10,7 @@ namespace Game.Class
     {
         private static readonly object consoleLock = new();
         private List<string> combatLog = new List<string>();
-        private const int MaxLogLines = 5;
+        private const int MaxLogLines = 8;
 
         // Console dimensions
         private const int ConsoleWidth = 120;
@@ -20,7 +20,7 @@ namespace Game.Class
         private const int MainAreaWidth = 70;
         private const int RightPanelWidth = ConsoleWidth - MainAreaWidth - 1;
         private const int PlayerPanelHeight = 5;
-        private const int LogPanelHeight = 8;
+        private const int LogPanelHeight = 15;
         private const int TurnOrderHeight = ConsoleHeight - PlayerPanelHeight - LogPanelHeight - 3;
 
         //Windows API

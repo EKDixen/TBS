@@ -28,7 +28,7 @@ public static class Minimap
         }
 
 
-        int cellWidth = (maxContentWidth - 2) / 3; // -2 for the two separators "|"
+        int cellWidth = (maxContentWidth -3) / 3; // -2 for the two separators "|"
 
         string Cell(string s, int maxLength)
         {
@@ -50,7 +50,7 @@ public static class Minimap
 
         // --- SEPARATOR ---
         Console.SetCursorPosition(startX, currentY);
-        Console.Write(new string('-', maxContentWidth));
+        Console.Write(new string('-', maxContentWidth+2));
         currentY++;
 
         // --- LINE 2 (Current Location) ---
@@ -64,7 +64,7 @@ public static class Minimap
 
         // --- SEPARATOR ---
         Console.SetCursorPosition(startX, currentY);
-        Console.Write(new string('-', maxContentWidth));
+        Console.Write(new string('-', maxContentWidth+2));
         currentY++;
 
         // --- LINE 3 ---

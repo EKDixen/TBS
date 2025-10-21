@@ -150,32 +150,32 @@ public class CombatManager
             
             private int ComputeDamage(Combatant attacker, Combatant defender, int baseValue, out bool dodged, out bool crit, out bool stunnedApplied, out int rawBeforeArmor, out int armorApplied, out double mult)
             {
-            dodged = false; crit = false; stunnedApplied = false;
-            rawBeforeArmor = 0; armorApplied = 0; mult = 1.0;
+                dodged = false; crit = false; stunnedApplied = false;
+                rawBeforeArmor = 0; armorApplied = 0; mult = 1.0;
             
-            int dodgeChance = Math.Clamp(defender.dodge - attacker.dodgeNegation, 0, 100);
-            if (RollChance(dodgeChance))
-            {
-            dodged = true;
-            return 0;
-            }
+                int dodgeChance = Math.Clamp(defender.dodge - attacker.dodgeNegation, 0, 100);
+                if (RollChance(dodgeChance))
+                {
+                    dodged = true;
+                    return 0;
+                }
             
-            int critChance = Math.Clamp(attacker.critChance, 0, 100);
-            if (RollChance(critChance))
-            {
-            crit = true;
-            mult += attacker.critDamage / 100.0;
-            }
+                int critChance = Math.Clamp(attacker.critChance, 0, 100);
+                if (RollChance(critChance))
+                {
+                    crit = true;
+                    mult += attacker.critDamage / 100.0;
+                }
             
-            rawBeforeArmor = (int)Math.Round(baseValue * mult);
-            armorApplied = Math.Max(0, defender.armor);
-            int dmg = Math.Max(0, rawBeforeArmor - armorApplied);
+                rawBeforeArmor = (int)Math.Round(baseValue * mult);
+                armorApplied = Math.Max(0, defender.armor);
+                int dmg = Math.Max(0, rawBeforeArmor - armorApplied);
             
-            int stunChance = Math.Clamp(attacker.stun - defender.stunNegation, 0, 100);
-            if (stunChance > 0 && RollChance(stunChance))
-            {
-            stunnedApplied = true;
-            }
+                int stunChance = Math.Clamp(attacker.stun - defender.stunNegation, 0, 100);
+                if (stunChance > 0 && RollChance(stunChance))
+                {
+                    stunnedApplied = true;
+                }
             
             return dmg;
             }
@@ -412,11 +412,13 @@ public class CombatManager
                 ExecuteAttackSingle(enemy, chosen, player);
             }
 
+            Thread.Sleep(300);
             ui.RenderCombatScreen(player, combatants);
-            ui.WriteInMainArea(20, "");
-            ui.WriteInMainArea(21, "Press Enter to continue...");
+            ui.WriteInMainArea(12, "");
+            ui.WriteInMainArea(13, "Press Enter to continue...");
             ui.SetCursorInMainArea(22);
             Console.ReadLine();
+            ui.ClearLog();
         }
     }
 

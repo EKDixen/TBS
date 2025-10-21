@@ -177,14 +177,15 @@ public class SubLocation
             else
             {
                 MainUI.ClearMainArea();
-                MainUI.WriteInMainArea("you dont have enough money for that");
-                Program.MainMenu();
+                MainUI.WriteInMainArea("\nyou dont have enough money for that");
+                Thread.Sleep(1000);
+                DoSubLocation();
                 return;
             }
 
         }
         Program.SavePlayer();
-        Program.MainMenu();
+        DoSubLocation();
     }
 
     //bank ----------------------------------

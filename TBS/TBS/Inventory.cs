@@ -25,7 +25,7 @@ public class Inventory
                 switch (j)
                 {
                     case 0: place = "Head"; break;
-                    case 1: place = "Torso";break;
+                    case 1: place = "Body";break;
                     case 2: place = "Legs"; break;
                     case 3: place = "Feet"; break;
                 }

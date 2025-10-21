@@ -86,6 +86,12 @@ namespace Game.Class
 
             MainUI.RenderMainMenuScreen(player);
 
+            if(player.exp >= player.level * 100)
+            {
+                MainUI.WriteInMainArea(" \nYOU LEVEL UP!!!!! \n ");
+                player.level++;
+            }
+
             db.SavePlayer(player);
 
             MainUI.WriteInMainArea("What do you wish to do? (type the number next to it)");
@@ -180,19 +186,6 @@ namespace Game.Class
         {
             db.SavePlayer(player);
         }
-
-        /*
-        public void LoadKnownLocations(List<string> savedNames)
-        {
-            player.knownLocations.Clear();
-
-            foreach (var name in savedNames)
-            {
-                var loc = LocationLibrary.Get(name);
-                if (loc != null)
-                    LocationLibrary.Add(loc);
-            }
-        }*/
 
         private static Enemy CloneEnemy(Enemy e)
         {
