@@ -9,7 +9,6 @@ namespace Game.Class
         static JourneyManager journeyManager = new JourneyManager();
         static Inventory Inventory;
         static AttackManager atkManager;
-        static Random rng = new Random();
 
         public static void Main(string[] args)
         {
@@ -37,11 +36,24 @@ namespace Game.Class
 
                     if (player != null)
                     {
+                        if (player.isDead)
+                        {
+                            ShowDeadCharacterScreen(player);
+                            continue;
+                        }
+                        
                         Console.WriteLine($"Welcome back, {player.name} (Level {player.level})!");
                         break;
                     }
                     else
                     {
+                        var deadPlayer = db.LoadDeadPlayer(username);
+                        if (deadPlayer != null && deadPlayer.password == password)
+                        {
+                            ShowDeadCharacterScreen(deadPlayer);
+                            continue;
+                        }
+                        
                         Console.WriteLine("\nInvalid username or password.");
                         continue;
                     }
@@ -81,7 +93,7 @@ namespace Game.Class
         public static void MainMenu()
         {
 
-            Console.Clear(); //do not remove 
+            Console.Clear(); //do not remove (ima remove it) 
             MainUI.ClearMainArea();
 
             MainUI.RenderMainMenuScreen(player);
@@ -101,14 +113,10 @@ namespace Game.Class
             MainUI.WriteInMainArea("Check Moves : 2");
             MainUI.WriteInMainArea($"Do something at {player.currentLocation.name} : 3");
             MainUI.WriteInMainArea("Check stats : 4");
-            MainUI.WriteInMainArea(""); 
-            MainUI.WriteInMainArea("Start test combat (1v1) : 5");
-            MainUI.WriteInMainArea("Start test combat (1v2) : 6");
-            MainUI.WriteInMainArea("Start zone encounter : 7");
 
-            if (int.TryParse(Console.ReadLine(), out int input) == false || input > 7 || input < 0)
+            if (int.TryParse(Console.ReadLine(), out int input) == false || input > 4 || input < 0)
             {
-                MainUI.WriteInMainArea("\nyou gotta type 0, 1, 2, 3, 4, 5, 6 or 7");
+                MainUI.WriteInMainArea("\nyou gotta type 0, 1, 2, 3, or 4");
                 MainMenu();
                 return;
             }
@@ -159,9 +167,6 @@ namespace Game.Class
                 }
             }
             else if (input == 4) ShowPlayerStats();
-            else if (input == 5) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug) });
-            else if (input == 6) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug), CloneEnemy(EnemyLibrary.VampireSpawn) });
-            else if (input == 7) StartZoneEncounter(LocationLibrary.starterTown, LocationLibrary.mountain, 3);
 
             db.SavePlayer(player);
         }
@@ -187,67 +192,85 @@ namespace Game.Class
             db.SavePlayer(player);
         }
 
-        private static Enemy CloneEnemy(Enemy e)
+        public static void CheckPlayerDeath()
         {
-            var clone = new Enemy(e.name, e.level, e.exp, e.HP, e.DMG, e.speed, e.armor, e.dodge, e.dodgeNegation, e.critChance, e.critDamage, e.stun, e.stunNegation, e.money)
+            if (player != null && player.HP <= 0)
             {
-                maxHP = e.maxHP > 0 ? e.maxHP : e.HP,
-                attacks = e.attacks?.ToList() ?? new List<Attack>()
-            };
-            return clone;
+                ShowDeathScreen();
+            }
         }
 
-        private static void StartTestCombat(List<Enemy> testEnemies)
+        private static void ShowDeathScreen()
         {
-            var cm = new CombatManager(player, testEnemies);
-            cm.StartCombat();
-            MainUI.WriteInMainArea("\nReturning to main menu...\n");
-            MainMenu();
+            try
+            {
+                db.MarkPlayerAsDead(player);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving dead player: {ex.Message}");
+            }
+            
+            Console.Clear();
+            Console.CursorVisible = true;
+            
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("╔════════════════════════════════════════╗");
+            Console.WriteLine("║                                        ║");
+            Console.WriteLine("║          YOU HAVE DIED                 ║");
+            Console.WriteLine("║                                        ║");
+            Console.WriteLine("╚════════════════════════════════════════╝");
+            Console.ResetColor();
+            
+            Console.WriteLine("");
+            Console.WriteLine($"Character: {player.name}");
+            Console.WriteLine($"Level: {player.level}");
+            Console.WriteLine($"Class: {player.playerClass}");
+            Console.WriteLine("");
+            Console.WriteLine("Your character has died...");
+            Console.WriteLine("They have been moved to the realm of the dead.");
+            Console.WriteLine("");
+            Console.WriteLine("Press Enter to close the game...");
+            
+            try
+            {
+                Console.ReadLine();
+            }
+            catch { }
+            
+            player = null;
+            
+            Console.Clear();
+            Console.WriteLine("Game closing...");
+            Thread.Sleep(1000);
+            
+            // Close the game
+            Environment.Exit(0);
         }
 
-        private static void StartZoneEncounter(Location a, Location b, int count)
+        private static void ShowDeadCharacterScreen(Player deadPlayer)
         {
-            var combined = new Dictionary<Enemy, int>();
-            void addAll(Dictionary<Enemy,int> src)
-            {
-                if (src == null) return;
-                foreach (var kv in src)
-                {
-                    if (combined.ContainsKey(kv.Key)) combined[kv.Key] += kv.Value;
-                    else combined[kv.Key] = kv.Value;
-                }
-            }
-            addAll(a.possibleEnemy);
-            addAll(b.possibleEnemy);
-
-            if (combined.Count == 0)
-            {
-                MainUI.WriteInMainArea("No enemies in these zones.");
-                MainMenu();
-                return;
-            }
-
-            int total = combined.Values.Sum();
-            var picks = new List<Enemy>();
-            for (int i = 0; i < count; i++)
-            {
-                int r = rng.Next(0, total);
-                int accum = 0;
-                foreach (var kv in combined)
-                {
-                    accum += kv.Value;
-                    if (r < accum)
-                    {
-                        picks.Add(CloneEnemy(kv.Key));
-                        break;
-                    }
-                }
-            }
-
-            var cm = new CombatManager(player, picks);
-            cm.StartCombat();
-            MainUI.WriteInMainArea("\nReturning to main menu...\n");
-            MainMenu();
+            Console.Clear();
+            
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine("╔════════════════════════════════════════╗");
+            Console.WriteLine("║                                        ║");
+            Console.WriteLine("║       THIS CHARACTER IS DEAD           ║");
+            Console.WriteLine("║                                        ║");
+            Console.WriteLine("╚════════════════════════════════════════╝");
+            Console.ResetColor();
+            
+            Console.WriteLine("");
+            Console.WriteLine($"Character: {deadPlayer.name}");
+            Console.WriteLine($"Level: {deadPlayer.level}");
+            Console.WriteLine($"Class: {deadPlayer.playerClass}");
+            Console.WriteLine("");
+            Console.WriteLine("This character died and can no longer be played.");
+            Console.WriteLine("Their spirit lingers in the realm of the dead...");
+            Console.WriteLine("");
+            Console.WriteLine("Press Enter to return to login...");
+            
+            Console.ReadLine();
         }
     }
 }

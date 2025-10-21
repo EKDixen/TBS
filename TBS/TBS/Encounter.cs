@@ -6,12 +6,18 @@ public class Encounter
     public string Name;
     public bool IsEnemyEncounter;
     public string Description;
+    public List<Enemy> Enemies;
+    public Action<Player> OnEncounter;
+    public EncounterType Type;
 
-    public Encounter(string name, bool isEnemyEncounter, string description)
+    public Encounter(string name, bool isEnemyEncounter, string description, List<Enemy> enemies = null, Action<Player> onEncounter = null, EncounterType type = EncounterType.Event)
     {
         Name = name;
         IsEnemyEncounter = isEnemyEncounter;
         Description = description;
+        Enemies = enemies ?? new List<Enemy>();
+        OnEncounter = onEncounter;
+        Type = type;
     }
     public Encounter() { }
 
@@ -68,4 +74,52 @@ public class Encounter
 
         return combined;
     }
+
+    public void Execute(Player player)
+    {
+        MainUI.WriteInMainArea($"\n{Description}");
+        
+        if (IsEnemyEncounter && Enemies != null && Enemies.Count > 0)
+        {
+            MainUI.WriteInMainArea("\nPrepare for battle!");
+            Console.ReadLine();
+            
+            List<Enemy> combatEnemies = new List<Enemy>();
+            foreach (var enemy in Enemies)
+            {
+                var newEnemy = new Enemy(
+                    enemy.name, enemy.level, enemy.exp, enemy.HP, enemy.DMG,
+                    enemy.speed, enemy.armor, enemy.dodge, enemy.dodgeNegation,
+                    enemy.critChance, enemy.critDamage, enemy.stun, enemy.stunNegation, enemy.money
+                );
+                newEnemy.attacks = new List<Attack>(enemy.attacks);
+                newEnemy.maxHP = enemy.HP;
+                combatEnemies.Add(newEnemy);
+            }
+            
+            CombatManager combat = new CombatManager(player, combatEnemies);
+            combat.StartCombat();
+        }
+        else if (OnEncounter != null)
+        {
+            OnEncounter(player);
+            MainUI.WriteInMainArea("\nPress Enter to continue...");
+            Console.ReadLine();
+        }
+        else
+        {
+            MainUI.WriteInMainArea("\nPress Enter to continue...");
+            Console.ReadLine();
+        }
+    }
+}
+
+public enum EncounterType
+{
+    Event,      // Random event (find items, lose items, etc.)
+    Combat,     // Enemy encounter
+    Treasure,   // Find treasure/loot
+    Merchant,   // Random merchant
+    Trap,       // Trap or hazard
+    Mystery     // Unknown/special event
 }

@@ -24,15 +24,13 @@ public static class LocationLibrary
             }
         }
     },
-    new Dictionary<Enemy, int>
-    {
-        { EnemyLibrary.Thug, 80 },
-        { EnemyLibrary.Goblin, 20 }
-    },
     new Dictionary<Encounter, int>
     {
-        { EncounterLibrary.FoundCoins, 50},
-        { EncounterLibrary.LostCoins, 40}
+        { EncounterLibrary.FoundCoins, 40},
+        { EncounterLibrary.LostCoins, 30},
+        { EncounterLibrary.BanditAmbush, 20},
+        { EncounterLibrary.WanderingMerchant, 15},
+        { EncounterLibrary.MysteriousShrine, 10}
     });
 
 
@@ -53,16 +51,15 @@ public static class LocationLibrary
 
         }
     },
-    new Dictionary<Enemy, int>
-    {
-        { EnemyLibrary.VampireSpawn, 100 }
-    },
     new Dictionary<Encounter, int>
     {
-        { EncounterLibrary.WildGoblin, 50},
-        { EncounterLibrary.StrangeMushrooms, 40},
+        { EncounterLibrary.WildGoblin, 35},
+        { EncounterLibrary.GoblinPack, 20},
+        { EncounterLibrary.VampireAttack, 15},
+        { EncounterLibrary.StrangeMushrooms, 30},
         { EncounterLibrary.FoundCoins, 20 },
-        { EncounterLibrary.LostCoins, 10 }
+        { EncounterLibrary.FallenIntoTrap, 15},
+        { EncounterLibrary.FoundTreasure, 10}
     });
 
     public static Location mountain = new Location( "Mountain", new System.Numerics.Vector2(-1, 0), 0, new List<SubLocation>
@@ -78,14 +75,12 @@ public static class LocationLibrary
             }
         }
     },
-    new Dictionary<Enemy, int>()
-    {
-
-    },
     new Dictionary<Encounter, int>
     {
-        { EncounterLibrary.FoundCoins, 50},
-        { EncounterLibrary.LostCoins, 40}
+        { EncounterLibrary.FoundCoins, 40},
+        { EncounterLibrary.FoundTreasure, 30},
+        { EncounterLibrary.MysteriousShrine, 25},
+        { EncounterLibrary.WanderingMerchant, 20}
     });
 
     public static Location lake = new Location( "Lake", new System.Numerics.Vector2(0, -1), 0, new List<SubLocation>
@@ -95,14 +90,13 @@ public static class LocationLibrary
 
         }
     },
-    new Dictionary<Enemy, int>()
-    {
-        
-    },
     new Dictionary<Encounter, int>
     {
-        { EncounterLibrary.FoundCoins, 50},
-        { EncounterLibrary.LostCoins, 40}
+        { EncounterLibrary.FoundCoins, 35},
+        { EncounterLibrary.FoundTreasure, 25},
+        { EncounterLibrary.StrangeMushrooms, 20},
+        { EncounterLibrary.WanderingMerchant, 15},
+        { EncounterLibrary.FallenIntoTrap, 10}
     });
 
 

@@ -37,6 +37,7 @@ builder.Services.AddSingleton(new BucketOptions(bucket!));
 
 static string Canonical(string name) => (name ?? string.Empty).Trim().ToLowerInvariant();
 static string PlayerKey(string canonical) => $"players/{canonical}.json";
+static string DeadPlayerKey(string canonical) => $"dead-players/{canonical}.json";
 
 static async Task DeleteKeyWithVersionsAsync(IAmazonS3 s3, string bucket, string key, CancellationToken ct)
 {
@@ -101,6 +102,9 @@ app.MapPut("/players/{name}", async (string name, HttpRequest request, IAmazonS3
     var canonical = Canonical(name);
     string key = PlayerKey(canonical);
 
+    // Delete old versions before putting new one to prevent flooding
+    await DeleteKeyWithVersionsAsync(s3, bucketOpt.Name, key, ct);
+
     var putReq = new PutObjectRequest
     {
         BucketName = bucketOpt.Name,
@@ -146,6 +150,74 @@ app.MapDelete("/players/{name}", async (string name, IAmazonS3 s3, BucketOptions
 {
     var canonical = Canonical(name);
     string key = PlayerKey(canonical);
+
+    await DeleteKeyWithVersionsAsync(s3, bucketOpt.Name, key, ct);
+
+    resp.Headers["Cache-Control"] = "no-store";
+    resp.Headers["X-TBS-Bucket"] = bucketOpt.Name;
+    resp.Headers["X-TBS-Deleted-Canonical"] = canonical;
+    return Results.NoContent();
+});
+
+// Dead Players Endpoints
+app.MapPut("/dead-players/{name}", async (string name, HttpRequest request, IAmazonS3 s3, BucketOptions bucketOpt, CancellationToken ct, HttpResponse resp) =>
+{
+    using var reader = new StreamReader(request.Body, Encoding.UTF8, leaveOpen: false);
+    string json = await reader.ReadToEndAsync();
+
+    if (string.IsNullOrWhiteSpace(json))
+        return Results.BadRequest("Request body must contain player JSON.");
+
+    var canonical = Canonical(name);
+    string key = DeadPlayerKey(canonical);
+
+    // Delete old versions before putting new one to prevent flooding
+    await DeleteKeyWithVersionsAsync(s3, bucketOpt.Name, key, ct);
+
+    var putReq = new PutObjectRequest
+    {
+        BucketName = bucketOpt.Name,
+        Key = key,
+        ContentType = "application/json",
+        InputStream = new MemoryStream(Encoding.UTF8.GetBytes(json))
+    };
+
+    await s3.PutObjectAsync(putReq, ct);
+
+    resp.Headers["Cache-Control"] = "no-store";
+    resp.Headers["X-TBS-Bucket"] = bucketOpt.Name;
+    resp.Headers["X-TBS-Key"] = key;
+    return Results.NoContent();
+});
+
+app.MapGet("/dead-players/{name}", async (string name, IAmazonS3 s3, BucketOptions bucketOpt, CancellationToken ct, HttpResponse resp) =>
+{
+    var canonical = Canonical(name);
+    string key = DeadPlayerKey(canonical);
+
+    try
+    {
+        using var s3resp = await s3.GetObjectAsync(bucketOpt.Name, key, ct);
+        using var reader = new StreamReader(s3resp.ResponseStream, Encoding.UTF8);
+        string json = await reader.ReadToEndAsync();
+        resp.Headers["Cache-Control"] = "no-store";
+        resp.Headers["X-TBS-Bucket"] = bucketOpt.Name;
+        resp.Headers["X-TBS-Key"] = key;
+        return Results.Text(json, "application/json", Encoding.UTF8);
+    }
+    catch (AmazonS3Exception ex) when (ex.StatusCode == HttpStatusCode.NotFound || ex.ErrorCode == "NoSuchKey")
+    {
+        resp.Headers["Cache-Control"] = "no-store";
+        resp.Headers["X-TBS-Bucket"] = bucketOpt.Name;
+        resp.Headers["X-TBS-Key"] = key;
+        return Results.NotFound();
+    }
+});
+
+app.MapDelete("/dead-players/{name}", async (string name, IAmazonS3 s3, BucketOptions bucketOpt, CancellationToken ct, HttpResponse resp) =>
+{
+    var canonical = Canonical(name);
+    string key = DeadPlayerKey(canonical);
 
     await DeleteKeyWithVersionsAsync(s3, bucketOpt.Name, key, ct);
 

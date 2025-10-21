@@ -5,6 +5,7 @@ public class Player : Combatant
     public string password;
     public string playerClass;
     public int luck;
+    public bool isDead = false;
 
     public Location currentLocation;
     //public List<Location> knownLocations = new List<Location>();

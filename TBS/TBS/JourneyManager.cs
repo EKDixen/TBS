@@ -131,31 +131,25 @@ class JourneyManager
     }
     public void Travel(Location TtargetDis, bool cartin)
     {
-        MainUI.WriteInMainArea("\ngoing to " + TtargetDis.name);
+        MainUI.WriteInMainArea("\nTraveling to " + TtargetDis.name + "...");
+        
+        Location previousLocation = Program.player.currentLocation;
         Program.player.currentLocation = TtargetDis;
         Program.db.SavePlayer(Program.player);
         Program.SavePlayer();
+        
         if(cartin != true)
         {
-            List<Encounter> encounters = Encounter.StartTravelEncounters(TtargetDis, Program.player.currentLocation);
-
-            if (encounters.Count == 0)
-            {
-                MainUI.WriteInMainArea("Your travel was peaceful.");
-            }
-            else
-            {
-                foreach (var e in encounters)
-                {
-                    MainUI.WriteInMainArea(e.Description);
-                    if (e.IsEnemyEncounter)
-                    {
-                        // Start combat
-                        MainUI.WriteInMainArea("Start Combat");
-                    }
-                }
-            }
+            EncounterManager encounterManager = new EncounterManager(Program.player);
+            encounterManager.ProcessTravelEncounters(previousLocation, TtargetDis, false);
         }
+        else
+        {
+            MainUI.WriteInMainArea("You arrive safely via carriage.");
+            MainUI.WriteInMainArea("Press Enter to continue...");
+            Console.ReadLine();
+        }
+        
         //Minimap.DisplayMinimap();
         Program.MainMenu(); 
     }
@@ -178,34 +172,23 @@ class JourneyManager
         {
             Random rand = new Random();
             int randomDir = rand.Next(0, explorableLocations.Count);
+            Location newLocation = LocationLibrary.locations[explorableLocations[randomDir]];
+            Location previousLocation = Program.player.currentLocation;
 
-            List<Encounter> encounters = Encounter.StartTravelEncounters(LocationLibrary.locations[explorableLocations[randomDir]], Program.player.currentLocation);
+            MainUI.WriteInMainArea($"\nExploring towards {newLocation.name}...");
+            
+            EncounterManager encounterManager = new EncounterManager(Program.player);
+            encounterManager.ProcessTravelEncounters(previousLocation, newLocation, true);
 
-            if (encounters.Count == 0)
-            {
-                MainUI.WriteInMainArea("Your journey was peaceful.");
-            }
-            else
-            {
-                foreach (var e in encounters)
-                {
-                    MainUI.WriteInMainArea(e.Description);
-                    if (e.IsEnemyEncounter)
-                    {
-                        // Handle combat here
-                    }
-                }
-            }
-
-            MainUI.WriteInMainArea("\ngoing to "+ LocationLibrary.locations[explorableLocations[randomDir]].name);
-            Program.player.knownLocationnames.Add(LocationLibrary.locations[explorableLocations[randomDir]].name);
-            Program.player.currentLocation = LocationLibrary.locations[explorableLocations[randomDir]];
+            MainUI.WriteInMainArea($"\nYou discovered {newLocation.name}!");
+            Program.player.knownLocationnames.Add(newLocation.name);
+            Program.player.currentLocation = newLocation;
 
             Program.SavePlayer();
         }
         else
         {
-            MainUI.WriteInMainArea("\ncant explore from here");
+            MainUI.WriteInMainArea("\nThere are no unexplored locations adjacent to your current position.");
         }
         //Minimap.DisplayMinimap();
         Program.MainMenu(); //remove when encounters are done

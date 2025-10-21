@@ -1,4 +1,4 @@
-using Game.Class;
+ï»¿using Game.Class;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,7 +81,7 @@ public class CombatManager
             ui.AddToLog($"Rewards: +{totalExp} EXP, +{totalMoney} money");
             ui.ClearMainArea();
             ui.WriteInMainArea(8, "+----------------------------------------+");
-            ui.WriteInMainArea(9, "¦          VICTORY!                      ¦");
+            ui.WriteInMainArea(9, "ï¿½          VICTORY!                      ï¿½");
             ui.WriteInMainArea(10, "+----------------------------------------+");
             ui.WriteInMainArea(12, $"Rewards:");
             ui.WriteInMainArea(13, $"  +{totalExp} EXP");
@@ -96,18 +96,20 @@ public class CombatManager
         {
                         ui.ClearMainArea();
             ui.WriteInMainArea(8, "+----------------------------------------+");
-            ui.WriteInMainArea(9, "¦          DEFEAT...                     ¦");
+            ui.WriteInMainArea(9, "ï¿½          DEFEAT...                     ï¿½");
             ui.WriteInMainArea(10, "+----------------------------------------+");
-            ui.WriteInMainArea(12, "You have been defeated.");
+            ui.WriteInMainArea(12, "You have been defeated in battle...");
             ui.WriteInMainArea(14, "Press Enter to continue...");
             ui.RenderCombatScreen(player, combatants);
             
-            Program.SavePlayer();
             Console.ReadLine();
         }
 
         Console.Clear();
         Console.CursorVisible = true;
+        
+        // Check if player died
+        Program.CheckPlayerDeath();
     }
 
     private void AdvanceActionGauges()
@@ -328,69 +330,105 @@ public class CombatManager
             if (actor == player)
             {
                 var moves = player.equippedAttacks.Where(a => a != null).ToList();
-                if (moves.Count == 0)
+                var consumables = player.ownedItems.Where(i => i.type == ItemType.consumable && i.amount > 0).ToList();
+                
+                if (moves.Count == 0 && consumables.Count == 0)
                 {
-                    ui.AddToLog($"{player.name} has no moves equipped and skips turn.");
+                    ui.AddToLog($"{player.name} has no moves or items and skips turn.");
                     ui.RenderCombatScreen(player, combatants);
                     Thread.Sleep(800);
                     return;
                 }
 
-                // Display move selection in main area
+                // Display move and item selection in main area
                 ui.ClearMainArea();
                 ui.WriteInMainArea(0, "--- Your Turn ---");
                 ui.WriteInMainArea(1, "");
-                for (int i = 0; i < moves.Count; i++)
+                
+                int lineNum = 2;
+                
+                // Show attacks
+                if (moves.Count > 0)
                 {
-                    ui.WriteInMainArea(2 + i, $"{i + 1}. {moves[i].name} - {moves[i].GetDescription()}");
+                    ui.WriteInMainArea(lineNum++, "ATTACKS:");
+                    for (int i = 0; i < moves.Count; i++)
+                    {
+                        ui.WriteInMainArea(lineNum++, $"{i + 1}. {moves[i].name} - {moves[i].GetDescription()}");
+                    }
+                    lineNum++;
                 }
-                ui.WriteInMainArea(2 + moves.Count + 1, "");
-                ui.SetCursorInMainArea(2 + moves.Count + 2);
-                Console.Write("Choose a move: ");
+                
+                // Show consumables
+                int itemStartIndex = moves.Count + 1;
+                if (consumables.Count > 0)
+                {
+                    ui.WriteInMainArea(lineNum++, "ITEMS:");
+                    for (int i = 0; i < consumables.Count; i++)
+                    {
+                        ui.WriteInMainArea(lineNum++, $"{itemStartIndex + i}. {consumables[i].name} x{consumables[i].amount} - {consumables[i].description}");
+                    }
+                    lineNum++;
+                }
+                
+                ui.SetCursorInMainArea(lineNum);
+                Console.Write("Choose action: ");
 
                 int choice = -1;
+                int totalOptions = moves.Count + consumables.Count;
                 while (true)
                 {
-                    if (int.TryParse(Console.ReadLine(), out choice) && choice >= 1 && choice <= moves.Count)
+                    if (int.TryParse(Console.ReadLine(), out choice) && choice >= 1 && choice <= totalOptions)
                         break;
-                    ui.SetCursorInMainArea(2 + moves.Count + 3);
+                    ui.SetCursorInMainArea(lineNum + 1);
                     Console.Write("Invalid choice. Try again: ");
                 }
-                var chosen = moves[choice - 1];
+                
+                // Check if they chose an attack or item
+                if (choice <= moves.Count)
+                {
+                    // They chose an attack
+                    var chosen = moves[choice - 1];
 
                 bool isAoE = chosen.effects.Any(e => e.targetType == "allEnemies");
-                if (isAoE)
-                {
-                    var allEnemies = enemies.Cast<Combatant>().ToList();
-                    ExecuteAttackAoE(player, chosen, allEnemies);
+                    if (isAoE)
+                    {
+                        var allEnemies = enemies.Cast<Combatant>().ToList();
+                        ExecuteAttackAoE(player, chosen, allEnemies);
+                    }
+                    else
+                    {
+                        // Target selection
+                        ui.ClearMainArea();
+                        ui.WriteInMainArea(0, "Choose a target:");
+                        ui.WriteInMainArea(1, "");
+                        for (int i = 0; i < enemies.Count; i++)
+                        {
+                            var tag = enemies[i].IsAlive() ? "" : " (dead)";
+                            ui.WriteInMainArea(2 + i, $"{i + 1}. {enemies[i].name}{tag} [{enemies[i].HP}/{enemies[i].maxHP}]");
+                        }
+                        ui.WriteInMainArea(2 + enemies.Count + 1, "");
+                        ui.SetCursorInMainArea(2 + enemies.Count + 2);
+                        Console.Write("Target #: ");
+
+                        while (true)
+                        {
+                            if (!int.TryParse(Console.ReadLine(), out int t) || t < 1 || t > enemies.Count)
+                            {
+                                ui.SetCursorInMainArea(2 + enemies.Count + 3);
+                                Console.Write("Invalid. Try again: ");
+                                continue;
+                            }
+                            var target = enemies[t - 1];
+                            ExecuteAttackSingle(player, chosen, target);
+                            break;
+                        }
+                    }
                 }
                 else
                 {
-                    // Target selection
-                    ui.ClearMainArea();
-                    ui.WriteInMainArea(0, "Choose a target:");
-                    ui.WriteInMainArea(1, "");
-                    for (int i = 0; i < enemies.Count; i++)
-                    {
-                        var tag = enemies[i].IsAlive() ? "" : " (dead)";
-                        ui.WriteInMainArea(2 + i, $"{i + 1}. {enemies[i].name}{tag} [{enemies[i].HP}/{enemies[i].maxHP}]");
-                    }
-                    ui.WriteInMainArea(2 + enemies.Count + 1, "");
-                    ui.SetCursorInMainArea(2 + enemies.Count + 2);
-                    Console.Write("Target #: ");
-
-                    while (true)
-                    {
-                        if (!int.TryParse(Console.ReadLine(), out int t) || t < 1 || t > enemies.Count)
-                        {
-                            ui.SetCursorInMainArea(2 + enemies.Count + 3);
-                            Console.Write("Invalid. Try again: ");
-                            continue;
-                        }
-                        var target = enemies[t - 1];
-                        ExecuteAttackSingle(player, chosen, target);
-                        break;
-                    }
+                    // They chose an item
+                    var chosenItem = consumables[choice - moves.Count - 1];
+                    UseConsumableInCombat(player, chosenItem);
                 }
             }
             else
@@ -418,6 +456,62 @@ public class CombatManager
             ui.WriteInMainArea(13, "Press Enter to continue...");
             ui.SetCursorInMainArea(22);
             Console.ReadLine();
+        }
+
+        private void UseConsumableInCombat(Player player, Item item)
+        {
+            ui.AddToLog($"{player.name} uses {item.name}!");
+            ui.RenderCombatScreen(player, combatants);
+            Thread.Sleep(400);
+
+            // Apply item effects
+            foreach (var stat in item.stats)
+            {
+                switch (stat.Key)
+                {
+                    case "HP":
+                        int before = player.HP;
+                        player.HP = Math.Min(player.maxHP, player.HP + stat.Value);
+                        int healed = player.HP - before;
+                        ui.AddToLog($"{player.name} heals {healed} HP ({before} -> {player.HP})");
+                        break;
+                    case "DMG":
+                        player.DMG += stat.Value;
+                        ui.AddToLog($"{player.name} DMG {(stat.Value >= 0 ? "+" : "")}{stat.Value}");
+                        break;
+                    case "speed":
+                        player.speed += stat.Value;
+                        ui.AddToLog($"{player.name} speed {(stat.Value >= 0 ? "+" : "")}{stat.Value}");
+                        break;
+                    case "armor":
+                        player.armor += stat.Value;
+                        ui.AddToLog($"{player.name} armor {(stat.Value >= 0 ? "+" : "")}{stat.Value}");
+                        break;
+                    case "dodge":
+                        player.dodge += stat.Value;
+                        ui.AddToLog($"{player.name} dodge {(stat.Value >= 0 ? "+" : "")}{stat.Value}");
+                        break;
+                    case "critChance":
+                        player.critChance += stat.Value;
+                        ui.AddToLog($"{player.name} crit chance {(stat.Value >= 0 ? "+" : "")}{stat.Value}");
+                        break;
+                    case "critDamage":
+                        player.critDamage += stat.Value;
+                        ui.AddToLog($"{player.name} crit damage {(stat.Value >= 0 ? "+" : "")}{stat.Value}");
+                        break;
+                }
+                ui.RenderCombatScreen(player, combatants);
+                Thread.Sleep(300);
+            }
+
+            // Consume the item
+            item.amount--;
+            if (item.amount <= 0)
+            {
+                player.ownedItems.Remove(item);
+            }
+            
+            Program.SavePlayer();
         }
     }
 

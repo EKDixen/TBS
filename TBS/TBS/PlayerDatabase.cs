@@ -209,4 +209,111 @@ public class PlayerDatabase
         using var final = _http.GetAsync(url).GetAwaiter().GetResult();
         return final.StatusCode == HttpStatusCode.OK;
     }
+
+    public void MarkPlayerAsDead(Player p)
+    {
+        try
+        {
+            WaitForServerReady(TimeSpan.FromSeconds(90));
+
+            p.isDead = true;
+            
+            string json = Serializer.ToJson(p);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var deadUrl = $"{_baseUrl}/dead-players/{Uri.EscapeDataString(p.name)}";
+
+            for (int attempt = 0; attempt < 2; attempt++)
+            {
+                try
+                {
+                    using var resp = _http.PutAsync(deadUrl, content).GetAwaiter().GetResult();
+                    
+                    if (resp.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        Console.WriteLine("Dead players endpoint not available, marking player as dead in active database...");
+                        var activeUrl = $"{_baseUrl}/players/{Uri.EscapeDataString(p.name)}";
+                        var activeContent = new StringContent(json, Encoding.UTF8, "application/json");
+                        using var activeResp = _http.PutAsync(activeUrl, activeContent).GetAwaiter().GetResult();
+                        activeResp.EnsureSuccessStatusCode();
+                        return;
+                    }
+                    
+                    resp.EnsureSuccessStatusCode();
+                    
+                    var deleteUrl = $"{_baseUrl}/players/{Uri.EscapeDataString(p.name)}";
+                    using var deleteResp = _http.DeleteAsync(deleteUrl).GetAwaiter().GetResult();
+                    deleteResp.EnsureSuccessStatusCode();
+                    
+                    Console.WriteLine("Player moved to dead players database.");
+                    return;
+                }
+                catch (Exception ex) when (ex is TaskCanceledException || ex is TimeoutException || ex is HttpRequestException || ex is IOException)
+                {
+                    Console.WriteLine("Server unavailable, retrying...");
+                    WaitForServerReady(TimeSpan.FromSeconds(90));
+                }
+            }
+
+            using (var resp = _http.PutAsync(deadUrl, content).GetAwaiter().GetResult())
+            {
+                if (resp.StatusCode == HttpStatusCode.NotFound)
+                {
+                    var activeUrl = $"{_baseUrl}/players/{Uri.EscapeDataString(p.name)}";
+                    var activeContent = new StringContent(json, Encoding.UTF8, "application/json");
+                    using var activeResp = _http.PutAsync(activeUrl, activeContent).GetAwaiter().GetResult();
+                    activeResp.EnsureSuccessStatusCode();
+                    return;
+                }
+                resp.EnsureSuccessStatusCode();
+            }
+            
+            var finalActiveUrl = $"{_baseUrl}/players/{Uri.EscapeDataString(p.name)}";
+            using (var deleteResp = _http.DeleteAsync(finalActiveUrl).GetAwaiter().GetResult())
+            {
+                deleteResp.EnsureSuccessStatusCode();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error marking player as dead: {ex.Message}");
+            Console.WriteLine("Player death will be recorded locally.");
+        }
+    }
+
+    public Player? LoadDeadPlayer(string username)
+    {
+        WaitForServerReady(TimeSpan.FromSeconds(90));
+
+        var url = $"{_baseUrl}/dead-players/{Uri.EscapeDataString(username)}";
+
+        for (int attempt = 0; attempt < 2; attempt++)
+        {
+            try
+            {
+                using var resp = _http.GetAsync(url).GetAwaiter().GetResult();
+
+                if (resp.StatusCode == HttpStatusCode.NotFound)
+                    return null;
+
+                resp.EnsureSuccessStatusCode();
+                string json = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                return Serializer.FromJson<Player>(json);
+            }
+            catch (Exception ex) when (ex is TaskCanceledException || ex is TimeoutException || ex is HttpRequestException || ex is IOException)
+            {
+                Console.WriteLine("Waiting on server...");
+                WaitForServerReady(TimeSpan.FromSeconds(90));
+            }
+        }
+
+        using (var resp2 = _http.GetAsync(url).GetAwaiter().GetResult())
+        {
+            if (resp2.StatusCode == HttpStatusCode.NotFound)
+                return null;
+
+            resp2.EnsureSuccessStatusCode();
+            string json = resp2.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            return Serializer.FromJson<Player>(json);
+        }
+    }
 }
