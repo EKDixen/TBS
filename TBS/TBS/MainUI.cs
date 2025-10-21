@@ -19,7 +19,7 @@ namespace Game.Class
         // Panel dimensions
         private const int MainAreaWidth = 70;
         private const int RightPanelWidth = ConsoleWidth - MainAreaWidth - 1;
-        private const int PlayerPanelHeight = 5;
+        private const int PlayerPanelHeight = 20;
         private const int MiniMapHeight = ConsoleHeight - PlayerPanelHeight - 3;
 
         //Windows API
@@ -110,15 +110,9 @@ namespace Game.Class
             DrawBox(x, y, RightPanelWidth, MiniMapHeight, "MiniMap");
 
 
-
-
-
-            //display minimap
-
-
-
-
+            Minimap.DisplayMinimap(x+2,y+2,RightPanelWidth-6);
         }
+
 
         private static void DrawMainArea(string content)
         {

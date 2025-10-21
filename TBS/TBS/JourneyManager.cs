@@ -83,7 +83,7 @@ class JourneyManager
         else if (ride == 2)
         {
             MainUI.WriteInMainArea("\nwhere do you wish to travel (type out the number next to it)");
-            MainUI.WriteInMainArea("Locations you can currently travel to by foot (only adjacent locations): ");
+            MainUI.WriteInMainArea("Locations you can currently travel to by foot \n(only adjacent locations): ");
 
             List<int> travelLocations = new List<int>();
 
