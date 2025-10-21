@@ -2,7 +2,7 @@
 
 public static class Minimap
 {
-    public static void DisplayMinimap()
+    public static void DisplayMinimap(int startX,int startY, int maxContentWidth)
     {
         List<int?> travelLocations = new List<int?> { null, null, null, null, null, null, null, null, null };
 
@@ -27,25 +27,54 @@ public static class Minimap
                 travelLocations[1] = i;
         }
 
-        string Cell(string s, int maxLength = 10)
+
+        int cellWidth = (maxContentWidth - 2) / 3; // -2 for the two separators "|"
+
+        string Cell(string s, int maxLength)
         {
             if (s.Length > maxLength)
-                return s.Substring(0, maxLength - 2) + ".."; 
-            return s;
+                return s.Substring(0, maxLength - 2) + "..";
+            return s.PadRight(maxLength); // Use PadRight to ensure fixed width
         }
 
-        Console.WriteLine(
-            $"{Cell(SafeLocationName(travelLocations, 1)),-10} | {Cell(SafeLocationName(travelLocations, 2)),-10} | {Cell(SafeLocationName(travelLocations, 3)),-10}"
-        );
-        Console.WriteLine(new string('-', 34));
-        Console.WriteLine(
-            $"{Cell(SafeLocationName(travelLocations, 4)),-10} | {"current",-10} | {Cell(SafeLocationName(travelLocations, 6)),-10}"
-        );
-        Console.WriteLine(new string('-', 34));
-        Console.WriteLine(
-            $"{Cell(SafeLocationName(travelLocations, 7)),-10} | {Cell(SafeLocationName(travelLocations, 8)),-10} | {Cell(SafeLocationName(travelLocations, 9)),-10}"
-        );
+        int currentY = startY;
 
+        // --- LINE 1 ---
+        Console.SetCursorPosition(startX, currentY);
+        Console.Write(
+            $"{Cell(SafeLocationName(travelLocations, 1), cellWidth)} | " +
+            $"{Cell(SafeLocationName(travelLocations, 2), cellWidth)} | " +
+            $"{Cell(SafeLocationName(travelLocations, 3), cellWidth)}"
+        );
+        currentY++;
+
+        // --- SEPARATOR ---
+        Console.SetCursorPosition(startX, currentY);
+        Console.Write(new string('-', maxContentWidth));
+        currentY++;
+
+        // --- LINE 2 (Current Location) ---
+        Console.SetCursorPosition(startX, currentY);
+        Console.Write(
+            $"{Cell(SafeLocationName(travelLocations, 4), cellWidth)} | " +
+            $"{Cell("current", cellWidth)} | " +
+            $"{Cell(SafeLocationName(travelLocations, 6), cellWidth)}"
+        );
+        currentY++;
+
+        // --- SEPARATOR ---
+        Console.SetCursorPosition(startX, currentY);
+        Console.Write(new string('-', maxContentWidth));
+        currentY++;
+
+        // --- LINE 3 ---
+        Console.SetCursorPosition(startX, currentY);
+        Console.Write(
+            $"{Cell(SafeLocationName(travelLocations, 7), cellWidth)} | " +
+            $"{Cell(SafeLocationName(travelLocations, 8), cellWidth)} | " +
+            $"{Cell(SafeLocationName(travelLocations, 9), cellWidth)}"
+        );
+        currentY++;
 
         static string SafeLocationName(List<int?> travelLocations, int travelIndex)
         {

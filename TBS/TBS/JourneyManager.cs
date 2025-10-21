@@ -12,18 +12,21 @@ class JourneyManager
    
     public void ChoseTravelDestination()
     {
-        Console.WriteLine($"Would you like to purchase a carriage ride to your destination : 1 \nor travel by foot (has the option of exploring) : 2");
+        MainUI.ClearMainArea();
+
+        MainUI.WriteInMainArea($"Would you like to purchase a carriage ride to your destination : 1");
+        MainUI.WriteInMainArea("or travel by foot (has the option of exploring) : 2");
         int.TryParse(Console.ReadLine(), out int ride);
         if (ride == null || ride > 2 || ride < 1)
         {
-            Console.WriteLine("--------look mate you gotta type a number----------- \n");
+            MainUI.WriteInMainArea("--------look mate you gotta type a number----------- \n");
             ChoseTravelDestination();
             return;
         }
         else if (ride == 1)
         {
-            Console.WriteLine("\nwhere do you wish to travel (type out the number next to it)");
-            Console.WriteLine("Locations you currently know: ");
+            MainUI.WriteInMainArea("\nwhere do you wish to travel (type out the number next to it)");
+            MainUI.WriteInMainArea("Locations you currently know: ");
 
             for (int i = 0; i < Program.player.knownLocations.Count; i++)
             {
@@ -31,19 +34,19 @@ class JourneyManager
                 {
                     float price = (Program.player.currentLocation.location - Program.player.knownLocations[i].location).Length() * 2 + 
                         Program.player.currentLocation.travelPrice + Program.player.knownLocations[i].travelPrice;
-                    Console.WriteLine($"{Program.player.knownLocations[i].name}  :  {(i + 1)}  (price: {price})"); 
+                    MainUI.WriteInMainArea($"{Program.player.knownLocations[i].name}  :  {(i + 1)}  (price: {price})"); 
                     
                 }
-                else Console.WriteLine(Program.player.knownLocations[i].name + " : " + (i + 1) + " (current location)");
+                else MainUI.WriteInMainArea(Program.player.knownLocations[i].name + " : " + (i + 1) + " (current location)");
             }
-            Console.WriteLine("or go back : 0");
+            MainUI.WriteInMainArea("or go back : 0");
 
             int targetDes;
             if (int.TryParse(Console.ReadLine(), out targetDes))
             {
 
-                Console.WriteLine("");
-                if (targetDes == 0) { Console.Clear(); Program.MainMenu(); return; }
+                MainUI.WriteInMainArea("");
+                if (targetDes == 0) { MainUI.ClearMainArea(); ; Program.MainMenu(); return; }
                 else if (targetDes <= Program.player.knownLocations.Count && targetDes >= 0 && Program.player.knownLocations[targetDes - 1] != Program.player.currentLocation) 
                 {
                     float price = (Program.player.currentLocation.location - Program.player.knownLocations[targetDes - 1].location).Length() * 2 +
@@ -56,7 +59,7 @@ class JourneyManager
                     }
                     else
                     {
-                        Console.WriteLine("--------you dont have enough money for that------- \n");
+                        MainUI.WriteInMainArea("--------you dont have enough money for that------- \n");
                         ChoseTravelDestination();
                         return;
                     }
@@ -65,22 +68,22 @@ class JourneyManager
                 }
                 else
                 {
-                    Console.WriteLine("--------dude you dont know any location with that number------- \n");
+                    MainUI.WriteInMainArea("--------dude you dont know any location with that number------- \n");
                     ChoseTravelDestination();
                     return;
                 }
             }
             else
             {
-                Console.WriteLine("--------look mate you gotta type a number----------- \n");
+                MainUI.WriteInMainArea("--------look mate you gotta type a number----------- \n");
                 ChoseTravelDestination();
                 return;
             }
         }
         else if (ride == 2)
         {
-            Console.WriteLine("\nwhere do you wish to travel (type out the number next to it)");
-            Console.WriteLine("Locations you can currently travel to by foot (only adjacent locations): ");
+            MainUI.WriteInMainArea("\nwhere do you wish to travel (type out the number next to it)");
+            MainUI.WriteInMainArea("Locations you can currently travel to by foot \n(only adjacent locations): ");
 
             List<int> travelLocations = new List<int>();
 
@@ -98,28 +101,28 @@ class JourneyManager
 
             for (int i = 0; i < travelLocations.Count; i++)
             {
-                Console.WriteLine($"\n{LocationLibrary.locations[travelLocations[i]].name} : {i+1}");
+                MainUI.WriteInMainArea($"\n{LocationLibrary.locations[travelLocations[i]].name} : {i+1}");
             }
-            Console.WriteLine("\nor explore for a new location : 0");
-            Console.WriteLine("or go back : -1");
+            MainUI.WriteInMainArea("\nor explore for a new location : 0");
+            MainUI.WriteInMainArea("or go back : -1");
 
             int targetDes;
             if (int.TryParse(Console.ReadLine(), out targetDes))
             {
-                Console.WriteLine("");
+                MainUI.WriteInMainArea("");
                 if (targetDes == 0) Explore();
                 else if (targetDes <= travelLocations.Count && targetDes >= 0 && LocationLibrary.locations[travelLocations[targetDes - 1]] != Program.player.currentLocation) Travel(LocationLibrary.locations[travelLocations[targetDes - 1]],false);
-                else if (targetDes == -1) { Console.Clear(); Program.MainMenu(); return; }
+                else if (targetDes == -1) { MainUI.ClearMainArea(); ; Program.MainMenu(); return; }
                 else
                 {
-                    Console.WriteLine("--------dude you dont know any location with that number------- \n");
+                    MainUI.WriteInMainArea("--------dude you dont know any location with that number------- \n");
                     ChoseTravelDestination();
                     return;
                 }
             }
             else
             {
-                Console.WriteLine("--------look mate you gotta type a number----------- \n");
+                MainUI.WriteInMainArea("--------look mate you gotta type a number----------- \n");
                 ChoseTravelDestination();
                 return;
             }
@@ -127,7 +130,7 @@ class JourneyManager
     }
     public void Travel(Location TtargetDis, bool cartin)
     {
-        Console.WriteLine("\ngoing to " + TtargetDis.name);
+        MainUI.WriteInMainArea("\ngoing to " + TtargetDis.name);
         Program.player.currentLocation = TtargetDis;
         Program.db.SavePlayer(Program.player);
         Program.SavePlayer();
@@ -137,17 +140,17 @@ class JourneyManager
 
             if (encounters.Count == 0)
             {
-                Console.WriteLine("Your travel was peaceful.");
+                MainUI.WriteInMainArea("Your travel was peaceful.");
             }
             else
             {
                 foreach (var e in encounters)
                 {
-                    Console.WriteLine(e.Description);
+                    MainUI.WriteInMainArea(e.Description);
                     if (e.IsEnemyEncounter)
                     {
                         // Start combat
-                        Console.WriteLine("Start Combat");
+                        MainUI.WriteInMainArea("Start Combat");
                     }
                 }
             }
@@ -179,13 +182,13 @@ class JourneyManager
 
             if (encounters.Count == 0)
             {
-                Console.WriteLine("Your journey was peaceful.");
+                MainUI.WriteInMainArea("Your journey was peaceful.");
             }
             else
             {
                 foreach (var e in encounters)
                 {
-                    Console.WriteLine(e.Description);
+                    MainUI.WriteInMainArea(e.Description);
                     if (e.IsEnemyEncounter)
                     {
                         // Handle combat here
@@ -193,7 +196,7 @@ class JourneyManager
                 }
             }
 
-            Console.WriteLine("\ngoing to "+ LocationLibrary.locations[explorableLocations[randomDir]].name);
+            MainUI.WriteInMainArea("\ngoing to "+ LocationLibrary.locations[explorableLocations[randomDir]].name);
             Program.player.knownLocations.Add(LocationLibrary.locations[explorableLocations[randomDir]]);
             Program.player.currentLocation = LocationLibrary.locations[explorableLocations[randomDir]];
             LocationLibrary.locations[explorableLocations[randomDir]].known = true;
@@ -202,7 +205,7 @@ class JourneyManager
         }
         else
         {
-            Console.WriteLine("\ncant explore from here");
+            MainUI.WriteInMainArea("\ncant explore from here");
         }
         //Minimap.DisplayMinimap();
         Program.MainMenu(); //remove when encounters are done

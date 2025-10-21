@@ -16,9 +16,9 @@ public class Inventory
     {
         while (true)
         {
-            Console.Clear();
+            MainUI.ClearMainArea();
 
-            Console.WriteLine("Equiped items:");
+            MainUI.WriteInMainArea("Equiped items:");
             for (int j = 0; j < player.equippedItems.Capacity; j++)
             {
                 string place = "";
@@ -29,15 +29,17 @@ public class Inventory
                     case 2: place = "Legs"; break;
                     case 3: place = "Feet"; break;
                 }
-                Console.WriteLine($"{j + 1} ({place}) : {player.equippedItems[j]?.name ?? "Empty"}");
+                MainUI.WriteInMainArea($"{j + 1} ({place}) : {player.equippedItems[j]?.name ?? "Empty"}");
 
 
             }
 
-            Console.WriteLine($"\nyou have {player.money} money\n\nand these are your items");
+            MainUI.WriteInMainArea("");
+            MainUI.WriteInMainArea($"you have {player.money} money\n\nand these are your items");
 
-            Console.WriteLine("\nnr     Name                      Qty   Description         value");
-            Console.WriteLine("----------------------------------------------------------------");
+            MainUI.WriteInMainArea("");
+            MainUI.WriteInMainArea("nr     Name                      Qty   Description         value");
+            MainUI.WriteInMainArea("----------------------------------------------------------------");
             int i = 0;
             foreach (var item in player.ownedItems)
             {
@@ -48,44 +50,51 @@ public class Inventory
                 string equippedInfo = slotIndex >= 0 ? $"(Slot {slotIndex + 1})" : "";
 
 
-                Console.WriteLine($"{i,-7}{item.name,-25} {item.amount,-5} {item.description,-20} {item.value} {equippedInfo}");
+                MainUI.WriteInMainArea($"{i,-7}{item.name,-25} {item.amount,-5} {item.description,-20} {item.value} {equippedInfo}");
             }
-            Console.WriteLine("\nif you want to interact with anything type its corresponding number \nif not type 0");
+            MainUI.WriteInMainArea("");
+            MainUI.WriteInMainArea("if you want to interact with anything type its corresponding number");
+            MainUI.WriteInMainArea("if not type 0");
+
             var n = int.TryParse(Console.ReadLine(), out int input);
             if (input == null || input < 0 || input > player.ownedItems.Count)
             {
-                Console.Clear();
-                Console.WriteLine("sweetie you gotta type a usable number\n ");
+                MainUI.ClearMainArea();
+                MainUI.WriteInMainArea("sweetie you gotta type a usable number ");
+                MainUI.WriteInMainArea("");
+
                 ShowInventory();
                 return;
             }
             else if (input == 0) { Program.MainMenu(); return; }
 
             input--;
-            Console.WriteLine($"you've picked {player.ownedItems[input].name}");
+            MainUI.WriteInMainArea($"you've picked {player.ownedItems[input].name}");
 
 
-            Console.WriteLine("0 : details");
-            Console.WriteLine("1 : drop");
-            if (player.ownedItems[input].type == ItemType.equipment) Console.WriteLine("2 : Equip/Unequip");
-            if (player.ownedItems[input].type == ItemType.consumable) Console.WriteLine("2 : consume");
-            Console.WriteLine("\ntype out the number next to the action you want to perform");
+            MainUI.WriteInMainArea("0 : details");
+            MainUI.WriteInMainArea("1 : drop");
+            if (player.ownedItems[input].type == ItemType.equipment) MainUI.WriteInMainArea("2 : Equip/Unequip");
+            if (player.ownedItems[input].type == ItemType.consumable) MainUI.WriteInMainArea("2 : consume");
+            MainUI.WriteInMainArea("");
+            MainUI.WriteInMainArea("type out the number next to the action you want to perform");
             var k = int.TryParse(Console.ReadLine(), out int ik);
             if (ik == null || ik < 0 || ik > 2)
             {
-                Console.Clear();
-                Console.WriteLine("my love would you please type a number this time\n ");
+                MainUI.ClearMainArea();
+                MainUI.WriteInMainArea("my love would you please type a number this time\n ");
                 ShowInventory();
                 return;
             }
             else if (ik == 0)
             {
-                Console.WriteLine($"\nyou've picked {player.ownedItems[input].name}");
-                Console.WriteLine($"{player.ownedItems[input].details}\n");
+                MainUI.WriteInMainArea("");
+                MainUI.WriteInMainArea($"you've picked {player.ownedItems[input].name}");
+                MainUI.WriteInMainArea($"{player.ownedItems[input].details}\n");
             }
             else if (ik == 1)
             {
-                Console.WriteLine($"\nyou drop the {player.ownedItems[input].name}");
+                MainUI.WriteInMainArea($"\nyou drop the {player.ownedItems[input].name}");
                 DropItem(player.ownedItems[input]);
             }
             else if (ik == 2 && player.ownedItems[input].type == ItemType.equipment)
@@ -97,24 +106,22 @@ public class Inventory
                 int equippedSlot = player.equippedItems.IndexOf(chosen);
                 if (equippedSlot >= 0)
                 {
-                    Console.WriteLine($"{chosen.name} is currently in Slot {equippedSlot + 1}. Unequipping...");
+                    MainUI.WriteInMainArea($"{chosen.name} is currently in Slot {equippedSlot + 1}. Unequipping...");
                     RemoveEffects(chosen);
                     player.equippedItems[equippedSlot] = null;
                 }
                 else
                 {
                     // equip
-                    Console.Write("Choose a slot (1-4) or 0 to cancel: ");
-                    if (!int.TryParse(Console.ReadLine(), out int slot) || slot < 0 || slot > 4) continue;
-                    if (slot == 0) continue;
-                    if (slot == 1 && chosen.equipmentType != EquipmentType.head) continue;
-                    if (slot == 2 && chosen.equipmentType != EquipmentType.torso) continue;
-                    if (slot == 3 && chosen.equipmentType != EquipmentType.legs) continue;
-                    if (slot == 4 && chosen.equipmentType != EquipmentType.feet) continue;
+                    int slot = 0;
+                    if (chosen.equipmentType == EquipmentType.head) slot = 1;
+                    if (chosen.equipmentType == EquipmentType.torso) slot = 2;
+                    if (chosen.equipmentType == EquipmentType.legs) slot = 3;
+                    if (chosen.equipmentType == EquipmentType.feet) slot = 4;
 
                     ApplyEffects(chosen);
                     player.equippedItems[slot - 1] = chosen;
-                    Console.WriteLine($"{chosen.name} equipped into Slot {slot}!");
+                    MainUI.WriteInMainArea($"{chosen.name} equipped into Slot {slot}!");
 
                 }
 
@@ -206,7 +213,7 @@ public class Inventory
         }
         else
         {
-            Console.WriteLine("not done");
+            MainUI.WriteInMainArea("not done");
         }
     }
 
@@ -214,7 +221,7 @@ public class Inventory
     {
         if (player.equippedItems[slot] != null)
         {
-            Console.WriteLine($"{player.equippedItems[slot].name} unequipped from Slot {slot}.");
+            MainUI.WriteInMainArea($"{player.equippedItems[slot].name} unequipped from Slot {slot}.");
             player.equippedItems[slot] = null;
         }
     }

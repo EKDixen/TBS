@@ -8,10 +8,8 @@ namespace Game.Class
         public static PlayerDatabase db = new PlayerDatabase();
         static JourneyManager journeyManager = new JourneyManager();
         static Inventory Inventory;
-        static Settings settings;
         static AttackManager atkManager;
         static Random rng = new Random();
-        private MainUI mainUI;
 
         public static void Main(string[] args)
         {
@@ -65,26 +63,34 @@ namespace Game.Class
           
             atkManager = new AttackManager(player);
             Inventory = new Inventory(player);
-            settings = new Settings();
-            settings.ChangeTextColor();
-            //mainUI = new MainUI();
+            MainUI.InitializeConsole();
+            MainMenu();
+
+
         }
-        
+
         public static void MainMenu()
         {
-            
+            Console.Clear(); //do not remove 
+            MainUI.ClearMainArea();
 
+            MainUI.RenderMainMenuScreen(player);
 
+            MainUI.WriteInMainArea("What do you wish to do? (type the number next to it)");
+            MainUI.WriteInMainArea(""); 
+            MainUI.WriteInMainArea("Go somewhere : 0");
+            MainUI.WriteInMainArea("Check Inventory : 1");
+            MainUI.WriteInMainArea("Check Moves : 2");
+            MainUI.WriteInMainArea($"Do something at {player.currentLocation.name} : 3");
+            MainUI.WriteInMainArea("Check stats : 4");
+            MainUI.WriteInMainArea(""); 
+            MainUI.WriteInMainArea("Start test combat (1v1) : 5");
+            MainUI.WriteInMainArea("Start test combat (1v2) : 6");
+            MainUI.WriteInMainArea("Start zone encounter : 7");
 
-            Console.WriteLine($"\nwhat do you wish to do? (type the number next to it) \nGo somewhere : 0 \nCheck Inventory : 1 \n" +
-                $"Check Moves : 2\ndo something here current location {player.currentLocation.name} : 3 \n" +
-                $"Check stats : 4 \nchange settings : 5 \n" +
-                $"Start test combat (1v1) : 6\nStart test combat (1v2) : 7\n" +
-                $"Start zone encounter StarterTown <-> Mountain (3 enemies) : 8\n");
-            
-            if (int.TryParse(Console.ReadLine(), out int input) == false || input > 8 || input < 0)
+            if (int.TryParse(Console.ReadLine(), out int input) == false || input > 7 || input < 0)
             {
-                Console.WriteLine("\nyou gotta type 0, 1, 2, 3, 4, 5, 6, 7, or 8");
+                MainUI.WriteInMainArea("\nyou gotta type 0, 1, 2, 3, 4, 5, 6 or 7");
                 MainMenu();
                 return;
             }
@@ -93,35 +99,35 @@ namespace Game.Class
             else if (input == 2) atkManager.ShowMovesMenu();
             else if (input == 3)
             {
-                Console.WriteLine("all establisments in your current location");
+                MainUI.WriteInMainArea("all establisments in your current location");
                 int i = 0;
                 foreach (var subLocation in player.currentLocation.subLocationsHere)
                 {
                     i++;
-                    Console.WriteLine($"{subLocation.name} : {i}");
+                    MainUI.WriteInMainArea($"{subLocation.name} : {i}");
                 }
                 if (i == 0)
                 {
-                    Console.Clear();
-                    Console.WriteLine("there arent any establisments in your current location sorry");
+                    MainUI.ClearMainArea();
+                    MainUI.WriteInMainArea("there arent any establisments in your current location sorry");
                     MainMenu();
                     return;
                 }
 
-                Console.WriteLine("\ntype out the number next to the location you want to go to\n or leave : 0");
+                MainUI.WriteInMainArea("\ntype out the number next to the location you want to go to\n or leave : 0");
 
                 int targetDes;
                 if (int.TryParse(Console.ReadLine(), out targetDes))
                 {
                     if (targetDes == 0)
                     {
-                        Console.Clear();
+                        MainUI.ClearMainArea();
                         MainMenu();
                         return;
                     }
                     else if (targetDes > player.currentLocation.subLocationsHere.Count || targetDes < 0)
                     {
-                        Console.WriteLine("that number is wrong mate");
+                        MainUI.WriteInMainArea("that number is wrong mate");
                         MainMenu();
                         return;
                     }
@@ -129,27 +135,32 @@ namespace Game.Class
                 }
                 else
                 {
-                    Console.WriteLine("write a number dumb dumb");
+                    MainUI.WriteInMainArea("write a number dumb dumb");
                     MainMenu();
                     return;
                 }
             }
             else if (input == 4) ShowPlayerStats();
-            else if (input == 5) settings.ChangeTextColor();
-            else if (input == 6) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug) });
-            else if (input == 7) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug), CloneEnemy(EnemyLibrary.VampireSpawn) });
-            else if (input == 8) StartZoneEncounter(LocationLibrary.starterTown, LocationLibrary.mountain, 3);
+            else if (input == 5) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug) });
+            else if (input == 6) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug), CloneEnemy(EnemyLibrary.VampireSpawn) });
+            else if (input == 7) StartZoneEncounter(LocationLibrary.starterTown, LocationLibrary.mountain, 3);
 
             db.SavePlayer(player);
         }
 
         public static void ShowPlayerStats()
         {
-            Console.WriteLine($"\n\nAccount: {player.name} \n\nLevel: {player.level} \nClass: {player.playerClass} \nHP: {player.HP}/{player.maxHP} \nDMG: {player.DMG} \nSpeed: {player.speed} \narmor: {player.armor}" +
+            MainUI.ClearMainArea();
+
+            MainUI.WriteInMainArea($"\n\nAccount Name: {player.name} \n\nLevel: {player.level} \nClass: {player.playerClass} \nHP: {player.HP}/{player.maxHP} \nDMG: {player.DMG} \nSpeed: {player.speed} \narmor: {player.armor}" +
                 $"\nDodge: {player.dodge} \nDodgeNegation: {player.dodgeNegation} \nCrit-chance: {player.critChance} \nCrit-Damage: {player.critDamage} \nStun: {player.stun}" +
                 $"\nStunNegation: {player.stunNegation}\n\n");
 
             Thread.Sleep(1000);
+            MainUI.WriteInMainArea("press Enter to continue");
+
+            Console.ReadLine();
+
             MainMenu();
         }
 
@@ -172,7 +183,7 @@ namespace Game.Class
         {
             var cm = new CombatManager(player, testEnemies);
             cm.StartCombat();
-            Console.WriteLine("\nReturning to main menu...\n");
+            MainUI.WriteInMainArea("\nReturning to main menu...\n");
             MainMenu();
         }
 
@@ -193,7 +204,7 @@ namespace Game.Class
 
             if (combined.Count == 0)
             {
-                Console.WriteLine("No enemies in these zones.");
+                MainUI.WriteInMainArea("No enemies in these zones.");
                 MainMenu();
                 return;
             }
@@ -217,7 +228,7 @@ namespace Game.Class
 
             var cm = new CombatManager(player, picks);
             cm.StartCombat();
-            Console.WriteLine("\nReturning to main menu...\n");
+            MainUI.WriteInMainArea("\nReturning to main menu...\n");
             MainMenu();
         }
     }
