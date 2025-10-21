@@ -314,7 +314,7 @@ public class CombatManager
             if (!actor.IsAlive()) return;
 
             ui.RenderCombatScreen(player, combatants);
-
+            ui.AddToLog("");
             // Stun check
             if (stunnedTurns.TryGetValue(actor, out int stunLeft) && stunLeft > 0)
             {
@@ -418,7 +418,6 @@ public class CombatManager
             ui.WriteInMainArea(13, "Press Enter to continue...");
             ui.SetCursorInMainArea(22);
             Console.ReadLine();
-            ui.ClearLog();
         }
     }
 
