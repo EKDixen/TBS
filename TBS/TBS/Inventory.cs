@@ -139,7 +139,7 @@ public class Inventory
     }
     public void AddItem(Item Titem, int tAmount) 
     {
-        if (player.ownedItems.Contains(Titem))
+        if (player.ownedItems.Contains(Titem) && Titem.type != ItemType.equipment)
         {
             Item existingItem = player.ownedItems.First(i => i.Equals(Titem));
             existingItem.amount += tAmount;
