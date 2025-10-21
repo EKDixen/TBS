@@ -8,7 +8,6 @@ namespace Game.Class
         public static PlayerDatabase db = new PlayerDatabase();
         static JourneyManager journeyManager = new JourneyManager();
         static Inventory Inventory;
-        static Settings settings;
         static AttackManager atkManager;
         static Random rng = new Random();
 
@@ -64,16 +63,15 @@ namespace Game.Class
           
             atkManager = new AttackManager(player);
             Inventory = new Inventory(player);
-            settings = new Settings();
             MainUI.InitializeConsole();
-            settings.ChangeTextColor();
-
+            MainMenu();
 
 
         }
 
         public static void MainMenu()
         {
+            Console.Clear(); //do not remove 
             MainUI.ClearMainArea();
 
             MainUI.RenderMainMenuScreen(player);
@@ -85,15 +83,14 @@ namespace Game.Class
             MainUI.WriteInMainArea("Check Moves : 2");
             MainUI.WriteInMainArea($"Do something at {player.currentLocation.name} : 3");
             MainUI.WriteInMainArea("Check stats : 4");
-            MainUI.WriteInMainArea("Change settings : 5");
             MainUI.WriteInMainArea(""); 
-            MainUI.WriteInMainArea("Start test combat (1v1) : 6");
-            MainUI.WriteInMainArea("Start test combat (1v2) : 7");
-            MainUI.WriteInMainArea("Start zone encounter : 8");
+            MainUI.WriteInMainArea("Start test combat (1v1) : 5");
+            MainUI.WriteInMainArea("Start test combat (1v2) : 6");
+            MainUI.WriteInMainArea("Start zone encounter : 7");
 
-            if (int.TryParse(Console.ReadLine(), out int input) == false || input > 8 || input < 0)
+            if (int.TryParse(Console.ReadLine(), out int input) == false || input > 7 || input < 0)
             {
-                MainUI.WriteInMainArea("\nyou gotta type 0, 1, 2, 3, 4, 5, 6, 7, or 8");
+                MainUI.WriteInMainArea("\nyou gotta type 0, 1, 2, 3, 4, 5, 6 or 7");
                 MainMenu();
                 return;
             }
@@ -144,10 +141,9 @@ namespace Game.Class
                 }
             }
             else if (input == 4) ShowPlayerStats();
-            else if (input == 5) settings.ChangeTextColor();
-            else if (input == 6) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug) });
-            else if (input == 7) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug), CloneEnemy(EnemyLibrary.VampireSpawn) });
-            else if (input == 8) StartZoneEncounter(LocationLibrary.starterTown, LocationLibrary.mountain, 3);
+            else if (input == 5) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug) });
+            else if (input == 6) StartTestCombat(new List<Enemy> { CloneEnemy(EnemyLibrary.Thug), CloneEnemy(EnemyLibrary.VampireSpawn) });
+            else if (input == 7) StartZoneEncounter(LocationLibrary.starterTown, LocationLibrary.mountain, 3);
 
             db.SavePlayer(player);
         }
