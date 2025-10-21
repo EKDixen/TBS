@@ -19,7 +19,7 @@ public class Player : Combatant
 
     public Player() { } //Deserialize
 
-    public Player(string TplayerName, string Tpassword, string TplayerClass, int Tlevel, int Texp, int THP, int TDMG,
+    public Player(string TplayerName, string Tpassword, string TplayerClass, int Tlevel, int Texp, int THP, int TmaxHP, int TDMG,
         int Tspeed, int Tarmor, int Tdodge, int TdodgeNegation, int Tcritchance, int TcritDamage, int Tstun,
         int TstunNegation, Location Tlocation, int Tmoney, int Tluck)
     {
@@ -29,6 +29,7 @@ public class Player : Combatant
         level = Tlevel;
         exp = Texp;
         HP = THP;
+        maxHP = TmaxHP;
         DMG = TDMG;
         speed = Tspeed;
         armor = Tarmor;
