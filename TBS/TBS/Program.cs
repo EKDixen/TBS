@@ -168,7 +168,7 @@ namespace Game.Class
                 $"\nDodge: {player.dodge} \nDodgeNegation: {player.dodgeNegation} \nCrit-chance: {player.critChance} \nCrit-Damage: {player.critDamage} \nStun: {player.stun}" +
                 $"\nStunNegation: {player.stunNegation}\n\n");
 
-            Thread.Sleep(1000);
+            Thread.Sleep(400);
             MainUI.WriteInMainArea("-press Enter to continue");
 
             Console.ReadLine();
@@ -180,6 +180,19 @@ namespace Game.Class
         {
             db.SavePlayer(player);
         }
+
+        /*
+        public void LoadKnownLocations(List<string> savedNames)
+        {
+            player.knownLocations.Clear();
+
+            foreach (var name in savedNames)
+            {
+                var loc = LocationLibrary.Get(name);
+                if (loc != null)
+                    LocationLibrary.Add(loc);
+            }
+        }*/
 
         private static Enemy CloneEnemy(Enemy e)
         {

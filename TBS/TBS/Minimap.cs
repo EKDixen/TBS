@@ -91,7 +91,7 @@ public static class Minimap
             var location = LocationLibrary.locations[locIndex.Value];
 
             // If the location exists but is not known
-            if (!Program.player.knownLocations.Contains(location))
+            if (!Program.player.knownLocationnames.Contains(location.name))
                 return "???";
 
             // If location exists and is known, return its name

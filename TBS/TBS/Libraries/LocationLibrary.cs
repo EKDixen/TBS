@@ -113,4 +113,13 @@ public static class LocationLibrary
         starterTown, forest, mountain, lake
     };
 
+    public static Dictionary<string, Location> locationMap = locations.ToDictionary(l => l.name);
+
+
+    public static Location Get(string name)
+    {
+        locationMap.TryGetValue(name, out var loc);
+        return loc;
+    }
+
 }

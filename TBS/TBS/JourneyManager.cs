@@ -28,16 +28,16 @@ class JourneyManager
             MainUI.WriteInMainArea("\nwhere do you wish to travel (type out the number next to it)");
             MainUI.WriteInMainArea("Locations you currently know: ");
 
-            for (int i = 0; i < Program.player.knownLocations.Count; i++)
+            for (int i = 0; i < Program.player.knownLocationnames.Count; i++)
             {
-                if (Program.player.knownLocations[i] != Program.player.currentLocation) 
+                if (LocationLibrary.Get(Program.player.knownLocationnames[i]) != Program.player.currentLocation) 
                 {
-                    float price = (Program.player.currentLocation.location - Program.player.knownLocations[i].location).Length() * 2 + 
-                        Program.player.currentLocation.travelPrice + Program.player.knownLocations[i].travelPrice;
-                    MainUI.WriteInMainArea($"{Program.player.knownLocations[i].name}  :  {(i + 1)}  (price: {price})"); 
+                    float price = (Program.player.currentLocation.location - LocationLibrary.Get(Program.player.knownLocationnames[i]).location).Length() * 2 + 
+                        Program.player.currentLocation.travelPrice + LocationLibrary.Get(Program.player.knownLocationnames[i]).travelPrice;
+                    MainUI.WriteInMainArea($"{LocationLibrary.Get(Program.player.knownLocationnames[i]).name}  :  {(i + 1)}  (price: {price})"); 
                     
                 }
-                else MainUI.WriteInMainArea(Program.player.knownLocations[i].name + " : " + (i + 1) + " (current location)");
+                else MainUI.WriteInMainArea(LocationLibrary.Get(Program.player.knownLocationnames[i]).name + " : " + (i + 1) + " (current location)");
             }
             MainUI.WriteInMainArea("or go back : 0");
 
@@ -47,15 +47,15 @@ class JourneyManager
 
                 MainUI.WriteInMainArea("");
                 if (targetDes == 0) { MainUI.ClearMainArea(); ; Program.MainMenu(); return; }
-                else if (targetDes <= Program.player.knownLocations.Count && targetDes >= 0 && Program.player.knownLocations[targetDes - 1] != Program.player.currentLocation) 
+                else if (targetDes <= Program.player.knownLocationnames.Count && targetDes >= 0 && LocationLibrary.Get(Program.player.knownLocationnames[targetDes - 1]) != Program.player.currentLocation) 
                 {
-                    float price = (Program.player.currentLocation.location - Program.player.knownLocations[targetDes - 1].location).Length() * 2 +
-                        Program.player.currentLocation.travelPrice + Program.player.knownLocations[targetDes - 1].travelPrice;
+                    float price = (Program.player.currentLocation.location - LocationLibrary.Get(Program.player.knownLocationnames[targetDes - 1]).location).Length() * 2 +
+                        Program.player.currentLocation.travelPrice + LocationLibrary.Get(Program.player.knownLocationnames[targetDes - 1]).travelPrice;
 
                     if (Program.player.money >= price)
                     {
                         Program.player.money -= (int)Math.Floor(price);
-                        Travel(Program.player.knownLocations[targetDes - 1], true);
+                        Travel(LocationLibrary.Get(Program.player.knownLocationnames[targetDes - 1]), true);
                     }
                     else
                     {
@@ -91,13 +91,13 @@ class JourneyManager
             {
 
                 if (Program.player.currentLocation.location + new System.Numerics.Vector2(0, 1) == LocationLibrary.locations[i].location
-                    && Program.player.knownLocations.Contains(LocationLibrary.locations[i])) travelLocations.Add(i);
+                    && Program.player.knownLocationnames.Contains(LocationLibrary.locations[i].name)) travelLocations.Add(i);
                 if (Program.player.currentLocation.location + new System.Numerics.Vector2(0, -1) == LocationLibrary.locations[i].location
-                    && Program.player.knownLocations.Contains(LocationLibrary.locations[i])) travelLocations.Add(i);
+                    && Program.player.knownLocationnames.Contains(LocationLibrary.locations[i].name)) travelLocations.Add(i);
                 if (Program.player.currentLocation.location + new System.Numerics.Vector2(1, 0) == LocationLibrary.locations[i].location
-                    && Program.player.knownLocations.Contains(LocationLibrary.locations[i])) travelLocations.Add(i);
+                    && Program.player.knownLocationnames.Contains(LocationLibrary.locations[i].name)) travelLocations.Add(i);
                 if (Program.player.currentLocation.location + new System.Numerics.Vector2(-1, 0) == LocationLibrary.locations[i].location
-                    && Program.player.knownLocations.Contains(LocationLibrary.locations[i])) travelLocations.Add(i);
+                    && Program.player.knownLocationnames.Contains(LocationLibrary.locations[i].name)) travelLocations.Add(i);
             }
 
             for (int i = 0; i < travelLocations.Count; i++)
@@ -166,13 +166,13 @@ class JourneyManager
         for (int i = 0; i < LocationLibrary.locations.Count; i++)
         {
             if (Program.player.currentLocation.location + new System.Numerics.Vector2(0, 1) == LocationLibrary.locations[i].location
-                && !Program.player.knownLocations.Contains(LocationLibrary.locations[i])) explorableLocations.Add(i);
+                && !Program.player.knownLocationnames.Contains(LocationLibrary.locations[i].name)) explorableLocations.Add(i);
             if (Program.player.currentLocation.location + new System.Numerics.Vector2(0, -1) == LocationLibrary.locations[i].location
-                && !Program.player.knownLocations.Contains(LocationLibrary.locations[i])) explorableLocations.Add(i);
+                && !Program.player.knownLocationnames.Contains(LocationLibrary.locations[i].name)) explorableLocations.Add(i);
             if (Program.player.currentLocation.location + new System.Numerics.Vector2(1, 0) == LocationLibrary.locations[i].location
-                && !Program.player.knownLocations.Contains(LocationLibrary.locations[i])) explorableLocations.Add(i);
+                && !Program.player.knownLocationnames.Contains(LocationLibrary.locations[i].name)) explorableLocations.Add(i);
             if (Program.player.currentLocation.location + new System.Numerics.Vector2(-1, 0) == LocationLibrary.locations[i].location
-                && !Program.player.knownLocations.Contains(LocationLibrary.locations[i])) explorableLocations.Add(i);
+                && !Program.player.knownLocationnames.Contains(LocationLibrary.locations[i].name)) explorableLocations.Add(i);
         }
         if (explorableLocations.Count != 0)
         {
@@ -198,7 +198,7 @@ class JourneyManager
             }
 
             MainUI.WriteInMainArea("\ngoing to "+ LocationLibrary.locations[explorableLocations[randomDir]].name);
-            Program.player.knownLocations.Add(LocationLibrary.locations[explorableLocations[randomDir]]);
+            Program.player.knownLocationnames.Add(LocationLibrary.locations[explorableLocations[randomDir]].name);
             Program.player.currentLocation = LocationLibrary.locations[explorableLocations[randomDir]];
 
             Program.SavePlayer();

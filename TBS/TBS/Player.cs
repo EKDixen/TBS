@@ -7,7 +7,9 @@ public class Player : Combatant
     public int luck;
 
     public Location currentLocation;
-    public List<Location> knownLocations = new List<Location>();
+    //public List<Location> knownLocations = new List<Location>();
+
+    public List<string> knownLocationnames = new List<string>();
 
     public List<Item> ownedItems = new List<Item>();
 
@@ -43,7 +45,7 @@ public class Player : Combatant
         money = Tmoney;
         luck = Tluck;
 
-        knownLocations.Add(LocationLibrary.starterTown);
+        knownLocationnames.Add(LocationLibrary.starterTown.name);
         currentLocation = LocationLibrary.starterTown;
     }
 }

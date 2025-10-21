@@ -127,7 +127,7 @@ public class SubLocation
         Inventory inventory = new Inventory(Program.player);
 
 
-
+        MainUI.WriteInMainArea("Shop Items:");
         MainUI.WriteInMainArea("\n nr     Name                      Qty   Description        Price");
         MainUI.WriteInMainArea(" ----------------------------------------------------------------");
         int i = 0;

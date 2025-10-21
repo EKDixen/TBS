@@ -17,7 +17,7 @@ public class Location
     public Dictionary<Encounter, int> possibleEncounters { get; set; }
 
     public Location() { } // Deserialize
-    public Location( string Tname, Vector2 Tlocation, int travelPrize, List<SubLocation> subLocations, Dictionary<Enemy, int> TpossibleEnemy = null, Dictionary<Encounter, int> TpossibleEncounters = null)
+    public Location(string Tname, Vector2 Tlocation, int travelPrize, List<SubLocation> subLocations, Dictionary<Enemy, int> TpossibleEnemy = null, Dictionary<Encounter, int> TpossibleEncounters = null)
     {
         name = Tname;
         location = Tlocation;
