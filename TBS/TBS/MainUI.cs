@@ -196,13 +196,15 @@ namespace Game.Class
 
                     // Move to the next line for the next piece of the string
                     currentLineOffset++;
+                    Console.SetCursorPosition(2, row + 3);
                 }
+
                 mainAreaCurrentLine += currentLineOffset;
             }
         }
 
         public static void ClearMainArea()
-        {
+        {                   
             lock (consoleLock)
             {
                 int maxLines = ConsoleHeight - 4;
@@ -212,6 +214,7 @@ namespace Game.Class
                     Console.Write(new string(' ', MainAreaWidth - 4));
                 }
                 mainAreaCurrentLine = 0;
+
             }
         }
     }
