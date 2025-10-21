@@ -48,8 +48,17 @@ namespace Game.Class
                 }
                 else if (choice == "2")
                 {
+                    Console.WriteLine("Name your character (needed to login)");
+                    string name = Console.ReadLine();
+
+                    if (db.PlayerExists(name))
+                    {
+                        Console.WriteLine("A player with that name already exists, please try again");
+                        continue;
+                    }
+
                     PlayerCreator creator = new PlayerCreator();
-                    player = creator.PlayerCreatorFunction(db);
+                    player = creator.PlayerCreatorFunction(db,name);
                     db.SavePlayer(player);
                     Console.WriteLine("New character created and saved!");
                     break;
