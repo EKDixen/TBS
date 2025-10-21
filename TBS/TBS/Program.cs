@@ -71,10 +71,13 @@ namespace Game.Class
 
         public static void MainMenu()
         {
+
             Console.Clear(); //do not remove 
             MainUI.ClearMainArea();
 
             MainUI.RenderMainMenuScreen(player);
+
+            db.SavePlayer(player);
 
             MainUI.WriteInMainArea("What do you wish to do? (type the number next to it)");
             MainUI.WriteInMainArea(""); 
@@ -152,12 +155,12 @@ namespace Game.Class
         {
             MainUI.ClearMainArea();
 
-            MainUI.WriteInMainArea($"\n\nAccount Name: {player.name} \n\nLevel: {player.level} \nClass: {player.playerClass} \nHP: {player.HP}/{player.maxHP} \nDMG: {player.DMG} \nSpeed: {player.speed} \narmor: {player.armor}" +
+            MainUI.WriteInMainArea($"\nAccount Name: {player.name} \n\nLevel: {player.level} \nClass: {player.playerClass} \nHP: {player.HP}/{player.maxHP} \nDMG: {player.DMG} \nSpeed: {player.speed} \narmor: {player.armor}" +
                 $"\nDodge: {player.dodge} \nDodgeNegation: {player.dodgeNegation} \nCrit-chance: {player.critChance} \nCrit-Damage: {player.critDamage} \nStun: {player.stun}" +
                 $"\nStunNegation: {player.stunNegation}\n\n");
 
             Thread.Sleep(1000);
-            MainUI.WriteInMainArea("press Enter to continue");
+            MainUI.WriteInMainArea("-press Enter to continue");
 
             Console.ReadLine();
 

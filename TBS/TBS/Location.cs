@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 public class Location
 {
     public string name;
-    public bool known;
+    
     public Vector2 location;
 
     public int travelPrice;
@@ -17,9 +17,8 @@ public class Location
     public Dictionary<Encounter, int> possibleEncounters { get; set; }
 
     public Location() { } // Deserialize
-    public Location(bool Tknown, string Tname, Vector2 Tlocation, int travelPrize, List<SubLocation> subLocations, Dictionary<Enemy, int> TpossibleEnemy = null, Dictionary<Encounter, int> TpossibleEncounters = null)
+    public Location( string Tname, Vector2 Tlocation, int travelPrize, List<SubLocation> subLocations, Dictionary<Enemy, int> TpossibleEnemy = null, Dictionary<Encounter, int> TpossibleEncounters = null)
     {
-        known = Tknown;
         name = Tname;
         location = Tlocation;
         subLocationsHere = subLocations;
