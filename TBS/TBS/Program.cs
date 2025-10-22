@@ -86,25 +86,18 @@ namespace Game.Class
             Inventory = new Inventory(player);
             MainUI.InitializeConsole();
             MainMenu();
-
-
+            CheckPlayerLevel();
+            MainUI.LoopRenderMain();
         }
 
         public static void MainMenu()
         {
 
-            Console.Clear(); //do not remove (ima remove it) 
+            Console.Clear(); //do not remove (ima remove it) . nigga du dum 
             MainUI.ClearMainArea();
 
             MainUI.RenderMainMenuScreen(player);
 
-            MainUI.LoopRenderMain();
-
-            if(player.exp >= player.level * 100)
-            {
-                MainUI.WriteInMainArea(" \nYOU LEVEL UP!!!!! \n ");
-                player.level++;
-            }
 
             db.SavePlayer(player);
 
@@ -192,6 +185,22 @@ namespace Game.Class
         public static void SavePlayer()
         {
             db.SavePlayer(player);
+        }
+        public static async Task CheckPlayerLevel()
+        {
+            while (true)
+            {
+                if (player.exp >= player.level * 100)
+                {
+                    player.level++;
+                    player.exp = 0;
+
+                    //missing function to do the effects of level up
+
+                }
+
+                await Task.Delay(3200);
+            }
         }
 
         public static void CheckPlayerDeath()
