@@ -113,7 +113,7 @@ public static class EncounterLibrary
     public static Encounter StrangeMushrooms = new Encounter(
         "StrangeMushrooms",
         false,
-        "You stumble upon some strange mushrooms. Do you eat them? (y/n)",
+        "You stumble upon some strange mushrooms.",
         null,
         (player) => {
             MainUI.WriteInMainArea("Eat the mushrooms? (y/n): ");

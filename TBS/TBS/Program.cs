@@ -98,6 +98,8 @@ namespace Game.Class
 
             MainUI.RenderMainMenuScreen(player);
 
+            MainUI.LoopRenderMain();
+
             if(player.exp >= player.level * 100)
             {
                 MainUI.WriteInMainArea(" \nYOU LEVEL UP!!!!! \n ");

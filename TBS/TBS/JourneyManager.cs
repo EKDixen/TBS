@@ -102,18 +102,18 @@ class JourneyManager
 
             for (int i = 0; i < travelLocations.Count; i++)
             {
-                MainUI.WriteInMainArea($"\n{LocationLibrary.locations[travelLocations[i]].name} : {i+1}");
+                MainUI.WriteInMainArea($"\n{LocationLibrary.locations[travelLocations[i]].name} : {i+2}");
             }
-            MainUI.WriteInMainArea("\nor explore for a new location : 0");
-            MainUI.WriteInMainArea("or go back : -1");
+            MainUI.WriteInMainArea("\nor explore for a new location : 1");
+            MainUI.WriteInMainArea("or return to main menu : 0");
 
             int targetDes;
             if (int.TryParse(Console.ReadLine(), out targetDes))
             {
                 MainUI.WriteInMainArea("");
-                if (targetDes == 0) Explore();
-                else if (targetDes <= travelLocations.Count && targetDes >= 0 && LocationLibrary.locations[travelLocations[targetDes - 1]] != Program.player.currentLocation) Travel(LocationLibrary.locations[travelLocations[targetDes - 1]],false);
-                else if (targetDes == -1) { MainUI.ClearMainArea(); ; Program.MainMenu(); return; }
+                if (targetDes == 1) Explore();
+                else if (targetDes <= travelLocations.Count+1 && targetDes >= 0 && LocationLibrary.locations[travelLocations[targetDes - 2]] != Program.player.currentLocation) Travel(LocationLibrary.locations[travelLocations[targetDes - 2]],false);
+                else if (targetDes == 0) { MainUI.ClearMainArea(); ; Program.MainMenu(); return; }
                 else
                 {
                     MainUI.WriteInMainArea("--------dude you dont know any location with that number------- \n");

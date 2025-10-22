@@ -320,6 +320,7 @@ public class SubLocation
         }
         MainUI.WriteInMainArea($"you bet: {bet}");
         Program.player.money -= bet;
+        Program.SavePlayer();
 
         Random rand = new Random();
         int dealer1 = rand.Next(1, 14);
@@ -632,6 +633,7 @@ public class SubLocation
         }
         MainUI.WriteInMainArea($"you bet: {bet}\n");
         Program.player.money -= bet;
+        Program.SavePlayer();
 
         MainUI.WriteInMainArea($"where would you like to bet, \nblack : 1 \nred : 2 \neven : 3 \nodd : 4 \n1st 12 : 5 " +
             $"\n2nd 12 : 6 \n3rd 12 : 7 \n1 to 18(half) : 8 \n19 to 36(half) : 9 \nspecific number : 10\n");

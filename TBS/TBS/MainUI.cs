@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using System.Net.Http.Headers;
+using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Game.Class
@@ -87,6 +92,30 @@ namespace Game.Class
                 Console.CursorVisible = true;
             }
         }
+
+        public static async Task LoopRenderMain()
+        {
+            while (!CombatManager.playerInCombat)
+            {
+
+                lock (consoleLock)
+                {
+                    //Console.Clear();
+                    Console.CursorVisible = false;
+
+                    DrawPlayerPanel(Program.player);
+                    DrawMiniMapPanel();
+
+                    Console.CursorVisible = true;
+                    SetCursorInMainArea(mainAreaCurrentLine);
+                }
+                //RenderMainMenuScreen(Program.player);
+
+
+                await Task.Delay(2000); 
+            }
+        }  
+
 
         private static void DrawPlayerPanel(Player player)
         {

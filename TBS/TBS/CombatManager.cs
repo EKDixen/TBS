@@ -14,6 +14,8 @@ public class CombatManager
     private readonly Dictionary<Combatant, int> stunnedTurns = new();
     private CombatUI ui;
 
+    public static bool playerInCombat = false;
+
     public CombatManager(Player p, List<Enemy> initialEnemies)
     {
         player = p;
@@ -40,6 +42,8 @@ public class CombatManager
 
     public void StartCombat()
     {
+        playerInCombat = true;
+
         ui.AddToLog("--- Combat Started! ---");
         ui.RenderCombatScreen(player, combatants);
         Thread.Sleep(1000);
@@ -110,6 +114,7 @@ public class CombatManager
         
         // Check if player died
         Program.CheckPlayerDeath();
+        playerInCombat = false;
     }
 
     private void AdvanceActionGauges()
