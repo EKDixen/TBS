@@ -126,37 +126,44 @@ namespace Game.Class
             var turnOrder = SimulateNext10Turns(allCombatants);
 
             // Add numbering for duplicates of enemies/allies
-            var nameCount = new Dictionary<string, int>();
             var displayNames = new List<string>();
-            
-            var aliveCombatants = allCombatants.Where(c => c.IsAlive()).ToList();
             var nameTotals = new Dictionary<string, int>();
-            foreach (var c in aliveCombatants)
+            foreach (var c in allCombatants)
             {
                 if (!nameTotals.ContainsKey(c.name))
                     nameTotals[c.name] = 0;
                 nameTotals[c.name]++;
             }
 
+            var assignedNumbers = new Dictionary<Combatant, int>();
+            var tempNameCounter = new Dictionary<string, int>();
+            foreach (var c in allCombatants)
+            {
+                if (!tempNameCounter.ContainsKey(c.name))
+                    tempNameCounter[c.name] = 0;
+
+                tempNameCounter[c.name]++;
+                assignedNumbers[c] = tempNameCounter[c.name]; // each combatant gets a fixed number
+            }
+
             foreach (var combatant in turnOrder)
             {
                 string baseName = combatant.name;
-                if (!nameCount.ContainsKey(baseName))
-                    nameCount[baseName] = 0;
-                
-                nameCount[baseName]++;
-                int count = nameCount[baseName];
-                
-                // Only add number if there are multiple with this name
-                if (nameTotals.ContainsKey(baseName) && nameTotals[baseName] > 1)
+
+                // Only show numbers for alive duplicates, but numbering includes dead ones
+                if (nameTotals.TryGetValue(baseName, out var total) && total > 1 && combatant.IsAlive())
                 {
-                    displayNames.Add($"{baseName} #{count}");
+                    if (assignedNumbers.TryGetValue(combatant, out var num))
+                        displayNames.Add($"{baseName} #{num}");
+                    else
+                        displayNames.Add(baseName); // fallback
                 }
                 else
                 {
                     displayNames.Add(baseName);
                 }
             }
+
 
             int maxLines = Math.Min(10, TurnOrderHeight - 3);
             for (int i = 0; i < Math.Min(turnOrder.Count, maxLines); i++)

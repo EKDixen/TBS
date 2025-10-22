@@ -316,8 +316,6 @@ public class CombatManager
             
         private void TakeTurn(Combatant actor)
         {
-            actor.ActionGauge -= ActionThreshold;
-            if (actor.ActionGauge < 0) actor.ActionGauge = 0;
             if (!actor.IsAlive()) return;
 
             ui.RenderCombatScreen(player, combatants);
@@ -408,8 +406,11 @@ public class CombatManager
                         ui.WriteInMainArea(1, "");
                         for (int i = 0; i < enemies.Count; i++)
                         {
+                            var name = enemies[i].name;
+                            var sameNameCount = enemies.Count(e => e.name == name);
+                            var indexAmongSame = sameNameCount > 1 ? $" #{enemies.Take(i + 1).Count(e => e.name == name)}" : "";
                             var tag = enemies[i].IsAlive() ? "" : " (dead)";
-                            ui.WriteInMainArea(2 + i, $"{i + 1}. {enemies[i].name}{tag} [{enemies[i].HP}/{enemies[i].maxHP}]");
+                            ui.WriteInMainArea(2 + i, $"{i + 1}. {name}{indexAmongSame}{tag} [{enemies[i].HP}/{enemies[i].maxHP}]");
                         }
                         ui.WriteInMainArea(2 + enemies.Count + 1, "");
                         ui.SetCursorInMainArea(2 + enemies.Count + 2);
@@ -454,7 +455,8 @@ public class CombatManager
                 var chosen = enemy.attacks[rng.Next(enemy.attacks.Count)];
                 ExecuteAttackSingle(enemy, chosen, player);
             }
-
+            actor.ActionGauge -= ActionThreshold;
+            if (actor.ActionGauge < 0) actor.ActionGauge = 0;
             Thread.Sleep(300);
             ui.RenderCombatScreen(player, combatants);
             ui.WriteInMainArea(12, "");

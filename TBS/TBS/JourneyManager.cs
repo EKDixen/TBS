@@ -112,8 +112,8 @@ class JourneyManager
             {
                 MainUI.WriteInMainArea("");
                 if (targetDes == 1) Explore();
-                else if (targetDes <= travelLocations.Count+1 && targetDes >= 0 && LocationLibrary.locations[travelLocations[targetDes - 2]] != Program.player.currentLocation) Travel(LocationLibrary.locations[travelLocations[targetDes - 2]],false);
                 else if (targetDes == 0) { MainUI.ClearMainArea(); ; Program.MainMenu(); return; }
+                else if (targetDes <= travelLocations.Count+1 && targetDes > 0 && LocationLibrary.locations[travelLocations[targetDes - 2]] != Program.player.currentLocation) Travel(LocationLibrary.locations[travelLocations[targetDes - 2]],false);
                 else
                 {
                     MainUI.WriteInMainArea("--------dude you dont know any location with that number------- \n");
