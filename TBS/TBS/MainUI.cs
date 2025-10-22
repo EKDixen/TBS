@@ -17,6 +17,11 @@ namespace Game.Class
         private static readonly object consoleLock = new();
         private static int mainAreaCurrentLine = 0;
 
+        //main area lines type shit
+        private static int maxMainAreaLine = 26;
+        private const int mainAreaTopLine = 1;
+        private static int mainAreaBottomLine = maxMainAreaLine + mainAreaTopLine;
+
         // Console dimensions
         private const int ConsoleWidth = 120;
         private const int ConsoleHeight = 35;
@@ -49,7 +54,7 @@ namespace Game.Class
         const uint SWP_NOSIZE = 0x0001;
         const uint SWP_NOZORDER = 0x0004;
         const uint SWP_FRAMECHANGED = 0x0020;
-        
+
         public static void InitializeConsole()
         {
             try
@@ -75,7 +80,7 @@ namespace Game.Class
                 Thread.Sleep(1000);
             }
         }
-        
+
 
 
         public static void RenderMainMenuScreen(Player player, string mainAreaContent = "")
@@ -112,9 +117,9 @@ namespace Game.Class
                 //RenderMainMenuScreen(Program.player);
 
 
-                await Task.Delay(2000); 
+                await Task.Delay(2000);
             }
-        }  
+        }
 
 
         private static void DrawPlayerPanel(Player player)
@@ -124,7 +129,7 @@ namespace Game.Class
 
             DrawBox(x, y, RightPanelWidth, PlayerPanelHeight, "Player");
 
-            Console.SetCursorPosition(x + 14 - (player.name.Length/2), y + 2);
+            Console.SetCursorPosition(x + 14 - (player.name.Length / 2), y + 2);
             Console.Write($"{player.name} - Lvl {player.level}");
 
             Console.SetCursorPosition(x + 2, y + 4);
@@ -161,7 +166,7 @@ namespace Game.Class
             DrawBox(x, y, RightPanelWidth, MiniMapHeight, "MiniMap");
 
 
-            Minimap.DisplayMinimap(x+2,y+2,RightPanelWidth-6);
+            Minimap.DisplayMinimap(x + 2, y + 2, RightPanelWidth - 6);
         }
 
 
@@ -172,9 +177,12 @@ namespace Game.Class
             if (!string.IsNullOrEmpty(content))
             {
                 var lines = content.Split('\n');
-                for (int i = 0; i < Math.Min(lines.Length, ConsoleHeight - 4); i++)
+
+                int limit = Math.Min(lines.Length, maxMainAreaLine + 1);
+
+                for (int i = 0; i < limit; i++)
                 {
-                    Console.SetCursorPosition(2, 2 + i);
+                    Console.SetCursorPosition(2, mainAreaTopLine + i);
                     string line = lines[i];
                     if (line.Length > MainAreaWidth - 4)
                     {
@@ -182,6 +190,8 @@ namespace Game.Class
                     }
                     Console.Write(line);
                 }
+
+                mainAreaCurrentLine = limit;
             }
         }
 
@@ -222,7 +232,15 @@ namespace Game.Class
         {
             lock (consoleLock)
             {
-                Console.SetCursorPosition(col, row + 2);
+                int absoluteRow = mainAreaTopLine + row;
+
+                // check to prevent cursor from going outside the box
+                if (absoluteRow > ConsoleHeight - 2)
+                {
+                    absoluteRow = ConsoleHeight - 2;
+                }
+
+                Console.SetCursorPosition(col, absoluteRow);
             }
         }
 
@@ -231,43 +249,67 @@ namespace Game.Class
             lock (consoleLock)
             {
                 var lines = text.Split('\n');
-                int currentLineOffset = 0;
 
                 foreach (var line in lines)
                 {
-                    int row = mainAreaCurrentLine + currentLineOffset;
+                    if (mainAreaCurrentLine > maxMainAreaLine)
+                    {
+                        // --- THIS IS THE SCROLL LOGIC ---
 
-                    Console.SetCursorPosition(2, row + 1);
+                        // This copies everything from row 2 up to row 1, 3 to 2, etc.
+                        Console.MoveBufferArea(
+                            sourceLeft: col,
+                            sourceTop: mainAreaTopLine + 1, // The *second* absolute line (y=2)
+                            sourceWidth: MainAreaWidth - 4, // The width you're writing
+                            sourceHeight: maxMainAreaLine,  // The total height of the area minus one line
+                            targetLeft: col,
+                            targetTop: mainAreaTopLine      // The *first* absolute line (y=1)
+                        );
 
-                    // The .Trim() is important to remove any lingering carriage return
+                        // 2. Clear the last line (which is now a duplicate)
+                        string clearLine = "".PadRight(MainAreaWidth - 4);
+                        Console.SetCursorPosition(col, mainAreaBottomLine); // Go to the absolute bottom line
+                        Console.Write(clearLine);
+
+
+                        // 3. Reset the current line to be the last line
+                        mainAreaCurrentLine = maxMainAreaLine;
+                    }
+
+                    // Calculate the absolute row to write on
+                    int absoluteRow = mainAreaTopLine + mainAreaCurrentLine;
+
+                    // Write the new line at the correct position
+                    Console.SetCursorPosition(col, absoluteRow);
                     string cleanLine = line.Trim();
-
-                    // Write the line and pad it to clear any previous text
                     Console.Write(cleanLine.PadRight(MainAreaWidth - 4));
 
-                    // Move to the next line for the next piece of the string
-                    currentLineOffset++;
-                    Console.SetCursorPosition(2, row + 2);
+                    // 3. Increment the *relative* "next line" counter
+                    mainAreaCurrentLine++;
                 }
 
-                mainAreaCurrentLine += currentLineOffset;
+                // Finally, set the cursor to the *next* available line for user input
+                // This is now handled by your LoopRenderMain's call to SetCursorInMainArea
+                SetCursorInMainArea(mainAreaCurrentLine);
             }
         }
 
         public static void ClearMainArea()
-        {                   
+        {
             lock (consoleLock)
             {
-                int maxLines = ConsoleHeight - 4;
+                // Use maxMainAreaLine + 1 to get the total number of lines (0-28 is 29 lines)
+                int maxLines = maxMainAreaLine + 1;
+                string clearLine = new string(' ', MainAreaWidth - 4);
+
                 for (int i = 0; i < maxLines; i++)
                 {
-                    Console.SetCursorPosition(2, 1 + i);
-                    Console.Write(new string(' ', MainAreaWidth - 4));
+                    // Use mainAreaTopLine as the starting point
+                    Console.SetCursorPosition(2, mainAreaTopLine + i);
+                    Console.Write(clearLine);
                 }
                 mainAreaCurrentLine = 0;
-
             }
         }
     }
-
 }
