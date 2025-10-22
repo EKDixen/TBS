@@ -87,7 +87,6 @@ namespace Game.Class
             MainUI.InitializeConsole();
             MainMenu();
             CheckPlayerLevel();
-            MainUI.LoopRenderMain();
         }
 
         public static void MainMenu()
@@ -97,7 +96,7 @@ namespace Game.Class
             MainUI.ClearMainArea();
 
             MainUI.RenderMainMenuScreen(player);
-
+            MainUI.LoopRenderMain();
 
             db.SavePlayer(player);
 
