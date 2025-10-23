@@ -91,6 +91,9 @@ public class Inventory
                 MainUI.WriteInMainArea("");
                 MainUI.WriteInMainArea($"you've picked {player.ownedItems[input].name}");
                 MainUI.WriteInMainArea($"{player.ownedItems[input].details}\n");
+
+                MainUI.WriteInMainArea($"-press Enter to continue");
+                Console.ReadLine();
             }
             else if (ik == 1)
             {

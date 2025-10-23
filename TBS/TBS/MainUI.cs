@@ -293,13 +293,13 @@ namespace Game.Class
                 SetCursorInMainArea(mainAreaCurrentLine);
             }
         }
-
+        
         public static void ClearMainArea()
         {
             lock (consoleLock)
             {
                 // Use maxMainAreaLine + 1 to get the total number of lines (0-28 is 29 lines)
-                int maxLines = maxMainAreaLine + 1;
+                int maxLines = maxMainAreaLine + 2;
                 string clearLine = new string(' ', MainAreaWidth - 4);
 
                 for (int i = 0; i < maxLines; i++)

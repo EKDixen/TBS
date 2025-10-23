@@ -166,6 +166,9 @@ public class SubLocation
             MainUI.ClearMainArea();
             MainUI.WriteInMainArea($"\nyou've picked {shopItems[input].item.name}");
             MainUI.WriteInMainArea($"{shopItems[input].item.details}\n");
+
+            MainUI.WriteInMainArea($"-press Enter to continue");
+            Console.ReadLine();
         }
         else if (ik == 1)
         {
@@ -371,7 +374,32 @@ public class SubLocation
 
         MainUI.WriteInMainArea($"your card sum: {playerValue}");
 
-        while (true)
+        bool doTurns = true;
+        if (playerValue == 21)
+        {
+            int dealer2 = rand.Next(1, 14);
+            int dealer2Suit = rand.Next(1, 4);
+
+            Thread.Sleep(700);
+
+            dealString = ($"\ndealer shows a");
+            if (dealer2 == 1) dealString += ($"n ace of {suits[dealer2Suit]} (worth 11 and 1)");
+            else if (dealer2 < 11) dealString += ($" {dealer2} of {suits[dealer2Suit]}");
+            else dealString += ($" 10 of {suits[dealer2Suit]}");
+
+            MainUI.WriteInMainArea(dealString);
+
+
+            if (dealer2 > 10) dealerValue += 10;
+            else if (dealer2 == 1 && dealerValue + 11 <= 21) dealerValue += 11;
+            else { dealerValue += dealer2; dealer2 = 0; }
+
+            MainUI.WriteInMainArea($"dealer card sum: {dealerValue}");
+            
+            doTurns = false;
+
+        }
+        while (doTurns)
         {
             if (playerValue > 21)
             {
@@ -379,10 +407,6 @@ public class SubLocation
                 if (player2 == 1) { playerValue -= 10; player2 = 0; continue; }
                 if (player3 == 1) { playerValue -= 10; player3 = 0; continue; }
                 MainUI.WriteInMainArea("\nyou bust");
-                break;
-            }
-            else if (playerValue == 21)
-            {
                 break;
             }
 
