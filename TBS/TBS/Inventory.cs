@@ -3,6 +3,11 @@ public class Inventory
 {
     private Player player;
 
+    private int currentPage = 1;
+    private int itemsPerPage = 8; 
+    private string searchTerm = "";
+    private List<Item> filteredItems; // This will hold the items we are currently viewing
+
     public Inventory(Player p)
     {
         player = p;
@@ -11,11 +16,40 @@ public class Inventory
         {
             player.equippedItems.Add(null);
         }
+
+        filteredItems = player.ownedItems;
     }
     public void ShowInventory()
     {
         while (true)
         {
+
+            // Update the filtered list based on the search term
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                filteredItems = player.ownedItems; // full list
+            }
+            else
+            {
+                filteredItems = player.ownedItems
+                    .Where(item => item.name.ToLower().Contains(searchTerm.ToLower()) ||
+                                   item.description.ToLower().Contains(searchTerm.ToLower()))
+                    .ToList();
+            }
+             
+            // Calculate total pages and get the items for the current page
+            int totalItems = filteredItems.Count;
+            int totalPages = (int)Math.Ceiling((double)totalItems / itemsPerPage);
+            if (totalPages == 0) totalPages = 1; 
+            if (currentPage > totalPages) currentPage = totalPages; // Fix if we are on a page that no longer exists
+            if (currentPage < 1) currentPage = 1;
+
+            List<Item> pageItems = filteredItems
+                .Skip((currentPage - 1) * itemsPerPage) // Skip items on previous pages
+                .Take(itemsPerPage)                     // Get just the items for this page
+                .ToList();
+
+
             MainUI.ClearMainArea();
 
             MainUI.WriteInMainArea("Equiped items:");
@@ -35,13 +69,18 @@ public class Inventory
             }
 
             MainUI.WriteInMainArea("");
-            MainUI.WriteInMainArea($"you have {player.money} money\n\nand these are your items");
+            MainUI.WriteInMainArea($"you have {player.money} money\n");
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                MainUI.WriteInMainArea($"\nShowing results for: \"{searchTerm}\"");
+            }
 
             MainUI.WriteInMainArea("");
             MainUI.WriteInMainArea("nr     Name                      Qty   Description         value");
             MainUI.WriteInMainArea("----------------------------------------------------------------");
             int i = 0;
-            foreach (var item in player.ownedItems)
+            foreach (var item in pageItems)
             {
                 i++;
 
@@ -53,57 +92,85 @@ public class Inventory
                 MainUI.WriteInMainArea($"{i,-7}{item.name,-25} {item.amount,-5} {item.description,-20} {item.value} {equippedInfo}");
             }
             MainUI.WriteInMainArea("");
-            MainUI.WriteInMainArea("if you want to interact with anything type its corresponding number");
-            MainUI.WriteInMainArea("if not type 0");
+            MainUI.WriteInMainArea($"--- Page {currentPage} of {totalPages} ---");
+            MainUI.WriteInMainArea("");
+            MainUI.WriteInMainArea("Type item number (1-8) to interact, or:");
+            MainUI.WriteInMainArea("[N] Next Page  [P] Prev Page  [S] Search  [0] Back to Main Menu");
 
-            var n = int.TryParse(Console.ReadLine(), out int input);
-            if (input == null || input < 0 || input > player.ownedItems.Count)
+
+            string inputString = Console.ReadLine()?.ToLower() ?? "";
+
+            if (inputString == "n")
+            {
+                if (currentPage < totalPages) currentPage++;
+                continue; 
+            }
+            if (inputString == "p")
+            {
+                if (currentPage > 1) currentPage--;
+                continue;
+            }
+            if (inputString == "s")
+            {
+                HandleSearch(); 
+                continue;
+            }
+
+            var n = int.TryParse(inputString, out int input);
+
+            if (input == 0) { Program.MainMenu(); return; } 
+
+            if (!n || input < 1 || input > pageItems.Count)
             {
                 MainUI.ClearMainArea();
-                MainUI.WriteInMainArea("sweetie you gotta type a usable number ");
+                MainUI.WriteInMainArea("sweetie you gotta type a usable number *from this page* ");
                 MainUI.WriteInMainArea("");
-
-                ShowInventory();
-                return;
+                MainUI.WriteInMainArea("-press Enter to continue-");
+                Console.ReadLine();
+                continue; 
             }
-            else if (input == 0) { Program.MainMenu(); return; }
 
-            input--;
-            MainUI.WriteInMainArea($"you've picked {player.ownedItems[input].name}");
+            Item selectedItem = pageItems[input - 1];
 
+            MainUI.ClearMainArea();
+            MainUI.WriteInMainArea($"you've picked {selectedItem.name}");
 
             MainUI.WriteInMainArea("0 : details");
             MainUI.WriteInMainArea("1 : drop");
-            if (player.ownedItems[input].type == ItemType.equipment) MainUI.WriteInMainArea("2 : Equip/Unequip");
-            if (player.ownedItems[input].type == ItemType.consumable) MainUI.WriteInMainArea("2 : consume");
+            if (selectedItem.type == ItemType.equipment) MainUI.WriteInMainArea("2 : Equip/Unequip");
+            if (selectedItem.type == ItemType.consumable) MainUI.WriteInMainArea("2 : consume");
             MainUI.WriteInMainArea("");
             MainUI.WriteInMainArea("type out the number next to the action you want to perform");
+
             var k = int.TryParse(Console.ReadLine(), out int ik);
-            if (ik == null || ik < 0 || ik > 2)
+            if (!k || ik < 0 || ik > 2)
             {
                 MainUI.ClearMainArea();
                 MainUI.WriteInMainArea("my love would you please type a number this time\n ");
-                ShowInventory();
-                return;
+
+                MainUI.WriteInMainArea("-press Enter to continue-");
+                Console.ReadLine();
+                continue;
             }
             else if (ik == 0)
             {
                 MainUI.WriteInMainArea("");
-                MainUI.WriteInMainArea($"you've picked {player.ownedItems[input].name}");
-                MainUI.WriteInMainArea($"{player.ownedItems[input].details}\n");
+                MainUI.WriteInMainArea($"you've picked {selectedItem.name}");
+                MainUI.WriteInMainArea($"{selectedItem.details}\n");
 
                 MainUI.WriteInMainArea($"-press Enter to continue");
                 Console.ReadLine();
+                continue;
             }
             else if (ik == 1)
             {
-                MainUI.WriteInMainArea($"\nyou drop the {player.ownedItems[input].name}");
-                DropItem(player.ownedItems[input]);
+                MainUI.WriteInMainArea($"\nyou drop the {selectedItem.name}");
+                DropItem(selectedItem);
             }
-            else if (ik == 2 && player.ownedItems[input].type == ItemType.equipment)
+            else if (ik == 2 && selectedItem.type == ItemType.equipment)
             {
 
-                Item chosen = player.ownedItems[input];
+                Item chosen = selectedItem;
 
                 // if already equipped, unequip
                 int equippedSlot = player.equippedItems.IndexOf(chosen);
@@ -131,14 +198,22 @@ public class Inventory
 
 
             }
-            else if (ik == 2 && player.ownedItems[input].type == ItemType.consumable)
+            else if (ik == 2 && selectedItem.type == ItemType.consumable)
             {
-                Consume(player.ownedItems[input]);
+                Consume(selectedItem);
             }
             Program.SavePlayer();
             Program.MainMenu();
             break;
         }
+    }
+    private void HandleSearch()
+    {
+        MainUI.ClearMainArea();
+        MainUI.WriteInMainArea("Enter search term (or leave empty to clear):");
+        MainUI.WriteInMainArea("> ");
+        searchTerm = Console.ReadLine()?.ToLower() ?? "";
+        currentPage = 1; // ALWAYS reset to page 1 after a search
     }
     public void AddItem(Item Titem, int tAmount) 
     {
