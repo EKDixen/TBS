@@ -177,7 +177,7 @@ public class AttackManager
             }
 
             // equip
-            Console.Write("Choose a slot (1-4) or 0 to cancel: ");
+            MainUI.WriteInMainArea("Choose a slot (1-4) or 0 to cancel: ");
             if (!int.TryParse(Console.ReadLine(), out int slot) || slot < 0 || slot > 4) continue;
             if (slot == 0) continue;
 
