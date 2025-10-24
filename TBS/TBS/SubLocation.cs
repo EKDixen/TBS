@@ -7,14 +7,14 @@ using System.Runtime.InteropServices;
 
 public enum SubLocationType
 {
-    shop,
-    tavern,
-    blacksmith, 
-    arena,
-    bank,
-    casino
-
-
+    shop,//done
+    tavern,//no--
+    blacksmith,//no--
+    arena,//no--
+    bank,//done
+    casino,//done
+    wilderness,//done
+    graveyard//no--
 
 }
 public class SubLocation
@@ -89,9 +89,13 @@ public class SubLocation
             }
 
         }
+        if (type == SubLocationType.wilderness)
+        {
+            WildernessLogic();
+        }
 
 
-        // not done
+        // not done---
         if (type == SubLocationType.tavern)
         {
             MainUI.WriteInMainArea("do you want to buy something : 1  \nor do you want to rent a room : 2  \nor leave : 0");
@@ -121,7 +125,7 @@ public class SubLocation
     }
 
 
-    //shop ----------------------------------
+    #region shop
     void ShopLogic()
     {
         Inventory inventory = new Inventory(Program.player);
@@ -190,8 +194,9 @@ public class SubLocation
         Program.SavePlayer();
         DoSubLocation();
     }
+    #endregion
 
-    //bank ----------------------------------
+    #region bank
     void BankLogic()
     {
         Inventory inventory = new Inventory(Program.player);
@@ -302,8 +307,9 @@ public class SubLocation
         Program.SavePlayer();
         Program.MainMenu();
     }
+    #endregion
 
-    //casino --------------------------------
+    #region casino
     void BlackjackLogic()
     {
         MainUI.WriteInMainArea($"how much do you want to bet?  current cash: {Program.player.money} \nthe max bet is {casinoMaxBet}");
@@ -845,8 +851,23 @@ public class SubLocation
 
     
     }
+    #endregion
+
+    #region wilderness
+    void WildernessLogic()
+    {
+        EncounterManager encounterManager = new EncounterManager(Program.player);
+        encounterManager.ProcessWildernessEncounters(Program.player.currentLocation);
+
+        Program.MainMenu();
+    }
+
+
+    #endregion
+
+
+    //not done
 
 
 
 }
-

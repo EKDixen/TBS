@@ -51,6 +51,44 @@ public class EncounterManager
         MainUI.WriteInMainArea("Press Enter to continue...");
         Console.ReadLine();
     }
+    public void ProcessWildernessEncounters(Location here)
+    {
+        List<Encounter> encounters = Encounter.StartTravelEncounters(here,here);
+
+        if (encounters.Count == 0)
+        {
+            MainUI.WriteInMainArea("\nYou encountered nothing.");
+            MainUI.WriteInMainArea("Press Enter to continue...");
+            Console.ReadLine();
+            return;
+        }
+
+        MainUI.WriteInMainArea($"\n=== {encounters.Count} encounter(s) occurred! ===");
+        MainUI.WriteInMainArea("Press Enter to continue...");
+        Console.ReadLine();
+
+        foreach (var encounter in encounters)
+        {
+            MainUI.ClearMainArea();
+            MainUI.WriteInMainArea("╔════════════════════════════════════════╗");
+            MainUI.WriteInMainArea("║          ENCOUNTER                     ║");
+            MainUI.WriteInMainArea("╚════════════════════════════════════════╝");
+            MainUI.WriteInMainArea("");
+
+            encounter.Execute(player);
+
+            Program.CheckPlayerDeath();
+            if (!player.IsAlive())
+            {
+                return;
+            }
+        }
+
+        MainUI.ClearMainArea();
+        MainUI.WriteInMainArea("All encounters resolved!");
+        MainUI.WriteInMainArea("Press Enter to continue...");
+        Console.ReadLine();
+    }
 
 
     public Encounter CreateCustomEncounter(string name, string description, List<Enemy> enemies = null, Action<Player> onEncounter = null, EncounterType type = EncounterType.Event)

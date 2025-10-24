@@ -22,6 +22,10 @@ public static class LocationLibrary
                 (ItemLibrary.baseballCap,1),
                 (ItemLibrary.sandals,1)
             }
+        },
+        new SubLocation("Wilderness",SubLocationType.wilderness)
+        {
+
         }
     },
     new Dictionary<Encounter, int>
@@ -49,6 +53,10 @@ public static class LocationLibrary
         new SubLocation("Bank", SubLocationType.bank)
         {
 
+        },
+        new SubLocation("Wilderness",SubLocationType.wilderness)
+        {
+
         }
     },
     new Dictionary<Encounter, int>
@@ -73,6 +81,10 @@ public static class LocationLibrary
                 (ItemLibrary.knightHelmet,1),
                 (ItemLibrary.constructionVest,1)
             }
+        },
+        new SubLocation("Wilderness",SubLocationType.wilderness)
+        {
+
         }
     },
     new Dictionary<Encounter, int>
