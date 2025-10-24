@@ -23,7 +23,6 @@ public class Inventory
     {
         while (true)
         {
-
             // Update the filtered list based on the search term
             if (string.IsNullOrEmpty(searchTerm))
             {
