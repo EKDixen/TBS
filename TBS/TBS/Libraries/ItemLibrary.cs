@@ -28,7 +28,10 @@
     {
         details = "its just a small pebble, doesn't hold much of worth... unless you want to fight the king ofc"
     };
-
+    public static Item fish = new Item("Fish", "Useless", 1, ItemType.Artifact)
+    {
+        details = "its a fish.. i like fish:)"
+    };
 
     //equipment ------
 

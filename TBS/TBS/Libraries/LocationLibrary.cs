@@ -100,6 +100,10 @@ public static class LocationLibrary
         new SubLocation("Bank", SubLocationType.bank)
         {
 
+        },
+        new SubLocation("pond", SubLocationType.pond)
+        {
+
         }
     },
     new Dictionary<Encounter, int>

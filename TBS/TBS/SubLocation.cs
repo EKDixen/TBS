@@ -14,8 +14,8 @@ public enum SubLocationType
     bank,//done
     casino,//done
     wilderness,//done
-    graveyard//no--
-
+    graveyard,//no--
+    pond//no--
 }
 public class SubLocation
 {
@@ -118,7 +118,10 @@ public class SubLocation
 
 
         }
-
+        if (type == SubLocationType.pond)
+        {
+            FishingLogic();
+        }
 
 
 
@@ -862,6 +865,124 @@ public class SubLocation
         Program.MainMenu();
     }
 
+
+    #endregion
+
+    #region fishingPond
+
+    int fishingMeter=1;
+    int fishingMeterTarget = 15;
+
+    int position = 0;
+    int direction = 1;
+    int width = 10;         
+    int target = 5;        
+    bool fishing = true;   
+
+    void FishingLogic()
+    {
+        fishingMeter = 1;
+
+        MainUI.WriteInMainArea("You ready to start fishing?\npress Enter to start \nor 1 to go back to menu");
+        string input = Console.ReadLine();
+        int.TryParse(input, out int r);
+        if (r==1)
+        {
+            MainUI.ClearMainArea();
+            Program.MainMenu();
+            return;
+        }
+
+        fishing = true;
+        
+        while (fishing) 
+        {
+            if (Console.KeyAvailable)
+            {
+                ConsoleKeyInfo key = Console.ReadKey(true);
+                if (key.Key == ConsoleKey.Enter)
+                {
+                    if (position == target)
+                    {
+                        MainUI.WriteInMainArea("PERFECT!");
+
+                        fishingMeter += 3;
+                    }
+                    else if (position >= target - 1 && position <= target + 1)
+                    {
+                        MainUI.WriteInMainArea("Good! ");
+
+                        fishingMeter++;
+                    }
+                    else
+                    {
+                        MainUI.WriteInMainArea("Oh no... it got away.");
+
+                        MainUI.WriteInMainArea("-press Enter to continue");
+                        Console.ReadLine();
+                        fishing = false;
+                        break;
+                    }
+                    
+                    Thread.Sleep(200);
+                }
+            }
+
+            position += direction;
+
+            if (position >= width)
+            {
+                position = width;
+                direction = -1; 
+            }
+            else if (position <= 0)
+            {
+                position = 0;
+                direction = 1;  
+            }
+
+
+
+            MainUI.ClearMainArea();
+
+            DrawFishingBar(fishingMeter, fishingMeterTarget, 30);
+
+            MainUI.WriteInMainArea("press Enter when the x is over the v");
+
+            string targetLine = new string('_', target) + "V" + new string('_', target);
+            MainUI.WriteInMainArea(targetLine);
+
+            string movingLine = new string('_', position) + "X" + new string('_', width - position);
+            MainUI.WriteInMainArea(movingLine);
+
+            if (fishingMeter >= fishingMeterTarget)
+            {
+                MainUI.WriteInMainArea("\nYOU GOT FISH!!");
+
+                Inventory inv= new Inventory(Program.player);
+                inv.AddItem(ItemLibrary.fish,1);
+
+                MainUI.WriteInMainArea("-press Enter to continue");
+                Console.ReadLine();
+                fishing = false;
+                break;
+            }
+
+            Thread.Sleep(100);
+
+        }
+
+        DoSubLocation();
+    }
+    private static void DrawFishingBar(int current, int max, int width)
+    {
+        int barWidth = width - 15;
+        int filled = max > 0 ? (int)((double)current / max * barWidth) : 0;
+        filled = Math.Max(0, Math.Min(filled, barWidth));
+
+        string st = "Fish: "+ new string('█', filled)+ new string('░', barWidth - filled)+ $" {Math.Max(0, current)}/{max}";
+        MainUI.WriteInMainArea(st);
+    }
 
     #endregion
 

@@ -92,7 +92,7 @@ namespace Game.Class
         public static void MainMenu()
         {
 
-            Console.Clear(); //do not remove (ima remove it) . nigga du dum 
+            Console.Clear(); //do not remove
             MainUI.ClearMainArea();
 
             MainUI.RenderMainMenuScreen(player);
