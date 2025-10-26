@@ -15,7 +15,7 @@ public enum SubLocationType
     casino,//done
     wilderness,//done
     graveyard,//no--
-    pond//no--
+    pond//done--
 }
 public class SubLocation
 {
@@ -93,6 +93,11 @@ public class SubLocation
         {
             WildernessLogic();
         }
+        if (type == SubLocationType.pond)
+        {
+            FishingLogic();
+        }
+
 
 
         // not done---
@@ -118,10 +123,7 @@ public class SubLocation
 
 
         }
-        if (type == SubLocationType.pond)
-        {
-            FishingLogic();
-        }
+
 
 
 
