@@ -176,8 +176,7 @@ public class Inventory
                 if (equippedSlot >= 0)
                 {
                     MainUI.WriteInMainArea($"{chosen.name} is currently in Slot {equippedSlot + 1}. Unequipping...");
-                    RemoveEffects(chosen);
-                    player.equippedItems[equippedSlot] = null;
+                    UnequipItem(equippedSlot);
                 }
                 else
                 {
@@ -214,33 +213,66 @@ public class Inventory
         searchTerm = Console.ReadLine()?.ToLower() ?? "";
         currentPage = 1; // ALWAYS reset to page 1 after a search
     }
-    public void AddItem(Item Titem, int tAmount) 
+    public void AddItem(Item templateItem, int tAmount)
     {
-        if (player.ownedItems.Contains(Titem) && Titem.type != ItemType.equipment)
+        Item existingItem = player.ownedItems.FirstOrDefault(i => i.name == templateItem.name);
+
+        if (existingItem != null && templateItem.type != ItemType.equipment)
         {
-            Item existingItem = player.ownedItems.First(i => i.Equals(Titem));
+            if (existingItem.type == ItemType.Artifact)
+            {
+                RemoveEffects(existingItem); 
+            }
+
+
             existingItem.amount += tAmount;
-            if (Titem.type == ItemType.Artifact) ApplyEffects(Titem);
+
+            if (existingItem.type == ItemType.Artifact)
+            {
+                ApplyEffects(existingItem); 
+            }
         }
         else
         {
-            Titem.amount = tAmount;
-            player.ownedItems.Add(Titem);
-            if (Titem.type == ItemType.Artifact) ApplyEffects(Titem);
-        }
+            Item newItem = new Item(templateItem); // Use the copy constructor
 
+            newItem.amount = tAmount;
+
+            player.ownedItems.Add(newItem);
+
+            if (newItem.type == ItemType.Artifact)
+            {
+                ApplyEffects(newItem); 
+            }
+        }
     }
+
     public void DropItem(Item Titem)
     {
-        if (Titem.type == ItemType.Artifact) RemoveEffects(Titem);
         int equippedSlot = player.equippedItems.IndexOf(Titem);
-        if(equippedSlot >= 0)
+        if (equippedSlot >= 0)
         {
             UnequipItem(equippedSlot);
+        }
+
+        if (Titem.type == ItemType.Artifact)
+        {
             RemoveEffects(Titem);
         }
-        if (Titem.amount <= 1) player.ownedItems.Remove(Titem);
-        else Titem.amount--;
+
+        if (Titem.amount <= 1)
+        {
+            player.ownedItems.Remove(Titem);
+        }
+        else
+        {
+            Titem.amount--;
+
+            if (Titem.type == ItemType.Artifact)
+            {
+                ApplyEffects(Titem);
+            }
+        }
     }
     public void ApplyEffects(Item Titem)
     {
@@ -297,9 +329,12 @@ public class Inventory
 
     public void UnequipItem(int slot)
     {
-        if (player.equippedItems[slot] != null)
+        Item itemToUnequip = player.equippedItems[slot]; 
+        if (itemToUnequip != null)
         {
-            MainUI.WriteInMainArea($"{player.equippedItems[slot].name} unequipped from Slot {slot}.");
+            MainUI.WriteInMainArea($"{itemToUnequip.name} unequipped from Slot {slot}.");
+
+            RemoveEffects(itemToUnequip);
             player.equippedItems[slot] = null;
         }
     }
