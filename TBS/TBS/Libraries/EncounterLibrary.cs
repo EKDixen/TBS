@@ -117,7 +117,7 @@ public static class EncounterLibrary
         null,
         (player) => {
             MainUI.WriteInMainArea("Eat the mushrooms? (y/n): ");
-            string choice = Console.ReadLine()?.ToLower();
+            string choice = Console.ReadKey().KeyChar.ToString().ToLower();
             if (choice == "y" || choice == "yes")
             {
                 int roll = rng.Next(1, 101);
@@ -151,7 +151,7 @@ public static class EncounterLibrary
         null,
         (player) => {
             MainUI.WriteInMainArea("Pray at the shrine? (y/n): ");
-            string choice = Console.ReadLine()?.ToLower();
+            string choice = Console.ReadKey().KeyChar.ToString().ToLower();
             if (choice == "y" || choice == "yes")
             {
                 int roll = rng.Next(1, 101);
@@ -182,7 +182,7 @@ public static class EncounterLibrary
         null,
         (player) => {
             MainUI.WriteInMainArea("Buy the potion for 15 gold? (y/n): ");
-            string choice = Console.ReadLine()?.ToLower();
+            string choice = Console.ReadKey().KeyChar.ToString().ToLower();
             if (choice == "y" || choice == "yes")
             {
                 if (player.money >= 15)

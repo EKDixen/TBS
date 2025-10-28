@@ -108,7 +108,7 @@ namespace Game.Class
             MainUI.WriteInMainArea($"Do something at {player.currentLocation.name} : 3");
             MainUI.WriteInMainArea("Check stats : 4");
 
-            if (int.TryParse(Console.ReadLine(), out int input) == false || input > 4 || input < 0)
+            if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input) == false || input > 4 || input < 0)
             {
                 MainUI.WriteInMainArea("\nyou gotta type 0, 1, 2, 3, or 4");
                 MainMenu();
@@ -137,7 +137,7 @@ namespace Game.Class
                 MainUI.WriteInMainArea("\ntype out the number next to the location you want to go to\n or leave : 0");
 
                 int targetDes;
-                if (int.TryParse(Console.ReadLine(), out targetDes))
+                if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out targetDes))
                 {
                     if (targetDes == 0)
                     {

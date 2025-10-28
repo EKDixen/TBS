@@ -16,7 +16,7 @@ class JourneyManager
 
         MainUI.WriteInMainArea($"Would you like to purchase a carriage ride to your destination : 1");
         MainUI.WriteInMainArea("or travel by foot (has the option of exploring) : 2");
-        int.TryParse(Console.ReadLine(), out int ride);
+        int.TryParse(Console.ReadKey().KeyChar.ToString(), out int ride);
         if (ride == null || ride > 2 || ride < 1)
         {
             MainUI.WriteInMainArea("--------look mate you gotta type a number----------- \n");
@@ -42,7 +42,7 @@ class JourneyManager
             MainUI.WriteInMainArea("or go back : 0");
 
             int targetDes;
-            if (int.TryParse(Console.ReadLine(), out targetDes))
+            if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out targetDes))
             {
 
                 MainUI.WriteInMainArea("");
@@ -108,7 +108,7 @@ class JourneyManager
             MainUI.WriteInMainArea("or return to main menu : 0");
 
             int targetDes;
-            if (int.TryParse(Console.ReadLine(), out targetDes))
+            if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out targetDes))
             {
                 MainUI.WriteInMainArea("");
                 if (targetDes == 1) Explore();

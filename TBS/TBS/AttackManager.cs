@@ -127,7 +127,7 @@ public class AttackManager
             MainUI.WriteInMainArea("Type move number (1-8) to interact, or:");
             MainUI.WriteInMainArea("[N] Next Page  [P] Prev Page  [S] Search  [0] Back to Main Menu");
 
-            string inputString = Console.ReadLine()?.ToLower() ?? "";
+            string inputString = Console.ReadKey().KeyChar.ToString().ToLower() ?? "";
 
             if (inputString == "n")
             {
@@ -178,7 +178,7 @@ public class AttackManager
 
             // equip
             MainUI.WriteInMainArea("Choose a slot (1-4) or 0 to cancel: ");
-            if (!int.TryParse(Console.ReadLine(), out int slot) || slot < 0 || slot > 4) continue;
+            if (!int.TryParse(Console.ReadKey().KeyChar.ToString(), out int slot) || slot < 0 || slot > 4) continue;
             if (slot == 0) continue;
 
             player.equippedAttacks[slot - 1] = chosen;
