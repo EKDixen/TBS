@@ -862,7 +862,7 @@ public class SubLocation
     void WildernessLogic()
     {
         EncounterManager encounterManager = new EncounterManager(Program.player);
-        encounterManager.ProcessWildernessEncounters(Program.player.currentLocation);
+        encounterManager.ProcessWildernessEncounters(LocationLibrary.Get(Program.player.currentLocation));
 
         Program.MainMenu();
     }

@@ -7,7 +7,7 @@ public class Player : Combatant
     public int luck;
     public bool isDead = false;
 
-    public Location currentLocation;
+    public string currentLocation;
     //public List<Location> knownLocations = new List<Location>();
 
     public List<string> knownLocationnames = new List<string>();
@@ -42,11 +42,11 @@ public class Player : Combatant
         critDamage = TcritDamage;
         stun = Tstun;
         stunNegation = TstunNegation;
-        currentLocation = Tlocation;
+        //currentLocation = Tlocation;
         money = Tmoney;
         luck = Tluck;
 
         knownLocationnames.Add(LocationLibrary.starterTown.name);
-        currentLocation = LocationLibrary.starterTown;
+        currentLocation = LocationLibrary.starterTown.name;
     }
 }

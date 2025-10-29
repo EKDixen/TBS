@@ -140,7 +140,7 @@ namespace Game.Class
             Console.SetCursorPosition(x + 2, y + 7);
             Console.Write($"Money    - {player.money}");
             Console.SetCursorPosition(x + 2, y + 8);
-            Console.Write($"Location - {player.currentLocation.name}");
+            Console.Write($"Location - {player.currentLocation}");
             Console.SetCursorPosition(x + 2, y + 10);
             Console.Write("Equiped items:");
             for (int j = 0; j < player.equippedItems.Capacity; j++)

@@ -30,10 +30,10 @@ class JourneyManager
 
             for (int i = 0; i < Program.player.knownLocationnames.Count; i++)
             {
-                if (LocationLibrary.Get(Program.player.knownLocationnames[i]) != Program.player.currentLocation) 
+                if (LocationLibrary.Get(Program.player.knownLocationnames[i]) != LocationLibrary.Get(Program.player.currentLocation)) 
                 {
-                    float price = (Program.player.currentLocation.location - LocationLibrary.Get(Program.player.knownLocationnames[i]).location).Length() * 2 + 
-                        Program.player.currentLocation.travelPrice + LocationLibrary.Get(Program.player.knownLocationnames[i]).travelPrice;
+                    float price = (LocationLibrary.Get(Program.player.currentLocation).location - LocationLibrary.Get(Program.player.knownLocationnames[i]).location).Length() * 2 + 
+                        LocationLibrary.Get(Program.player.currentLocation).travelPrice + LocationLibrary.Get(Program.player.knownLocationnames[i]).travelPrice;
                     MainUI.WriteInMainArea($"{LocationLibrary.Get(Program.player.knownLocationnames[i]).name}  :  {(i + 1)}  (price: {price})"); 
                     
                 }
@@ -47,10 +47,10 @@ class JourneyManager
 
                 MainUI.WriteInMainArea("");
                 if (targetDes == 0) { MainUI.ClearMainArea(); ; Program.MainMenu(); return; }
-                else if (targetDes <= Program.player.knownLocationnames.Count && targetDes >= 0 && LocationLibrary.Get(Program.player.knownLocationnames[targetDes - 1]) != Program.player.currentLocation) 
+                else if (targetDes <= Program.player.knownLocationnames.Count && targetDes >= 0 && LocationLibrary.Get(Program.player.knownLocationnames[targetDes - 1]) != LocationLibrary.Get(Program.player.currentLocation)) 
                 {
-                    float price = (Program.player.currentLocation.location - LocationLibrary.Get(Program.player.knownLocationnames[targetDes - 1]).location).Length() * 2 +
-                        Program.player.currentLocation.travelPrice + LocationLibrary.Get(Program.player.knownLocationnames[targetDes - 1]).travelPrice;
+                    float price = (LocationLibrary.Get(Program.player.currentLocation).location - LocationLibrary.Get(Program.player.knownLocationnames[targetDes - 1]).location).Length() * 2 +
+                        LocationLibrary.Get(Program.player.currentLocation).travelPrice + LocationLibrary.Get(Program.player.knownLocationnames[targetDes - 1]).travelPrice;
 
                     if (Program.player.money >= price)
                     {
@@ -90,13 +90,13 @@ class JourneyManager
             for (int i = 0; i < LocationLibrary.locations.Count; i++)
             {
 
-                if (Program.player.currentLocation.location + new System.Numerics.Vector2(0, 1) == LocationLibrary.locations[i].location
+                if (LocationLibrary.Get(Program.player.currentLocation).location + new System.Numerics.Vector2(0, 1) == LocationLibrary.locations[i].location
                     && Program.player.knownLocationnames.Contains(LocationLibrary.locations[i].name)) travelLocations.Add(i);
-                if (Program.player.currentLocation.location + new System.Numerics.Vector2(0, -1) == LocationLibrary.locations[i].location
+                if (LocationLibrary.Get(Program.player.currentLocation).location + new System.Numerics.Vector2(0, -1) == LocationLibrary.locations[i].location
                     && Program.player.knownLocationnames.Contains(LocationLibrary.locations[i].name)) travelLocations.Add(i);
-                if (Program.player.currentLocation.location + new System.Numerics.Vector2(1, 0) == LocationLibrary.locations[i].location
+                if (LocationLibrary.Get(Program.player.currentLocation).location + new System.Numerics.Vector2(1, 0) == LocationLibrary.locations[i].location
                     && Program.player.knownLocationnames.Contains(LocationLibrary.locations[i].name)) travelLocations.Add(i);
-                if (Program.player.currentLocation.location + new System.Numerics.Vector2(-1, 0) == LocationLibrary.locations[i].location
+                if (LocationLibrary.Get(Program.player.currentLocation).location + new System.Numerics.Vector2(-1, 0) == LocationLibrary.locations[i].location
                     && Program.player.knownLocationnames.Contains(LocationLibrary.locations[i].name)) travelLocations.Add(i);
             }
 
@@ -113,7 +113,7 @@ class JourneyManager
                 MainUI.WriteInMainArea("");
                 if (targetDes == 1) Explore();
                 else if (targetDes == 0) { MainUI.ClearMainArea(); ; Program.MainMenu(); return; }
-                else if (targetDes <= travelLocations.Count+1 && targetDes > 0 && LocationLibrary.locations[travelLocations[targetDes - 2]] != Program.player.currentLocation) Travel(LocationLibrary.locations[travelLocations[targetDes - 2]],false);
+                else if (targetDes <= travelLocations.Count+1 && targetDes > 0 && LocationLibrary.locations[travelLocations[targetDes - 2]] != LocationLibrary.Get(Program.player.currentLocation)) Travel(LocationLibrary.locations[travelLocations[targetDes - 2]],false);
                 else
                 {
                     MainUI.WriteInMainArea("--------dude you dont know any location with that number------- \n");
@@ -133,8 +133,8 @@ class JourneyManager
     {
         MainUI.WriteInMainArea("\nTraveling to " + TtargetDis.name + "...");
         
-        Location previousLocation = Program.player.currentLocation;
-        Program.player.currentLocation = TtargetDis;
+        Location previousLocation = LocationLibrary.Get(Program.player.currentLocation);
+        Program.player.currentLocation = TtargetDis.name;
         Program.db.SavePlayer(Program.player);
         Program.SavePlayer();
         
@@ -159,13 +159,13 @@ class JourneyManager
 
         for (int i = 0; i < LocationLibrary.locations.Count; i++)
         {
-            if (Program.player.currentLocation.location + new System.Numerics.Vector2(0, 1) == LocationLibrary.locations[i].location
+            if (LocationLibrary.Get(Program.player.currentLocation).location + new System.Numerics.Vector2(0, 1) == LocationLibrary.locations[i].location
                 && !Program.player.knownLocationnames.Contains(LocationLibrary.locations[i].name)) explorableLocations.Add(i);
-            if (Program.player.currentLocation.location + new System.Numerics.Vector2(0, -1) == LocationLibrary.locations[i].location
+            if (LocationLibrary.Get(Program.player.currentLocation).location + new System.Numerics.Vector2(0, -1) == LocationLibrary.locations[i].location
                 && !Program.player.knownLocationnames.Contains(LocationLibrary.locations[i].name)) explorableLocations.Add(i);
-            if (Program.player.currentLocation.location + new System.Numerics.Vector2(1, 0) == LocationLibrary.locations[i].location
+            if (LocationLibrary.Get(Program.player.currentLocation).location + new System.Numerics.Vector2(1, 0) == LocationLibrary.locations[i].location
                 && !Program.player.knownLocationnames.Contains(LocationLibrary.locations[i].name)) explorableLocations.Add(i);
-            if (Program.player.currentLocation.location + new System.Numerics.Vector2(-1, 0) == LocationLibrary.locations[i].location
+            if (LocationLibrary.Get(Program.player.currentLocation).location + new System.Numerics.Vector2(-1, 0) == LocationLibrary.locations[i].location
                 && !Program.player.knownLocationnames.Contains(LocationLibrary.locations[i].name)) explorableLocations.Add(i);
         }
         if (explorableLocations.Count != 0)
@@ -173,7 +173,7 @@ class JourneyManager
             Random rand = new Random();
             int randomDir = rand.Next(0, explorableLocations.Count);
             Location newLocation = LocationLibrary.locations[explorableLocations[randomDir]];
-            Location previousLocation = Program.player.currentLocation;
+            Location previousLocation = LocationLibrary.Get(Program.player.currentLocation);
 
             MainUI.WriteInMainArea($"\nExploring towards {newLocation.name}...");
             
@@ -182,7 +182,7 @@ class JourneyManager
 
             MainUI.WriteInMainArea($"\nYou discovered {newLocation.name}!");
             Program.player.knownLocationnames.Add(newLocation.name);
-            Program.player.currentLocation = newLocation;
+            Program.player.currentLocation = newLocation.name;
 
             Program.SavePlayer();
         }

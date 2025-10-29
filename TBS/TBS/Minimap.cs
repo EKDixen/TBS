@@ -8,22 +8,22 @@ public static class Minimap
 
         for (int i = 0; i < LocationLibrary.locations.Count; i++)
         {
-            if (Program.player.currentLocation.location + new System.Numerics.Vector2(0, 1) == LocationLibrary.locations[i].location)
+            if (LocationLibrary.Get(Program.player.currentLocation).location + new System.Numerics.Vector2(0, 1) == LocationLibrary.locations[i].location)
                 travelLocations[2] = i;
-            if (Program.player.currentLocation.location + new System.Numerics.Vector2(0, -1) == LocationLibrary.locations[i].location)
+            if (LocationLibrary.Get(Program.player.currentLocation).location + new System.Numerics.Vector2(0, -1) == LocationLibrary.locations[i].location)
                 travelLocations[8] = i;
-            if (Program.player.currentLocation.location + new System.Numerics.Vector2(1, 0) == LocationLibrary.locations[i].location)
+            if (LocationLibrary.Get(Program.player.currentLocation).location + new System.Numerics.Vector2(1, 0) == LocationLibrary.locations[i].location)
                 travelLocations[6] = i;
-            if (Program.player.currentLocation.location + new System.Numerics.Vector2(-1, 0) == LocationLibrary.locations[i].location)
+            if (LocationLibrary.Get(Program.player.currentLocation).location + new System.Numerics.Vector2(-1, 0) == LocationLibrary.locations[i].location)
                 travelLocations[4] = i;
 
-            if (Program.player.currentLocation.location + new System.Numerics.Vector2(1, 1) == LocationLibrary.locations[i].location)
+            if (LocationLibrary.Get(Program.player.currentLocation).location + new System.Numerics.Vector2(1, 1) == LocationLibrary.locations[i].location)
                 travelLocations[3] = i;
-            if (Program.player.currentLocation.location + new System.Numerics.Vector2(-1, -1) == LocationLibrary.locations[i].location)
+            if (LocationLibrary.Get(Program.player.currentLocation).location + new System.Numerics.Vector2(-1, -1) == LocationLibrary.locations[i].location)
                 travelLocations[7] = i;
-            if (Program.player.currentLocation.location + new System.Numerics.Vector2(1, -1) == LocationLibrary.locations[i].location)
+            if (LocationLibrary.Get(Program.player.currentLocation).location + new System.Numerics.Vector2(1, -1) == LocationLibrary.locations[i].location)
                 travelLocations[9] = i;
-            if (Program.player.currentLocation.location + new System.Numerics.Vector2(-1, 1) == LocationLibrary.locations[i].location)
+            if (LocationLibrary.Get(Program.player.currentLocation).location + new System.Numerics.Vector2(-1, 1) == LocationLibrary.locations[i].location)
                 travelLocations[1] = i;
         }
 

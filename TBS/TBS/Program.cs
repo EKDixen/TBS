@@ -105,7 +105,7 @@ namespace Game.Class
             MainUI.WriteInMainArea("Go somewhere : 0");
             MainUI.WriteInMainArea("Check Inventory : 1");
             MainUI.WriteInMainArea("Check Moves : 2");
-            MainUI.WriteInMainArea($"Do something at {player.currentLocation.name} : 3");
+            MainUI.WriteInMainArea($"Do something at {player.currentLocation} : 3");
             MainUI.WriteInMainArea("Check stats : 4");
 
             if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input) == false || input > 4 || input < 0)
@@ -121,7 +121,7 @@ namespace Game.Class
             {
                 MainUI.WriteInMainArea("all establisments in your current location");
                 int i = 0;
-                foreach (var subLocation in player.currentLocation.subLocationsHere)
+                foreach (var subLocation in LocationLibrary.Get(player.currentLocation).subLocationsHere)
                 {
                     i++;
                     MainUI.WriteInMainArea($"{subLocation.name} : {i}");
@@ -145,13 +145,13 @@ namespace Game.Class
                         MainMenu();
                         return;
                     }
-                    else if (targetDes > player.currentLocation.subLocationsHere.Count || targetDes < 0)
+                    else if (targetDes > LocationLibrary.Get(player.currentLocation).subLocationsHere.Count || targetDes < 0)
                     {
                         MainUI.WriteInMainArea("that number is wrong mate");
                         MainMenu();
                         return;
                     }
-                    player.currentLocation.subLocationsHere[targetDes - 1].DoSubLocation();
+                    LocationLibrary.Get(player.currentLocation).subLocationsHere[targetDes - 1].DoSubLocation();
                 }
                 else
                 {
