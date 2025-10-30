@@ -126,13 +126,19 @@ public static class LocationLibrary
         },
         new SubLocation("Store", SubLocationType.shop)
         {
-
+            shopItems = new List<(Item,int)>
+            {
+                (ItemLibrary.VampireRing,1),
+                (ItemLibrary.CloakofDusk,1),
+                (ItemLibrary.NightStalkerGreaves,1),
+                (ItemLibrary.VampireMask,1)
+            }
         }
     },
     new Dictionary<Encounter, int>
     {
         { EncounterLibrary.FoundTreasure, 40},
-        { EncounterLibrary.VampireAttack, 40}
+        { EncounterLibrary.VampireAttack, 60}
     });
 
 

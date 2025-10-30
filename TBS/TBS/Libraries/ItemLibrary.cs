@@ -26,11 +26,16 @@
     //artifacts
     public static Item rock = new Item("Rock", "Useless", 3, ItemType.Artifact)
     {
-        details = "its just a small pebble, doesn't hold much of worth... unless you want to fight the king ofc"
+        details = "its just a small pebble, doesn't hold much of worth... \nunless you want to fight the king ofc"
     };
     public static Item fish = new Item("Fish", "Useless", 1, ItemType.Artifact)
     {
         details = "its a fish.. i like fish:)"
+    };
+    public static Item VampireRing = new Item("Vampire Ring", "+3% CritChance", 11, ItemType.Artifact)
+    {
+        details = "Silver ring rumored to strengthen \nits wearer’s blood using magic.",
+        stats = { ["critChance"] = 3 },
     };
 
     //equipment ------
@@ -46,17 +51,30 @@
     {
         stats = { ["armor"] = 3, ["speed"] = -1},
         equipmentType = EquipmentType.head,
-        details =  "heavy knight helmet.. makes it much harder to cut your head off, but its a little too heavy to move properly in"
+        details =  "heavy knight helmet.. makes it much harder to cut your head off, \nbut its a little too heavy to move properly in"
     };
 
+    public static Item VampireMask = new Item("Vampire Mask", "+20% stun", 23, ItemType.equipment)
+    {
+        stats = { ["stun"] = 20 },
+        equipmentType = EquipmentType.head,
+        details = "Elegant mask that makes all opponents freeze in fear"
+    };
 
     //torso ----
     public static Item constructionVest = new Item("Construction Vest", "+2 armor, -40% dodge",6,ItemType.equipment)
     {
         stats = { ["armor"] = 2, ["dodge"] = -40 },
         equipmentType = EquipmentType.torso,
-        details = "a bright yellow construction vest... defends you a bit, but its hard to dodge in"
+        details = "a bright yellow construction vest... \ndefends you a bit, but its hard to dodge in"
     };
+    public static Item CloakofDusk = new Item("Cloak of Dusk", "+1 speed, +40% dodge", 18, ItemType.equipment)
+    {
+        stats = { ["speed"] = 1, ["dodge"] = 40 },
+        equipmentType = EquipmentType.torso,
+        details = "Black velvet cloak that blends perfectly with shadows"
+    };
+
 
 
 
@@ -83,6 +101,12 @@
         details = "some beautiful running shoes.. really nice to run in"
     };
 
+    public static Item NightStalkerGreaves = new Item("Night Stalker Greaves", "+50% dodgeNegation", 17, ItemType.equipment)
+    {
+        stats = { ["dodgeNegation"] = 50 },
+        equipmentType = EquipmentType.feet,
+        details = "Dark greaves that allow for perfect stalking of the pray\n no matter how agile it may be"
+    };
 
 
     //consumables
