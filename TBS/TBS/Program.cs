@@ -88,8 +88,8 @@ namespace Game.Class
             atkManager = new AttackManager(player);
             Inventory = new Inventory(player);
             MainUI.InitializeConsole();
-            MainMenu();
             CheckPlayerLevel();
+            MainMenu();
         }
 
         public static void MainMenu()
