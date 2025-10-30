@@ -215,5 +215,56 @@ public static class EncounterLibrary
         EncounterType.Merchant
     );
 
+    public static Encounter RoadGambling = new Encounter(
+        "RoadGambling",
+        false,
+        "An old man offers gamble on a coin flip",
+        null,
+        (player) => {
+            MainUI.WriteInMainArea("Accept his offer? (y/n): ");
+            string choice = Console.ReadKey().KeyChar.ToString().ToLower();
+            if (choice == "y" || choice == "yes")
+            {
+                MainUI.WriteInMainArea($"how much do you want to bet? current cash: {Program.player.money} \nYou're betting on heads");
+                int.TryParse(Console.ReadLine(), out int bet);
+                if (bet == null || bet <= 0)
+                {
+                    MainUI.ClearMainArea();
+                    MainUI.WriteInMainArea("sweetie you gotta type a number that we can use\n ");
+                    return;
+                }
+                else if (bet > Program.player.money)
+                {
+                    MainUI.WriteInMainArea("\nyou dont have that much money\n ");
+                    return;
+                }
+                MainUI.WriteInMainArea($"you bet: {bet}");
+                Program.player.money -= bet;
+                Program.SavePlayer();
+
+                Random rand = new Random();
+                int coin = rand.Next(1, 3);
+                if (coin == 1)
+                {
+                    MainUI.WriteInMainArea($"The coin landed on heads, you win {bet} cash!");
+                    Program.player.money += bet * 2;
+                }
+                else
+                {
+                    MainUI.WriteInMainArea("The coin landed on tails, you lost...");
+                }
+
+
+            }
+            else
+            {
+                MainUI.WriteInMainArea("You respectfully decline his offer.");
+            }
+        },
+        EncounterType.Event
+    );
+
+
+
     #endregion
 }
