@@ -1,4 +1,5 @@
 ﻿using Game.Class;
+using System.Net.Http.Headers;
 using System.Threading;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -318,7 +319,35 @@ public static class EncounterLibrary
                 MainUI.WriteInMainArea("You respectfully decline his offer.");
             }
         },
-        EncounterType.Event
+        EncounterType.Mystery
+    );
+
+    public static Encounter LearnFirstAid = new Encounter(
+        "LearnFirstAid",
+        false,
+        "You see a doctor on the side of the road",
+        null,
+        (player) => {
+            if (player.HP < player.maxHP * 0.7 && !player.ownedAttacks.Contains(AttackLibrary.FirstAid))
+            {
+                {
+                    MainUI.WriteInMainArea("The doctor sees youre wounded and offers to teach you first aid\n");
+                    MainUI.WriteInMainArea("Learn the move first aid? (y/n): ");
+                    string choice = Console.ReadKey().KeyChar.ToString().ToLower();
+                    if (choice == "y" || choice == "yes")
+                    {
+                        MainUI.WriteInMainArea("The doctor teaches you first aid!");
+                        AttackManager atkmanager = new AttackManager(Program.player);
+                        atkmanager.LearnAttack(AttackLibrary.FirstAid);
+                    }
+                    else
+                    {
+                        MainUI.WriteInMainArea("You respectfully decline the doctors offer.");
+                    }
+                }
+            }
+        },
+        EncounterType.Mystery
     );
 
 
