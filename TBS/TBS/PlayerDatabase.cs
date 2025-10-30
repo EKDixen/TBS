@@ -219,15 +219,22 @@ public class PlayerDatabase
             p.isDead = true;
             p.HP = p.maxHP;
             
+            Console.WriteLine($"[DEBUG] Marking {p.name} as dead...");
+            Console.WriteLine($"[DEBUG] Location: {p.currentLocation}");
+            
             string json = Serializer.ToJson(p);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var deadUrl = $"{_baseUrl}/dead-players/{Uri.EscapeDataString(p.name)}";
+            
+            Console.WriteLine($"[DEBUG] Saving to: {deadUrl}");
 
             for (int attempt = 0; attempt < 2; attempt++)
             {
                 try
                 {
                     using var resp = _http.PutAsync(deadUrl, content).GetAwaiter().GetResult();
+                    
+                    Console.WriteLine($"[DEBUG] PUT response: {resp.StatusCode}");
                     
                     if (resp.StatusCode == HttpStatusCode.NotFound)
                     {
@@ -236,18 +243,17 @@ public class PlayerDatabase
                         var activeContent = new StringContent(json, Encoding.UTF8, "application/json");
                         using var activeResp = _http.PutAsync(activeUrl, activeContent).GetAwaiter().GetResult();
                         activeResp.EnsureSuccessStatusCode();
-                        DeadPlayerCache.AddDeadPlayer(p.name, p.currentLocation);
                         return;
                     }
                     
                     resp.EnsureSuccessStatusCode();
                     
                     var deleteUrl = $"{_baseUrl}/players/{Uri.EscapeDataString(p.name)}";
+                    Console.WriteLine($"[DEBUG] Deleting from active players...");
                     using var deleteResp = _http.DeleteAsync(deleteUrl).GetAwaiter().GetResult();
                     deleteResp.EnsureSuccessStatusCode();
                     
-                    Console.WriteLine("Player moved to dead players database.");
-                    DeadPlayerCache.AddDeadPlayer(p.name, p.currentLocation);
+                    Console.WriteLine("[DEBUG] SUCCESS: Player moved to dead players database.");
                     return;
                 }
                 catch (Exception ex) when (ex is TaskCanceledException || ex is TimeoutException || ex is HttpRequestException || ex is IOException)
@@ -265,7 +271,6 @@ public class PlayerDatabase
                     var activeContent = new StringContent(json, Encoding.UTF8, "application/json");
                     using var activeResp = _http.PutAsync(activeUrl, activeContent).GetAwaiter().GetResult();
                     activeResp.EnsureSuccessStatusCode();
-                    DeadPlayerCache.AddDeadPlayer(p.name, p.currentLocation);
                     return;
                 }
                 resp.EnsureSuccessStatusCode();
@@ -276,14 +281,11 @@ public class PlayerDatabase
             {
                 deleteResp.EnsureSuccessStatusCode();
             }
-            
-            DeadPlayerCache.AddDeadPlayer(p.name, p.currentLocation);
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error marking player as dead: {ex.Message}");
-            Console.WriteLine("Player death will be recorded locally.");
-            DeadPlayerCache.AddDeadPlayer(p.name, p.currentLocation);
+            Console.WriteLine($"[DEBUG] ERROR marking player as dead: {ex.Message}");
+            Console.WriteLine($"[DEBUG] Stack trace: {ex.StackTrace}");
         }
     }
 
@@ -324,22 +326,53 @@ public class PlayerDatabase
         }
     }
 
-    public List<Player> GetDeadPlayersInLocation(string locationName)
+    public List<string> GetAllDeadPlayerNames()
     {
         WaitForServerReady(TimeSpan.FromSeconds(90));
 
         var url = $"{_baseUrl}/dead-players";
-        List<Player> deadPlayersInLocation = new List<Player>();
+        
+        for (int attempt = 0; attempt < 2; attempt++)
+        {
+            try
+            {
+                using var resp = _http.GetAsync(url).GetAwaiter().GetResult();
+                
+                if (!resp.IsSuccessStatusCode)
+                {
+                    return new List<string>();
+                }
+                
+                string json = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                var names = Serializer.FromJson<List<string>>(json);
+                return names ?? new List<string>();
+            }
+            catch (Exception ex) when (ex is TaskCanceledException || ex is TimeoutException || ex is HttpRequestException || ex is IOException)
+            {
+                WaitForServerReady(TimeSpan.FromSeconds(90));
+            }
+            catch (Exception ex)
+            {
+                return new List<string>();
+            }
+        }
 
         try
         {
-            Console.WriteLine("Warning: Listing dead players requires API enhancement. Returning empty list.");
-            return deadPlayersInLocation;
+            using var resp2 = _http.GetAsync(url).GetAwaiter().GetResult();
+            
+            if (!resp2.IsSuccessStatusCode)
+            {
+                return new List<string>();
+            }
+            
+            string json2 = resp2.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var names2 = Serializer.FromJson<List<string>>(json2);
+            return names2 ?? new List<string>();
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error fetching dead players: {ex.Message}");
-            return deadPlayersInLocation;
+            return new List<string>();
         }
     }
 
@@ -356,7 +389,6 @@ public class PlayerDatabase
                 using var resp = _http.DeleteAsync(url).GetAwaiter().GetResult();
                 resp.EnsureSuccessStatusCode();
                 Console.WriteLine($"Dead player {username} has been permanently removed.");
-                DeadPlayerCache.RemoveDeadPlayer(username);
                 return;
             }
             catch (Exception ex) when (ex is TaskCanceledException || ex is TimeoutException || ex is HttpRequestException || ex is IOException)
@@ -368,7 +400,6 @@ public class PlayerDatabase
 
         using var finalResp = _http.DeleteAsync(url).GetAwaiter().GetResult();
         finalResp.EnsureSuccessStatusCode();
-        DeadPlayerCache.RemoveDeadPlayer(username);
     }
 
     public void UpdateDeadPlayer(Player p)
