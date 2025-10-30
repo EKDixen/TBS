@@ -227,6 +227,46 @@ app.MapDelete("/dead-players/{name}", async (string name, IAmazonS3 s3, BucketOp
     return Results.NoContent();
 });
 
+app.MapGet("/dead-players", async (IAmazonS3 s3, BucketOptions bucketOpt, CancellationToken ct, HttpResponse resp) =>
+{
+    resp.Headers["Cache-Control"] = "no-store";
+    
+    var listRequest = new ListObjectsV2Request
+    {
+        BucketName = bucketOpt.Name,
+        Prefix = "dead-players/"
+    };
+
+    var playerNames = new List<string>();
+    
+    try
+    {
+        ListObjectsV2Response listResponse;
+        do
+        {
+            listResponse = await s3.ListObjectsV2Async(listRequest, ct);
+            
+            foreach (var obj in listResponse.S3Objects)
+            {
+                if (obj.Key.EndsWith(".json") && obj.Key.StartsWith("dead-players/"))
+                {
+                    var fileName = obj.Key.Substring("dead-players/".Length);
+                    fileName = fileName.Substring(0, fileName.Length - ".json".Length);
+                    playerNames.Add(fileName);
+                }
+            }
+            
+            listRequest.ContinuationToken = listResponse.NextContinuationToken;
+        } while (listResponse.IsTruncated);
+        
+        return Results.Json(playerNames);
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Error listing dead players: {ex.Message}");
+    }
+});
+
 app.Run();
 
 internal record BucketOptions(string Name);

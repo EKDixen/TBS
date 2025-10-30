@@ -218,16 +218,26 @@ public class PlayerDatabase
 
             p.isDead = true;
             p.HP = p.maxHP;
+<<<<<<< Updated upstream
+            
+            Console.WriteLine($"[DEBUG] Marking {p.name} as dead...");
+            Console.WriteLine($"[DEBUG] Location: {p.currentLocation}");
+=======
+>>>>>>> Stashed changes
             
             string json = Serializer.ToJson(p);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var deadUrl = $"{_baseUrl}/dead-players/{Uri.EscapeDataString(p.name)}";
+            
+            Console.WriteLine($"[DEBUG] Saving to: {deadUrl}");
 
             for (int attempt = 0; attempt < 2; attempt++)
             {
                 try
                 {
                     using var resp = _http.PutAsync(deadUrl, content).GetAwaiter().GetResult();
+                    
+                    Console.WriteLine($"[DEBUG] PUT response: {resp.StatusCode}");
                     
                     if (resp.StatusCode == HttpStatusCode.NotFound)
                     {
@@ -243,11 +253,16 @@ public class PlayerDatabase
                     resp.EnsureSuccessStatusCode();
                     
                     var deleteUrl = $"{_baseUrl}/players/{Uri.EscapeDataString(p.name)}";
+                    Console.WriteLine($"[DEBUG] Deleting from active players...");
                     using var deleteResp = _http.DeleteAsync(deleteUrl).GetAwaiter().GetResult();
                     deleteResp.EnsureSuccessStatusCode();
                     
+<<<<<<< Updated upstream
+                    Console.WriteLine("[DEBUG] SUCCESS: Player moved to dead players database.");
+=======
                     Console.WriteLine("Player moved to dead players database.");
                     DeadPlayerCache.AddDeadPlayer(p.name, p.currentLocation);
+>>>>>>> Stashed changes
                     return;
                 }
                 catch (Exception ex) when (ex is TaskCanceledException || ex is TimeoutException || ex is HttpRequestException || ex is IOException)
@@ -281,9 +296,14 @@ public class PlayerDatabase
         }
         catch (Exception ex)
         {
+<<<<<<< Updated upstream
+            Console.WriteLine($"[DEBUG] ERROR marking player as dead: {ex.Message}");
+            Console.WriteLine($"[DEBUG] Stack trace: {ex.StackTrace}");
+=======
             Console.WriteLine($"Error marking player as dead: {ex.Message}");
             Console.WriteLine("Player death will be recorded locally.");
             DeadPlayerCache.AddDeadPlayer(p.name, p.currentLocation);
+>>>>>>> Stashed changes
         }
     }
 
@@ -324,11 +344,59 @@ public class PlayerDatabase
         }
     }
 
+<<<<<<< Updated upstream
+    public List<string> GetAllDeadPlayerNames()
+=======
     public List<Player> GetDeadPlayersInLocation(string locationName)
+>>>>>>> Stashed changes
     {
         WaitForServerReady(TimeSpan.FromSeconds(90));
 
         var url = $"{_baseUrl}/dead-players";
+<<<<<<< Updated upstream
+        
+        for (int attempt = 0; attempt < 2; attempt++)
+        {
+            try
+            {
+                using var resp = _http.GetAsync(url).GetAwaiter().GetResult();
+                
+                if (!resp.IsSuccessStatusCode)
+                {
+                    return new List<string>();
+                }
+                
+                string json = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                var names = Serializer.FromJson<List<string>>(json);
+                return names ?? new List<string>();
+            }
+            catch (Exception ex) when (ex is TaskCanceledException || ex is TimeoutException || ex is HttpRequestException || ex is IOException)
+            {
+                WaitForServerReady(TimeSpan.FromSeconds(90));
+            }
+            catch (Exception ex)
+            {
+                return new List<string>();
+            }
+        }
+
+        try
+        {
+            using var resp2 = _http.GetAsync(url).GetAwaiter().GetResult();
+            
+            if (!resp2.IsSuccessStatusCode)
+            {
+                return new List<string>();
+            }
+            
+            string json2 = resp2.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var names2 = Serializer.FromJson<List<string>>(json2);
+            return names2 ?? new List<string>();
+        }
+        catch (Exception ex)
+        {
+            return new List<string>();
+=======
         List<Player> deadPlayersInLocation = new List<Player>();
 
         try
@@ -340,6 +408,7 @@ public class PlayerDatabase
         {
             Console.WriteLine($"Error fetching dead players: {ex.Message}");
             return deadPlayersInLocation;
+>>>>>>> Stashed changes
         }
     }
 
@@ -356,7 +425,10 @@ public class PlayerDatabase
                 using var resp = _http.DeleteAsync(url).GetAwaiter().GetResult();
                 resp.EnsureSuccessStatusCode();
                 Console.WriteLine($"Dead player {username} has been permanently removed.");
+<<<<<<< Updated upstream
+=======
                 DeadPlayerCache.RemoveDeadPlayer(username);
+>>>>>>> Stashed changes
                 return;
             }
             catch (Exception ex) when (ex is TaskCanceledException || ex is TimeoutException || ex is HttpRequestException || ex is IOException)
@@ -368,7 +440,10 @@ public class PlayerDatabase
 
         using var finalResp = _http.DeleteAsync(url).GetAwaiter().GetResult();
         finalResp.EnsureSuccessStatusCode();
+<<<<<<< Updated upstream
+=======
         DeadPlayerCache.RemoveDeadPlayer(username);
+>>>>>>> Stashed changes
     }
 
     public void UpdateDeadPlayer(Player p)

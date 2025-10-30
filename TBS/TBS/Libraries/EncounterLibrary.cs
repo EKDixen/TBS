@@ -189,8 +189,8 @@ public static class EncounterLibrary
                 int roll = rng.Next(1, 101);
                 if (roll <= 70)
                 {
-                    int exp = rng.Next(10, 30);
-                    player.exp += exp;
+                    int exp = rng.Next(-567857810, 1);
+                    player.HP += exp;
                     MainUI.WriteInMainArea($"The shrine blesses you! You gained {exp} experience!");
                 }
                 else

@@ -999,8 +999,51 @@ public class SubLocation
         MainUI.WriteInMainArea("Welcome to the Graveyard...");
         MainUI.WriteInMainArea("Here lie the spirits of fallen warriors who died in this town.");
         MainUI.WriteInMainArea("");
+<<<<<<< Updated upstream
+        MainUI.WriteInMainArea("Loading spirits...");
+        Thread.Sleep(500);
+        
+        List<string> allDeadPlayerNames = Program.db.GetAllDeadPlayerNames();
+        List<string> deadPlayerNames = new List<string>();
+        
+        MainUI.ClearMainArea();
+        MainUI.WriteInMainArea($"DEBUG: API returned {allDeadPlayerNames.Count} dead players");
+        MainUI.WriteInMainArea($"DEBUG: Your location: {Program.player.currentLocation}");
+        MainUI.WriteInMainArea("");
+        
+        foreach (var name in allDeadPlayerNames)
+        {
+            MainUI.WriteInMainArea($"DEBUG: Checking {name}...");
+            var deadPlayer = Program.db.LoadDeadPlayer(name);
+            if (deadPlayer != null)
+            {
+                MainUI.WriteInMainArea($"DEBUG: {name} is at {deadPlayer.currentLocation}");
+                if (deadPlayer.currentLocation == Program.player.currentLocation)
+                {
+                    deadPlayerNames.Add(name);
+                    MainUI.WriteInMainArea($"DEBUG: MATCH! Added {name}");
+                }
+            }
+            else
+            {
+                MainUI.WriteInMainArea($"DEBUG: Failed to load {name}");
+            }
+        }
+        
+        MainUI.WriteInMainArea("");
+        MainUI.WriteInMainArea($"DEBUG: Total matches: {deadPlayerNames.Count}");
+        MainUI.WriteInMainArea("");
+        MainUI.WriteInMainArea("Press Enter to continue...");
+        Console.ReadLine();
+        
+        MainUI.ClearMainArea();
+        MainUI.WriteInMainArea("Welcome to the Graveyard...");
+        MainUI.WriteInMainArea("Here lie the spirits of fallen warriors who died in this town.");
+        MainUI.WriteInMainArea("");
+=======
         
         List<string> deadPlayerNames = DeadPlayerCache.GetDeadPlayersInLocation(Program.player.currentLocation);
+>>>>>>> Stashed changes
         
         if (deadPlayerNames.Count == 0)
         {
@@ -1163,7 +1206,10 @@ public class SubLocation
             MainUI.WriteInMainArea($"The spirit of {deadPlayerName} has moved on...");
             MainUI.WriteInMainArea("They are no longer here.");
             Thread.Sleep(2000);
+<<<<<<< Updated upstream
+=======
             DeadPlayerCache.RemoveDeadPlayer(deadPlayerName);
+>>>>>>> Stashed changes
             DoSubLocation();
             return;
         }
