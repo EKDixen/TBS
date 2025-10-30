@@ -35,6 +35,9 @@ public static class LocationLibrary
 
     public static Location Greenhollow = new Location("Greenhollow", new System.Numerics.Vector2(1, 0), 0, new List<SubLocation>
     {
+        new SubLocation("Graveyard", SubLocationType.graveyard)
+        {
+        },
         new SubLocation("Store", SubLocationType.shop)
         {
             shopItems = new List<(Item,int)>
@@ -63,6 +66,9 @@ public static class LocationLibrary
 
     public static Location Ironpeak = new Location("Ironpeak", new System.Numerics.Vector2(-1, 0), 1, new List<SubLocation>
     {
+        new SubLocation("Graveyard", SubLocationType.graveyard)
+        {
+        },
         new SubLocation("Store", SubLocationType.shop)
         {
             shopItems = new List<(Item,int)>
@@ -93,6 +99,9 @@ public static class LocationLibrary
 
     public static Location Mistport = new Location("Mistport", new System.Numerics.Vector2(0, -1), 0, new List<SubLocation>
     {
+        new SubLocation("Graveyard", SubLocationType.graveyard)
+        {
+        },
         new SubLocation("pond", SubLocationType.pond)
         {
 
@@ -110,6 +119,9 @@ public static class LocationLibrary
 
     public static Location MossGate = new Location("MossGate", new System.Numerics.Vector2(2, 0), 0, new List<SubLocation>
     {
+        new SubLocation("Graveyard", SubLocationType.graveyard)
+        {
+        },
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
 
@@ -126,6 +138,9 @@ public static class LocationLibrary
 
     public static Location Nightreach = new Location("Nightreach", new System.Numerics.Vector2(-1, 1), 0, new List<SubLocation>
     {
+        new SubLocation("Graveyard", SubLocationType.graveyard)
+        {
+        },
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
 
@@ -149,6 +164,9 @@ public static class LocationLibrary
 
     public static Location SilverfallRuins = new Location("Silverfall Ruins", new System.Numerics.Vector2(-2, 1), 0, new List<SubLocation>
     {
+        new SubLocation("Graveyard", SubLocationType.graveyard)
+        {
+        },
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
 
