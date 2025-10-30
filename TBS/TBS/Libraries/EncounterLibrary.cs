@@ -227,7 +227,7 @@ public static class EncounterLibrary
             {
                 MainUI.WriteInMainArea($"how much do you want to bet? current cash: {Program.player.money} \nYou're betting on heads");
                 int.TryParse(Console.ReadLine(), out int bet);
-                if (bet == null || bet <= 0)
+                if (bet == null || bet < 0)
                 {
                     MainUI.ClearMainArea();
                     MainUI.WriteInMainArea("sweetie you gotta type a number that we can use\n ");
