@@ -190,7 +190,7 @@ new Dictionary<Encounter, int>
 
     public static List<Location> locations = new List<Location>
     {
-        Maplecross, Greenhollow, Ironpeak, Mistport
+        Maplecross, Greenhollow, Ironpeak, Mistport,MossGate,Nightreach,SilverfallRuins
     };
 
     public static Dictionary<string, Location> locationMap = locations.ToDictionary(l => l.name);
