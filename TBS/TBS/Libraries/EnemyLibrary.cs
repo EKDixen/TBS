@@ -29,4 +29,20 @@ public static class EnemyLibrary
             AttackLibrary.ThrowHands
         }
     };
+    public static Enemy SkeletonWarrior = new Enemy("Skeleton Warrior", 1, 20, 15, 3, 2, 1, 1, 0, 2, 2, 0, 0, 5)
+    {
+        attacks = new List<Attack>
+        {
+            AttackLibrary.Slash
+        }
+    };
+
+    public static Enemy GhostlyApparition = new Enemy("Ghostly Apparition", 2, 30, 12, 2, 3, 0, 2, 1, 5, 3, 1, 0, 8)
+    {
+        attacks = new List<Attack>
+        {
+            //AttackLibrary.EtherealTouch
+        }
+    };
+
 }
