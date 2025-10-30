@@ -97,6 +97,10 @@ public class SubLocation
         {
             FishingLogic();
         }
+        if (type == SubLocationType.graveyard)
+        {
+            GraveyardLogic();
+        }
 
 
 
@@ -986,6 +990,263 @@ public class SubLocation
         MainUI.WriteInMainArea(st);
     }
 
+    #endregion
+
+    #region graveyard
+    void GraveyardLogic()
+    {
+        MainUI.ClearMainArea();
+        MainUI.WriteInMainArea("Welcome to the Graveyard...");
+        MainUI.WriteInMainArea("Here lie the spirits of fallen warriors who died in this town.");
+        MainUI.WriteInMainArea("");
+        
+        List<string> deadPlayerNames = DeadPlayerCache.GetDeadPlayersInLocation(Program.player.currentLocation);
+        
+        if (deadPlayerNames.Count == 0)
+        {
+            MainUI.WriteInMainArea("The graveyard is empty. No souls linger here...");
+            MainUI.WriteInMainArea("");
+            MainUI.WriteInMainArea("Press Enter to leave");
+            Console.ReadLine();
+            Program.MainMenu();
+            return;
+        }
+
+        MainUI.WriteInMainArea($"You sense {deadPlayerNames.Count} restless spirit(s) here.");
+        MainUI.WriteInMainArea("");
+        MainUI.WriteInMainArea("Would you like to:");
+        MainUI.WriteInMainArea("1. Challenge a spirit to combat");
+        MainUI.WriteInMainArea("0. Leave");
+        MainUI.WriteInMainArea("");
+
+        int.TryParse(Console.ReadKey().KeyChar.ToString(), out int choice);
+        
+        if (choice == 0)
+        {
+            MainUI.ClearMainArea();
+            Program.MainMenu();
+            return;
+        }
+        else if (choice == 1)
+        {
+            ShowDeadPlayersList(deadPlayerNames);
+        }
+        else
+        {
+            MainUI.ClearMainArea();
+            MainUI.WriteInMainArea("Invalid choice.");
+            Thread.Sleep(1000);
+            DoSubLocation();
+        }
+    }
+
+    void ShowDeadPlayersList(List<string> deadPlayerNames)
+    {
+        int currentPage = 1;
+        int itemsPerPage = 8;
+        string searchTerm = "";
+        
+        while (true)
+        {
+            List<Player> deadPlayers = new List<Player>();
+            foreach (var name in deadPlayerNames)
+            {
+                var p = Program.db.LoadDeadPlayer(name);
+                if (p != null)
+                {
+                    deadPlayers.Add(p);
+                }
+            }
+            
+            List<Player> filteredPlayers;
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                filteredPlayers = deadPlayers;
+            }
+            else
+            {
+                filteredPlayers = deadPlayers
+                    .Where(p => p.name.ToLower().Contains(searchTerm.ToLower()) ||
+                               p.playerClass.ToLower().Contains(searchTerm.ToLower()))
+                    .ToList();
+            }
+            
+            int totalItems = filteredPlayers.Count;
+            int totalPages = (int)Math.Ceiling((double)totalItems / itemsPerPage);
+            if (totalPages == 0) totalPages = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            List<Player> pagePlayers = filteredPlayers
+                .Skip((currentPage - 1) * itemsPerPage)
+                .Take(itemsPerPage)
+                .ToList();
+
+            MainUI.ClearMainArea();
+            MainUI.WriteInMainArea("=== Restless Spirits ===");
+            MainUI.WriteInMainArea("");
+            
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                MainUI.WriteInMainArea($"Searching for: \"{searchTerm}\"");
+                MainUI.WriteInMainArea("");
+            }
+
+            MainUI.WriteInMainArea("Nr     Name                 Level  Class            HP");
+            MainUI.WriteInMainArea("----------------------------------------------------------------");
+            
+            for (int i = 0; i < pagePlayers.Count; i++)
+            {
+                var p = pagePlayers[i];
+                MainUI.WriteInMainArea($"{i + 1,-7}{p.name,-20} {p.level,-7}{p.playerClass,-17}{p.HP}/{p.maxHP}");
+            }
+            
+            MainUI.WriteInMainArea("");
+            MainUI.WriteInMainArea($"--- Page {currentPage} of {totalPages} ---");
+            MainUI.WriteInMainArea("");
+            MainUI.WriteInMainArea("Type spirit number (1-8) to challenge, or:");
+            MainUI.WriteInMainArea("[N] Next Page  [P] Prev Page  [S] Search  [0] Back");
+
+            string input = Console.ReadKey().KeyChar.ToString().ToLower();
+
+            if (input == "n")
+            {
+                if (currentPage < totalPages) currentPage++;
+                continue;
+            }
+            if (input == "p")
+            {
+                if (currentPage > 1) currentPage--;
+                continue;
+            }
+            if (input == "s")
+            {
+                MainUI.ClearMainArea();
+                MainUI.WriteInMainArea("Enter search term (or leave empty to clear):");
+                MainUI.WriteInMainArea("> ");
+                searchTerm = Console.ReadLine()?.ToLower() ?? "";
+                currentPage = 1;
+                continue;
+            }
+
+            if (int.TryParse(input, out int selection))
+            {
+                if (selection == 0)
+                {
+                    DoSubLocation();
+                    return;
+                }
+                
+                if (selection >= 1 && selection <= pagePlayers.Count)
+                {
+                    Player selectedPlayer = pagePlayers[selection - 1];
+                    ChallengeDeadPlayer(selectedPlayer.name);
+                    return;
+                }
+            }
+
+            MainUI.ClearMainArea();
+            MainUI.WriteInMainArea("Invalid choice. Please try again.");
+            Thread.Sleep(1000);
+        }
+    }
+
+    void ChallengeDeadPlayer(string deadPlayerName)
+    {
+        MainUI.ClearMainArea();
+        MainUI.WriteInMainArea($"Loading spirit of {deadPlayerName}...");
+        
+        Player deadPlayer = Program.db.LoadDeadPlayer(deadPlayerName);
+        
+        if (deadPlayer == null)
+        {
+            MainUI.WriteInMainArea($"The spirit of {deadPlayerName} has moved on...");
+            MainUI.WriteInMainArea("They are no longer here.");
+            Thread.Sleep(2000);
+            DeadPlayerCache.RemoveDeadPlayer(deadPlayerName);
+            DoSubLocation();
+            return;
+        }
+
+        MainUI.WriteInMainArea($"You have summoned the spirit of {deadPlayer.name}!");
+        MainUI.WriteInMainArea($"Level {deadPlayer.level} {deadPlayer.playerClass}");
+        MainUI.WriteInMainArea($"HP: {deadPlayer.HP}/{deadPlayer.maxHP}");
+        MainUI.WriteInMainArea("");
+        MainUI.WriteInMainArea("Prepare for battle!");
+        Thread.Sleep(2000);
+
+        Enemy spiritEnemy = ConvertPlayerToEnemy(deadPlayer);
+        
+        Program.pendingDeadPlayerUpdate = deadPlayer;
+        Program.pendingSpiritEnemy = spiritEnemy;
+        
+        List<Enemy> enemies = new List<Enemy> { spiritEnemy };
+        CombatManager combat = new CombatManager(Program.player, enemies);
+        combat.StartCombat();
+
+        Program.pendingDeadPlayerUpdate = null;
+        Program.pendingSpiritEnemy = null;
+
+        if (Program.player.IsAlive())
+        {
+            CombatUI ui = new CombatUI();
+            ui.AddToLog("");
+            ui.AddToLog($"You have defeated the spirit of {deadPlayer.name}!");
+            ui.AddToLog("Their soul has been laid to rest...");
+            ui.RenderCombatScreen(Program.player, new List<Combatant> { Program.player });
+            
+            Program.db.DeleteDeadPlayer(deadPlayer.name);
+            
+            Thread.Sleep(2000);
+            Console.WriteLine("\nPress Enter to continue...");
+            Console.ReadLine();
+            
+            Program.MainMenu();
+        }
+    }
+
+    Enemy ConvertPlayerToEnemy(Player player)
+    {
+        int moneyDrop = (int)Math.Round(player.money * 0.1);
+        
+        Enemy enemy = new Enemy
+        {
+            name = player.name + " (Spirit)",
+            level = player.level,
+            HP = player.HP,
+            maxHP = player.maxHP,
+            DMG = player.DMG,
+            speed = player.speed,
+            armor = player.armor,
+            dodge = player.dodge,
+            dodgeNegation = player.dodgeNegation,
+            critChance = player.critChance,
+            critDamage = player.critDamage,
+            stun = player.stun,
+            stunNegation = player.stunNegation,
+            money = moneyDrop,
+            exp = player.level * 10,
+            attacks = new List<Attack>()
+        };
+
+        foreach (var attack in player.equippedAttacks)
+        {
+            if (attack != null)
+            {
+                enemy.attacks.Add(attack);
+            }
+        }
+
+        if (enemy.attacks.Count == 0)
+        {
+            enemy.attacks.Add(new Attack("Spirit Strike", new List<AttackEffect>
+            {
+                new AttackEffect("damage", enemy.DMG, 0, "enemy")
+            }));
+        }
+
+        return enemy;
+    }
     #endregion
 
 

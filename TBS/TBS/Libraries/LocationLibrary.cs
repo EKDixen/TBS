@@ -5,6 +5,20 @@ public static class LocationLibrary
 
     public static Location Maplecross = new Location("Maplecross", new System.Numerics.Vector2(0, 0), 0, new List<SubLocation>
     {
+<<<<<<< Updated upstream
+=======
+        new SubLocation("casino", SubLocationType.casino)
+        {
+            casinoMaxBet = 50
+        },
+        new SubLocation("bank", SubLocationType.bank)
+        {
+
+        },
+        new SubLocation("Graveyard", SubLocationType.graveyard)
+        {
+        },
+>>>>>>> Stashed changes
         new SubLocation("Store", SubLocationType.shop)
         {
             shopItems = new List<(Item,int)>

@@ -9,6 +9,9 @@ namespace Game.Class
         static JourneyManager journeyManager = new JourneyManager();
         static Inventory Inventory;
         static AttackManager atkManager;
+        
+        public static Player? pendingDeadPlayerUpdate = null;
+        public static Enemy? pendingSpiritEnemy = null;
 
         public static void Main(string[] args)
         {
@@ -206,6 +209,24 @@ namespace Game.Class
         {
             if (player != null && player.HP <= 0)
             {
+                if (pendingDeadPlayerUpdate != null && pendingSpiritEnemy != null)
+                {
+                    try
+                    {
+                        pendingDeadPlayerUpdate.HP = pendingSpiritEnemy.HP;
+                        db.UpdateDeadPlayer(pendingDeadPlayerUpdate);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error updating spirit HP: {ex.Message}");
+                    }
+                    finally
+                    {
+                        pendingDeadPlayerUpdate = null;
+                        pendingSpiritEnemy = null;
+                    }
+                }
+                
                 ShowDeathScreen();
             }
         }
