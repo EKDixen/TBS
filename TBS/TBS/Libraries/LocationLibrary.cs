@@ -156,7 +156,8 @@ public static class LocationLibrary
         {
             shopItems = new List<(Item,int)>
             {
-                
+                (ItemLibrary.FallenGuardHelmet,1),
+                (ItemLibrary.SilverfallAmulet,2)
             }
         }
     },
