@@ -1,5 +1,6 @@
 ﻿using Game.Class;
 using System.Threading;
+using static System.Net.Mime.MediaTypeNames;
 
 public static class EncounterLibrary
 {
@@ -273,6 +274,41 @@ public static class EncounterLibrary
                 else
                 {
                     MainUI.WriteInMainArea("The coin landed on tails, you lost...");
+                }
+
+
+            }
+            else
+            {
+                MainUI.WriteInMainArea("You respectfully decline his offer.");
+            }
+        },
+        EncounterType.Event
+    );
+
+    public static Encounter FallingFish = new Encounter(
+        "FallingFish",
+        false,
+        "A fish slings out of the pond and lands in front of you",
+        null,
+        (player) => {
+            MainUI.WriteInMainArea("Would you like to pick it up? (y/n): ");
+            string choice = Console.ReadKey().KeyChar.ToString().ToLower();
+            if (choice == "y" || choice == "yes")
+            {
+                
+                Random rand = new Random();
+                int bite = rand.Next(1, 6);
+                if (bite == 5)
+                {
+                    player.HP -= 1;
+                    MainUI.WriteInMainArea($"The fish slaps your hand away with its fins! You took 1 damage!");
+                }
+                else
+                {
+                    MainUI.WriteInMainArea("You successfully pick up the fish without issues!");
+                    Inventory inv = new Inventory(Program.player);
+                    inv.AddItem(ItemLibrary.fish,1);
                 }
 
 
