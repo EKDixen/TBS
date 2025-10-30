@@ -27,13 +27,13 @@ public class Encounter
     {
         Dictionary<Encounter, int> possibleEncounters = GetPossibleEncounters(a, b);
 
-        int encounterThreshold = 1000;
+        int encounterThreshold = 500;
         int encounterRoll;
 
         int total = possibleEncounters.Values.Sum();
         var picks = new List<Encounter>();
 
-        for (encounterRoll = rng.Next(0, 1001); encounterThreshold > encounterRoll; encounterThreshold -= Program.player.luck)
+        for (encounterRoll = rng.Next(0, 501); encounterThreshold > encounterRoll; encounterThreshold -= Program.player.luck)
         {
             int r = rng.Next(0, total);
             int accum = 0;
