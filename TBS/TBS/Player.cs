@@ -46,7 +46,7 @@ public class Player : Combatant
         money = Tmoney;
         luck = Tluck;
 
-        knownLocationnames.Add(LocationLibrary.starterTown.name);
-        currentLocation = LocationLibrary.starterTown.name;
+        knownLocationnames.Add(LocationLibrary.Maplecross.name);
+        currentLocation = LocationLibrary.Maplecross.name;
     }
 }

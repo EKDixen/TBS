@@ -84,7 +84,16 @@ public static class EncounterLibrary
         "BanditAmbush",
         true,
         "Bandits jump out from behind the trees!",
-        new List<Enemy> { EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug },
+        new List<Enemy> { EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug},
+        null,
+        EncounterType.Combat
+    );
+
+    public static Encounter BanditFight = new Encounter(
+        "BanditFight",
+        true,
+        "A solo bandit jumps out from behind the trees!",
+        new List<Enemy> { EnemyLibrary.Thug},
         null,
         EncounterType.Combat
     );
@@ -147,7 +156,7 @@ public static class EncounterLibrary
     public static Encounter MysteriousShrine = new Encounter(
         "MysteriousShrine",
         false,
-        "You find a mysterious shrine. Pray at it? (y/n)",
+        "You find a mysterious shrine",
         null,
         (player) => {
             MainUI.WriteInMainArea("Pray at the shrine? (y/n): ");
@@ -178,7 +187,7 @@ public static class EncounterLibrary
     public static Encounter WanderingMerchant = new Encounter(
         "WanderingMerchant",
         false,
-        "A wandering merchant offers you a mysterious potion for 15 gold. Buy it? (y/n)",
+        "A wandering merchant offers you a mysterious potion",
         null,
         (player) => {
             MainUI.WriteInMainArea("Buy the potion for 15 gold? (y/n): ");

@@ -3,16 +3,8 @@
 public static class LocationLibrary
 {
 
-    public static Location starterTown = new Location( "StarterTown", new System.Numerics.Vector2(0, 0), 0, new List<SubLocation>
+    public static Location Maplecross = new Location("Maplecross", new System.Numerics.Vector2(0, 0), 0, new List<SubLocation>
     {
-        new SubLocation("casino", SubLocationType.casino)
-        {
-            casinoMaxBet = 50
-        },
-        new SubLocation("bank", SubLocationType.bank)
-        {
-
-        },
         new SubLocation("Store", SubLocationType.shop)
         {
             shopItems = new List<(Item,int)>
@@ -32,13 +24,13 @@ public static class LocationLibrary
     {
         { EncounterLibrary.FoundCoins, 40},
         { EncounterLibrary.LostCoins, 30},
-        { EncounterLibrary.BanditAmbush, 20},
+        { EncounterLibrary.BanditFight, 20},
         { EncounterLibrary.WanderingMerchant, 15},
-        { EncounterLibrary.MysteriousShrine, 10}
+        { EncounterLibrary.MysteriousShrine, 5}
     });
 
 
-    public static Location forest = new Location( "Forest", new System.Numerics.Vector2(1, 0), 0, new List<SubLocation>
+    public static Location Greenhollow = new Location("Greenhollow", new System.Numerics.Vector2(1, 0), 0, new List<SubLocation>
     {
         new SubLocation("Store", SubLocationType.shop)
         {
@@ -50,10 +42,6 @@ public static class LocationLibrary
                 (ItemLibrary.camoPants,1)
             }
         },
-        new SubLocation("Bank", SubLocationType.bank)
-        {
-
-        },
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
 
@@ -62,15 +50,14 @@ public static class LocationLibrary
     new Dictionary<Encounter, int>
     {
         { EncounterLibrary.WildGoblin, 35},
-        { EncounterLibrary.GoblinPack, 20},
-        { EncounterLibrary.VampireAttack, 15},
+        { EncounterLibrary.GoblinPack, 15},
         { EncounterLibrary.StrangeMushrooms, 30},
         { EncounterLibrary.FoundCoins, 20 },
-        { EncounterLibrary.FallenIntoTrap, 15},
+        { EncounterLibrary.FallenIntoTrap, 20},
         { EncounterLibrary.FoundTreasure, 10}
     });
 
-    public static Location mountain = new Location( "Mountain", new System.Numerics.Vector2(-1, 0), 0, new List<SubLocation>
+    public static Location Ironpeak = new Location("Ironpeak", new System.Numerics.Vector2(-1, 0), 1, new List<SubLocation>
     {
         new SubLocation("Store", SubLocationType.shop)
         {
@@ -85,6 +72,10 @@ public static class LocationLibrary
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
 
+        },
+        new SubLocation("Casino",SubLocationType.casino)
+        {
+
         }
     },
     new Dictionary<Encounter, int>
@@ -92,15 +83,12 @@ public static class LocationLibrary
         { EncounterLibrary.FoundCoins, 40},
         { EncounterLibrary.FoundTreasure, 30},
         { EncounterLibrary.MysteriousShrine, 25},
-        { EncounterLibrary.WanderingMerchant, 20}
+        { EncounterLibrary.WanderingMerchant, 20},
+        { EncounterLibrary.BanditAmbush, 15}
     });
 
-    public static Location lake = new Location( "Lake", new System.Numerics.Vector2(0, -1), 0, new List<SubLocation>
+    public static Location Mistport = new Location("Mistport", new System.Numerics.Vector2(0, -1), 0, new List<SubLocation>
     {
-        new SubLocation("Bank", SubLocationType.bank)
-        {
-
-        },
         new SubLocation("pond", SubLocationType.pond)
         {
 
@@ -115,12 +103,43 @@ public static class LocationLibrary
         { EncounterLibrary.FallenIntoTrap, 10}
     });
 
+    public static Location MossGate = new Location("MossGate", new System.Numerics.Vector2(2, 0), 0, new List<SubLocation>
+    {
+        new SubLocation("Wilderness",SubLocationType.wilderness)
+        {
+
+        }
+    },
+    new Dictionary<Encounter, int>
+    {
+        { EncounterLibrary.FoundCoins, 35},
+        { EncounterLibrary.StrangeMushrooms, 40},
+        { EncounterLibrary.FallenIntoTrap, 10},
+        { EncounterLibrary.GoblinPack, 15}
+    });
+
+    public static Location Nightreach = new Location("Nightreach", new System.Numerics.Vector2(-1, 1), 0, new List<SubLocation>
+    {
+        new SubLocation("Wilderness",SubLocationType.wilderness)
+        {
+
+        },
+        new SubLocation("Store", SubLocationType.shop)
+        {
+
+        }
+    },
+    new Dictionary<Encounter, int>
+    {
+        { EncounterLibrary.FoundTreasure, 40},
+        { EncounterLibrary.VampireAttack, 40}
+    });
 
 
 
     public static List<Location> locations = new List<Location>
     {
-        starterTown, forest, mountain, lake
+        Maplecross, Greenhollow, Ironpeak, Mistport
     };
 
     public static Dictionary<string, Location> locationMap = locations.ToDictionary(l => l.name);
