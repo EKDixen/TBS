@@ -218,7 +218,7 @@ public static class EncounterLibrary
     public static Encounter RoadGambling = new Encounter(
         "RoadGambling",
         false,
-        "An old man offers gamble on a coin flip",
+        "An old man offers to gamble with you on a coin flip",
         null,
         (player) => {
             MainUI.WriteInMainArea("Accept his offer? (y/n): ");

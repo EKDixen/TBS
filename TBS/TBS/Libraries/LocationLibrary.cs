@@ -57,7 +57,8 @@ public static class LocationLibrary
         { EncounterLibrary.StrangeMushrooms, 30},
         { EncounterLibrary.FoundCoins, 20 },
         { EncounterLibrary.FallenIntoTrap, 20},
-        { EncounterLibrary.FoundTreasure, 10}
+        { EncounterLibrary.FoundTreasure, 10},
+        { EncounterLibrary.RoadGambling, 10}
     });
 
     public static Location Ironpeak = new Location("Ironpeak", new System.Numerics.Vector2(-1, 0), 1, new List<SubLocation>
@@ -118,7 +119,8 @@ public static class LocationLibrary
         { EncounterLibrary.FoundCoins, 35},
         { EncounterLibrary.StrangeMushrooms, 40},
         { EncounterLibrary.FallenIntoTrap, 10},
-        { EncounterLibrary.GoblinPack, 15}
+        { EncounterLibrary.GoblinPack, 15},
+        { EncounterLibrary.RoadGambling, 10}
     });
 
     public static Location Nightreach = new Location("Nightreach", new System.Numerics.Vector2(-1, 1), 0, new List<SubLocation>
