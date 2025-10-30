@@ -29,7 +29,7 @@ public static class LocationLibrary
         { EncounterLibrary.LostCoins, 30},
         { EncounterLibrary.BanditFight, 20},
         { EncounterLibrary.WanderingMerchant, 15},
-        { EncounterLibrary.MysteriousShrine, 534565}
+        { EncounterLibrary.MysteriousShrine, 5}
     });
 
 
