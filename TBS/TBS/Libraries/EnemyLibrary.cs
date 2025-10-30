@@ -41,7 +41,7 @@ public static class EnemyLibrary
     {
         attacks = new List<Attack>
         {
-            //AttackLibrary.EtherealTouch
+            AttackLibrary.EtherealTouch
         }
     };
 

@@ -6,7 +6,6 @@ public static class AttackLibrary
         new AttackEffect("damage", 20, 0, "enemy")
     });
 
-
     public static Attack FirstAid = new Attack("First Aid", new List<AttackEffect> {
         new AttackEffect("heal", 15, 0, "self")
     });
@@ -27,5 +26,10 @@ public static class AttackLibrary
 
     public static Attack Slash = new Attack("Slash", new List<AttackEffect> {
         new AttackEffect("damage", 10, 0, "enemy")
+    });
+
+    public static Attack EtherealTouch = new Attack("EtherealTouch", new List<AttackEffect> {
+        new AttackEffect("damage", 10, 0, "enemy"),
+        new AttackEffect("dodge", -10, 3, "enemy")
     });
 }

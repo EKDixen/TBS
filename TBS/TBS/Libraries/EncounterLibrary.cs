@@ -1,4 +1,5 @@
 ﻿using Game.Class;
+using System.Threading;
 
 public static class EncounterLibrary
 {
@@ -115,6 +116,26 @@ public static class EncounterLibrary
         null,
         EncounterType.Combat
     );
+
+    public static Encounter GhostlyApparition = new Encounter(
+        "GhostlyApparition",
+        true,
+        "A Ghostly Apparition appears!",
+        new List<Enemy> { EnemyLibrary.GhostlyApparition },
+        null,
+        EncounterType.Combat
+    );
+
+    public static Encounter SkeletonWarriors = new Encounter(
+    "SkeletonWarriors",
+    true,
+    "A couple Skeleton Warrior appears!",
+    new List<Enemy> { EnemyLibrary.SkeletonWarrior, EnemyLibrary.SkeletonWarrior, EnemyLibrary.SkeletonWarrior },
+    null,
+    EncounterType.Combat
+    );
+
+
 
     #endregion
 
