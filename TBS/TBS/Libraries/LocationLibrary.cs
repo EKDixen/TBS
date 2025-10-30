@@ -144,6 +144,26 @@ public static class LocationLibrary
         { EncounterLibrary.VampireAttack, 60}
     });
 
+    public static Location SilverfallRuins = new Location("Silverfall Ruins", new System.Numerics.Vector2(-2, 1), 0, new List<SubLocation>
+    {
+        new SubLocation("Wilderness",SubLocationType.wilderness)
+        {
+
+        },
+        new SubLocation("Store", SubLocationType.shop)
+        {
+            shopItems = new List<(Item,int)>
+            {
+                
+            }
+        }
+    },
+new Dictionary<Encounter, int>
+{
+        { EncounterLibrary.FoundTreasure, 20},
+        { EncounterLibrary.GhostlyApparition, 60},
+        { EncounterLibrary.SkeletonWarriors, 60}
+});
 
 
     public static List<Location> locations = new List<Location>
