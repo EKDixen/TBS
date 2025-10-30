@@ -999,6 +999,7 @@ public class SubLocation
         MainUI.WriteInMainArea("Welcome to the Graveyard...");
         MainUI.WriteInMainArea("Here lie the spirits of fallen warriors who died in this town.");
         MainUI.WriteInMainArea("");
+<<<<<<< Updated upstream
         MainUI.WriteInMainArea("Loading spirits...");
         Thread.Sleep(500);
         
@@ -1039,6 +1040,10 @@ public class SubLocation
         MainUI.WriteInMainArea("Welcome to the Graveyard...");
         MainUI.WriteInMainArea("Here lie the spirits of fallen warriors who died in this town.");
         MainUI.WriteInMainArea("");
+=======
+        
+        List<string> deadPlayerNames = DeadPlayerCache.GetDeadPlayersInLocation(Program.player.currentLocation);
+>>>>>>> Stashed changes
         
         if (deadPlayerNames.Count == 0)
         {
@@ -1201,6 +1206,10 @@ public class SubLocation
             MainUI.WriteInMainArea($"The spirit of {deadPlayerName} has moved on...");
             MainUI.WriteInMainArea("They are no longer here.");
             Thread.Sleep(2000);
+<<<<<<< Updated upstream
+=======
+            DeadPlayerCache.RemoveDeadPlayer(deadPlayerName);
+>>>>>>> Stashed changes
             DoSubLocation();
             return;
         }
