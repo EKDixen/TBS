@@ -104,7 +104,8 @@ public static class LocationLibrary
         { EncounterLibrary.FoundTreasure, 25},
         { EncounterLibrary.StrangeMushrooms, 20},
         { EncounterLibrary.WanderingMerchant, 15},
-        { EncounterLibrary.FallenIntoTrap, 10}
+        { EncounterLibrary.FallenIntoTrap, 10},
+        { EncounterLibrary.FallingFish, 10}
     });
 
     public static Location MossGate = new Location("MossGate", new System.Numerics.Vector2(2, 0), 0, new List<SubLocation>
