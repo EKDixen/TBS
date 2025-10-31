@@ -29,7 +29,7 @@ public static class EnemyLibrary
             AttackLibrary.ThrowHands
         }
     };
-    public static Enemy SkeletonWarrior = new Enemy("Skeleton Warrior", 1, 20, 15, 3, 2, 1, 1, 0, 2, 2, 0, 0, 5)
+    public static Enemy SkeletonWarrior = new Enemy("Skeleton Warrior", 10, 50, 50, 30, 5, 1, 1, 0, 20, 50, 10, 0, 10)
     {
         attacks = new List<Attack>
         {
@@ -37,7 +37,7 @@ public static class EnemyLibrary
         }
     };
 
-    public static Enemy GhostlyApparition = new Enemy("Ghostly Apparition", 2, 30, 12, 2, 3, 0, 2, 1, 5, 3, 1, 0, 8)
+    public static Enemy GhostlyApparition = new Enemy("Ghostly Apparition", 10, 70, 20, 20, 8, 0, 20, 10, 5, 0, 20, 0, 15)
     {
         attacks = new List<Attack>
         {
