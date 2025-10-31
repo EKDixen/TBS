@@ -285,6 +285,7 @@ public class Inventory
             switch (stat.Key)
             {
                 case "HP":{ int delta = Titem.stats["HP"] * Titem.amount;player.HP += delta;  if (player.HP > player.maxHP) player.HP = player.maxHP;  break;}
+                case "maxHP": player.maxHP += Titem.stats["maxHP"] * Titem.amount; break;
                 case "DMG":player.DMG += Titem.stats["DMG"] * Titem.amount; break;
                 case "speed":player.speed += Titem.stats["speed"] * Titem.amount; break;
                 case "armor":player.armor += Titem.stats["armor"] * Titem.amount; break;
@@ -305,6 +306,7 @@ public class Inventory
             switch (stat.Key)
             {
                 case "HP": player.HP -= Titem.stats["HP"] * Titem.amount; break;
+                case "maxHP": player.maxHP -= Titem.stats["maxHP"] * Titem.amount; break;
                 case "DMG": player.DMG -= Titem.stats["DMG"] * Titem.amount; break;
                 case "speed": player.speed -= Titem.stats["speed"] * Titem.amount; break;
                 case "armor": player.armor -= Titem.stats["armor"] * Titem.amount; break;
