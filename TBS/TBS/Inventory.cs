@@ -187,7 +187,7 @@ public class Inventory
                     if (chosen.equipmentType == EquipmentType.legs) slot = 3;
                     if (chosen.equipmentType == EquipmentType.feet) slot = 4;
 
-                    ApplyEffects(chosen);
+                    ApplyEffects(chosen, null);
                     player.equippedItems[slot - 1] = chosen;
                     MainUI.WriteInMainArea($"{chosen.name} equipped into Slot {slot}!");
 
@@ -229,7 +229,7 @@ public class Inventory
 
             if (existingItem.type == ItemType.Artifact)
             {
-                ApplyEffects(existingItem); 
+                ApplyEffects(existingItem, null); 
             }
         }
         else
@@ -242,7 +242,7 @@ public class Inventory
 
             if (newItem.type == ItemType.Artifact)
             {
-                ApplyEffects(newItem); 
+                ApplyEffects(newItem, null); 
             }
         }
     }
@@ -270,12 +270,16 @@ public class Inventory
 
             if (Titem.type == ItemType.Artifact)
             {
-                ApplyEffects(Titem);
+                ApplyEffects(Titem,null);
             }
         }
     }
-    public void ApplyEffects(Item Titem)
+    public void ApplyEffects(Item Titem, int? amount)
     {
+        if (amount == null)
+        {
+            amount = Titem.amount;
+        }
         foreach (var stat in Titem.stats)
         {
             switch (stat.Key)
@@ -318,7 +322,7 @@ public class Inventory
     {
         if (Titem.duration == 0)
         {
-            ApplyEffects(Titem);
+            ApplyEffects(Titem,1);
             DropItem(Titem);
         }
         else
