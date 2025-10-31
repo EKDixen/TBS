@@ -115,6 +115,9 @@ public class CombatManager
         // Check if player died
         Program.CheckPlayerDeath();
         playerInCombat = false;
+
+        MainUI.RenderMainMenuScreen(player);
+        MainUI.LoopRenderMain();
     }
 
     private void AdvanceActionGauges()
