@@ -68,7 +68,7 @@ public class Inventory
             }
 
             MainUI.WriteInMainArea("");
-            MainUI.WriteInMainArea($"you have {player.money} money\n");
+            MainUI.WriteInMainArea($"you have {player.money} Rai\n");
 
             if (!string.IsNullOrEmpty(searchTerm))
             {

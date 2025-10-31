@@ -82,7 +82,7 @@ public class CombatManager
             player.exp += totalExp;
             
             ui.AddToLog("--- VICTORY! ---");
-            ui.AddToLog($"Rewards: +{totalExp} EXP, +{totalMoney} money");
+            ui.AddToLog($"Rewards: +{totalExp} EXP, +{totalMoney} Rai");
             ui.ClearMainArea();
             ui.WriteInMainArea(8, "+----------------------------------------+");
             ui.WriteInMainArea(9, "�          VICTORY!                      �");

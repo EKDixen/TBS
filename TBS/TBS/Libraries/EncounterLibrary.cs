@@ -12,12 +12,12 @@ public static class EncounterLibrary
     public static Encounter FoundCoins = new Encounter(
         "FoundCoins",                                    // Unique identifier for this encounter
         false,                                           // IsEnemyEncounter - false means no combat
-        "You found some coins on the ground!",           // Description shown to player
+        "You found some Rai on the ground!",           // Description shown to player
         null,                                            // Enemies list - null for non-combat encounters
         (player) => {                                    // OnEncounter action - custom logic executed when encounter triggers
             int coins = rng.Next(5, 20);                 // Generate random gold amount between 5-20
             player.money += coins;                       // Add gold to player's money
-            MainUI.WriteInMainArea($"You gained {coins} gold!");  // Display result to player
+            MainUI.WriteInMainArea($"You gained {coins} RAI!");  // Display result to player
             Program.SavePlayer();                        // Save player state to persist changes
         },
         EncounterType.Treasure                           // Type categorization for organization
@@ -33,7 +33,7 @@ public static class EncounterLibrary
             int exp = rng.Next(5, 15);
             player.money += coins;
             player.exp += exp;
-            MainUI.WriteInMainArea($"You gained {coins} gold and {exp} experience!");
+            MainUI.WriteInMainArea($"You gained {coins} Rai and {exp} experience!");
             Program.SavePlayer();
         },
         EncounterType.Treasure
@@ -45,12 +45,12 @@ public static class EncounterLibrary
     public static Encounter LostCoins = new Encounter(
         "LostCoins",
         false,
-        "You realize your coins are missing! A pickpocket must have struck!",
+        "You realize your Rai are missing! A pickpocket must have struck!",
         null,
         (player) => {
             int lostCoins = Math.Min(rng.Next(5, 15), player.money);
             player.money -= lostCoins;
-            MainUI.WriteInMainArea($"You lost {lostCoins} gold!");
+            MainUI.WriteInMainArea($"You lost {lostCoins} Rai!");
             Program.SavePlayer();
         },
         EncounterType.Trap
@@ -213,7 +213,7 @@ public static class EncounterLibrary
         "A wandering merchant offers you a mysterious potion",
         null,
         (player) => {
-            MainUI.WriteInMainArea("Buy the potion for 15 gold? (y/n): ");
+            MainUI.WriteInMainArea("Buy the potion for 15 Rai? (y/n): ");
             string choice = Console.ReadKey().KeyChar.ToString().ToLower();
             if (choice == "y" || choice == "yes")
             {
@@ -227,7 +227,7 @@ public static class EncounterLibrary
                 }
                 else
                 {
-                    MainUI.WriteInMainArea("You don't have enough gold!");
+                    MainUI.WriteInMainArea("You don't have enough Rai!");
                 }
             }
             else
@@ -248,7 +248,7 @@ public static class EncounterLibrary
             string choice = Console.ReadKey().KeyChar.ToString().ToLower();
             if (choice == "y" || choice == "yes")
             {
-                MainUI.WriteInMainArea($"how much do you want to bet? current cash: {Program.player.money} \nYou're betting on heads");
+                MainUI.WriteInMainArea($"how much do you want to bet? current Rai: {Program.player.money} \nYou're betting on heads");
                 int.TryParse(Console.ReadLine(), out int bet);
                 if (bet == null || bet < 0)
                 {
@@ -258,7 +258,7 @@ public static class EncounterLibrary
                 }
                 else if (bet > Program.player.money)
                 {
-                    MainUI.WriteInMainArea("\nyou dont have that much money\n ");
+                    MainUI.WriteInMainArea("\nyou dont have that much Rai\n ");
                     return;
                 }
                 MainUI.WriteInMainArea($"you bet: {bet}");

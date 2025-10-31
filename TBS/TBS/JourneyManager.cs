@@ -59,7 +59,7 @@ class JourneyManager
                     }
                     else
                     {
-                        MainUI.WriteInMainArea("--------you dont have enough money for that------- \n");
+                        MainUI.WriteInMainArea("--------you dont have enough Rai for that------- \n");
                         ChoseTravelDestination();
                         return;
                     }

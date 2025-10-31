@@ -160,7 +160,7 @@ public class SubLocation
         }
         else if (input == 0) { Program.MainMenu(); return; }
         input--;
-        MainUI.WriteInMainArea($"\nyou've picked {shopItems[input].item.name}\nit costs {shopItems[input].item.value * shopItems[input].quantity}\nyou have {Program.player.money} money");
+        MainUI.WriteInMainArea($"\nyou've picked {shopItems[input].item.name}\nit costs {shopItems[input].item.value * shopItems[input].quantity}\nyou have {Program.player.money} Rai");
 
         MainUI.WriteInMainArea("0 : details");
         MainUI.WriteInMainArea("1 : buy");
@@ -193,7 +193,7 @@ public class SubLocation
             else
             {
                 MainUI.ClearMainArea();
-                MainUI.WriteInMainArea("\nyou dont have enough money for that");
+                MainUI.WriteInMainArea("\nyou dont have enough Rai for that");
                 Thread.Sleep(1000);
                 DoSubLocation();
                 return;
@@ -249,7 +249,7 @@ public class SubLocation
             else if (input2 == 0) { Program.MainMenu(); return; }
             else
             {
-                MainUI.WriteInMainArea($"\n\nyou have {Program.player.money} money\n\nand these are your items");
+                MainUI.WriteInMainArea($"\n\nyou have {Program.player.money} Rai\n\nand these are your items");
 
                 MainUI.WriteInMainArea("\nnr     Name            Qty   Description     value");
                 MainUI.WriteInMainArea("--------------------------------------------------");
@@ -270,7 +270,7 @@ public class SubLocation
                 }
                 if (input3 == 0)
                 {
-                    MainUI.WriteInMainArea($"how much would you like to deposit? you have {Program.player.money}");
+                    MainUI.WriteInMainArea($"how much would you like to deposit? you have {Program.player.money} Rai");
                     int.TryParse(Console.ReadLine(), out int moneyAmount);
                     if (moneyAmount == null || moneyAmount > Program.player.money || moneyAmount < 0)
                     {
@@ -321,7 +321,7 @@ public class SubLocation
     #region casino
     void BlackjackLogic()
     {
-        MainUI.WriteInMainArea($"how much do you want to bet?  current cash: {Program.player.money} \nthe max bet is {casinoMaxBet}");
+        MainUI.WriteInMainArea($"how much do you want to bet?  current Rai: {Program.player.money} \nthe max bet is {casinoMaxBet}");
         int.TryParse(Console.ReadLine(), out int bet);
         if (bet == null || bet > casinoMaxBet || bet < 0)
         {
@@ -332,7 +332,7 @@ public class SubLocation
         }
         else if (bet > Program.player.money)
         {
-            MainUI.WriteInMainArea("\nyou dont have that much money\n ");
+            MainUI.WriteInMainArea("\nyou dont have that much Rai\n ");
             DoSubLocation();
             return;
         }
@@ -655,7 +655,7 @@ public class SubLocation
     }
     void RouletteLogic()
     {
-        MainUI.WriteInMainArea($"\nhow much do you want to bet?  current cash: {Program.player.money} \nthe max bet is {casinoMaxBet}");
+        MainUI.WriteInMainArea($"\nhow much do you want to bet?  current Rai: {Program.player.money} \nthe max bet is {casinoMaxBet}");
         int.TryParse(Console.ReadLine(), out int bet);
         if (bet == null || bet > casinoMaxBet || bet < 0)
         {
@@ -666,7 +666,7 @@ public class SubLocation
         }
         else if (bet > Program.player.money)
         {
-            MainUI.WriteInMainArea("\nyou dont have that much money\n ");
+            MainUI.WriteInMainArea("\nyou dont have that much Rai\n ");
             DoSubLocation();
             return;
         }
@@ -832,7 +832,7 @@ public class SubLocation
 
         }
 
-        MainUI.WriteInMainArea($"you have {Program.player.money} money");
+        MainUI.WriteInMainArea($"you have {Program.player.money} Rai");
 
         MainUI.WriteInMainArea("\ndo you wish to play again : 1\n or leave : 0");
         int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input3);

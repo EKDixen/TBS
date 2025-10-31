@@ -138,7 +138,7 @@ namespace Game.Class
             Console.SetCursorPosition(x + 2, y + 6);
             Console.Write($"HP       - {player.HP}");
             Console.SetCursorPosition(x + 2, y + 7);
-            Console.Write($"Money    - {player.money}");
+            Console.Write($"Rai      - {player.money}");
             Console.SetCursorPosition(x + 2, y + 8);
             Console.Write($"Location - {player.currentLocation}");
             Console.SetCursorPosition(x + 2, y + 10);
