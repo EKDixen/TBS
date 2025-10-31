@@ -7,15 +7,15 @@ using System.Runtime.InteropServices;
 
 public enum SubLocationType
 {
-    shop,//done
+    shop,
     tavern,//no--
     blacksmith,//no--
     arena,//no--
-    bank,//done
-    casino,//done
-    wilderness,//done
-    graveyard,//no--
-    pond//done--
+    bank,
+    casino,
+    wilderness,
+    graveyard,
+    pond
 }
 public class SubLocation
 {
