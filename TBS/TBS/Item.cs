@@ -21,6 +21,8 @@ public class Item
 
     public int amount = 1;
 
+    public int weight { get; set; }
+
     public int value { get; set; }
 
     public ItemType type { get; set; }
@@ -34,12 +36,13 @@ public class Item
 
     public Item() { }
 
-    public Item(string name, string description,int value ,ItemType type)
+    public Item(string name, string description,int value, int weight, ItemType type)
     {
         this.name = name;
         this.description = description;
         this.value = value;
         this.type = type;
+        this.weight = weight;
     }
     public Item(Item template)
     {
@@ -49,8 +52,8 @@ public class Item
         this.type = template.type;
         this.equipmentType = template.equipmentType;
         this.duration = template.duration;
-        // This is important! We create a *new* Dictionary
-        // so we don't accidentally change the library's stats.
+        // This is important! We create a new Dictionary
+        // so we don't accidentally change the library's stats
         this.stats = new Dictionary<string, int>(template.stats);
         this.details = template.details;
         this.amount = 1; // Default amount for a new item is 1

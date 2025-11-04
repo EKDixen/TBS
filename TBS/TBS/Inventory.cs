@@ -224,13 +224,14 @@ public class Inventory
                 RemoveEffects(existingItem); 
             }
 
-
+            player.inventoryWeight += existingItem.weight * tAmount;
             existingItem.amount += tAmount;
 
             if (existingItem.type == ItemType.Artifact)
             {
                 ApplyEffects(existingItem, null); 
             }
+
         }
         else
         {
@@ -239,12 +240,14 @@ public class Inventory
             newItem.amount = tAmount;
 
             player.ownedItems.Add(newItem);
+            player.inventoryWeight += newItem.weight * tAmount;
 
             if (newItem.type == ItemType.Artifact)
             {
                 ApplyEffects(newItem, null); 
             }
         }
+
     }
 
     public void DropItem(Item Titem)
@@ -273,6 +276,7 @@ public class Inventory
                 ApplyEffects(Titem,null);
             }
         }
+        player.inventoryWeight += Titem.weight;
     }
     public void ApplyEffects(Item Titem, int? amount)
     {

@@ -8,13 +8,14 @@ public class Player : Combatant
     public bool isDead = false;
 
     public string currentLocation;
-    //public List<Location> knownLocations = new List<Location>();
 
     public List<string> knownLocationnames = new List<string>();
 
     public List<Item> ownedItems = new List<Item>();
 
     public List<Item> equippedItems = new List<Item>(4);
+
+    public int inventoryWeight = 0;
 
     public List<Attack> ownedAttacks = new List<Attack>();
 
@@ -42,7 +43,7 @@ public class Player : Combatant
         critDamage = TcritDamage;
         stun = Tstun;
         stunNegation = TstunNegation;
-        //currentLocation = Tlocation;
+
         money = Tmoney;
         luck = Tluck;
 
