@@ -84,27 +84,29 @@ public class CombatManager
             ui.AddToLog("--- VICTORY! ---");
             ui.AddToLog($"Rewards: +{totalExp} EXP, +{totalMoney} Rai");
             ui.ClearMainArea();
-            ui.WriteInMainArea(8, "+----------------------------------------+");
-            ui.WriteInMainArea(9, "�          VICTORY!                      �");
-            ui.WriteInMainArea(10, "+----------------------------------------+");
-            ui.WriteInMainArea(12, $"Rewards:");
-            ui.WriteInMainArea(13, $"  +{totalExp} EXP");
-            ui.WriteInMainArea(14, $"  +{totalMoney} Gold");
-            ui.WriteInMainArea(16, "Press Enter to continue...");
             ui.RenderCombatScreen(player, combatants);
+            ui.WriteInMainArea(1, "+----------------------------------------+");
+            ui.WriteInMainArea(2, "�          VICTORY!                      �");
+            ui.WriteInMainArea(3, "+----------------------------------------+");
+            ui.WriteInMainArea(4, $"Rewards:");
+            ui.WriteInMainArea(5, $"  +{totalExp} EXP");
+            ui.WriteInMainArea(6, $"  +{totalMoney} Gold");
+            ui.WriteInMainArea(8, "Press Enter to continue...");
+            
             
             Program.SavePlayer();
             Console.ReadLine();
         }
         else
         {
-                        ui.ClearMainArea();
-            ui.WriteInMainArea(8, "+----------------------------------------+");
-            ui.WriteInMainArea(9, "�          DEFEAT...                     �");
-            ui.WriteInMainArea(10, "+----------------------------------------+");
-            ui.WriteInMainArea(12, "You have been defeated in battle...");
-            ui.WriteInMainArea(14, "Press Enter to continue...");
+            ui.ClearMainArea();
             ui.RenderCombatScreen(player, combatants);
+            ui.WriteInMainArea(1, "+----------------------------------------+");
+            ui.WriteInMainArea(2, "�          DEFEAT...                     �");
+            ui.WriteInMainArea(3, "+----------------------------------------+");
+            ui.WriteInMainArea(4, "You have been defeated in battle...");
+            ui.WriteInMainArea(6, "Press Enter to continue...");
+
             
             Console.ReadLine();
         }

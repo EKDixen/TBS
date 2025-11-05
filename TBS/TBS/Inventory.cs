@@ -1,12 +1,17 @@
 ﻿using Game.Class;
+using System.Reflection.Metadata;
+using static System.Formats.Asn1.AsnWriter;
 public class Inventory
 {
     private Player player;
 
-    private int currentPage = 1;
-    private int itemsPerPage = 8; 
-    private string searchTerm = "";
+    private int currentPage = 1; 
+    private int itemsPerPage = 8;  
+    private string searchTerm = ""; 
     private List<Item> filteredItems; // This will hold the items we are currently viewing
+
+    const float exponent = 1.5f;
+    const float scale = 0.1f;
 
     public Inventory(Player p)
     {
@@ -69,6 +74,7 @@ public class Inventory
 
             MainUI.WriteInMainArea("");
             MainUI.WriteInMainArea($"you have {player.money} Rai\n");
+            MainUI.WriteInMainArea($"your items weight {player.inventoryWeight} therefore your speed is being reduced by {(int)MathF.Floor(MathF.Pow(player.inventorySpeedModifier * scale, exponent))} \n");
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -232,6 +238,12 @@ public class Inventory
                 ApplyEffects(existingItem, null); 
             }
 
+
+                                        
+
+            player.speed += (int)MathF.Floor(MathF.Pow(player.inventorySpeedModifier * scale, exponent));
+            player.inventorySpeedModifier += existingItem.weight * tAmount;
+            player.speed -= (int)MathF.Floor(MathF.Pow(player.inventorySpeedModifier * scale, exponent));
         }
         else
         {
@@ -246,12 +258,22 @@ public class Inventory
             {
                 ApplyEffects(newItem, null); 
             }
-        }
+                                         
 
+            player.speed += (int)MathF.Floor(MathF.Pow(player.inventorySpeedModifier * scale, exponent));
+            player.inventorySpeedModifier += newItem.weight * tAmount;
+            player.speed -= (int)MathF.Floor(MathF.Pow(player.inventorySpeedModifier * scale, exponent));
+        }
     }
 
     public void DropItem(Item Titem)
     {
+        player.speed += (int)MathF.Floor(MathF.Pow(player.inventorySpeedModifier * scale, exponent));
+        player.inventorySpeedModifier -= Titem.weight;
+        player.speed -= (int)MathF.Floor(MathF.Pow(player.inventorySpeedModifier * scale, exponent));
+
+        player.inventoryWeight -= Titem.weight;
+
         int equippedSlot = player.equippedItems.IndexOf(Titem);
         if (equippedSlot >= 0)
         {
@@ -276,7 +298,6 @@ public class Inventory
                 ApplyEffects(Titem,null);
             }
         }
-        player.inventoryWeight += Titem.weight;
     }
     public void ApplyEffects(Item Titem, int? amount)
     {

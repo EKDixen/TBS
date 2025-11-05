@@ -21,7 +21,7 @@ public class Item
 
     public int amount = 1;
 
-    public int weight { get; set; }
+    public float weight { get; set; }
 
     public int value { get; set; }
 
@@ -57,6 +57,7 @@ public class Item
         this.stats = new Dictionary<string, int>(template.stats);
         this.details = template.details;
         this.amount = 1; // Default amount for a new item is 1
+        this.weight = template.weight;
     }
 
 }

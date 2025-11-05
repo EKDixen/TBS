@@ -15,7 +15,8 @@ public class Player : Combatant
 
     public List<Item> equippedItems = new List<Item>(4);
 
-    public int inventoryWeight = 0;
+    public float inventoryWeight;
+    public float inventorySpeedModifier;
 
     public List<Attack> ownedAttacks = new List<Attack>();
 

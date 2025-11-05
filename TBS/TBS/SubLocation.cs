@@ -23,7 +23,7 @@ public class SubLocation
     public string name;
 
 
-    public List<(Item item,int quantity)> shopItems = new List<(Item,int)>();
+    public List<Item> shopItems = new List<Item>();
 
     List<string> suits = new List<string>
     {
@@ -141,13 +141,13 @@ public class SubLocation
 
 
         MainUI.WriteInMainArea("Shop Items:");
-        MainUI.WriteInMainArea("\n nr     Name                      Qty   Description        Price");
+        MainUI.WriteInMainArea("\n nr     Name                      Weight   Description        Price");
         MainUI.WriteInMainArea(" ----------------------------------------------------------------");
         int i = 0;
         foreach (var item in shopItems)
         {
             i++;
-            MainUI.WriteInMainArea($" {i,-7}{item.item.name,-25} {item.quantity,-5} {item.item.description,-20} {item.item.value * item.quantity}");
+            MainUI.WriteInMainArea($" {i,-7}{item.name,-22} {item.weight,-5} {item.description,-20} {item.value}");
         }
         MainUI.WriteInMainArea("\nif you want to interact with anything type its corresponding number \nif not type 0");
         var n = int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input);
@@ -160,7 +160,8 @@ public class SubLocation
         }
         else if (input == 0) { Program.MainMenu(); return; }
         input--;
-        MainUI.WriteInMainArea($"\nyou've picked {shopItems[input].item.name}\nit costs {shopItems[input].item.value * shopItems[input].quantity}\nyou have {Program.player.money} Rai");
+        MainUI.ClearMainArea();
+        MainUI.WriteInMainArea($"you've picked {shopItems[input].name}   it costs {shopItems[input].value}\nyou have {Program.player.money} Rai\n");
 
         MainUI.WriteInMainArea("0 : details");
         MainUI.WriteInMainArea("1 : buy");
@@ -177,18 +178,27 @@ public class SubLocation
         else if (ik == 0)
         {
             MainUI.ClearMainArea();
-            MainUI.WriteInMainArea($"\nyou've picked {shopItems[input].item.name}");
-            MainUI.WriteInMainArea($"{shopItems[input].item.details}\n");
+            MainUI.WriteInMainArea($"\nyou've picked {shopItems[input].name}");
+            MainUI.WriteInMainArea($"{shopItems[input].details}\n");
 
             MainUI.WriteInMainArea($"-press Enter to continue");
             Console.ReadLine();
         }
         else if (ik == 1)
         {
-            if ((Program.player.money - shopItems[input].item.value * shopItems[input].quantity) >= 0)
+            MainUI.WriteInMainArea($"how many would you like to buy?");
+            var q = int.TryParse(Console.ReadLine(),out int quantity);
+            if (quantity == null || quantity < 0)
             {
-                inventory.AddItem(shopItems[input].item, shopItems[input].quantity);
-                Program.player.money -= shopItems[input].item.value * shopItems[input].quantity;
+                MainUI.ClearMainArea();
+                MainUI.WriteInMainArea("sweetie you gotta type a number that we can use\n ");
+                DoSubLocation();
+                return;
+            }
+            if ((Program.player.money - shopItems[input].value * quantity) >= 0)
+            {
+                inventory.AddItem(shopItems[input], quantity);
+                Program.player.money -= shopItems[input].value * quantity;
             }
             else
             {

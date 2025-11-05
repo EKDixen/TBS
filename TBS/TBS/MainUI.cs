@@ -136,12 +136,14 @@ namespace Game.Class
             DrawHealthBar(player.exp, player.level * 100, RightPanelWidth - 4);
 
             Console.SetCursorPosition(x + 2, y + 6);
-            Console.Write($"HP       - {player.HP}");
+            Console.Write($"HP       - {player.HP}/{player.maxHP}");
             Console.SetCursorPosition(x + 2, y + 7);
             Console.Write($"Rai      - {player.money}");
             Console.SetCursorPosition(x + 2, y + 8);
             Console.Write($"Location - {player.currentLocation}");
-            Console.SetCursorPosition(x + 2, y + 10);
+            Console.SetCursorPosition(x + 2, y + 9);
+            Console.Write($"Weight   - {player.inventoryWeight}");
+            Console.SetCursorPosition(x + 2, y + 11);
             Console.Write("Equiped items:");
             for (int j = 0; j < player.equippedItems.Capacity; j++)
             {

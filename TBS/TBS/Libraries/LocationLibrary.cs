@@ -10,12 +10,12 @@ public static class LocationLibrary
         },
         new SubLocation("Store", SubLocationType.shop)
         {
-            shopItems = new List<(Item,int)>
+            shopItems = new List<Item>
             {
-                (ItemLibrary.smallHealthPotion,2),
-                (ItemLibrary.bigHealthPotion,1),
-                (ItemLibrary.baseballCap,1),
-                (ItemLibrary.sandals,1)
+                (ItemLibrary.smallHealthPotion),
+                (ItemLibrary.bigHealthPotion),
+                (ItemLibrary.baseballCap),
+                (ItemLibrary.sandals)
             }
         },
         new SubLocation("Wilderness",SubLocationType.wilderness)
@@ -40,12 +40,12 @@ public static class LocationLibrary
         },
         new SubLocation("Store", SubLocationType.shop)
         {
-            shopItems = new List<(Item,int)>
+            shopItems = new List<Item>
             {
-                (ItemLibrary.smallHealthPotion,3),
-                (ItemLibrary.bigHealthPotion,1),
-                (ItemLibrary.runningShoes,1),
-                (ItemLibrary.camoPants,1)
+                (ItemLibrary.smallHealthPotion),
+                (ItemLibrary.bigHealthPotion),
+                (ItemLibrary.runningShoes),
+                (ItemLibrary.camoPants)
             }
         },
         new SubLocation("Wilderness",SubLocationType.wilderness)
@@ -71,12 +71,12 @@ public static class LocationLibrary
         },
         new SubLocation("Store", SubLocationType.shop)
         {
-            shopItems = new List<(Item,int)>
+            shopItems = new List<Item>
             {
-                (ItemLibrary.bigHealthPotion,3),
-                (ItemLibrary.runningShoes,1),
-                (ItemLibrary.knightHelmet,1),
-                (ItemLibrary.constructionVest,1)
+                (ItemLibrary.bigHealthPotion),
+                (ItemLibrary.runningShoes),
+                (ItemLibrary.knightHelmet),
+                (ItemLibrary.constructionVest)
             }
         },
         new SubLocation("Wilderness",SubLocationType.wilderness)
@@ -147,12 +147,12 @@ public static class LocationLibrary
         },
         new SubLocation("Store", SubLocationType.shop)
         {
-            shopItems = new List<(Item,int)>
+            shopItems = new List<Item>
             {
-                (ItemLibrary.VampireRing,1),
-                (ItemLibrary.CloakofDusk,1),
-                (ItemLibrary.NightStalkerGreaves,1),
-                (ItemLibrary.VampireMask,1)
+                (ItemLibrary.VampireRing),
+                (ItemLibrary.CloakofDusk),
+                (ItemLibrary.NightStalkerGreaves),
+                (ItemLibrary.VampireMask)
             }
         }
     },
@@ -173,10 +173,10 @@ public static class LocationLibrary
         },
         new SubLocation("Store", SubLocationType.shop)
         {
-            shopItems = new List<(Item,int)>
+            shopItems = new List<Item>
             {
-                (ItemLibrary.FallenGuardHelmet,1),
-                (ItemLibrary.SilverfallAmulet,2)
+                (ItemLibrary.FallenGuardHelmet),
+                (ItemLibrary.SilverfallAmulet)
             }
         }
     },
