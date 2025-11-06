@@ -147,7 +147,7 @@ public class SubLocation
         foreach (var item in shopItems)
         {
             i++;
-            MainUI.WriteInMainArea($" {i,-7}{item.name,-22} {item.weight,-5} {item.description,-20} {item.value}");
+            MainUI.WriteInMainArea($" {i,-7}{item.name,-26} {item.weight,-7} {item.description,-20} {item.value}");
         }
         MainUI.WriteInMainArea("\nif you want to interact with anything type its corresponding number \nif not type 0");
         var n = int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input);
