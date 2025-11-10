@@ -242,7 +242,7 @@ public class Inventory
                                         
 
             player.speed += (int)MathF.Floor(MathF.Pow(player.inventorySpeedModifier * scale, exponent));
-            player.inventorySpeedModifier += existingItem.weight * tAmount;
+            player.inventorySpeedModifier += (existingItem.weight-20) * tAmount;
             player.speed -= (int)MathF.Floor(MathF.Pow(player.inventorySpeedModifier * scale, exponent));
         }
         else
