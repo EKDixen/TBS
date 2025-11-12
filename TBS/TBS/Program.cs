@@ -151,7 +151,7 @@ namespace Game.Class
 
             if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input) == false || input > 5 || input < 0)
             {
-                MainUI.WriteInMainArea("\nyou gotta type 0, 1, 2, 3, or 4");
+                MainUI.WriteInMainArea("\nyou gotta type 0, 1, 2, 3, 4, or 5");
                 MainMenu();
                 return;
             }
@@ -202,7 +202,7 @@ namespace Game.Class
                 }
             }
             else if (input == 4) ShowPlayerStats();
-            else if (input == 5) Encyclopedia.ShowEncyclopedia();
+            else if (input == 5) Inventory.ShowInventory();
 
             db.SavePlayer(player);
         }
