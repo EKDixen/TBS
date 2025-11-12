@@ -1422,7 +1422,7 @@ public class SubLocation
         Program.pendingSpiritEnemy = spiritEnemy;
         
         List<Enemy> enemies = new List<Enemy> { spiritEnemy };
-        CombatManager combat = new CombatManager(Program.player, enemies);
+        CombatManager combat = new CombatManager(Program.player, enemies, false, null);
         combat.StartCombat();
 
         Program.pendingDeadPlayerUpdate = null;

@@ -1,4 +1,4 @@
-ï»¿using Game.Class;
+using Game.Class;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,13 +13,19 @@ public class CombatManager
     private readonly Random rng = new Random();
     private readonly Dictionary<Combatant, int> stunnedTurns = new();
     private CombatUI ui;
+    private bool canFlee;
+    private Location previousLocation;
+    private bool playerFled = false;
 
     public static bool playerInCombat = false;
+    public static bool playerFledLastCombat = false;
 
-    public CombatManager(Player p, List<Enemy> initialEnemies)
+    public CombatManager(Player p, List<Enemy> initialEnemies, bool canFlee = true, Location previousLocation = null)
     {
         player = p;
         enemies = initialEnemies;
+        this.canFlee = canFlee;
+        this.previousLocation = previousLocation;
 
         player.IsPlayer = true;
         foreach (var e in enemies) e.IsPlayer = false;
@@ -48,7 +54,7 @@ public class CombatManager
         ui.RenderCombatScreen(player, combatants);
         Thread.Sleep(1000);
 
-        while (player.IsAlive() && enemies.Any(e => e.IsAlive()))
+        while (player.IsAlive() && enemies.Any(e => e.IsAlive()) && !playerFled)
         {
             var readyCombatants = GetReadyCombatants();
 
@@ -74,7 +80,25 @@ public class CombatManager
             TakeTurn(currentActor);
         }
 
-        if (player.IsAlive())
+        if (playerFled)
+        {
+            ui.AddToLog("--- You fled from combat! ---");
+            ui.ClearMainArea();
+            ui.RenderCombatScreen(player, combatants);
+            ui.WriteInMainArea(1, "+----------------------------------------+");
+            ui.WriteInMainArea(2, "¦          FLED!                         ¦");
+            ui.WriteInMainArea(3, "+----------------------------------------+");
+            ui.WriteInMainArea(4, "You managed to escape from battle...");
+            if (previousLocation != null)
+            {
+                ui.WriteInMainArea(6, $"Returning to {previousLocation.name}...");
+                player.currentLocation = previousLocation.name;
+                Program.SavePlayer();
+            }
+            ui.WriteInMainArea(8, "Press Enter to continue...");
+            Console.ReadLine();
+        }
+        else if (player.IsAlive())
         {
             int totalMoney = enemies.Sum(e => e.money);
             int totalExp = enemies.Sum(e => e.exp);
@@ -86,7 +110,7 @@ public class CombatManager
             ui.ClearMainArea();
             ui.RenderCombatScreen(player, combatants);
             ui.WriteInMainArea(1, "+----------------------------------------+");
-            ui.WriteInMainArea(2, "ï¿½          VICTORY!                      ï¿½");
+            ui.WriteInMainArea(2, "?          VICTORY!                      ?");
             ui.WriteInMainArea(3, "+----------------------------------------+");
             ui.WriteInMainArea(4, $"Rewards:");
             ui.WriteInMainArea(5, $"  +{totalExp} EXP");
@@ -102,7 +126,7 @@ public class CombatManager
             ui.ClearMainArea();
             ui.RenderCombatScreen(player, combatants);
             ui.WriteInMainArea(1, "+----------------------------------------+");
-            ui.WriteInMainArea(2, "ï¿½          DEFEAT...                     ï¿½");
+            ui.WriteInMainArea(2, "?          DEFEAT...                     ?");
             ui.WriteInMainArea(3, "+----------------------------------------+");
             ui.WriteInMainArea(4, "You have been defeated in battle...");
             ui.WriteInMainArea(6, "Press Enter to continue...");
@@ -151,6 +175,23 @@ public class CombatManager
     private List<Combatant> GetReadyCombatants()
     {
         return combatants.Where(c => c.IsAlive() && c.ActionGauge >= ActionThreshold).ToList();
+    }
+
+    private int CalculateFleeChance()
+    {
+        // Get alive allies (just the player for now, but extensible for party members)
+        var aliveAllies = combatants.Where(c => c.IsAlive() && c.IsPlayer).ToList();
+        var aliveEnemies = enemies.Where(e => e.IsAlive()).ToList();
+
+        // Calculate total speed for allies and enemies
+        int allySpeed = aliveAllies.Sum(a => a.speed);
+        int enemySpeed = aliveEnemies.Sum(e => e.speed);
+
+        // Base 50% + ally speed - enemy speed
+        int fleeChance = 50 + allySpeed - enemySpeed;
+
+        // Clamp between 5% and 95% to always give some chance
+        return Math.Clamp(fleeChance, 5, 95);
     }
 
                 
@@ -347,7 +388,7 @@ public class CombatManager
                 var moves = player.equippedAttacks.Where(a => a != null).ToList();
                 var consumables = player.ownedItems.Where(i => i.type == ItemType.consumable && i.amount > 0).ToList();
                 
-                if (moves.Count == 0 && consumables.Count == 0)
+                if (moves.Count == 0 && consumables.Count == 0 && !canFlee)
                 {
                     ui.AddToLog($"{player.name} has no moves or items and skips turn.");
                     ui.RenderCombatScreen(player, combatants);
@@ -385,6 +426,15 @@ public class CombatManager
                     lineNum++;
                 }
                 
+                // Show flee option
+                int fleeOption = 0;
+                if (canFlee)
+                {
+                    int displayFleeChance = CalculateFleeChance();
+                    ui.WriteInMainArea(lineNum++, $"0. FLEE ({displayFleeChance}% chance)");
+                    lineNum++;
+                }
+                
                 ui.SetCursorInMainArea(lineNum);
                 Console.Write("Choose action: ");
 
@@ -392,10 +442,42 @@ public class CombatManager
                 int totalOptions = moves.Count + consumables.Count;
                 while (true)
                 {
-                    if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out choice) && choice >= 1 && choice <= totalOptions)
+                    if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out choice) && choice >= 0 && choice <= totalOptions)
                         break;
                     ui.SetCursorInMainArea(lineNum + 1);
                     Console.Write("Invalid choice. Try again: ");
+                }
+
+                
+                // Check if player chose to flee
+                if (canFlee && choice == fleeOption)
+                {
+                    // Calculate flee chance based on speed
+                    int fleeChance = CalculateFleeChance();
+                    if (rng.Next(0, 100) < fleeChance)
+                    {
+                        ui.AddToLog($"{player.name} attempts to flee...");
+                        ui.RenderCombatScreen(player, combatants);
+                        Thread.Sleep(500);
+                        ui.AddToLog("Flee successful!");
+                        ui.RenderCombatScreen(player, combatants);
+                        Thread.Sleep(500);
+                        playerFled = true;                        playerFledLastCombat = true;
+                        return;
+                    }
+                    else
+                    {
+                        ui.AddToLog($"{player.name} attempts to flee...");
+                        ui.RenderCombatScreen(player, combatants);
+                        Thread.Sleep(500);
+                        ui.AddToLog("Failed to escape! The enemies block your path!");
+                        ui.RenderCombatScreen(player, combatants);
+                        Thread.Sleep(800);
+                        // Turn is wasted, continue to gauge reduction
+                        actor.ActionGauge -= ActionThreshold;
+                        if (actor.ActionGauge < 0) actor.ActionGauge = 0;
+                        return;
+                    }
                 }
                 
                 // Check if they chose an attack or item

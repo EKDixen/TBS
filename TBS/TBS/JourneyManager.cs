@@ -1,4 +1,4 @@
-﻿
+
 
 using Game.Class;
 using System;
@@ -134,17 +134,25 @@ class JourneyManager
         MainUI.WriteInMainArea("\nTraveling to " + TtargetDis.name + "...");
         
         Location previousLocation = LocationLibrary.Get(Program.player.currentLocation);
-        Program.player.currentLocation = TtargetDis.name;
-        Program.db.SavePlayer(Program.player);
-        Program.SavePlayer();
         
         if(cartin != true)
         {
             EncounterManager encounterManager = new EncounterManager(Program.player);
             encounterManager.ProcessTravelEncounters(previousLocation, TtargetDis, false);
+            
+            // Only update location if player didn't flee back
+            if (!CombatManager.playerFledLastCombat)
+            {
+                Program.player.currentLocation = TtargetDis.name;
+                Program.db.SavePlayer(Program.player);
+                Program.SavePlayer();
+            }
         }
         else
         {
+            Program.player.currentLocation = TtargetDis.name;
+            Program.db.SavePlayer(Program.player);
+            Program.SavePlayer();
             MainUI.WriteInMainArea("You arrive safely via carriage.");
             MainUI.WriteInMainArea("Press Enter to continue...");
             Console.ReadLine();
@@ -180,11 +188,14 @@ class JourneyManager
             EncounterManager encounterManager = new EncounterManager(Program.player);
             encounterManager.ProcessTravelEncounters(previousLocation, newLocation, true);
 
-            MainUI.WriteInMainArea($"\nYou discovered {newLocation.name}!");
-            Program.player.knownLocationnames.Add(newLocation.name);
-            Program.player.currentLocation = newLocation.name;
-
-            Program.SavePlayer();
+            // Only update location if player didn't flee back
+            if (!CombatManager.playerFledLastCombat)
+            {
+                MainUI.WriteInMainArea($"\nYou discovered {newLocation.name}!");
+                Program.player.knownLocationnames.Add(newLocation.name);
+                Program.player.currentLocation = newLocation.name;
+                Program.SavePlayer();
+            }
         }
         else
         {

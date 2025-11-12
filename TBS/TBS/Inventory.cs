@@ -1,4 +1,4 @@
-﻿using Game.Class;
+using Game.Class;
 using System.Reflection.Metadata;
 using static System.Formats.Asn1.AsnWriter;
 public class Inventory
@@ -273,7 +273,7 @@ public class Inventory
             player.speed += (int)MathF.Floor(MathF.Pow(MathF.Max(player.inventorySpeedModifier - 20, 0) * scale, exponent));
 
             // update the modifier based on new weight
-            player.inventorySpeedModifier += existingItem.weight * tAmount;
+            player.inventorySpeedModifier += newItem.weight * tAmount;
 
             // apply the new effect only if weight exceeds 20
             float excessWeight = MathF.Max(player.inventorySpeedModifier - 20, 0);

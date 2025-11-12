@@ -1,4 +1,4 @@
-﻿using Game.Class;
+using Game.Class;
 using System.Diagnostics;
 
 public class Encounter
@@ -9,8 +9,9 @@ public class Encounter
     public List<Enemy> Enemies;
     public Action<Player> OnEncounter;
     public EncounterType Type;
+    public bool CanFlee;
 
-    public Encounter(string name, bool isEnemyEncounter, string description, List<Enemy> enemies = null, Action<Player> onEncounter = null, EncounterType type = EncounterType.Event)
+    public Encounter(string name, bool isEnemyEncounter, string description, List<Enemy> enemies = null, Action<Player> onEncounter = null, EncounterType type = EncounterType.Event, bool canFlee = true)
     {
         Name = name;
         IsEnemyEncounter = isEnemyEncounter;
@@ -18,6 +19,7 @@ public class Encounter
         Enemies = enemies ?? new List<Enemy>();
         OnEncounter = onEncounter;
         Type = type;
+        CanFlee = canFlee;
     }
     public Encounter() { }
 
@@ -80,7 +82,7 @@ public class Encounter
         return combined;
     }
 
-    public void Execute(Player player)
+    public void Execute(Player player, Location previousLocation = null)
     {
         MainUI.WriteInMainArea($"\n{Description}");
         
@@ -102,17 +104,21 @@ public class Encounter
                 combatEnemies.Add(newEnemy);
             }
             
-            CombatManager combat = new CombatManager(player, combatEnemies);
+            CombatManager combat = new CombatManager(player, combatEnemies, CanFlee, previousLocation);
             combat.StartCombat();
         }
         else if (OnEncounter != null)
         {
+            // Reset flee flag for non-combat encounters
+            CombatManager.playerFledLastCombat = false;
             OnEncounter(player);
             MainUI.WriteInMainArea("\nPress Enter to continue...");
             Console.ReadLine();
         }
         else
         {
+            // Reset flee flag for non-combat encounters
+            CombatManager.playerFledLastCombat = false;
             MainUI.WriteInMainArea("\nPress Enter to continue...");
             Console.ReadLine();
         }

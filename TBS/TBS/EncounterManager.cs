@@ -1,4 +1,4 @@
-﻿using Game.Class;
+using Game.Class;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,16 +32,26 @@ public class EncounterManager
         foreach (var encounter in encounters)
         {
             MainUI.ClearMainArea();
-            MainUI.WriteInMainArea("╔════════════════════════════════════════╗");
-            MainUI.WriteInMainArea("║          ENCOUNTER                     ║");
-            MainUI.WriteInMainArea("╚════════════════════════════════════════╝");
+            MainUI.WriteInMainArea("+----------------------------------------+");
+            MainUI.WriteInMainArea("�          ENCOUNTER                     �");
+            MainUI.WriteInMainArea("+----------------------------------------+");
             MainUI.WriteInMainArea("");
             
-            encounter.Execute(player);
+            encounter.Execute(player, from);
 
             Program.CheckPlayerDeath();
             if (!player.IsAlive())
             {
+                return;
+            }
+            
+            // Check if player fled - if so, stop processing encounters
+            if (CombatManager.playerFledLastCombat)
+            {
+                MainUI.ClearMainArea();
+                MainUI.WriteInMainArea("You have returned to safety.");
+                MainUI.WriteInMainArea("Press Enter to continue...");
+                Console.ReadLine();
                 return;
             }
         }
@@ -70,12 +80,12 @@ public class EncounterManager
         foreach (var encounter in encounters)
         {
             MainUI.ClearMainArea();
-            MainUI.WriteInMainArea("╔════════════════════════════════════════╗");
-            MainUI.WriteInMainArea("║          ENCOUNTER                     ║");
-            MainUI.WriteInMainArea("╚════════════════════════════════════════╝");
+            MainUI.WriteInMainArea("+----------------------------------------+");
+            MainUI.WriteInMainArea("�          ENCOUNTER                     �");
+            MainUI.WriteInMainArea("+----------------------------------------+");
             MainUI.WriteInMainArea("");
 
-            encounter.Execute(player);
+            encounter.Execute(player, null);
 
             Program.CheckPlayerDeath();
             if (!player.IsAlive())
@@ -91,10 +101,10 @@ public class EncounterManager
     }
 
 
-    public Encounter CreateCustomEncounter(string name, string description, List<Enemy> enemies = null, Action<Player> onEncounter = null, EncounterType type = EncounterType.Event)
+    public Encounter CreateCustomEncounter(string name, string description, List<Enemy> enemies = null, Action<Player> onEncounter = null, EncounterType type = EncounterType.Event, bool canFlee = true)
     {
         bool isEnemyEncounter = enemies != null && enemies.Count > 0;
-        return new Encounter(name, isEnemyEncounter, description, enemies, onEncounter, type);
+        return new Encounter(name, isEnemyEncounter, description, enemies, onEncounter, type, canFlee);
     }
 
     public void DisplayLocationEncounterInfo(Location location)
@@ -120,13 +130,13 @@ public class EncounterManager
     {
         return type switch
         {
-            EncounterType.Combat => "⚔",
-            EncounterType.Treasure => "💰",
-            EncounterType.Event => "📜",
-            EncounterType.Merchant => "🛒",
-            EncounterType.Trap => "⚠",
-            EncounterType.Mystery => "❓",
-            _ => "•"
+            EncounterType.Combat => "?",
+            EncounterType.Treasure => "??",
+            EncounterType.Event => "??",
+            EncounterType.Merchant => "??",
+            EncounterType.Trap => "?",
+            EncounterType.Mystery => "?",
+            _ => "�"
         };
     }
 }
