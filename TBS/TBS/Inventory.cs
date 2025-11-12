@@ -1,5 +1,6 @@
 using Game.Class;
 using System.Reflection.Metadata;
+using System.Xml.Linq;
 using static System.Formats.Asn1.AsnWriter;
 public class Inventory
 {
@@ -143,7 +144,7 @@ public class Inventory
             MainUI.WriteInMainArea("0 : details");
             MainUI.WriteInMainArea("1 : drop");
             if (selectedItem.type == ItemType.equipment) MainUI.WriteInMainArea("2 : Equip/Unequip");
-            if (selectedItem.type == ItemType.consumable) MainUI.WriteInMainArea("2 : consume");
+            if (selectedItem.type == ItemType.consumable && selectedItem.duration == 0) MainUI.WriteInMainArea("2 : consume");
             MainUI.WriteInMainArea("");
             MainUI.WriteInMainArea("type out the number next to the action you want to perform");
 
@@ -332,7 +333,8 @@ public class Inventory
         {
             switch (stat.Key)
             {
-                case "HP":{ int delta = Titem.stats["HP"] * Titem.amount;player.HP += delta;  if (player.HP > player.maxHP) player.HP = player.maxHP;  break;}
+                case "heal":{ int delta = Titem.stats["heal"] * Titem.amount;player.HP += delta;  if (player.HP > player.maxHP) player.HP = player.maxHP;  break;}
+                case "damage": player.HP -= Titem.stats["damage"] * Titem.amount; break;
                 case "maxHP": player.maxHP += Titem.stats["maxHP"] * Titem.amount; break;
                 case "speed":player.speed += Titem.stats["speed"] * Titem.amount; break;
                 case "armor":player.armor += Titem.stats["armor"] * Titem.amount; break;
@@ -356,7 +358,6 @@ public class Inventory
         {
             switch (stat.Key)
             {
-                case "HP": player.HP -= Titem.stats["HP"] * Titem.amount; break;
                 case "maxHP": player.maxHP -= Titem.stats["maxHP"] * Titem.amount; break;
                 case "speed": player.speed -= Titem.stats["speed"] * Titem.amount; break;
                 case "armor": player.armor -= Titem.stats["armor"] * Titem.amount; break;
@@ -379,9 +380,14 @@ public class Inventory
         }
         else
         {
-            //MainUI.WriteInMainArea("not done");
-
-
+            foreach (var effect in Titem.effects)
+            {
+                if (effect.targetType == "allEnemies")
+                    Console.WriteLine($"{Titem.name} is an AoE move and requires ApplyToAll instead!");
+                else
+                    effect.Apply(player, player);
+            }
+            DropItem(Titem,1);
         }
     }
 

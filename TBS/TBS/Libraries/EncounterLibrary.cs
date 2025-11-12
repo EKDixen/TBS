@@ -17,7 +17,7 @@ public static class EncounterLibrary
         (player) => {                                    // OnEncounter action - custom logic executed when encounter triggers
             int coins = rng.Next(1, 4);                 // Generate random gold amount between 1-2
             player.money += coins;                       // Add gold to player's money
-            MainUI.WriteInMainArea($"You gained {coins} RAI!");  // Display result to player
+            MainUI.WriteInMainArea($"You gained {coins} Rai!");  // Display result to player
             Program.SavePlayer();                        // Save player state to persist changes
         },
         EncounterType.Treasure                           // Type categorization for organization

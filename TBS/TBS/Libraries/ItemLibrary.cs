@@ -5,9 +5,9 @@
 
     stats:
 
-    HP;
+    Heal;
     maxHP;
-    DMG;
+    damage;
     speed;
     armor;
 
@@ -37,9 +37,9 @@
         details = "Silver ring rumored to strengthen \nits wearer’s blood using magic.\n+3% CritChance",
         stats = { ["critChance"] = 3 },
     };
-    public static Item SilverfallAmulet = new Item("Silverfall Amulet", "+5 HP, +3% critChance", 12,1, ItemType.Artifact)
+    public static Item SilverfallAmulet = new Item("Silverfall Amulet", "+5 maxHP, +3% critChance", 12,1, ItemType.Artifact)
     {
-        stats = { ["HP"] = 5, ["critChance"] = 3},
+        stats = { ["maxHP"] = 5, ["critChance"] = 3},
         details = "Old amulet with a tiny silver waterfall engraved\n hums faintly with magic\n+5 HP, +3% critChance"
     };
 
@@ -131,17 +131,26 @@
     //consumables
     public static Item smallHealthPotion = new Item("Small Health Potion", "+20 Health", 2,2, ItemType.consumable)
     {
-        stats = { ["HP"] = 20 },
+        stats = { ["heal"] = 20 },
         duration = 0,
         details = "simple health potion, drink it and you regain some health..\n not much but being alive is nice"
     };
     public static Item bigHealthPotion = new Item("Big Health Potion", "+50 Health", 4,3, ItemType.consumable)
     {
-        stats = { ["HP"] = 50},
+        stats = { ["heal"] = 50},
         duration = 0,
         details = "advanced health potion, drink it and you regain\n a major amount of health.. great for staying alive\n+50 Health"
     };
 
+    public static Item speedPotion = new Item("Speed Potion", "+10 Speed", 4, 3, ItemType.consumable)
+    {
+        duration = 2,
+        effects = new List<AttackEffect>()
+        {
+            new AttackEffect("speed", 10, 2, "self")
+        },
+        details = "speed potion, drink it to become faster for a bit\n+10 Speed for 2 turns"
+    };
 
 }
 
