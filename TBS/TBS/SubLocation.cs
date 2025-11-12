@@ -1456,7 +1456,6 @@ public class SubLocation
             level = player.level,
             HP = player.HP,
             maxHP = player.maxHP,
-            DMG = player.DMG,
             speed = player.speed,
             armor = player.armor,
             dodge = player.dodge,
@@ -1482,7 +1481,7 @@ public class SubLocation
         {
             enemy.attacks.Add(new Attack("Spirit Strike", new List<AttackEffect>
             {
-                new AttackEffect("damage", enemy.DMG, 0, "enemy")
+                new AttackEffect("damage", 5, 0, "enemy")
             }));
         }
 

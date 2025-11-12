@@ -489,10 +489,6 @@ public class CombatManager
                         int healed = player.HP - before;
                         ui.AddToLog($"{player.name} heals {healed} HP ({before} -> {player.HP})");
                         break;
-                    case "DMG":
-                        player.DMG += stat.Value;
-                        ui.AddToLog($"{player.name} DMG {(stat.Value >= 0 ? "+" : "")}{stat.Value}");
-                        break;
                     case "speed":
                         player.speed += stat.Value;
                         ui.AddToLog($"{player.name} speed {(stat.Value >= 0 ? "+" : "")}{stat.Value}");

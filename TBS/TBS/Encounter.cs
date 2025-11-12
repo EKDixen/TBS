@@ -93,7 +93,7 @@ public class Encounter
             foreach (var enemy in Enemies)
             {
                 var newEnemy = new Enemy(
-                    enemy.name, enemy.level, enemy.exp, enemy.HP, enemy.DMG,
+                    enemy.name, enemy.level, enemy.exp, enemy.HP,
                     enemy.speed, enemy.armor, enemy.dodge, enemy.dodgeNegation,
                     enemy.critChance, enemy.critDamage, enemy.stun, enemy.stunNegation, enemy.money
                 );

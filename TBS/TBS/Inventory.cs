@@ -334,7 +334,6 @@ public class Inventory
             {
                 case "HP":{ int delta = Titem.stats["HP"] * Titem.amount;player.HP += delta;  if (player.HP > player.maxHP) player.HP = player.maxHP;  break;}
                 case "maxHP": player.maxHP += Titem.stats["maxHP"] * Titem.amount; break;
-                case "DMG":player.DMG += Titem.stats["DMG"] * Titem.amount; break;
                 case "speed":player.speed += Titem.stats["speed"] * Titem.amount; break;
                 case "armor":player.armor += Titem.stats["armor"] * Titem.amount; break;
                 case "dodge":player.dodge += Titem.stats["dodge"] * Titem.amount; break;
@@ -359,7 +358,6 @@ public class Inventory
             {
                 case "HP": player.HP -= Titem.stats["HP"] * Titem.amount; break;
                 case "maxHP": player.maxHP -= Titem.stats["maxHP"] * Titem.amount; break;
-                case "DMG": player.DMG -= Titem.stats["DMG"] * Titem.amount; break;
                 case "speed": player.speed -= Titem.stats["speed"] * Titem.amount; break;
                 case "armor": player.armor -= Titem.stats["armor"] * Titem.amount; break;
                 case "dodge": player.dodge -= Titem.stats["dodge"] * Titem.amount; break;
@@ -381,7 +379,9 @@ public class Inventory
         }
         else
         {
-            MainUI.WriteInMainArea("not done");
+            //MainUI.WriteInMainArea("not done");
+
+
         }
     }
 

@@ -6,7 +6,6 @@
     public int exp;
     public int HP;
     public int maxHP;
-    public int DMG;
     public int speed;
     public int armor;
 
