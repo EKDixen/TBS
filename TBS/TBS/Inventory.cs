@@ -273,7 +273,7 @@ public class Inventory
             player.speed += (int)MathF.Floor(MathF.Pow(MathF.Max(player.inventorySpeedModifier - 20, 0) * scale, exponent));
 
             // update the modifier based on new weight
-            player.inventorySpeedModifier += existingItem.weight * tAmount;
+            player.inventorySpeedModifier += newItem.weight * tAmount;
 
             // apply the new effect only if weight exceeds 20
             float excessWeight = MathF.Max(player.inventorySpeedModifier - 20, 0);
@@ -332,7 +332,8 @@ public class Inventory
         {
             switch (stat.Key)
             {
-                case "HP":{ int delta = Titem.stats["HP"] * Titem.amount;player.HP += delta;  if (player.HP > player.maxHP) player.HP = player.maxHP;  break;}
+                case "heal":{ int delta = Titem.stats["heal"] * Titem.amount;player.HP += delta;  if (player.HP > player.maxHP) player.HP = player.maxHP;  break;}
+                case "damage": player.HP -= Titem.stats["damage"] * Titem.amount; break;
                 case "maxHP": player.maxHP += Titem.stats["maxHP"] * Titem.amount; break;
                 case "speed":player.speed += Titem.stats["speed"] * Titem.amount; break;
                 case "armor":player.armor += Titem.stats["armor"] * Titem.amount; break;
@@ -356,7 +357,8 @@ public class Inventory
         {
             switch (stat.Key)
             {
-                case "HP": player.HP -= Titem.stats["HP"] * Titem.amount; break;
+                case "heal": player.HP -= Titem.stats["heal"] * Titem.amount; break;
+                case "damage": player.HP += Titem.stats["damage"] * Titem.amount; break;
                 case "maxHP": player.maxHP -= Titem.stats["maxHP"] * Titem.amount; break;
                 case "speed": player.speed -= Titem.stats["speed"] * Titem.amount; break;
                 case "armor": player.armor -= Titem.stats["armor"] * Titem.amount; break;
