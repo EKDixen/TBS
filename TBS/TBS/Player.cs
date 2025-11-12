@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Data;
+using System.Diagnostics;
 
 public class Player : Combatant
 {
@@ -10,6 +11,9 @@ public class Player : Combatant
     public string currentLocation;
 
     public List<string> knownLocationnames = new List<string>();
+
+    public List<(string location, Item item)> bankItems = new List<(string location, Item item)>();
+    public int bankMoney;
 
     public List<Item> ownedItems = new List<Item>();
 

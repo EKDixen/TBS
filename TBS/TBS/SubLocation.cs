@@ -33,9 +33,6 @@ public class SubLocation
         new string("spades")
     };
 
-    public List<Item> bankItems = new List<Item>();
-    public int bankMoney = 0;
-
     public int casinoMaxBet = 0;
 
     public SubLocation() { } //Deserialize
@@ -218,113 +215,328 @@ public class SubLocation
     #region bank
     void BankLogic()
     {
-        Inventory inventory = new Inventory(Program.player);
-
-        MainUI.WriteInMainArea($"\n\n\nyou have {bankMoney} money stored here and here is all the items you have stored here:");
-        MainUI.WriteInMainArea("\n nr     Name            Qty   Description        value");
-        MainUI.WriteInMainArea(" ------------------------------------------------------");
-        int i = 1;
-        int extraMoneyNumber = 0;
-        if (bankMoney != 0)
-        {
-            MainUI.WriteInMainArea($" {i,-7}{"money",-15} {bankMoney,-5}");
-            extraMoneyNumber = 1;
-        }
-
-        foreach (var item in bankItems)
-        {
-            i++;
-            MainUI.WriteInMainArea($" {i,-7}{item.name,-15} {item.amount,-5} {item.description,-20} {item.value}");
-        }
-        MainUI.WriteInMainArea("\nif you want to grab something type its nr \nif you want to deposit something or leave then type 0");
-        var n = int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input);
-        if (input == null || input > bankItems.Count + extraMoneyNumber || input < 0)
+        while (true)
         {
             MainUI.ClearMainArea();
-            MainUI.WriteInMainArea("sweetie you gotta type a number that we can use\n ");
-            DoSubLocation();
-            return;
-        }
-        else if (input == 0)
-        {
-            MainUI.WriteInMainArea("do you want to leave type 0, if you want to diposit type 1");
-            var n2 = int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input2);
-            if (input2 == null || input2 > 1 || input2 < 0)
+            MainUI.WriteInMainArea("Welcome to the bank");
+            MainUI.WriteInMainArea($"You have {Program.player.bankMoney} Rai in your account.");
+            MainUI.WriteInMainArea("Would you like to:");
+            MainUI.WriteInMainArea("1. Deposit Items");
+            MainUI.WriteInMainArea("2. Withdraw Items");
+            MainUI.WriteInMainArea("3. Deposit Money");
+            MainUI.WriteInMainArea("4. Withdraw Money");
+            MainUI.WriteInMainArea("0. Leave");
+
+            if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input) == false || input > 4 || input < 0)
             {
-                MainUI.ClearMainArea();
-                MainUI.WriteInMainArea("sweetie you gotta type a number that we can use\n ");
-                DoSubLocation();
-                return;
+                MainUI.WriteInMainArea(" \nyou gotta type a number from 0-4");
+                Thread.Sleep(1000);
+                continue;
             }
-            else if (input2 == 0) { Program.MainMenu(); return; }
+
+            switch (input)
+            {
+                case 0:
+                    Program.MainMenu();
+                    return;
+                case 1:
+                    DepositItems();
+                    break;
+                case 2:
+                    WithdrawItems();
+                    break;
+                case 3:
+                    DepositMoney();
+                    break;
+                case 4:
+                    WithdrawMoney();
+                    break;
+            }
+            Program.SavePlayer(); 
+        }
+    }
+
+    private void DepositItems()
+    {
+        Inventory inventory = new Inventory(Program.player);
+
+        const float exponent = 1.5f;
+        const float scale = 0.1f;
+
+        while (true)
+        {
+            MainUI.ClearMainArea();
+            MainUI.WriteInMainArea("Select an item to deposit:");
+            MainUI.WriteInMainArea("");
+            MainUI.WriteInMainArea("nr     Name                      Qty");
+            MainUI.WriteInMainArea("--------------------------------------");
+
+            if (Program.player.ownedItems.Count == 0)
+            {
+                MainUI.WriteInMainArea("You have no items to deposit.");
+                MainUI.WriteInMainArea("");
+                MainUI.WriteInMainArea("0. Back");
+            }
             else
             {
-                MainUI.WriteInMainArea($"\n\nyou have {Program.player.money} Rai\n\nand these are your items");
-
-                MainUI.WriteInMainArea("\nnr     Name            Qty   Description     value");
-                MainUI.WriteInMainArea("--------------------------------------------------");
-                int id = 0;
-                foreach (var item in Program.player.ownedItems)
+                for (int i = 0; i < Program.player.ownedItems.Count; i++)
                 {
-                    id++;
-                    MainUI.WriteInMainArea($"{id,-7}{item.name,-15} {item.amount,-5} {item.description,-16} {item.value}");
+                    var item = Program.player.ownedItems[i];
+                    MainUI.WriteInMainArea($"{i + 1,-7}{item.name,-25} {item.amount,-5}");
                 }
-                MainUI.WriteInMainArea("\ntype out the nr of the item you want to diposit or type 0 if you want to deposit money");
-                int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input3);
-                if (input3 == null || input3 > Program.player.ownedItems.Count || input3 < 0)
-                {
-                    MainUI.ClearMainArea();
-                    MainUI.WriteInMainArea("sweetie you gotta type a number that we can use\n ");
-                    DoSubLocation();
-                    return;
-                }
-                if (input3 == 0)
-                {
-                    MainUI.WriteInMainArea($"how much would you like to deposit? you have {Program.player.money} Rai");
-                    int.TryParse(Console.ReadLine(), out int moneyAmount);
-                    if (moneyAmount == null || moneyAmount > Program.player.money || moneyAmount < 0)
-                    {
-                        MainUI.ClearMainArea();
-                        MainUI.WriteInMainArea("sweetie you gotta type a number that we can use\n ");
-                        DoSubLocation();
-                        return;
-                    }
-                    Program.player.money -= moneyAmount;
-                    bankMoney += moneyAmount;
+                MainUI.WriteInMainArea("");
+                MainUI.WriteInMainArea("0. Back");
+            }
 
-                }
-                else
-                {
-                    input3--;
+            string inputString = Console.ReadLine() ?? "";
+            var n = int.TryParse(inputString, out int input);
 
-                    bankItems.Add(Program.player.ownedItems[input3]);
-                    inventory.DropItem(Program.player.ownedItems[input3]);
+            if (input == 0)
+            {
+                return; 
+            }
+
+            if (!n || input < 1 || input > Program.player.ownedItems.Count)
+            {
+                MainUI.WriteInMainArea("\nInvalid selection. Please type a number from the list.");
+                Thread.Sleep(1000);
+                continue;
+            }
+
+            Item selectedItem = Program.player.ownedItems[input - 1];
+            int quantity = 1;
+
+            // If stackable, ask how many
+            if (selectedItem.type != ItemType.equipment)
+            {
+                MainUI.WriteInMainArea($"How many {selectedItem.name} would you like to deposit? (Max: {selectedItem.amount})");
+                string quantityString = Console.ReadLine() ?? "";
+                var q = int.TryParse(quantityString, out quantity);
+
+                if (!q || quantity < 1 || quantity > selectedItem.amount)
+                {
+                    MainUI.WriteInMainArea("\nInvalid amount.");
+                    Thread.Sleep(1000);
+                    continue;
                 }
             }
-        }
-        else if (input == 1)
-        {
 
-            MainUI.WriteInMainArea($"how much would you like to grab? theres {bankMoney} stored");
-            int.TryParse(Console.ReadLine(), out int moneyAmount);
-            if (moneyAmount == null || moneyAmount > bankMoney || moneyAmount < 0)
+            // Check if item is equipped
+            int equippedSlot = Program.player.equippedItems.IndexOf(selectedItem);
+            if (equippedSlot >= 0)
+            {
+                MainUI.WriteInMainArea($"\nThis item is equipped. Unequipping {selectedItem.name}...");
+                inventory.UnequipItem(equippedSlot);
+                Thread.Sleep(1000);
+            }
+
+            Item itemToBank = new Item(selectedItem); // Use copy constructor
+            itemToBank.amount = quantity;
+
+            // Add to bank list
+            Program.player.bankItems.Add((Program.player.currentLocation, itemToBank));
+
+            // Handle Stats & Effects
+            if (selectedItem.type == ItemType.Artifact)
+            {
+                inventory.RemoveEffects(selectedItem, null); // Remove stats for the whole stack
+            }
+
+            // Handle Weight & Speed 
+            float totalWeightRemoved = selectedItem.weight * quantity;
+
+            Program.player.speed += (int)MathF.Floor(MathF.Pow(Program.player.inventorySpeedModifier * scale, exponent));
+            Program.player.inventorySpeedModifier -= (selectedItem.weight - 20) * quantity;
+            Program.player.speed -= (int)MathF.Floor(MathF.Pow(Program.player.inventorySpeedModifier * scale, exponent));
+            Program.player.inventoryWeight -= totalWeightRemoved;
+
+
+            // Handle Item List
+            if (selectedItem.type == ItemType.equipment || selectedItem.amount <= quantity)
+            {
+                // Remove the item completely
+                Program.player.ownedItems.Remove(selectedItem);
+            }
+            else
+            {
+                // Just subtract the amount
+                selectedItem.amount -= quantity;
+            }
+
+            // Re-apply artifact stats if some items are left
+            if (selectedItem.type == ItemType.Artifact && Program.player.ownedItems.Contains(selectedItem))
+            {
+                inventory.ApplyEffects(selectedItem, null); 
+            }
+
+
+            MainUI.WriteInMainArea($"\nDeposited {quantity}x {itemToBank.name}.");
+            Thread.Sleep(1000);
+            // Loop continues to show the deposit inventory again
+        }
+    }
+
+    private void WithdrawItems()
+    {
+        Inventory inventory = new Inventory(Program.player);
+
+        while (true)
+        {
+            MainUI.ClearMainArea();
+            MainUI.WriteInMainArea("Select an item to withdraw:");
+            MainUI.WriteInMainArea("");
+            MainUI.WriteInMainArea("nr     Name                      Qty   Location");
+            MainUI.WriteInMainArea("--------------------------------------------------");
+
+            if (Program.player.bankItems.Count == 0)
+            {
+                MainUI.WriteInMainArea("Your bank is empty.");
+                MainUI.WriteInMainArea("");
+                MainUI.WriteInMainArea("0. Back");
+            }
+            else
+            {
+                for (int i = 0; i < Program.player.bankItems.Count; i++)
+                {
+                    var (location, item) = Program.player.bankItems[i];
+                    MainUI.WriteInMainArea($"{i + 1,-7}{item.name,-25} {item.amount,-5} {location}");
+                }
+                MainUI.WriteInMainArea("");
+                MainUI.WriteInMainArea("0. Back");
+            }
+
+            string inputString = Console.ReadLine() ?? "";
+            var n = int.TryParse(inputString, out int input);
+
+            if (input == 0)
+            {
+                return; 
+            }
+
+            if (!n || input < 1 || input > Program.player.bankItems.Count)
+            {
+                MainUI.WriteInMainArea("\nInvalid selection. Please type a number from the list.");
+                Thread.Sleep(1000);
+                continue;
+            }
+
+            var (loc, selectedItem) = Program.player.bankItems[input - 1];
+            int quantity = 1;
+
+            // If stackable, ask how many
+            if (selectedItem.type != ItemType.equipment)
             {
                 MainUI.ClearMainArea();
-                MainUI.WriteInMainArea("sweetie you gotta type a number that we can use\n ");
-                DoSubLocation();
-                return;
-            }
-            Program.player.money += moneyAmount;
-            bankMoney -= moneyAmount;
+                MainUI.WriteInMainArea($"How many {selectedItem.name} would you like to withdraw? (Max: {selectedItem.amount})");
+                string quantityString = Console.ReadLine() ?? "";
+                var q = int.TryParse(quantityString, out quantity);
 
+                if (!q || quantity < 1 || quantity > selectedItem.amount)
+                {
+                    MainUI.WriteInMainArea("\nInvalid amount.");
+                    Thread.Sleep(1000);
+                    continue;
+                }
+            }
+
+
+            inventory.AddItem(selectedItem, quantity);
+
+            // --- Remove from bank ---
+            if (selectedItem.type == ItemType.equipment || selectedItem.amount == quantity)
+            {
+                // Remove the item completely from bank
+                Program.player.bankItems.RemoveAt(input - 1);
+            }
+            else
+            {
+                // Just subtract the amount
+                selectedItem.amount -= quantity;
+                
+            }
+
+            MainUI.WriteInMainArea($"\nWithdrew {quantity}x {selectedItem.name}.");
+            Thread.Sleep(1000);
         }
-        else
+    }
+
+
+    private void DepositMoney()
+    {
+        MainUI.ClearMainArea();
+        MainUI.WriteInMainArea("Deposit Money");
+        MainUI.WriteInMainArea($"Current Rai: {Program.player.money}");
+        MainUI.WriteInMainArea($"Bank Account: {Program.player.bankMoney}");
+        MainUI.WriteInMainArea("");
+        MainUI.WriteInMainArea("How much would you like to deposit? (Type 0 to cancel)");
+
+        string inputString = Console.ReadLine() ?? "";
+        var n = int.TryParse(inputString, out int amount);
+
+        if (!n || amount < 0)
         {
-            bankItems.Remove(Program.player.ownedItems[input]);
-            inventory.AddItem(Program.player.ownedItems[input], Program.player.ownedItems[input].amount);
+            MainUI.WriteInMainArea("\nInvalid amount.");
+            Thread.Sleep(1000);
+            return;
         }
-        Program.SavePlayer();
-        Program.MainMenu();
+
+        if (amount == 0)
+        {
+            return;
+        }
+
+        if (amount > Program.player.money)
+        {
+            MainUI.WriteInMainArea("\nYou don't have that much Rai.");
+            Thread.Sleep(1000);
+            return;
+        }
+
+        Program.player.money -= amount;
+        Program.player.bankMoney += amount;
+
+        MainUI.WriteInMainArea($"\nDeposited {amount} Rai.");
+        MainUI.WriteInMainArea($"New balance: {Program.player.bankMoney} Rai.");
+        Thread.Sleep(1500);
+    }
+
+    private void WithdrawMoney()
+    {
+        MainUI.ClearMainArea();
+        MainUI.WriteInMainArea("Withdraw Money");
+        MainUI.WriteInMainArea($"Current Rai: {Program.player.money}");
+        MainUI.WriteInMainArea($"Bank Account: {Program.player.bankMoney}");
+        MainUI.WriteInMainArea("");
+        MainUI.WriteInMainArea("How much would you like to withdraw? (Type 0 to cancel)");
+
+        string inputString = Console.ReadLine() ?? "";
+        var n = int.TryParse(inputString, out int amount);
+
+        if (!n || amount < 0)
+        {
+            MainUI.WriteInMainArea("\nInvalid amount.");
+            Thread.Sleep(1000);
+            return;
+        }
+
+        if (amount == 0)
+        {
+            return;
+        }
+
+        if (amount > Program.player.bankMoney)
+        {
+            MainUI.WriteInMainArea("\nYou don't have that much Rai in your account.");
+            Thread.Sleep(1000);
+            return;
+        }
+
+        Program.player.bankMoney -= amount;
+        Program.player.money += amount;
+
+        MainUI.WriteInMainArea($"\nWithdrew {amount} Rai.");
+        MainUI.WriteInMainArea($"New balance: {Program.player.bankMoney} Rai.");
+        Thread.Sleep(1500);
     }
     #endregion
 

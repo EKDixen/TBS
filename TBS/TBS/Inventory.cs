@@ -170,7 +170,7 @@ public class Inventory
             else if (ik == 1)
             {
                 MainUI.WriteInMainArea($"\nyou drop the {selectedItem.name}");
-                DropItem(selectedItem);
+                DropItem(selectedItem,1);
             }
             else if (ik == 2 && selectedItem.type == ItemType.equipment)
             {
@@ -227,7 +227,7 @@ public class Inventory
         {
             if (existingItem.type == ItemType.Artifact)
             {
-                RemoveEffects(existingItem); 
+                RemoveEffects(existingItem,tAmount); 
             }
 
             player.inventoryWeight += existingItem.weight * tAmount;
@@ -242,8 +242,10 @@ public class Inventory
                                         
 
             player.speed += (int)MathF.Floor(MathF.Pow(player.inventorySpeedModifier * scale, exponent));
-            player.inventorySpeedModifier += (existingItem.weight-20) * tAmount;
+            player.inventorySpeedModifier += (existingItem.weight) * tAmount;
             player.speed -= (int)MathF.Floor(MathF.Pow(player.inventorySpeedModifier * scale, exponent));
+
+
         }
         else
         {
@@ -261,18 +263,18 @@ public class Inventory
                                          
 
             player.speed += (int)MathF.Floor(MathF.Pow(player.inventorySpeedModifier * scale, exponent));
-            player.inventorySpeedModifier += newItem.weight * tAmount;
+            player.inventorySpeedModifier += (newItem.weight) * tAmount;
             player.speed -= (int)MathF.Floor(MathF.Pow(player.inventorySpeedModifier * scale, exponent));
         }
     }
 
-    public void DropItem(Item Titem)
+    public void DropItem(Item Titem, int quantity)
     {
         player.speed += (int)MathF.Floor(MathF.Pow(player.inventorySpeedModifier * scale, exponent));
-        player.inventorySpeedModifier -= Titem.weight;
+        player.inventorySpeedModifier -= (Titem.weight)*quantity;
         player.speed -= (int)MathF.Floor(MathF.Pow(player.inventorySpeedModifier * scale, exponent));
 
-        player.inventoryWeight -= Titem.weight;
+        player.inventoryWeight -= Titem.weight * quantity;
 
         int equippedSlot = player.equippedItems.IndexOf(Titem);
         if (equippedSlot >= 0)
@@ -282,7 +284,7 @@ public class Inventory
 
         if (Titem.type == ItemType.Artifact)
         {
-            RemoveEffects(Titem);
+            RemoveEffects(Titem,quantity);
         }
 
         if (Titem.amount <= 1)
@@ -291,7 +293,7 @@ public class Inventory
         }
         else
         {
-            Titem.amount--;
+            Titem.amount -= quantity;
 
             if (Titem.type == ItemType.Artifact)
             {
@@ -324,8 +326,12 @@ public class Inventory
             }
         }
     }
-    public void RemoveEffects(Item Titem)
+    public void RemoveEffects(Item Titem, int? amount)
     {
+        if (amount == null)
+        {
+            amount = Titem.amount;
+        }
         foreach (var stat in Titem.stats)
         {
             switch (stat.Key)
@@ -350,7 +356,7 @@ public class Inventory
         if (Titem.duration == 0)
         {
             ApplyEffects(Titem,1);
-            DropItem(Titem);
+            DropItem(Titem,1);
         }
         else
         {
@@ -365,7 +371,7 @@ public class Inventory
         {
             MainUI.WriteInMainArea($"{itemToUnequip.name} unequipped from Slot {slot}.");
 
-            RemoveEffects(itemToUnequip);
+            RemoveEffects(itemToUnequip,1);
             player.equippedItems[slot] = null;
         }
     }

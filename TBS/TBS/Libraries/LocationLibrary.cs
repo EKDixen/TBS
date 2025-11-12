@@ -21,6 +21,10 @@ public static class LocationLibrary
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
 
+        },
+        new SubLocation("Bank", SubLocationType.bank)
+        {
+
         }
     },
     new Dictionary<Encounter, int>
@@ -105,6 +109,10 @@ public static class LocationLibrary
         new SubLocation("pond", SubLocationType.pond)
         {
 
+        },
+        new SubLocation("Bank", SubLocationType.bank)
+        {
+
         }
     },
     new Dictionary<Encounter, int>
@@ -123,6 +131,10 @@ public static class LocationLibrary
         {
         },
         new SubLocation("Wilderness",SubLocationType.wilderness)
+        {
+
+        },
+        new SubLocation("Bank", SubLocationType.bank)
         {
 
         }
