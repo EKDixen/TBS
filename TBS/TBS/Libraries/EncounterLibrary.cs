@@ -15,7 +15,7 @@ public static class EncounterLibrary
         "You found some Rai on the ground!",           // Description shown to player
         null,                                            // Enemies list - null for non-combat encounters
         (player) => {                                    // OnEncounter action - custom logic executed when encounter triggers
-            int coins = rng.Next(5, 20);                 // Generate random gold amount between 5-20
+            int coins = rng.Next(1, 4);                 // Generate random gold amount between 1-2
             player.money += coins;                       // Add gold to player's money
             MainUI.WriteInMainArea($"You gained {coins} RAI!");  // Display result to player
             Program.SavePlayer();                        // Save player state to persist changes
@@ -29,7 +29,7 @@ public static class EncounterLibrary
         "You discover a hidden treasure chest!",
         null,
         (player) => {
-            int coins = rng.Next(20, 50);
+            int coins = rng.Next(3, 8);
             int exp = rng.Next(5, 15);
             player.money += coins;
             player.exp += exp;
@@ -48,7 +48,7 @@ public static class EncounterLibrary
         "You realize your Rai are missing! A pickpocket must have struck!",
         null,
         (player) => {
-            int lostCoins = Math.Min(rng.Next(5, 15), player.money);
+            int lostCoins = Math.Min(rng.Next(2, 6), player.money);
             player.money -= lostCoins;
             MainUI.WriteInMainArea($"You lost {lostCoins} Rai!");
             Program.SavePlayer();

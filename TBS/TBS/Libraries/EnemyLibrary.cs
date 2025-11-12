@@ -13,7 +13,7 @@ public static class EnemyLibrary
         }
     };
 
-    public static Enemy VampireSpawn = new Enemy("Vampire Spawn", 5, 25, 50, 12, 12, 5, 10, 10, 10, 160, 5, 5, 25)
+    public static Enemy VampireSpawn = new Enemy("Vampire Spawn", 5, 25, 40, 12, 12, 0, 10, 10, 10, 160, 5, 5, 25)
     {
         attacks = new List<Attack>
         {
@@ -29,7 +29,7 @@ public static class EnemyLibrary
             AttackLibrary.ThrowHands
         }
     };
-    public static Enemy SkeletonWarrior = new Enemy("Skeleton Warrior", 10, 50, 50, 30, 5, 1, 1, 0, 20, 50, 10, 0, 10)
+    public static Enemy SkeletonWarrior = new Enemy("Skeleton Warrior", 10, 50, 50, 30, 5, 1, 1, 0, 20, 50, 100, 300, 10)
     {
         attacks = new List<Attack>
         {
@@ -37,7 +37,7 @@ public static class EnemyLibrary
         }
     };
 
-    public static Enemy GhostlyApparition = new Enemy("Ghostly Apparition", 10, 70, 20, 20, 8, 0, 20, 10, 5, 0, 20, 0, 15)
+    public static Enemy GhostlyApparition = new Enemy("Ghostly Apparition", 10, 70, 25, 20, 8, 0, 20, 10, 5, 0, 200, 0, 15)
     {
         attacks = new List<Attack>
         {
