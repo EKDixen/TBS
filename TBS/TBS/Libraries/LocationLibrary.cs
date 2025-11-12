@@ -15,7 +15,8 @@ public static class LocationLibrary
                 (ItemLibrary.smallHealthPotion),
                 (ItemLibrary.bigHealthPotion),
                 (ItemLibrary.baseballCap),
-                (ItemLibrary.sandals)
+                (ItemLibrary.sandals),
+                (ItemLibrary.speedPotion)
             }
         },
         new SubLocation("Wilderness",SubLocationType.wilderness)

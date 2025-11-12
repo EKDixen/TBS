@@ -31,6 +31,7 @@ public class Item
 
     // Flexible stats
     public Dictionary<string, int> stats { get; set; } = new();
+    public List<AttackEffect> effects;
 
     public string details { get; set; }
 

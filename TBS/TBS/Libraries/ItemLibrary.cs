@@ -142,6 +142,15 @@
         details = "advanced health potion, drink it and you regain\n a major amount of health.. great for staying alive\n+50 Health"
     };
 
+    public static Item speedPotion = new Item("Speed Potion", "+5 speed", 4, 3, ItemType.consumable)
+    {
+        duration = 2,
+        effects = new List<AttackEffect>()
+        {
+            new AttackEffect("speed", 10, 2, "self")
+        },
+        details = "advanced health potion, drink it and you regain\n a major amount of health.. great for staying alive\n+50 Health"
+    };
 
 }
 

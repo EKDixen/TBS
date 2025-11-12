@@ -483,7 +483,7 @@ public class CombatManager
             {
                 switch (stat.Key)
                 {
-                    case "HP":
+                    case "heal":
                         int before = player.HP;
                         player.HP = Math.Min(player.maxHP, player.HP + stat.Value);
                         int healed = player.HP - before;
