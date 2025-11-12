@@ -337,6 +337,13 @@ public class CombatManager
 
             if (actor == player)
             {
+                Thread.Sleep(300);
+                ui.RenderCombatScreen(player, combatants);
+                ui.WriteInMainArea(12, "");
+                ui.WriteInMainArea(13, "Press Enter to continue...");
+                ui.SetCursorInMainArea(22);
+                Console.ReadLine();
+
                 var moves = player.equippedAttacks.Where(a => a != null).ToList();
                 var consumables = player.ownedItems.Where(i => i.type == ItemType.consumable && i.amount > 0).ToList();
                 
@@ -462,12 +469,7 @@ public class CombatManager
             }
             actor.ActionGauge -= ActionThreshold;
             if (actor.ActionGauge < 0) actor.ActionGauge = 0;
-            Thread.Sleep(300);
-            ui.RenderCombatScreen(player, combatants);
-            ui.WriteInMainArea(12, "");
-            ui.WriteInMainArea(13, "Press Enter to continue...");
-            ui.SetCursorInMainArea(22);
-            Console.ReadLine();
+
         }
 
         private void UseConsumableInCombat(Player player, Item item)
