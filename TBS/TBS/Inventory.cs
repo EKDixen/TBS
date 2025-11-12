@@ -144,7 +144,7 @@ public class Inventory
             MainUI.WriteInMainArea("0 : details");
             MainUI.WriteInMainArea("1 : drop");
             if (selectedItem.type == ItemType.equipment) MainUI.WriteInMainArea("2 : Equip/Unequip");
-            if (selectedItem.type == ItemType.consumable) MainUI.WriteInMainArea("2 : consume");
+            if (selectedItem.type == ItemType.consumable && selectedItem.duration == 0) MainUI.WriteInMainArea("2 : consume");
             MainUI.WriteInMainArea("");
             MainUI.WriteInMainArea("type out the number next to the action you want to perform");
 
