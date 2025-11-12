@@ -9,6 +9,7 @@ namespace Game.Class
         static JourneyManager journeyManager = new JourneyManager();
         static Inventory Inventory;
         static AttackManager atkManager;
+        static Encyclopedia Encyclopedia;
         
         public static Player? pendingDeadPlayerUpdate = null;
         public static Enemy? pendingSpiritEnemy = null;
@@ -146,8 +147,9 @@ namespace Game.Class
             MainUI.WriteInMainArea("Check Moves : 2");
             MainUI.WriteInMainArea($"Do something at {player.currentLocation} : 3");
             MainUI.WriteInMainArea("Check stats : 4");
+            MainUI.WriteInMainArea("Check Encyclopedia : 5");
 
-            if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input) == false || input > 4 || input < 0)
+            if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input) == false || input > 5 || input < 0)
             {
                 MainUI.WriteInMainArea("\nyou gotta type 0, 1, 2, 3, or 4");
                 MainMenu();
@@ -200,6 +202,7 @@ namespace Game.Class
                 }
             }
             else if (input == 4) ShowPlayerStats();
+            else if (input == 5) Encyclopedia.ShowEncyclopedia();
 
             db.SavePlayer(player);
         }
