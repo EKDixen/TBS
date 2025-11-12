@@ -63,14 +63,50 @@ namespace Game.Class
                 }
                 else if (choice == "2")
                 {
-                    Console.WriteLine("Name your character (needed to login)");
-                    string name = Console.ReadLine();
+                    const int MaxUsernameLength = 12;
+                    string name;
+                    bool isValidUsername;
 
-                    if (db.PlayerExists(name))
+                    Console.WriteLine("--- Character Creation ---");
+                    Console.WriteLine($"Username Rules: Max {MaxUsernameLength} characters, no spaces.");
+
+                    do
                     {
-                        Console.WriteLine("A player with that name already exists, please try again");
-                        continue;
-                    }
+                        Console.WriteLine("\nName your character (needed to login):");
+                        name = Console.ReadLine();
+
+                        isValidUsername = (name.Length <= MaxUsernameLength && !name.Contains(' '));
+
+                        if (!isValidUsername)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            if (name.Length > MaxUsernameLength)
+                            {
+                                Console.WriteLine($"Error: Username is too long. Must be {MaxUsernameLength} characters or less.");
+                            }
+                            else if (name.Contains(' '))
+                            {
+                                Console.WriteLine("Error: Username cannot contain spaces.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Error: Invalid username format. Please try again.");
+                            }
+                            Console.ResetColor();
+                        }
+                        else if (db.PlayerExists(name))
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("A player with that name already exists, please try again");
+                            Console.ResetColor();
+                            isValidUsername = false;
+                        }
+
+                    } while (!isValidUsername);
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Username accepted!");
+                    Console.ResetColor();
 
                     PlayerCreator creator = new PlayerCreator();
                     player = creator.PlayerCreatorFunction(db,name);

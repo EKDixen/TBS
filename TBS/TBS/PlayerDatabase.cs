@@ -189,6 +189,7 @@ public class PlayerDatabase
     {
         WaitForServerReady(TimeSpan.FromSeconds(90));
 
+        // Check active players
         var url = $"{_baseUrl}/players/{Uri.EscapeDataString(username)}";
 
         for (int attempt = 0; attempt < 2; attempt++)
@@ -196,7 +197,9 @@ public class PlayerDatabase
             try
             {
                 using var resp = _http.GetAsync(url).GetAwaiter().GetResult();
-                return resp.StatusCode == HttpStatusCode.OK;
+                if (resp.StatusCode == HttpStatusCode.OK)
+                    return true;
+                break;
             }
             catch (Exception ex) when (ex is TaskCanceledException || ex is TimeoutException || ex is HttpRequestException || ex is IOException)
             {
@@ -205,8 +208,42 @@ public class PlayerDatabase
             }
         }
 
-        using var final = _http.GetAsync(url).GetAwaiter().GetResult();
-        return final.StatusCode == HttpStatusCode.OK;
+        try
+        {
+            using var final = _http.GetAsync(url).GetAwaiter().GetResult();
+            if (final.StatusCode == HttpStatusCode.OK)
+                return true;
+        }
+        catch { }
+
+        // Check dead players
+        var deadUrl = $"{_baseUrl}/dead-players/{Uri.EscapeDataString(username)}";
+
+        for (int attempt = 0; attempt < 2; attempt++)
+        {
+            try
+            {
+                using var resp = _http.GetAsync(deadUrl).GetAwaiter().GetResult();
+                if (resp.StatusCode == HttpStatusCode.OK)
+                    return true;
+                break;
+            }
+            catch (Exception ex) when (ex is TaskCanceledException || ex is TimeoutException || ex is HttpRequestException || ex is IOException)
+            {
+                Console.WriteLine("Waiting on server...");
+                WaitForServerReady(TimeSpan.FromSeconds(90));
+            }
+        }
+
+        try
+        {
+            using var finalDead = _http.GetAsync(deadUrl).GetAwaiter().GetResult();
+            return finalDead.StatusCode == HttpStatusCode.OK;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     public void MarkPlayerAsDead(Player p)

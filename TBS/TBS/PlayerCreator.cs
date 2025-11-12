@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class PlayerCreator
 {
+    private const int MaxUsernameLength = 12;
     private const int MaxPasswordLength = 12;
 
     public List<Player> players = new List<Player>();
