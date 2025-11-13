@@ -114,7 +114,7 @@ public class CombatManager
             ui.WriteInMainArea(3, "+----------------------------------------+");
             ui.WriteInMainArea(4, $"Rewards:");
             ui.WriteInMainArea(5, $"  +{totalExp} EXP");
-            ui.WriteInMainArea(6, $"  +{totalMoney} Gold");
+            ui.WriteInMainArea(6, $"  +{totalMoney} Rai");
             ui.WriteInMainArea(8, "Press Enter to continue...");
             
             

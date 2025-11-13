@@ -86,7 +86,7 @@
         equipmentType = EquipmentType.torso,
         details = "a bright yellow construction vest... \ndefends you a bit, but its hard to dodge in \n+2 armor, -40% dodge"
     };
-    public static Item CloakofDusk = new Item("Cloak of Dusk", "+1 speed, +40% dodge", 18,6, ItemType.equipment)
+    public static Item CloakofDusk = new Item("Cloak of Dusk", "+1 speed, +40% dodge", 35,6, ItemType.equipment)
     {
         stats = { ["speed"] = 1, ["dodge"] = 40 },
         equipmentType = EquipmentType.torso,

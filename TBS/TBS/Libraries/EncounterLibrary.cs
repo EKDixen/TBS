@@ -190,7 +190,7 @@ public static class EncounterLibrary
                 if (roll <= 70)
                 {
                     int exp = rng.Next(1, 50);
-                    player.HP += exp;
+                    player.exp += exp;
                     MainUI.WriteInMainArea($"The shrine blesses you! You gained {exp} experience!");
                 }
                 else
@@ -331,7 +331,7 @@ public static class EncounterLibrary
             if (player.HP < player.maxHP * 0.7 && !player.ownedAttacks.Contains(AttackLibrary.FirstAid))
             {
                 {
-                    MainUI.WriteInMainArea("The doctor sees youre wounded and offers to teach you first aid\n");
+                    MainUI.WriteInMainArea("The doctor sees you're wounded and offers to teach you first aid\n");
                     MainUI.WriteInMainArea("Learn the move first aid? (y/n): ");
                     string choice = Console.ReadKey().KeyChar.ToString().ToLower();
                     if (choice == "y" || choice == "yes")
