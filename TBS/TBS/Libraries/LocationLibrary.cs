@@ -61,7 +61,7 @@ public static class LocationLibrary
     new Dictionary<Encounter, int>
     {
         { EncounterLibrary.WildGoblin, 35},
-        { EncounterLibrary.GoblinPack, 15},
+        { EncounterLibrary.GoblinPack, 5},
         { EncounterLibrary.StrangeMushrooms, 30},
         { EncounterLibrary.FoundCoins, 20 },
         { EncounterLibrary.FallenIntoTrap, 20},
@@ -90,7 +90,7 @@ public static class LocationLibrary
         },
         new SubLocation("Casino",SubLocationType.casino)
         {
-
+            casinoMaxBet = 50
         }
     },
     new Dictionary<Encounter, int>
