@@ -4,6 +4,7 @@ namespace Game.Class
 {
     public class Program
     {
+        static bool stopMultibleLoad = false;
         public static Player? player = null;
         public static PlayerDatabase db = new PlayerDatabase();
         static JourneyManager journeyManager = new JourneyManager();
@@ -26,11 +27,11 @@ namespace Game.Class
                 Console.WriteLine("1. Login");
                 Console.WriteLine("2. Create a new character");
 
-                string choice = Console.ReadLine();
+                string choice = Console.ReadKey().KeyChar.ToString();
 
                 if (choice == "1")
                 {
-                    Console.Write("Enter username: ");
+                    Console.Write("\nEnter username: ");
                     string username = Console.ReadLine();
 
                     Console.Write("Enter password: ");
@@ -68,7 +69,7 @@ namespace Game.Class
                     string name;
                     bool isValidUsername;
 
-                    Console.WriteLine("--- Character Creation ---");
+                    Console.WriteLine("\n--- Character Creation ---");
                     Console.WriteLine($"Username Rules: Max {MaxUsernameLength} characters, no spaces.");
 
                     do
@@ -136,7 +137,12 @@ namespace Game.Class
             MainUI.ClearMainArea();
 
             MainUI.RenderMainMenuScreen(player);
-            MainUI.LoopRenderMain();
+            if (!stopMultibleLoad)
+            {
+                MainUI.LoopRenderMain();
+                stopMultibleLoad = true;
+            }
+
 
             db.SavePlayer(player);
 

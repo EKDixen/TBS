@@ -34,7 +34,7 @@ class JourneyManager
                 {
                     float price = (LocationLibrary.Get(Program.player.currentLocation).location - LocationLibrary.Get(Program.player.knownLocationnames[i]).location).Length() * 2 + 
                         LocationLibrary.Get(Program.player.currentLocation).travelPrice + LocationLibrary.Get(Program.player.knownLocationnames[i]).travelPrice;
-                    MainUI.WriteInMainArea($"{LocationLibrary.Get(Program.player.knownLocationnames[i]).name}  :  {(i + 1)}  (price: {price})"); 
+                    MainUI.WriteInMainArea($"{LocationLibrary.Get(Program.player.knownLocationnames[i]).name}  :  {(i + 1)}  (price: {(int)Math.Floor(price)})"); 
                     
                 }
                 else MainUI.WriteInMainArea(LocationLibrary.Get(Program.player.knownLocationnames[i]).name + " : " + (i + 1) + " (current location)");
@@ -199,7 +199,9 @@ class JourneyManager
         }
         else
         {
-            MainUI.WriteInMainArea("\nThere are no unexplored locations adjacent to your current position.");
+            MainUI.WriteInMainArea("\nThere are no unexplored locations adjacent to your current location.");
+            MainUI.WriteInMainArea("\nPress Enter to continue...");
+            Console.ReadLine();
         }
         //Minimap.DisplayMinimap();
         Program.MainMenu(); //remove when encounters are done

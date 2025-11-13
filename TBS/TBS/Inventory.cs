@@ -131,7 +131,7 @@ public class Inventory
                 MainUI.ClearMainArea();
                 MainUI.WriteInMainArea("sweetie you gotta type a usable number *from this page* ");
                 MainUI.WriteInMainArea("");
-                MainUI.WriteInMainArea("-press Enter to continue-");
+                MainUI.WriteInMainArea("Press Enter to continue...");
                 Console.ReadLine();
                 continue; 
             }
@@ -289,7 +289,7 @@ public class Inventory
         player.speed += (int)MathF.Floor(MathF.Pow(MathF.Max(player.inventorySpeedModifier - 20, 0) * scale, exponent));
 
         // update the modifier based on new weight
-        player.inventorySpeedModifier += Titem.weight * quantity;
+        player.inventorySpeedModifier -= Titem.weight * quantity;
 
         // apply the new effect only if weight exceeds 20
         float excessWeight = MathF.Max(player.inventorySpeedModifier - 20, 0);
@@ -325,48 +325,58 @@ public class Inventory
     }
     public void ApplyEffects(Item Titem, int? amount)
     {
+        int namount;
         if (amount == null)
         {
-            amount = Titem.amount;
+            namount = Titem.amount;
+        }
+        else
+        {
+            namount = amount ?? 0;
         }
         foreach (var stat in Titem.stats)
         {
             switch (stat.Key)
             {
-                case "heal":{ int delta = Titem.stats["heal"] * Titem.amount;player.HP += delta;  if (player.HP > player.maxHP) player.HP = player.maxHP;  break;}
-                case "damage": player.HP -= Titem.stats["damage"] * Titem.amount; break;
-                case "maxHP": player.maxHP += Titem.stats["maxHP"] * Titem.amount; break;
-                case "speed":player.speed += Titem.stats["speed"] * Titem.amount; break;
-                case "armor":player.armor += Titem.stats["armor"] * Titem.amount; break;
-                case "dodge":player.dodge += Titem.stats["dodge"] * Titem.amount; break;
-                case "dodgeNegation":player.dodgeNegation += Titem.stats["dodgeNegation"] * Titem.amount;break;
-                case "critChance":player.critChance += Titem.stats["critChance"] * Titem.amount; break;
-                case "critDamage":player.critDamage += Titem.stats["critDamage"] * Titem.amount; break;
-                case "stun":player.stun += Titem.stats["stun"] * Titem.amount; break;
-                case "stunNegation":player.stunNegation += Titem.stats["stunNegation"] * Titem.amount; break;
+                case "heal":{ int delta = Titem.stats["heal"] * namount;player.HP += delta;  if (player.HP > player.maxHP) player.HP = player.maxHP;  break;}
+                case "damage": player.HP -= Titem.stats["damage"] * namount; break;
+                case "maxHP": player.maxHP += Titem.stats["maxHP"] * namount; break;
+                case "speed":player.speed += Titem.stats["speed"] * namount; break;
+                case "armor":player.armor += Titem.stats["armor"] * namount; break;
+                case "dodge":player.dodge += Titem.stats["dodge"] * namount; break;
+                case "dodgeNegation":player.dodgeNegation += Titem.stats["dodgeNegation"] * namount;break;
+                case "critChance":player.critChance += Titem.stats["critChance"] * namount; break;
+                case "critDamage":player.critDamage += Titem.stats["critDamage"] * namount; break;
+                case "stun":player.stun += Titem.stats["stun"] * namount; break;
+                case "stunNegation":player.stunNegation += Titem.stats["stunNegation"] * namount; break;
 
             }
         }
     }
     public void RemoveEffects(Item Titem, int? amount)
     {
+        int namount;
         if (amount == null)
         {
-            amount = Titem.amount;
+            namount = Titem.amount;
+        }
+        else
+        {
+            namount = amount ?? 0;
         }
         foreach (var stat in Titem.stats)
         {
             switch (stat.Key)
             {
-                case "maxHP": player.maxHP -= Titem.stats["maxHP"] * Titem.amount; break;
-                case "speed": player.speed -= Titem.stats["speed"] * Titem.amount; break;
-                case "armor": player.armor -= Titem.stats["armor"] * Titem.amount; break;
-                case "dodge": player.dodge -= Titem.stats["dodge"] * Titem.amount; break;
-                case "dodgeNegation": player.dodgeNegation -= Titem.stats["dodgeNegation"] * Titem.amount; break;
-                case "critChance": player.critChance -= Titem.stats["critChance"] * Titem.amount; break;
-                case "critDamage": player.critDamage -= Titem.stats["critDamage"] * Titem.amount; break;
-                case "stun": player.stun -= Titem.stats["stun"] * Titem.amount; break;
-                case "stunNegation": player.stunNegation -= Titem.stats["stunNegation"] * Titem.amount; break;
+                case "maxHP": player.maxHP -= Titem.stats["maxHP"] * namount; break;
+                case "speed": player.speed -= Titem.stats["speed"] * namount; break;
+                case "armor": player.armor -= Titem.stats["armor"] * namount; break;
+                case "dodge": player.dodge -= Titem.stats["dodge"] * namount; break;
+                case "dodgeNegation": player.dodgeNegation -= Titem.stats["dodgeNegation"] * namount; break;
+                case "critChance": player.critChance -= Titem.stats["critChance"] * namount; break;
+                case "critDamage": player.critDamage -= Titem.stats["critDamage"] * namount; break;
+                case "stun": player.stun -= Titem.stats["stun"] * namount; break;
+                case "stunNegation": player.stunNegation -= Titem.stats["stunNegation"] * namount; break;
 
             }
         }
