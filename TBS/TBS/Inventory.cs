@@ -255,6 +255,26 @@ public class Inventory
 
 
         }
+        else if(templateItem.type == ItemType.equipment)
+        {
+            for (int i = 0; i < tAmount; i++)
+            {
+                Item newItem = new Item(templateItem); // Use the copy constructor
+
+                player.ownedItems.Add(newItem);
+                player.inventoryWeight += newItem.weight;
+
+                // remove the old speed modifier effect
+                player.speed += (int)MathF.Floor(MathF.Pow(MathF.Max(player.inventorySpeedModifier - 20, 0) * scale, exponent));
+
+                // update the modifier based on new weight
+                player.inventorySpeedModifier += newItem.weight;
+
+                // apply the new effect only if weight exceeds 20
+                float excessWeight = MathF.Max(player.inventorySpeedModifier - 20, 0);
+                player.speed -= (int)MathF.Floor(MathF.Pow(excessWeight * scale, exponent));
+            }
+        }
         else
         {
             Item newItem = new Item(templateItem); // Use the copy constructor
@@ -266,7 +286,7 @@ public class Inventory
 
             if (newItem.type == ItemType.Artifact)
             {
-                ApplyEffects(newItem, null); 
+                ApplyEffects(newItem, null);
             }
 
 
