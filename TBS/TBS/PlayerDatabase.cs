@@ -113,7 +113,7 @@ public class PlayerDatabase
         catch {}
     }
 
-    public void SavePlayer(Player p)
+    public async Task SavePlayer(Player p)
     {
         WaitForServerReady(TimeSpan.FromSeconds(90));
 

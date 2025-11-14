@@ -229,7 +229,7 @@ namespace Game.Class
             MainMenu();
         }
 
-        public static void SavePlayer()
+        public static async Task SavePlayer()
         {
             db.SavePlayer(player);
         }
