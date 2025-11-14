@@ -300,9 +300,13 @@ namespace Game.Class
             filled = Math.Max(0, Math.Min(filled, barWidth));
 
             Console.Write("HP: ");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.Write(new string('█', filled));
+            Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.Write(new string('░', barWidth - filled));
+            Console.ResetColor();
             Console.Write($" {Math.Max(0, current)}/{max}");
+
         }
 
         private void DrawBox(int x, int y, int w, int h, string? title = null)
