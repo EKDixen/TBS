@@ -75,7 +75,8 @@ public class Inventory
 
             MainUI.WriteInMainArea("");
             MainUI.WriteInMainArea($"you have {player.money} Rai\n");
-            MainUI.WriteInMainArea($"your items weight {player.inventoryWeight} therefore your speed is being reduced by {(int)MathF.Floor(MathF.Pow(player.inventorySpeedModifier * scale, exponent))} \n");
+            float excessWeight = MathF.Max(player.inventorySpeedModifier - 20, 0);
+            MainUI.WriteInMainArea($"your items weight {player.inventoryWeight} therefore your speed is being reduced by {(int)MathF.Floor(MathF.Pow(excessWeight * scale, exponent))} \n");
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
