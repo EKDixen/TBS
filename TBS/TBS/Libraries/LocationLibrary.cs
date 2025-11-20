@@ -144,8 +144,9 @@ public static class LocationLibrary
     new Dictionary<Encounter, int>
     {
         { EncounterLibrary.ForestSpiderNest, 30},
-        { EncounterLibrary.DireWolfHunt, 25},
-        { EncounterLibrary.DireWolfPack, 15},
+        { EncounterLibrary.DireWolfHunt, 15},
+        { EncounterLibrary.Wolfsensei, 15},
+        { EncounterLibrary.DireWolfPack, 10},
         { EncounterLibrary.StrangeMushrooms, 20},
         { EncounterLibrary.FoundTreasure, 15}
     }, "Greenwood Territories");
