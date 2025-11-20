@@ -178,7 +178,7 @@ public class SubLocation
             MainUI.WriteInMainArea($"\nyou've picked {shopItems[input].name}");
             MainUI.WriteInMainArea($"{shopItems[input].details}\n");
 
-            MainUI.WriteInMainArea($"-press Enter to continue");
+            MainUI.WriteInMainArea($"Press Enter to continue...");
             Console.ReadLine();
         }
         else if (ik == 1)
@@ -1146,7 +1146,7 @@ public class SubLocation
                     {
                         MainUI.WriteInMainArea("Oh no... it got away.");
 
-                        MainUI.WriteInMainArea("-press Enter to continue");
+                        MainUI.WriteInMainArea("Press Enter to continue... ");
                         Console.ReadLine();
                         fishing = false;
                         break;
@@ -1190,7 +1190,7 @@ public class SubLocation
                 Inventory inv= new Inventory(Program.player);
                 inv.AddItem(ItemLibrary.fish,1);
 
-                MainUI.WriteInMainArea("-press Enter to continue");
+                MainUI.WriteInMainArea("Press Enter to continue...");
                 Console.ReadLine();
                 fishing = false;
                 break;

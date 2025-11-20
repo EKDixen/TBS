@@ -13,6 +13,7 @@ public class Inventory
 
     const float exponent = 1.5f;
     const float scale = 0.1f;
+    const int freeweight = 10;
 
     public Inventory(Player p)
     {
@@ -58,8 +59,8 @@ public class Inventory
             MainUI.ClearMainArea();
 
             
-            float excessWeight = MathF.Max(player.inventorySpeedModifier - 20, 0);
-            MainUI.WriteInMainArea($"your items weight {player.inventoryWeight} therefore your speed is being reduced by {(int)MathF.Floor(MathF.Pow(excessWeight * scale, exponent))} \n");
+            float excessWeight = MathF.Max(player.inventorySpeedModifier - freeweight, 0);
+            MainUI.WriteInMainArea($"your items weigh {player.inventoryWeight} therefore your speed is being reduced by {(int)MathF.Floor(MathF.Pow(excessWeight * scale, exponent))} \n");
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -227,13 +228,13 @@ public class Inventory
 
 
             // remove the old speed modifier effect
-            player.speed += (int)MathF.Floor(MathF.Pow(MathF.Max(player.inventorySpeedModifier - 20, 0) * scale, exponent));
+            player.speed += (int)MathF.Floor(MathF.Pow(MathF.Max(player.inventorySpeedModifier - freeweight, 0) * scale, exponent));
 
             // update the modifier based on new weight
             player.inventorySpeedModifier += existingItem.weight * tAmount;
 
-            // apply the new effect only if weight exceeds 20
-            float excessWeight = MathF.Max(player.inventorySpeedModifier - 20, 0);
+            // apply the new effect only if weight exceeds freeweight int
+            float excessWeight = MathF.Max(player.inventorySpeedModifier - freeweight, 0);
             player.speed -= (int)MathF.Floor(MathF.Pow(excessWeight * scale, exponent));
 
 
@@ -249,13 +250,13 @@ public class Inventory
                 player.inventoryWeight += newItem.weight;
 
                 // remove the old speed modifier effect
-                player.speed += (int)MathF.Floor(MathF.Pow(MathF.Max(player.inventorySpeedModifier - 20, 0) * scale, exponent));
+                player.speed += (int)MathF.Floor(MathF.Pow(MathF.Max(player.inventorySpeedModifier - freeweight, 0) * scale, exponent));
 
                 // update the modifier based on new weight
                 player.inventorySpeedModifier += newItem.weight;
 
-                // apply the new effect only if weight exceeds 20
-                float excessWeight = MathF.Max(player.inventorySpeedModifier - 20, 0);
+                // apply the new effect only if weight exceeds freeweight int
+                float excessWeight = MathF.Max(player.inventorySpeedModifier - freeweight, 0);
                 player.speed -= (int)MathF.Floor(MathF.Pow(excessWeight * scale, exponent));
             }
         }
@@ -275,13 +276,13 @@ public class Inventory
 
 
             // remove the old speed modifier effect
-            player.speed += (int)MathF.Floor(MathF.Pow(MathF.Max(player.inventorySpeedModifier - 20, 0) * scale, exponent));
+            player.speed += (int)MathF.Floor(MathF.Pow(MathF.Max(player.inventorySpeedModifier - freeweight, 0) * scale, exponent));
 
             // update the modifier based on new weight
             player.inventorySpeedModifier += newItem.weight * tAmount;
 
-            // apply the new effect only if weight exceeds 20
-            float excessWeight = MathF.Max(player.inventorySpeedModifier - 20, 0);
+            // apply the new effect only if weight exceeds freeweight int
+            float excessWeight = MathF.Max(player.inventorySpeedModifier - freeweight, 0);
             player.speed -= (int)MathF.Floor(MathF.Pow(excessWeight * scale, exponent));
 
         }
@@ -290,13 +291,13 @@ public class Inventory
     public void DropItem(Item Titem, int quantity)
     {
         // remove the old speed modifier effect
-        player.speed += (int)MathF.Floor(MathF.Pow(MathF.Max(player.inventorySpeedModifier - 20, 0) * scale, exponent));
+        player.speed += (int)MathF.Floor(MathF.Pow(MathF.Max(player.inventorySpeedModifier - freeweight, 0) * scale, exponent));
 
         // update the modifier based on new weight
         player.inventorySpeedModifier -= Titem.weight * quantity;
 
-        // apply the new effect only if weight exceeds 20
-        float excessWeight = MathF.Max(player.inventorySpeedModifier - 20, 0);
+        // apply the new effect only if weight exceeds freeweight int
+        float excessWeight = MathF.Max(player.inventorySpeedModifier - freeweight, 0);
         player.speed -= (int)MathF.Floor(MathF.Pow(excessWeight * scale, exponent));
 
 
