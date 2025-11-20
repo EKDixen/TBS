@@ -144,9 +144,8 @@ public static class LocationLibrary
     new Dictionary<Encounter, int>
     {
         { EncounterLibrary.ForestSpiderNest, 30},
-        { EncounterLibrary.DireWolfHunt, 15},
-        { EncounterLibrary.Wolfsensei, 15},
-        { EncounterLibrary.DireWolfPack, 10},
+        { EncounterLibrary.DireWolfHunt, 25},
+        { EncounterLibrary.DireWolfPack, 15},
         { EncounterLibrary.StrangeMushrooms, 20},
         { EncounterLibrary.FoundTreasure, 15}
     }, "Greenwood Territories");
@@ -234,6 +233,9 @@ public static class LocationLibrary
 
     public static Location FrozenWastes = new Location("Frozen Wastes", new System.Numerics.Vector2(-3, 1), 2, new List<SubLocation>
     {
+        new SubLocation("Graveyard", SubLocationType.graveyard)
+        {
+        },
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
 
@@ -249,6 +251,9 @@ public static class LocationLibrary
 
     public static Location TundraMarch = new Location("Tundra March", new System.Numerics.Vector2(-4, 1), 2, new List<SubLocation>
     {
+        new SubLocation("Graveyard", SubLocationType.graveyard)
+        {
+        },
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
 
