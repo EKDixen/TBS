@@ -99,13 +99,13 @@ class JourneyManager
                 if (LocationLibrary.Get(Program.player.currentLocation).location + new System.Numerics.Vector2(-1, 0) == LocationLibrary.locations[i].location
                     && Program.player.knownLocationnames.Contains(LocationLibrary.locations[i].name)) travelLocations.Add(i);
             }
-
+                MainUI.WriteInMainArea("");
             for (int i = 0; i < travelLocations.Count; i++)
             {
-                MainUI.WriteInMainArea($"\n{LocationLibrary.locations[travelLocations[i]].name} : {i+2}");
+                MainUI.WriteInMainArea($"{LocationLibrary.locations[travelLocations[i]].name} : {i+2}");
             }
-            MainUI.WriteInMainArea("\nor explore for a new location : 1");
-            MainUI.WriteInMainArea("or return to main menu : 0");
+            MainUI.WriteInMainArea("explore for a NEW location : 1");
+            MainUI.WriteInMainArea("return to main menu : 0");
 
             int targetDes;
             if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out targetDes))

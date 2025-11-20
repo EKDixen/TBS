@@ -166,7 +166,8 @@ namespace Game.Class
             else if (input == 2) atkManager.ShowMovesMenu();
             else if (input == 3)
             {
-                MainUI.WriteInMainArea("all establisments in your current location");
+                MainUI.ClearMainArea();
+                MainUI.WriteInMainArea("all establisments in your current location\n");
                 int i = 0;
                 foreach (var subLocation in LocationLibrary.Get(player.currentLocation).subLocationsHere)
                 {
@@ -180,8 +181,8 @@ namespace Game.Class
                     MainMenu();
                     return;
                 }
-
-                MainUI.WriteInMainArea("\ntype out the number next to the location you want to go to\n or leave : 0");
+                MainUI.WriteInMainArea("Cancel : 0");
+                MainUI.WriteInMainArea("\ntype out the number next to the location you want to go to\n");
 
                 int targetDes;
                 if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out targetDes))
@@ -218,11 +219,11 @@ namespace Game.Class
             MainUI.ClearMainArea();
 
             MainUI.WriteInMainArea($"\nAccount Name: {player.name} \n\nLevel: {player.level} \nClass: {player.playerClass} \nHP: {player.HP}/{player.maxHP} \nSpeed: {player.speed} \narmor: {player.armor}" +
-                $"\nDodge: {player.dodge} \nDodgeNegation: {player.dodgeNegation} \nCrit-chance: {player.critChance} \nCrit-Damage: {player.critDamage} \nStun: {player.stun}" +
-                $"\nStunNegation: {player.stunNegation}\n\n");
+                $"\nDodge: {player.dodge}% \nDodgeNegation: {player.dodgeNegation}% \nCrit-chance: {player.critChance}% \nCrit-Damage: {player.critDamage}% \nStun: {player.stun}%" +
+                $"\nStunNegation: {player.stunNegation}%\n\n");
 
             Thread.Sleep(400);
-            MainUI.WriteInMainArea("-press Enter to continue");
+            MainUI.WriteInMainArea("Press Enter to continue...");
 
             Console.ReadLine();
 

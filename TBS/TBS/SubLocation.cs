@@ -158,7 +158,7 @@ public class SubLocation
         else if (input == 0) { Program.MainMenu(); return; }
         input--;
         MainUI.ClearMainArea();
-        MainUI.WriteInMainArea($"you've picked {shopItems[input].name}   it costs {shopItems[input].value}\nyou have {Program.player.money} Rai\n");
+        MainUI.WriteInMainArea($"you've picked {shopItems[input].name}   it costs {shopItems[input].value}\n");
 
         MainUI.WriteInMainArea("0 : details");
         MainUI.WriteInMainArea("1 : buy");

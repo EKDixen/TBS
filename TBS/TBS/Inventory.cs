@@ -7,7 +7,7 @@ public class Inventory
     private Player player;
 
     private int currentPage = 1; 
-    private int itemsPerPage = 8;  
+    private int itemsPerPage = 9;  
     private string searchTerm = ""; 
     private List<Item> filteredItems; // This will hold the items we are currently viewing
 
@@ -57,24 +57,7 @@ public class Inventory
 
             MainUI.ClearMainArea();
 
-            MainUI.WriteInMainArea("Equiped items:");
-            for (int j = 0; j < player.equippedItems.Capacity; j++)
-            {
-                string place = "";
-                switch (j)
-                {
-                    case 0: place = "Head"; break;
-                    case 1: place = "Body";break;
-                    case 2: place = "Legs"; break;
-                    case 3: place = "Feet"; break;
-                }
-                MainUI.WriteInMainArea($"{j + 1} ({place}) : {player.equippedItems[j]?.name ?? "Empty"}");
-
-
-            }
-
-            MainUI.WriteInMainArea("");
-            MainUI.WriteInMainArea($"you have {player.money} Rai\n");
+            
             float excessWeight = MathF.Max(player.inventorySpeedModifier - 20, 0);
             MainUI.WriteInMainArea($"your items weight {player.inventoryWeight} therefore your speed is being reduced by {(int)MathF.Floor(MathF.Pow(excessWeight * scale, exponent))} \n");
 
@@ -101,7 +84,7 @@ public class Inventory
             MainUI.WriteInMainArea("");
             MainUI.WriteInMainArea($"--- Page {currentPage} of {totalPages} ---");
             MainUI.WriteInMainArea("");
-            MainUI.WriteInMainArea("Type item number (1-8) to interact, or:");
+            MainUI.WriteInMainArea("Type item number (1-9) to interact, or:");
             MainUI.WriteInMainArea("[N] Next Page  [P] Prev Page  [S] Search  [0] Back to Main Menu");
 
 
@@ -155,7 +138,7 @@ public class Inventory
                 MainUI.ClearMainArea();
                 MainUI.WriteInMainArea("my love would you please type a number this time\n ");
 
-                MainUI.WriteInMainArea("-press Enter to continue-");
+                MainUI.WriteInMainArea("Press Enter to continue...");
                 Console.ReadLine();
                 continue;
             }
@@ -165,7 +148,7 @@ public class Inventory
                 MainUI.WriteInMainArea($"you've picked {selectedItem.name}");
                 MainUI.WriteInMainArea($"{selectedItem.details}\n");
 
-                MainUI.WriteInMainArea($"-press Enter to continue");
+                MainUI.WriteInMainArea($"Press Enter to continue...");
                 Console.ReadLine();
                 continue;
             }

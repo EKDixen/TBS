@@ -107,7 +107,7 @@ public class Encyclopedia
                 MainUI.ClearMainArea();
                 MainUI.WriteInMainArea("sweetie you gotta type a usable number *from this page* ");
                 MainUI.WriteInMainArea("");
-                MainUI.WriteInMainArea("-press Enter to continue-");
+                MainUI.WriteInMainArea("Press Enter to continue...");
                 Console.ReadLine();
                 continue;
             }
@@ -127,7 +127,7 @@ public class Encyclopedia
                 MainUI.ClearMainArea();
                 MainUI.WriteInMainArea("my love would you please type a number this time\n ");
 
-                MainUI.WriteInMainArea("-press Enter to continue-");
+                MainUI.WriteInMainArea("Press Enter to continue...");
                 Console.ReadLine();
                 continue;
             }
@@ -137,7 +137,7 @@ public class Encyclopedia
                 MainUI.WriteInMainArea($"you've picked {selectedItem.name}");
                 MainUI.WriteInMainArea($"{selectedItem.details}\n");
 
-                MainUI.WriteInMainArea($"-press Enter to continue");
+                MainUI.WriteInMainArea($"Press Enter to continue...");
                 Console.ReadLine();
                 continue;
             }

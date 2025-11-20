@@ -67,7 +67,7 @@
         details = "Elegant mask that makes all opponents freeze in fear \n+20% stun"
     };
 
-    public static Item FallenGuardHelmet = new Item("Fallen Guard's Helmet", "+5 HP, +2 Armor...", 14,9, ItemType.equipment)
+    public static Item FallenGuardHelmet = new Item("Fallen Guard's Helmet", "+5 maxHP, +2 Armor...", 14,9, ItemType.equipment)
     {
         stats = { ["maxHP"] = 5, ["armor"] = 2, ["stunNegation"] = 1 },
         equipmentType = EquipmentType.head,
