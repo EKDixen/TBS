@@ -1,6 +1,7 @@
 ﻿public class Enemy : Combatant
 {
     public List<Attack> attacks = new List<Attack>();
+    public Dictionary<Attack, int> attackWeights = new Dictionary<Attack, int>();
 
     public Enemy(string TenemyName, int Tlevel, int Texp, int THP, int Tspeed, int Tarmor,
         int Tdodge, int TdodgeNegation, int Tcritchance, int TcritDamage, int Tstun,
@@ -22,4 +23,34 @@
     }
 
     public Enemy() { }
+    
+    public Attack SelectWeightedAttack()
+    {
+        if (attackWeights.Count == 0 || attacks.Count == 0)
+        {
+            var rng = new Random();
+            return attacks[rng.Next(attacks.Count)];
+        }
+        
+        int totalWeight = 0;
+        foreach (var weight in attackWeights.Values)
+        {
+            totalWeight += weight;
+        }
+        
+        var rng2 = new Random();
+        int randomValue = rng2.Next(totalWeight);
+        int cumulativeWeight = 0;
+        
+        foreach (var kvp in attackWeights)
+        {
+            cumulativeWeight += kvp.Value;
+            if (randomValue < cumulativeWeight)
+            {
+                return kvp.Key;
+            }
+        }
+        
+        return attacks[0];
+    }
 }

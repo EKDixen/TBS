@@ -73,12 +73,12 @@ public static class EncounterLibrary
 
     #endregion
 
-    #region Combat Encounters
-    public static Encounter WildGoblin = new Encounter(
-        "WildGoblin",
+    #region Combat Encounters - Basic/Starter Areas
+    public static Encounter BanditFight = new Encounter(
+        "BanditFight",
         true,
-        "A wild Goblin appears from the bushes!",
-        new List<Enemy> { EnemyLibrary.Goblin },
+        "A solo bandit jumps out from behind the trees!",
+        new List<Enemy> { EnemyLibrary.Thug},
         null,
         EncounterType.Combat
     );
@@ -92,20 +92,11 @@ public static class EncounterLibrary
         EncounterType.Combat
     );
 
-    public static Encounter BanditFight = new Encounter(
-        "BanditFight",
+    public static Encounter WildGoblin = new Encounter(
+        "WildGoblin",
         true,
-        "A solo bandit jumps out from behind the trees!",
-        new List<Enemy> { EnemyLibrary.Thug},
-        null,
-        EncounterType.Combat
-    );
-
-    public static Encounter VampireAttack = new Encounter(
-        "VampireAttack",
-        true,
-        "A Vampire Spawn emerges from the shadows!",
-        new List<Enemy> { EnemyLibrary.VampireSpawn },
+        "A wild Goblin appears from the bushes!",
+        new List<Enemy> { EnemyLibrary.Goblin },
         null,
         EncounterType.Combat
     );
@@ -115,6 +106,66 @@ public static class EncounterLibrary
         true,
         "A pack of Goblins surrounds you!",
         new List<Enemy> { EnemyLibrary.Goblin, EnemyLibrary.Goblin, EnemyLibrary.Goblin },
+        null,
+        EncounterType.Combat
+    );
+    #endregion
+
+    #region Combat Encounters - Forest Regions
+    public static Encounter ForestSpiderNest = new Encounter(
+        "ForestSpiderNest",
+        true,
+        "You stumble into a Forest Spider nest!",
+        new List<Enemy> { EnemyLibrary.ForestSpider, EnemyLibrary.ForestSpider, EnemyLibrary.ForestSpider },
+        null,
+        EncounterType.Combat
+    );
+
+    public static Encounter DireWolfHunt = new Encounter(
+        "DireWolfHunt",
+        true,
+        "A Dire Wolf stalks you through the trees!",
+        new List<Enemy> { EnemyLibrary.DireWolf },
+        null,
+        EncounterType.Combat
+    );
+
+    public static Encounter DireWolfPack = new Encounter(
+        "DireWolfPack",
+        true,
+        "A pack of Dire Wolves surrounds you!",
+        new List<Enemy> { EnemyLibrary.DireWolf, EnemyLibrary.DireWolf },
+        null,
+        EncounterType.Combat
+    );
+    #endregion
+
+    #region Combat Encounters - Coastal Regions
+    public static Encounter SeaBanditRaid = new Encounter(
+        "SeaBanditRaid",
+        true,
+        "Sea Bandits attack from the shore!",
+        new List<Enemy> { EnemyLibrary.SeaBandit, EnemyLibrary.SeaBandit },
+        null,
+        EncounterType.Combat
+    );
+
+    public static Encounter SmugglerAmbush = new Encounter(
+        "SmugglerAmbush",
+        true,
+        "Smugglers emerge from the shadows!",
+        new List<Enemy> { EnemyLibrary.Smuggler, EnemyLibrary.Smuggler },
+        null,
+        EncounterType.Combat
+    );
+    #endregion
+
+    #region Combat Encounters - Fallen Kingdom
+    public static Encounter VampireAttack = new Encounter(
+        "VampireAttack",
+        true,
+        "A Vampire Spawn emerges from the shadows!",
+        new List<Enemy> { EnemyLibrary.VampireSpawn },
         null,
         EncounterType.Combat
     );
@@ -129,16 +180,87 @@ public static class EncounterLibrary
     );
 
     public static Encounter SkeletonWarriors = new Encounter(
-    "SkeletonWarriors",
-    true,
-    "A couple Skeleton Warrior appears!",
-    new List<Enemy> { EnemyLibrary.SkeletonWarrior, EnemyLibrary.SkeletonWarrior, EnemyLibrary.SkeletonWarrior },
-    null,
-    EncounterType.Combat
+        "SkeletonWarriors",
+        true,
+        "A couple Skeleton Warrior appears!",
+        new List<Enemy> { EnemyLibrary.SkeletonWarrior, EnemyLibrary.SkeletonWarrior, EnemyLibrary.SkeletonWarrior },
+        null,
+        EncounterType.Combat
     );
 
+    public static Encounter KingdomGuardPatrol = new Encounter(
+        "KingdomGuardPatrol",
+        true,
+        "Kingdom Guards spot you as an intruder!",
+        new List<Enemy> { EnemyLibrary.KingdomGuard, EnemyLibrary.KingdomGuard },
+        null,
+        EncounterType.Combat
+    );
 
+    public static Encounter CorruptedKnightBattle = new Encounter(
+        "CorruptedKnightBattle",
+        true,
+        "A Corrupted Knight challenges you!",
+        new List<Enemy> { EnemyLibrary.CorruptedKnight },
+        null,
+        EncounterType.Combat
+    );
 
+    public static Encounter RuinedGolemAwakens = new Encounter(
+        "RuinedGolemAwakens",
+        true,
+        "An ancient Ruined Golem awakens!",
+        new List<Enemy> { EnemyLibrary.RuinedGolem },
+        null,
+        EncounterType.Combat
+    );
+    #endregion
+
+    #region Combat Encounters - Frozen Regions
+    public static Encounter IceWolfPack = new Encounter(
+        "IceWolfPack",
+        true,
+        "A pack of Ice Wolves emerges from the blizzard!",
+        new List<Enemy> { EnemyLibrary.IceWolf, EnemyLibrary.IceWolf, EnemyLibrary.IceWolf },
+        null,
+        EncounterType.Combat
+    );
+
+    public static Encounter FrostTrollAmbush = new Encounter(
+        "FrostTrollAmbush",
+        true,
+        "A massive Frost Troll blocks your path!",
+        new List<Enemy> { EnemyLibrary.FrostTroll },
+        null,
+        EncounterType.Combat
+    );
+
+    public static Encounter IceMageEncounter = new Encounter(
+        "IceMageEncounter",
+        true,
+        "An Ice Mage materializes from the frozen mist!",
+        new List<Enemy> { EnemyLibrary.IceMage, EnemyLibrary.IceWolf },
+        null,
+        EncounterType.Combat
+    );
+
+    public static Encounter SnowWraithAttack = new Encounter(
+        "SnowWraithAttack",
+        true,
+        "A Snow Wraith descends upon you!",
+        new List<Enemy> { EnemyLibrary.SnowWraith },
+        null,
+        EncounterType.Combat
+    );
+
+    public static Encounter FrozenHorde = new Encounter(
+        "FrozenHorde",
+        true,
+        "You're surrounded by frozen creatures!",
+        new List<Enemy> { EnemyLibrary.IceWolf, EnemyLibrary.IceWolf, EnemyLibrary.IceMage },
+        null,
+        EncounterType.Combat
+    );
     #endregion
 
     #region Event Encounters
@@ -352,5 +474,41 @@ public static class EncounterLibrary
 
 
 
+    public static Encounter Wolfsensei = new Encounter(
+        "Wolfsensei",
+        false,
+        "You stumble into a.. Friendly wolf perhaps..",
+        null,
+        (player) => {
+            MainUI.WriteInMainArea("Do you talk to him? (y/n): ");
+            string choice = Console.ReadKey().KeyChar.ToString().ToLower();
+            if (choice == "y" || choice == "yes")
+            {
+                int damage = rng.Next(5, 15);
+                player.HP -= damage;
+                MainUI.WriteInMainArea($"The wolf bites you and deals {damage} damage!");
+                MainUI.WriteInMainArea($"The wolf says you could learn their form of combat!");
+                Program.SavePlayer();
+                Program.CheckPlayerDeath();
+                MainUI.WriteInMainArea("Do you accept his offer? (y/n): ");
+                string choice2 = Console.ReadKey().KeyChar.ToString().ToLower();
+                if (choice2 == "y" || choice2 == "yes")
+                {
+                    MainUI.WriteInMainArea("You learned the attack Bite!");
+                    AttackManager atkmanager = new AttackManager(Program.player);
+                    atkmanager.LearnAttack(AttackLibrary.Bite);
+                }
+                else
+                {
+                    MainUI.WriteInMainArea("You respectfully decline the wolf's offer.");
+                }
+            }
+            else
+            {
+                MainUI.WriteInMainArea("You decide not to risk it and move on.");
+            }
+        },
+        EncounterType.Event
+    );
     #endregion
 }

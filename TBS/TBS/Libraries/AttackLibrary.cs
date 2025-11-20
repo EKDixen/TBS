@@ -33,4 +33,14 @@ public static class AttackLibrary
         new AttackEffect("dodge", -10, 3, "enemy"),
         new AttackEffect("speed", -1, 5, "enemy")
     });
+    public static Attack GroupHeal = new Attack("Group heal", new List<AttackEffect> {
+        new AttackEffect("heal", 10, 0, "ally")
+    });
+    public static Attack Snowball = new Attack("Snowball", new List<AttackEffect> {
+        new AttackEffect("dodge", -10, 1, "enemy"),
+        new AttackEffect("speed", -1, 2, "enemy")
+    });
+    public static Attack Bite = new Attack("Bite", new List<AttackEffect> {
+        new AttackEffect("damage", 8, 3, "enemy"),
+    });
 }

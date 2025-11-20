@@ -53,6 +53,9 @@ public class AttackManager
         MainUI.WriteInMainArea($"{attack.name} equipped into Slot {slot}!");
     }
 
+    // Unequipping is disabled - players can only swap moves
+    // This prevents players from entering combat with no attacks
+    /*
     public void UnequipAttack(int slot)
     {
         if (slot < 1 || slot > 4)
@@ -71,6 +74,7 @@ public class AttackManager
             MainUI.WriteInMainArea($"Slot {slot} is already empty.");
         }
     }
+    */
 
     // Show moves menu for equipping/unequipping/viewing ig
     public void ShowMovesMenu()
@@ -161,28 +165,76 @@ public class AttackManager
 
             Attack chosen = pageMoves[input - 1];
 
-
-
-
-            // if already equipped, unequip
+            // Check if already equipped
             int equippedSlot = player.equippedAttacks.IndexOf(chosen);
             if (equippedSlot >= 0)
             {
-                MainUI.WriteInMainArea($"{chosen.name} is currently in Slot {equippedSlot + 1}. Unequipping...");
+                MainUI.WriteInMainArea($"\n{chosen.name} is currently equipped in Slot {equippedSlot + 1}.");
+                MainUI.WriteInMainArea("You can swap it to a different slot if you want.");
+                MainUI.WriteInMainArea("\nChoose a different slot (1-4) to swap, or 0 to cancel: ");
+                
+                if (!int.TryParse(Console.ReadKey().KeyChar.ToString(), out int newSlot) || newSlot < 0 || newSlot > 4)
+                {
+                    MainUI.WriteInMainArea("\nInvalid input.");
+                    MainUI.WriteInMainArea("\n-press Enter to continue-");
+                    Console.ReadLine();
+                    continue;
+                }
+                
+                if (newSlot == 0)
+                {
+                    continue; // Cancel
+                }
+                
+                if (newSlot == equippedSlot + 1)
+                {
+                    MainUI.WriteInMainArea($"\n{chosen.name} is already in Slot {newSlot}!");
+                    MainUI.WriteInMainArea("\n-press Enter to continue-");
+                    Console.ReadLine();
+                    continue;
+                }
+                
+                // Swap to new slot
                 player.equippedAttacks[equippedSlot] = null;
-
+                player.equippedAttacks[newSlot - 1] = chosen;
+                MainUI.WriteInMainArea($"\n{chosen.name} moved to Slot {newSlot}!");
                 MainUI.WriteInMainArea("\n-press Enter to continue-");
                 Console.ReadLine();
                 continue;
             }
 
-            // equip
-            MainUI.WriteInMainArea("Choose a slot (1-4) or 0 to cancel: ");
-            if (!int.TryParse(Console.ReadKey().KeyChar.ToString(), out int slot) || slot < 0 || slot > 4) continue;
+            // Equip to a slot
+            MainUI.WriteInMainArea("\nChoose a slot (1-4) or 0 to cancel: ");
+            if (!int.TryParse(Console.ReadKey().KeyChar.ToString(), out int slot) || slot < 0 || slot > 4)
+            {
+                MainUI.WriteInMainArea("\nInvalid input.");
+                MainUI.WriteInMainArea("\n-press Enter to continue-");
+                Console.ReadLine();
+                continue;
+            }
+            
             if (slot == 0) continue;
 
+            // Check if slot already has a move
+            if (player.equippedAttacks[slot - 1] != null)
+            {
+                MainUI.WriteInMainArea($"\nSlot {slot} already has {player.equippedAttacks[slot - 1].name}.");
+                MainUI.WriteInMainArea($"Replace it with {chosen.name}? (y/n): ");
+                string confirm = Console.ReadKey().KeyChar.ToString().ToLower();
+                
+                if (confirm != "y")
+                {
+                    MainUI.WriteInMainArea("\nCancelled.");
+                    MainUI.WriteInMainArea("\n-press Enter to continue-");
+                    Console.ReadLine();
+                    continue;
+                }
+            }
+
             player.equippedAttacks[slot - 1] = chosen;
-            MainUI.WriteInMainArea($"{chosen.name} equipped into Slot {slot}!");
+            MainUI.WriteInMainArea($"\n{chosen.name} equipped into Slot {slot}!");
+            MainUI.WriteInMainArea("\n-press Enter to continue-");
+            Console.ReadLine();
         }
         Program.MainMenu();
     }

@@ -144,7 +144,8 @@ namespace Game.Class
             }
 
 
-            db.SavePlayer(player);
+            // Save in background without blocking UI
+            _ = Task.Run(() => db.SavePlayer(player));
 
             MainUI.WriteInMainArea("What do you wish to do? (type the number next to it)");
             MainUI.WriteInMainArea(""); 
@@ -211,7 +212,8 @@ namespace Game.Class
             else if (input == 4) ShowPlayerStats();
             //else if (input == 5) Inventory.ShowInventory();
 
-            db.SavePlayer(player);
+            // Save in background without blocking UI
+            _ = Task.Run(() => db.SavePlayer(player));
         }
 
         public static void ShowPlayerStats()

@@ -15,7 +15,8 @@ public enum SubLocationType
     casino,
     wilderness,
     graveyard,
-    pond
+    pond,
+    port
 }
 public class SubLocation
 {
@@ -97,6 +98,10 @@ public class SubLocation
         if (type == SubLocationType.graveyard)
         {
             GraveyardLogic();
+        }
+        if (type == SubLocationType.port)
+        {
+            PortLogic();
         }
 
 
@@ -1486,6 +1491,110 @@ public class SubLocation
         }
 
         return enemy;
+    }
+    #endregion
+
+    #region port
+    void PortLogic()
+    {
+        MainUI.ClearMainArea();
+        MainUI.WriteInMainArea("=== Port Travel ===");
+        MainUI.WriteInMainArea("You can travel to other ports you've discovered.");
+        MainUI.WriteInMainArea("");
+
+        // Get all port locations
+        List<Location> portLocations = new List<Location>();
+        foreach (var loc in LocationLibrary.locations)
+        {
+            bool hasPort = false;
+            foreach (var subLoc in loc.subLocationsHere)
+            {
+                if (subLoc.type == SubLocationType.port)
+                {
+                    hasPort = true;
+                    break;
+                }
+            }
+            if (hasPort && loc.name != Program.player.currentLocation)
+            {
+                portLocations.Add(loc);
+            }
+        }
+
+        if (portLocations.Count == 0)
+        {
+            MainUI.WriteInMainArea("No other ports are available for travel.");
+            MainUI.WriteInMainArea("");
+            MainUI.WriteInMainArea("Press Enter to leave");
+            Console.ReadLine();
+            Program.MainMenu();
+            return;
+        }
+
+        MainUI.WriteInMainArea("Available Ports:");
+        MainUI.WriteInMainArea("");
+        MainUI.WriteInMainArea("Nr     Port Name            Status");
+        MainUI.WriteInMainArea("----------------------------------------");
+
+        int displayIndex = 1;
+        List<Location> availablePorts = new List<Location>();
+        
+        foreach (var port in portLocations)
+        {
+            if (Program.player.knownLocationnames.Contains(port.name))
+            {
+                MainUI.WriteInMainArea($"{displayIndex,-7}{port.name,-20} Available");
+                availablePorts.Add(port);
+                displayIndex++;
+            }
+            else
+            {
+                MainUI.WriteInMainArea($"?      ???                  Undiscovered");
+            }
+        }
+
+        MainUI.WriteInMainArea("");
+        MainUI.WriteInMainArea("0. Leave");
+        MainUI.WriteInMainArea("");
+        MainUI.WriteInMainArea("Select a port to travel to:");
+
+        string input = Console.ReadLine() ?? "";
+        if (!int.TryParse(input, out int choice))
+        {
+            MainUI.WriteInMainArea("\nInvalid input.");
+            Thread.Sleep(1000);
+            DoSubLocation();
+            return;
+        }
+
+        if (choice == 0)
+        {
+            MainUI.ClearMainArea();
+            Program.MainMenu();
+            return;
+        }
+
+        if (choice < 1 || choice > availablePorts.Count)
+        {
+            MainUI.WriteInMainArea("\nInvalid selection.");
+            Thread.Sleep(1000);
+            DoSubLocation();
+            return;
+        }
+
+        Location selectedPort = availablePorts[choice - 1];
+        
+        MainUI.ClearMainArea();
+        MainUI.WriteInMainArea($"Traveling to {selectedPort.name}...");
+        Thread.Sleep(1500);
+        
+        Program.player.currentLocation = selectedPort.name;
+        Program.SavePlayer();
+        
+        MainUI.WriteInMainArea($"You have arrived at {selectedPort.name}!");
+        Thread.Sleep(1000);
+        
+        Program.MainMenu();
     }
     #endregion
 

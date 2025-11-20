@@ -1,4 +1,4 @@
-using Game.Class;
+ï»¿using Game.Class;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,7 +86,7 @@ public class CombatManager
             ui.ClearMainArea();
             ui.RenderCombatScreen(player, combatants);
             ui.WriteInMainArea(1, "+----------------------------------------+");
-            ui.WriteInMainArea(2, "¦          FLED!                         ¦");
+            ui.WriteInMainArea(2, "ï¿½          FLED!                         ï¿½");
             ui.WriteInMainArea(3, "+----------------------------------------+");
             ui.WriteInMainArea(4, "You managed to escape from battle...");
             if (previousLocation != null)
@@ -546,7 +546,7 @@ public class CombatManager
                     Thread.Sleep(800);
                     return;
                 }
-                var chosen = enemy.attacks[rng.Next(enemy.attacks.Count)];
+                var chosen = enemy.SelectWeightedAttack();
                 ExecuteAttackSingle(enemy, chosen, player);
             }
             actor.ActionGauge -= ActionThreshold;
