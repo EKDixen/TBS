@@ -190,10 +190,12 @@ public class SubLocation
         {
             MainUI.WriteInMainArea($"how many would you like to buy?");
             var q = int.TryParse(Console.ReadLine(),out int quantity);
-            if (quantity == null || quantity < 0)
+            if (quantity == null || quantity <= 0)
             {
                 MainUI.ClearMainArea();
                 MainUI.WriteInMainArea("sweetie you gotta type a number that we can use\n ");
+                MainUI.WriteInMainArea("Press enter to continue...");
+                Console.ReadLine();
                 DoSubLocation();
                 return;
             }
