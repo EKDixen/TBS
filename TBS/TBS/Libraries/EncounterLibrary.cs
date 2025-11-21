@@ -494,7 +494,6 @@ public static class EncounterLibrary
                 string choice2 = Console.ReadKey().KeyChar.ToString().ToLower();
                 if (choice2 == "y" || choice2 == "yes")
                 {
-                    MainUI.WriteInMainArea("You learned the attack Bite!");
                     AttackManager atkmanager = new AttackManager(Program.player);
                     atkmanager.LearnAttack(AttackLibrary.Bite);
                 }

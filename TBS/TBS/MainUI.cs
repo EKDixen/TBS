@@ -142,7 +142,8 @@ namespace Game.Class
             Console.SetCursorPosition(x + 2, y + 8);
             Console.Write($"Location - {player.currentLocation}");
             Console.SetCursorPosition(x + 2, y + 9);
-            Console.Write($"Weight   - {player.inventoryWeight}");
+            Inventory inv = new Inventory(Program.player);
+            Console.Write($"Weight   - {player.inventoryWeight}/{inv.freeweight}");
             Console.SetCursorPosition(x + 2, y + 11);
             Console.Write("Equiped items:");
             for (int j = 0; j < player.equippedItems.Capacity; j++)

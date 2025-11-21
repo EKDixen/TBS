@@ -13,7 +13,7 @@ public class Inventory
 
     const float exponent = 1.5f;
     const float scale = 0.1f;
-    const int freeweight = 10;
+    public int freeweight = 20;
 
     public Inventory(Player p)
     {
