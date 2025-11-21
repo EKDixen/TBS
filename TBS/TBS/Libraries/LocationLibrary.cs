@@ -288,6 +288,7 @@ new Dictionary<Encounter, int>
         { EncounterLibrary.SkeletonWarriors, 60}
 }, "Fallen Kingdom");
     #endregion
+
     #region "wilderness"
     public static Location FrozenWastes = new Location("Frozen Wastes", new System.Numerics.Vector2(-3, 1), 2, new List<SubLocation>
     {

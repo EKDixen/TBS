@@ -1,4 +1,5 @@
 ﻿using System;
+using static System.Net.Mime.MediaTypeNames;
 public enum ItemType
 {
     consumable,
@@ -33,7 +34,7 @@ public class Item
     public Dictionary<string, int> stats { get; set; } = new();
     public List<AttackEffect> effects;
 
-    public string details { get; set; }
+    public string detailsLore { get; set; }
 
     public Item() { }
 
@@ -55,10 +56,67 @@ public class Item
         this.duration = template.duration;
         // This is important! We create a new Dictionary
         // so we don't accidentally change the library's stats
-        this.stats = new Dictionary<string, int>(template.stats);
-        this.details = template.details;
+        if (template.stats != null) this.stats = new Dictionary<string, int>(template.stats);
+        if (template.effects != null) this.effects = new List<AttackEffect>(template.effects);
+        this.detailsLore = template.detailsLore;
         this.amount = 1; // Default amount for a new item is 1
         this.weight = template.weight;
+    }
+    public string GetDescription()
+    {
+        List<string> parts = new List<string>();
+        if (type == ItemType.equipment || type == ItemType.Artifact)
+        {
+            foreach (var stat in stats)
+            {
+                string desc = stat.Key switch
+                {
+                    // Stats
+                    "maxHP" => $"Increases max HP by {stat.Value}\n",
+                    "armor" => $"Increases armor by {stat.Value}\n",
+                    "speed" => $"Increases speed by {stat.Value}\n",
+
+                    // Percent Stats
+                    "critChance" => $"Increases crit chance by {stat.Value}%\n",
+                    "critDamage" => $"Increases crit damage by {stat.Value}%\n",
+                    "dodge" => $"Increases dodge by {stat.Value}%\n",
+                    "dodgeNegation" => $"Increases dodge resistance by {stat.Value}%\n",
+                    "stun" => $"Increases stun chance by {stat.Value}%\n",
+                    "stunNegation" => $"Increases stun resistance by {stat.Value}%\n",
+
+                    // Default fallback
+                    _ => $"{stat.Key} {stat.Value}"
+                };
+
+                parts.Add(desc);
+            }
+        }
+        else if (type == ItemType.consumable)
+        {
+            foreach (var effect in effects)
+            {
+                string desc = effect.type switch
+                {
+                    "damage" => $"Deal {effect.value} damage to yourself {(effect.duration > 0 ? $" for {effect.duration} turns\n" : "\n")}",
+                    "heal" => $"Heal yourself for{effect.value} HP {(effect.duration > 0 ? $" for {effect.duration} turns\n" : "\n")}",
+                    "armor" => $"Increase your armor by {effect.value}{(effect.duration > 0 ? $" for {effect.duration} turns\n" : "\n")}",
+                    "critChance" => $"Increase your crit chance by {effect.value}%{(effect.duration > 0 ? $" for {effect.duration} turns\n" : "\n")}",
+                    "critDamage" => $"Increase your crit damage by {effect.value}%{(effect.duration > 0 ? $" for {effect.duration} turns\n" : "\n")}",
+                    "dodge" => $"Increase your dodge by {effect.value}%{(effect.duration > 0 ? $" for {effect.duration} turns\n" : "\n")}",
+                    "dodgeNegation" => $"Increase your dodge resistance by {effect.value}%{(effect.duration > 0 ? $" for {effect.duration} turns\n" : "\n")}",
+                    "stun" => $"Increase your stun chance by {effect.value}%{(effect.duration > 0 ? $" for {effect.duration} turns\n" : "\n")}",
+                    "stunNegation" => $"Increase your stun resistance by {effect.value}%{(effect.duration > 0 ? $" for {effect.duration} turns\n" : "\n")}",
+                    "speed" => $"Increase your speed by {effect.value}{(effect.duration > 0 ? $" for {effect.duration} turns\n" : "\n")}",
+                    _ => $"{effect.type} {effect.value} {(effect.duration > 0 ? $"({effect.duration} turns)" : "")}"
+                };
+
+                parts.Add(desc);
+            }
+        }
+        parts.Add($"Weights {weight}\n");
+        parts.Add(detailsLore);
+
+        return string.Join("", parts);
     }
 
 }

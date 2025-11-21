@@ -39,7 +39,8 @@ public class Inventory
             {
                 filteredItems = player.ownedItems
                     .Where(item => item.name.ToLower().Contains(searchTerm.ToLower()) ||
-                                   item.description.ToLower().Contains(searchTerm.ToLower()))
+                                   item.description.ToLower().Contains(searchTerm.ToLower()) ||
+                                   item.GetDescription().ToLower().Contains(searchTerm.ToLower()))
                     .ToList();
             }
              
@@ -126,10 +127,11 @@ public class Inventory
             MainUI.ClearMainArea();
             MainUI.WriteInMainArea($"you've picked {selectedItem.name}");
 
-            MainUI.WriteInMainArea("0 : details");
-            MainUI.WriteInMainArea("1 : drop");
-            if (selectedItem.type == ItemType.equipment) MainUI.WriteInMainArea("2 : Equip/Unequip");
-            if (selectedItem.type == ItemType.consumable && selectedItem.duration == 0) MainUI.WriteInMainArea("2 : consume");
+            MainUI.WriteInMainArea("0 : cancel");
+            MainUI.WriteInMainArea("1 : details");
+            MainUI.WriteInMainArea("2 : drop");
+            if (selectedItem.type == ItemType.equipment) MainUI.WriteInMainArea("3 : Equip/Unequip");
+            if (selectedItem.type == ItemType.consumable && selectedItem.duration == 0) MainUI.WriteInMainArea("3 : consume");
             MainUI.WriteInMainArea("");
             MainUI.WriteInMainArea("type out the number next to the action you want to perform");
 
@@ -143,22 +145,26 @@ public class Inventory
                 Console.ReadLine();
                 continue;
             }
-            else if (ik == 0)
+            else if(ik == 0)
             {
-                MainUI.WriteInMainArea("");
-                MainUI.WriteInMainArea($"you've picked {selectedItem.name}");
-                MainUI.WriteInMainArea($"{selectedItem.details}\n");
+                continue; 
+            }
+            else if (ik == 1)
+            {
+                MainUI.ClearMainArea();
+                MainUI.WriteInMainArea($"you've picked {selectedItem.name}\n");
+                MainUI.WriteInMainArea($"{selectedItem.GetDescription()}\n");
 
                 MainUI.WriteInMainArea($"Press Enter to continue...");
                 Console.ReadLine();
                 continue;
             }
-            else if (ik == 1)
+            else if (ik == 2)
             {
                 MainUI.WriteInMainArea($"\nyou drop the {selectedItem.name}");
                 DropItem(selectedItem,1);
             }
-            else if (ik == 2 && selectedItem.type == ItemType.equipment)
+            else if (ik == 3 && selectedItem.type == ItemType.equipment)
             {
 
                 Item chosen = selectedItem;
@@ -188,7 +194,7 @@ public class Inventory
 
 
             }
-            else if (ik == 2 && selectedItem.type == ItemType.consumable)
+            else if (ik == 3 && selectedItem.type == ItemType.consumable)
             {
                 Consume(selectedItem);
             }
@@ -388,22 +394,30 @@ public class Inventory
     }
     public void Consume(Item Titem)
     {
-        if (Titem.duration == 0)
+        foreach (var effect in Titem.effects)
         {
-            ApplyEffects(Titem,1);
-            DropItem(Titem,1);
-        }
-        else
-        {
-            foreach (var effect in Titem.effects)
+            if (effect.targetType == "allEnemies")
             {
-                if (effect.targetType == "allEnemies")
-                    Console.WriteLine($"{Titem.name} is an AoE move and requires ApplyToAll instead!");
-                else
-                    effect.Apply(player, player);
+                Console.WriteLine($"{Titem.name} is an AoE move and requires ApplyToAll instead!");
             }
-            DropItem(Titem,1);
+            else
+            {
+                if (effect.type == "heal")
+                {
+                    player.HP += effect.value;
+                    if (player.HP > player.maxHP)
+                    {
+                        player.HP = player.maxHP;
+                    }
+                }
+                else
+                {
+                    effect.Apply(player, player);
+                }
+            }
         }
+
+        DropItem(Titem, 1);
     }
 
     public void UnequipItem(int slot)

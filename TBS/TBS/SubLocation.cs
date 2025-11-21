@@ -181,7 +181,7 @@ public class SubLocation
         {
             MainUI.ClearMainArea();
             MainUI.WriteInMainArea($"\nyou've picked {shopItems[input].name}");
-            MainUI.WriteInMainArea($"{shopItems[input].details}\n");
+            MainUI.WriteInMainArea($"{shopItems[input].detailsLore}\n");
 
             MainUI.WriteInMainArea($"Press Enter to continue...");
             Console.ReadLine();

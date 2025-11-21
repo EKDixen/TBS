@@ -135,7 +135,7 @@ public class Encyclopedia
             {
                 MainUI.WriteInMainArea("");
                 MainUI.WriteInMainArea($"you've picked {selectedItem.name}");
-                MainUI.WriteInMainArea($"{selectedItem.details}\n");
+                MainUI.WriteInMainArea($"{selectedItem.detailsLore}\n");
 
                 MainUI.WriteInMainArea($"Press Enter to continue...");
                 Console.ReadLine();
