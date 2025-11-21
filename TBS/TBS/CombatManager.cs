@@ -372,6 +372,10 @@ public class CombatManager
                 ui.AddToLog($"{actor.name} is stunned and cannot act!");
                 ui.RenderCombatScreen(player, combatants);
                 stunnedTurns[actor] = stunLeft - 1;
+
+                actor.ActionGauge -= ActionThreshold;
+                if (actor.ActionGauge < 0) actor.ActionGauge = 0;
+
                 Thread.Sleep(800);
                 return;
             }
