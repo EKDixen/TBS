@@ -3,30 +3,39 @@
 public class Class
 {
     public string name;
+    public string description; 
+    public bool isMagic;       
 
-    public static int THP = 0; public static int TmaxHP = 5;
-    public static int Tspeed = 1; public static int Tarmor = 1;
-    public static int Tdodge = 5; public static int TdodgeNegation = 5; 
-    public static int Tcritchance = 5; public static int TcritDamage = 5; 
-    public static int Tstun = 5; public static int TstunNegation = 5;
+    public int THP = 0;
+    public int TmaxHP = 5;
+    public int Tspeed = 1;
+    public int Tarmor = 1;
+    public int Tdodge = 5;
+    public int TdodgeNegation = 5;
+    public int Tcritchance = 5;
+    public int TcritDamage = 5;
+    public int Tstun = 5;
+    public int TstunNegation = 5;
+    public int Tluck  = 0; 
 
-    public Class(){ }//never forget😔
+    public Class() { }//never forget😔
     public Class(string name)
     {
         this.name = name;
     }
+
     public void LevelupStats()
     {
-        Program.player.HP += THP;
-        Program.player.maxHP += TmaxHP;
-        Program.player.speed += Tspeed;
-        Program.player.armor += Tarmor;
-        Program.player.dodge += Tdodge;
-        Program.player.dodgeNegation += TdodgeNegation;
-        Program.player.critChance += Tcritchance;
-        Program.player.critDamage += TcritDamage;
-        Program.player.stun += Tstun;
-        Program.player.stunNegation += TstunNegation;
+        Program.player.HP += this.THP;
+        Program.player.maxHP += this.TmaxHP;
+        Program.player.speed += this.Tspeed;
+        Program.player.armor += this.Tarmor;
+        Program.player.dodge += this.Tdodge;
+        Program.player.dodgeNegation += this.TdodgeNegation;
+        Program.player.critChance += this.Tcritchance;
+        Program.player.critDamage += this.TcritDamage;
+        Program.player.stun += this.Tstun;
+        Program.player.stunNegation += this.TstunNegation;
+        Program.player.luck += this.Tluck; 
     }
 }
-
