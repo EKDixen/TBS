@@ -77,7 +77,7 @@ namespace Game.Class
                         Console.WriteLine("\nName your character (needed to login):");
                         name = Console.ReadLine();
 
-                        isValidUsername = (name.Length <= MaxUsernameLength && !name.Contains(' ') && name == null);
+                        isValidUsername = (name.Length <= MaxUsernameLength && !name.Contains(' ') && name != null);
 
                         if (!isValidUsername)
                         {
