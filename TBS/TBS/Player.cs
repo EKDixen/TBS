@@ -4,7 +4,7 @@ using System.Diagnostics;
 public class Player : Combatant
 {
     public string password;
-    public string playerClass;
+    public Class playerClass;
     public int luck;
     public bool isDead = false;
 
@@ -28,7 +28,7 @@ public class Player : Combatant
 
     public Player() { } //Deserialize
 
-    public Player(string TplayerName, string Tpassword, string TplayerClass, int Tlevel, int Texp, int THP, int TmaxHP,
+    public Player(string TplayerName, string Tpassword, Class TplayerClass, int Tlevel, int Texp, int THP, int TmaxHP,
         int Tspeed, int Tarmor, int Tdodge, int TdodgeNegation, int Tcritchance, int TcritDamage, int Tstun,
         int TstunNegation, Location Tlocation, int Tmoney, int Tluck)
     {

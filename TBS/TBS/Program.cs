@@ -245,8 +245,7 @@ namespace Game.Class
                     player.level++;
                     player.exp = 0;
 
-                    //missing function to do the effects of level up
-
+                    player.playerClass.LevelupStats();
                 }
 
                 await Task.Delay(3200);

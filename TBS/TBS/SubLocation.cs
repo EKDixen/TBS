@@ -1316,7 +1316,7 @@ public class SubLocation
             {
                 filteredPlayers = deadPlayers
                     .Where(p => p.name.ToLower().Contains(searchTerm.ToLower()) ||
-                               p.playerClass.ToLower().Contains(searchTerm.ToLower()))
+                               p.playerClass.name.ToLower().Contains(searchTerm.ToLower()))
                     .ToList();
             }
             
