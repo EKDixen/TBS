@@ -746,7 +746,7 @@ public class SubLocation
             MainUI.WriteInMainArea($"\nyou lose your bet of {bet} cash");
             Program.SavePlayer();
 
-            MainUI.WriteInMainArea("\ndo you wish to play again : 1\n or leave : 0");
+            MainUI.WriteInMainArea("\nGamble some more!! : 1\nLeave : 0");
             int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input3);
             if (input3 == null || input3 > 2 || input3 < 0)
             {
@@ -774,7 +774,7 @@ public class SubLocation
             MainUI.WriteInMainArea($"\nyou win your bet of {bet} cash");
             Program.SavePlayer();
 
-            MainUI.WriteInMainArea("\ndo you wish to play again : 1\n or leave : 0");
+            MainUI.WriteInMainArea("\nGamble some more!! : 1\nLeave : 0");
             int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input3);
             if (input3 == null || input3 > 2 || input3 < 0)
             {
@@ -803,7 +803,7 @@ public class SubLocation
             MainUI.WriteInMainArea($"\nyou win your bet of {bet} cash");
             Program.SavePlayer();
 
-            MainUI.WriteInMainArea("\ndo you wish to play again : 1\n or leave : 0");
+            MainUI.WriteInMainArea( "\nGamble some more!! : 1\nLeave : 0");
             int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input3);
             if (input3 == null || input3 > 2 || input3 < 0)
             {
@@ -830,7 +830,7 @@ public class SubLocation
             MainUI.WriteInMainArea($"\nyou lose your bet of {bet} cash");
             Program.SavePlayer();
 
-            MainUI.WriteInMainArea("\ndo you wish to play again : 1\n or leave : 0");
+            MainUI.WriteInMainArea("\nGamble some more!! : 1\nLeave : 0");
             int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input3);
             if (input3 == null || input3 > 2 || input3 < 0)
             {
@@ -859,7 +859,7 @@ public class SubLocation
 
             Program.SavePlayer();
 
-            MainUI.WriteInMainArea("\ndo you wish to play again : 1\n or leave : 0");
+            MainUI.WriteInMainArea("\nGamble some more!! : 1\nLeave : 0");
             int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input3);
             if (input3 == null || input3 > 2 || input3 < 0)
             {
@@ -1063,7 +1063,7 @@ public class SubLocation
 
         MainUI.WriteInMainArea($"you have {Program.player.money} Rai");
 
-        MainUI.WriteInMainArea("\ndo you wish to play again : 1\n or leave : 0");
+        MainUI.WriteInMainArea("\nGamble some more!! : 1\nLeave : 0");
         int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input3);
         if (input3 == null || input3 > 2 || input3 < 0)
         {
@@ -1118,10 +1118,10 @@ public class SubLocation
     {
         fishingMeter = 1;
 
-        MainUI.WriteInMainArea("You ready to start fishing?\npress Enter to start \nor 1 to go back to menu");
+        MainUI.WriteInMainArea("You ready to start fishing?\nStart fishing : Enter \nGo back to menu : 0");
         string input = Console.ReadKey().KeyChar.ToString();
         int.TryParse(input, out int r);
-        if (r==1)
+        if (r==0)
         {
             MainUI.ClearMainArea();
             Program.MainMenu();
