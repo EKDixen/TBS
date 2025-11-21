@@ -187,7 +187,7 @@ public static class LocationLibrary
         },
         new SubLocation("Casino",SubLocationType.casino)
         {
-            casinoMaxBet = 50
+            casinoMaxBet = 20
         }
     },
     new Dictionary<Encounter, int>
@@ -400,6 +400,10 @@ new Dictionary<Encounter, int>
                 (ItemLibrary.bigHealthPotion),
                 (ItemLibrary.knightHelmet)
             }
+        },
+        new SubLocation("Casino", SubLocationType.casino)
+        {
+            casinoMaxBet = 50,
         }
     },
     new Dictionary<Encounter, int>
