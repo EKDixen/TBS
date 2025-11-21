@@ -49,8 +49,8 @@ public class Attack
 
             string desc = effect.type switch
             {
-                "damage" => $"Deal {effect.value} damage to {target}",
-                "heal" => $"Heal {effect.value} HP",
+                "damage" => $"Deal {effect.value} damage to {target}{(effect.duration > 0 ? $" for {effect.duration} turns" : "")}",
+                "heal" => $"Heal {effect.value} HP{(effect.duration > 0 ? $" for {effect.duration} turns" : "")}",
                 "armor" => $"Increase armor by {effect.value}{(effect.duration > 0 ? $" for {effect.duration} turns" : "")}",
                 "critChance" => $"Increase crit chance by {effect.value}%{(effect.duration > 0 ? $" for {effect.duration} turns" : "")}",
                 "critDamage" => $"Increase crit damage by {effect.value}%{(effect.duration > 0 ? $" for {effect.duration} turns" : "")}",
