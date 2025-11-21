@@ -30,7 +30,8 @@ class JourneyManager
 
             for (int i = 0; i < Program.player.knownLocationnames.Count; i++)
             {
-                if (LocationLibrary.Get(Program.player.knownLocationnames[i]) != LocationLibrary.Get(Program.player.currentLocation)) 
+                if (LocationLibrary.Get(Program.player.knownLocationnames[i]) != LocationLibrary.Get(Program.player.currentLocation) && 
+                    LocationLibrary.Get(Program.player.knownLocationnames[i]).kingdom == LocationLibrary.Get(Program.player.currentLocation).kingdom) 
                 {
                     float price = (LocationLibrary.Get(Program.player.currentLocation).location - LocationLibrary.Get(Program.player.knownLocationnames[i]).location).Length() * 2 + 
                         LocationLibrary.Get(Program.player.currentLocation).travelPrice + LocationLibrary.Get(Program.player.knownLocationnames[i]).travelPrice;
