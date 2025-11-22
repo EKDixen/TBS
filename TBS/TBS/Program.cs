@@ -159,6 +159,8 @@ namespace Game.Class
             if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input) == false || input > 4 || input < 0)
             {
                 MainUI.WriteInMainArea("\nyou gotta type 0, 1, 2, 3, 4, or 5");
+                MainUI.WriteInMainArea("Press enter to continue...");
+                Console.ReadLine();
                 MainMenu();
                 return;
             }
@@ -220,16 +222,82 @@ namespace Game.Class
         {
             MainUI.ClearMainArea();
 
-            MainUI.WriteInMainArea($"\nAccount Name: {player.name} \n\nLevel: {player.level} \nClass: {player.playerClass} \nHP: {player.HP}/{player.maxHP} \nSpeed: {player.speed} \narmor: {player.armor}" +
-                $"\nDodge: {player.dodge}% \nDodgeNegation: {player.dodgeNegation}% \nCrit-chance: {player.critChance}% \nCrit-Damage: {player.critDamage}% \nStun: {player.stun}%" +
-                $"\nStunNegation: {player.stunNegation}%\n\n");
+            MainUI.WriteInMainArea($"\nAccount Name: {player.name} \n\n1 : Level: {player.level} \n2 : Class: {player.playerClass} \n3 : HP: {player.HP}/{player.maxHP} \n4 : Speed: {player.speed} \n5 : armor: {player.armor}" +
+                $"\n6 : Dodge: {player.dodge}% \n7 : DodgeNegation: {player.dodgeNegation}% \n8 : Crit-chance: {player.critChance}% \n9 : Crit-Damage: {player.critDamage}% \n 10 : Stun: {player.stun}%" +
+                $"\n11 : StunNegation: {player.stunNegation}%\n\n");
 
             Thread.Sleep(400);
-            MainUI.WriteInMainArea("Press Enter to continue...");
+            MainUI.WriteInMainArea("0 : Cancel");
+            MainUI.WriteInMainArea("Press any stat's corresponding number for details about it");
+            string st = Console.ReadLine();
 
-            Console.ReadLine();
+            if (int.TryParse(st, out int input) == false || input > 11 || input < 0)
+            {
+                MainUI.ClearMainArea();
+                MainUI.WriteInMainArea(" \nyou gotta type a real number:)");
 
-            MainMenu();
+                MainUI.WriteInMainArea(" \npress enter to continue...");
+                Console.ReadLine();
+                ShowPlayerStats();
+                return;
+            }
+            else
+            {
+                MainUI.ClearMainArea();
+                switch (input)
+                {
+                    case 0:
+                        MainMenu();
+                        return;
+                    case 1:
+                        MainUI.WriteInMainArea("For each levelup you gain:");
+                        MainUI.WriteInMainArea($"    {player.playerClass.TmaxHP} maxHP");
+                        MainUI.WriteInMainArea($"    {player.playerClass.Tspeed} speed");
+                        MainUI.WriteInMainArea($"    {player.playerClass.Tarmor} armor");
+                        MainUI.WriteInMainArea($"    {player.playerClass.Tdodge} dodge");
+                        MainUI.WriteInMainArea($"    {player.playerClass.TdodgeNegation} dodgeNegation");
+                        MainUI.WriteInMainArea($"    {player.playerClass.Tcritchance} critChance");
+                        MainUI.WriteInMainArea($"    {player.playerClass.TcritDamage} critDamage");
+                        MainUI.WriteInMainArea($"    {player.playerClass.Tstun} stun");
+                        MainUI.WriteInMainArea($"    {player.playerClass.TstunNegation} stunNegation");
+                        break;
+                    case 2:
+                        MainUI.WriteInMainArea($"your class is{player.playerClass.name}");
+                        MainUI.WriteInMainArea($"{player.playerClass.description}");
+                        break;
+                    case 3:
+                        MainUI.WriteInMainArea("Your hp stat is how much you can get hit before you die");
+                        break;
+                    case 4:
+                        MainUI.WriteInMainArea("Your speed stat determines how often you get to take actions in combat");
+                        break;
+                    case 5:
+                        MainUI.WriteInMainArea("Your armor stat acts as a flat decrease to damage taken during combat");
+                        break;
+                    case 6:
+                        MainUI.WriteInMainArea("Your dodge stat gives you a chance to avoid enemy attacks entirely");
+                        break;
+                    case 7:
+                        MainUI.WriteInMainArea("Your dodgeNegation stat makes it harder for your enemies to dodge your \n attacks");
+                        break;
+                    case 8:
+                        MainUI.WriteInMainArea("Your critChance stat gives you a chance to deal bonus damage on your \n attacks");
+                        break;
+                    case 9:
+                        MainUI.WriteInMainArea("Your critDamage stat determines how much extra damage you deal when you crit");
+                        break;
+                    case 10:
+                        MainUI.WriteInMainArea("Your stun stat gives you a chance to stun your opponents when you hit them \n with an attack");
+                        break;
+                    case 11:
+                        MainUI.WriteInMainArea("Your stunNegation stat makes it harder for your opponent to stun you");
+                        break;
+                }
+
+                MainUI.WriteInMainArea(" \nPress enter to continue...");
+                Console.ReadLine();
+                ShowPlayerStats();
+            }
         }
 
         public static async Task SavePlayer()
