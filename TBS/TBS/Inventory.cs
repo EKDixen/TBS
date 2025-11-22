@@ -136,7 +136,7 @@ public class Inventory
             MainUI.WriteInMainArea("type out the number next to the action you want to perform");
 
             var k = int.TryParse(Console.ReadKey().KeyChar.ToString(), out int ik);
-            if (!k || ik < 0 || ik > 2)
+            if (!k || ik < 0 || ik > 3)
             {
                 MainUI.ClearMainArea();
                 MainUI.WriteInMainArea("my love would you please type a number this time\n ");

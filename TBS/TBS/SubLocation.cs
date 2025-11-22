@@ -1118,7 +1118,7 @@ public class SubLocation
     {
         fishingMeter = 1;
 
-        MainUI.WriteInMainArea("You ready to start fishing?\nStart fishing : Enter \nGo back to menu : 0");
+        MainUI.WriteInMainArea("You ready to start fishing?\nStart fishing : 1 \nGo back to menu : 0");
         string input = Console.ReadKey().KeyChar.ToString();
         int.TryParse(input, out int r);
         if (r==0)
