@@ -26,7 +26,12 @@ public static class LocationLibrary
         new SubLocation("Bank", SubLocationType.bank)
         {
 
+        },
+        new SubLocation("Market", SubLocationType.marketplace)
+        {
+
         }
+
     },
     new Dictionary<Encounter, int>
     {
@@ -51,6 +56,10 @@ public static class LocationLibrary
 
         },
         new SubLocation("Port", SubLocationType.port)
+        {
+
+        },
+        new SubLocation("Market", SubLocationType.marketplace)
         {
 
         }
@@ -125,6 +134,10 @@ public static class LocationLibrary
         {
         },
         new SubLocation("Wilderness",SubLocationType.wilderness)
+        {
+
+        },
+        new SubLocation("Market", SubLocationType.marketplace)
         {
 
         }
@@ -207,6 +220,10 @@ public static class LocationLibrary
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
 
+        },
+        new SubLocation("Market", SubLocationType.marketplace)
+        {
+
         }
     },
     new Dictionary<Encounter, int>
@@ -255,6 +272,10 @@ public static class LocationLibrary
                 (ItemLibrary.NightStalkerGreaves),
                 (ItemLibrary.VampireMask)
             }
+        },
+        new SubLocation("Market", SubLocationType.marketplace)
+        {
+
         }
     },
     new Dictionary<Encounter, int>
@@ -355,6 +376,10 @@ new Dictionary<Encounter, int>
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
 
+        },
+        new SubLocation("Market", SubLocationType.marketplace)
+        {
+
         }
     },
     new Dictionary<Encounter, int>
@@ -434,6 +459,10 @@ new Dictionary<Encounter, int>
             }
         },
         new SubLocation("Port", SubLocationType.port)
+        {
+
+        },
+        new SubLocation("Market", SubLocationType.marketplace)
         {
 
         }

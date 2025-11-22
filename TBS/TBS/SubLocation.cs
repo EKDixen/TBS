@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 public enum SubLocationType
 {
     shop,
+    marketplace,
     tavern,//no--
     blacksmith,//no--
     arena,//no--
@@ -102,6 +103,10 @@ public class SubLocation
         if (type == SubLocationType.port)
         {
             PortLogic();
+        }
+        if(type == SubLocationType.marketplace)
+        {
+            MarketplaceLogic();
         }
 
 
@@ -228,11 +233,11 @@ public class SubLocation
             MainUI.WriteInMainArea("Welcome to the bank");
             MainUI.WriteInMainArea($"You have {Program.player.bankMoney} Rai in your account.");
             MainUI.WriteInMainArea("Would you like to:");
-            MainUI.WriteInMainArea("1. Deposit Items");
-            MainUI.WriteInMainArea("2. Withdraw Items");
-            MainUI.WriteInMainArea("3. Deposit Money");
-            MainUI.WriteInMainArea("4. Withdraw Money");
-            MainUI.WriteInMainArea("0. Leave");
+            MainUI.WriteInMainArea("1 : Deposit Items");
+            MainUI.WriteInMainArea("2 : Withdraw Items");
+            MainUI.WriteInMainArea("3 : Deposit Money");
+            MainUI.WriteInMainArea("4 : Withdraw Money");
+            MainUI.WriteInMainArea("0 : Leave");
 
             if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input) == false || input > 4 || input < 0)
             {
@@ -282,7 +287,7 @@ public class SubLocation
             {
                 MainUI.WriteInMainArea("You have no items to deposit.");
                 MainUI.WriteInMainArea("");
-                MainUI.WriteInMainArea("0. Back");
+                MainUI.WriteInMainArea("0 : Back");
             }
             else
             {
@@ -292,7 +297,7 @@ public class SubLocation
                     MainUI.WriteInMainArea($"{i + 1,-7}{item.name,-25} {item.amount,-5}");
                 }
                 MainUI.WriteInMainArea("");
-                MainUI.WriteInMainArea("0. Back");
+                MainUI.WriteInMainArea("0 : Back");
             }
 
             string inputString = Console.ReadLine() ?? "";
@@ -305,7 +310,7 @@ public class SubLocation
 
             if (!n || input < 1 || input > Program.player.ownedItems.Count)
             {
-                MainUI.WriteInMainArea("\nInvalid selection. Please type a number from the list.");
+                MainUI.WriteInMainArea("\nInvalid selection. Please type a number from the list");
                 Thread.Sleep(1000);
                 continue;
             }
@@ -322,7 +327,7 @@ public class SubLocation
 
                 if (!q || quantity < 1 || quantity > selectedItem.amount)
                 {
-                    MainUI.WriteInMainArea("\nInvalid amount.");
+                    MainUI.WriteInMainArea("\nInvalid amount");
                     Thread.Sleep(1000);
                     continue;
                 }
@@ -379,7 +384,6 @@ public class SubLocation
 
             MainUI.WriteInMainArea($"\nDeposited {quantity}x {itemToBank.name}.");
             Thread.Sleep(1000);
-            // Loop continues to show the deposit inventory again
         }
     }
 
@@ -399,7 +403,7 @@ public class SubLocation
             {
                 MainUI.WriteInMainArea("Your bank is empty.");
                 MainUI.WriteInMainArea("");
-                MainUI.WriteInMainArea("0. Back");
+                MainUI.WriteInMainArea("0 : Back");
             }
             else
             {
@@ -409,7 +413,7 @@ public class SubLocation
                     MainUI.WriteInMainArea($"{i + 1,-7}{item.name,-25} {item.amount,-5} {location}");
                 }
                 MainUI.WriteInMainArea("");
-                MainUI.WriteInMainArea("0. Back");
+                MainUI.WriteInMainArea("0 : Back");
             }
 
             string inputString = Console.ReadLine() ?? "";
@@ -482,7 +486,7 @@ public class SubLocation
 
         if (!n || amount < 0)
         {
-            MainUI.WriteInMainArea("\nInvalid amount.");
+            MainUI.WriteInMainArea("\nInvalid amount");
             Thread.Sleep(1000);
             return;
         }
@@ -494,7 +498,7 @@ public class SubLocation
 
         if (amount > Program.player.money)
         {
-            MainUI.WriteInMainArea("\nYou don't have that much Rai.");
+            MainUI.WriteInMainArea("\nYou don't have that much Rai");
             Thread.Sleep(1000);
             return;
         }
@@ -502,8 +506,8 @@ public class SubLocation
         Program.player.money -= amount;
         Program.player.bankMoney += amount;
 
-        MainUI.WriteInMainArea($"\nDeposited {amount} Rai.");
-        MainUI.WriteInMainArea($"New balance: {Program.player.bankMoney} Rai.");
+        MainUI.WriteInMainArea($"\nDeposited {amount} Rai");
+        MainUI.WriteInMainArea($"New balance: {Program.player.bankMoney} Rai");
         Thread.Sleep(1500);
     }
 
@@ -1600,9 +1604,164 @@ public class SubLocation
     }
     #endregion
 
+    #region marketplace
 
-    //not done
+    public void MarketplaceLogic()
+    {
+        while (true)
+        {
+            MainUI.ClearMainArea();
+            MainUI.WriteInMainArea("Welcome to the market");
+            MainUI.WriteInMainArea("Would you like to:");
+            MainUI.WriteInMainArea("1 : sell items");
+            MainUI.WriteInMainArea("0 : Leave");
+
+            if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input2) == false || input2 > 1 || input2 < 0)
+            {
+                MainUI.WriteInMainArea(" \nyou gotta type a number from 0-1");
+                Thread.Sleep(1000);
+                continue;
+            }
+            else if (input2 == 0)
+            {
+                Program.MainMenu();
+                break;
+            }
+            else if (input2 == 1)
+            {
+                Inventory inventory = new Inventory(Program.player);
+
+                const float exponent = 1.5f;
+                const float scale = 0.1f;
+
+                while (true)
+                {
+                    MainUI.ClearMainArea();
+                    MainUI.WriteInMainArea("Select an item to deposit:");
+                    MainUI.WriteInMainArea("");
+                    MainUI.WriteInMainArea("nr     Name                      Qty     Value");
+                    MainUI.WriteInMainArea("------------------------------------------------");
+
+                    if (Program.player.ownedItems.Count == 0)
+                    {
+                        MainUI.WriteInMainArea("You have no items to deposit.");
+                        MainUI.WriteInMainArea("");
+                        MainUI.WriteInMainArea("0 : Back");
+                    }
+                    else
+                    {
+                        for (int i = 0; i < Program.player.ownedItems.Count; i++)
+                        {
+                            var item = Program.player.ownedItems[i];
+                            MainUI.WriteInMainArea($"{i + 1,-7}{item.name,-25} {item.amount,-7}  {item.value}");
+                        }
+                        MainUI.WriteInMainArea("");
+                        MainUI.WriteInMainArea("0 : Back");
+                    }
+
+                    string inputString = Console.ReadLine() ?? "";
+                    var n = int.TryParse(inputString, out int input);
+
+                    if (input == 0)
+                    {
+                        Program.MainMenu();
+                        return;
+                    }
+
+                    if (!n || input < 1 || input > Program.player.ownedItems.Count)
+                    {
+                        MainUI.WriteInMainArea("\nInvalid selection. Please type a number from the list");
+                        Thread.Sleep(1000);
+                        continue;
+                    }
+
+                    Item selectedItem = Program.player.ownedItems[input - 1];
+                    int quantity = 1;
+
+                    // If stackable, ask how many
+                    if (selectedItem.type != ItemType.equipment)
+                    {
+                        MainUI.WriteInMainArea($"How many {selectedItem.name} would you like to deposit? (Max: {selectedItem.amount})");
+                        string quantityString = Console.ReadLine() ?? "";
+                        var q = int.TryParse(quantityString, out quantity);
+
+                        if (!q || quantity < 1 || quantity > selectedItem.amount)
+                        {
+                            MainUI.WriteInMainArea("\nInvalid amount");
+                            Thread.Sleep(1000);
+                            continue;
+                        }
+                    }
+
+                    // Check if item is equipped
+                    int equippedSlot = Program.player.equippedItems.IndexOf(selectedItem);
+                    if (equippedSlot >= 0)
+                    {
+                        MainUI.WriteInMainArea($"\nThis item is equipped. Unequipping {selectedItem.name}...");
+                        inventory.UnequipItem(equippedSlot);
+                        Thread.Sleep(1000);
+                    }
+
+                    // Handle Stats & Effects
+                    if (selectedItem.type == ItemType.Artifact)
+                    {
+                        inventory.RemoveEffects(selectedItem, null); // Remove stats for the whole stack
+                    }
+
+                    // Handle Weight & Speed 
+                    float totalWeightRemoved = selectedItem.weight * quantity;
+
+                    Program.player.speed += (int)MathF.Floor(MathF.Pow(Program.player.inventorySpeedModifier * scale, exponent));
+                    Program.player.inventorySpeedModifier -= (selectedItem.weight - 20) * quantity;
+                    Program.player.speed -= (int)MathF.Floor(MathF.Pow(Program.player.inventorySpeedModifier * scale, exponent));
+                    Program.player.inventoryWeight -= totalWeightRemoved;
+
+
+                    // Handle Item List
+                    if (selectedItem.type == ItemType.equipment || selectedItem.amount <= quantity)
+                    {
+                        // Remove the item completely
+                        Program.player.ownedItems.Remove(selectedItem);
+                    }
+                    else
+                    {
+                        // Just subtract the amount
+                        selectedItem.amount -= quantity;
+                    }
+
+                    // Re-apply artifact stats if some items are left
+                    if (selectedItem.type == ItemType.Artifact && Program.player.ownedItems.Contains(selectedItem))
+                    {
+                        inventory.ApplyEffects(selectedItem, null);
+                    }
+
+                    Program.player.money += selectedItem.value * quantity;
+
+                    MainUI.WriteInMainArea($"\nSold {quantity}x {selectedItem.name} for {selectedItem.value * quantity} Rai");
+                    Thread.Sleep(1000);
+                }
+            }
+
+            Program.SavePlayer();
+        }
+    }
+
+    #endregion
+
+
+
+
+
+
+
+
+
 
 
 
 }
+
+
+
+
+
