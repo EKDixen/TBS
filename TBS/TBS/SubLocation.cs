@@ -17,7 +17,8 @@ public enum SubLocationType
     wilderness,
     graveyard,
     pond,
-    port
+    port,
+    mine
 }
 public class SubLocation
 {
@@ -50,14 +51,10 @@ public class SubLocation
     public void DoSubLocation()
     {
         MainUI.ClearMainArea();
-        if (type == SubLocationType.shop)
-        {
-            ShopLogic();
-        }
-        if (type == SubLocationType.bank)
-        {
-            BankLogic();
-        }
+        if (type == SubLocationType.shop) ShopLogic();
+        
+        if (type == SubLocationType.bank) BankLogic();
+        
         if (type == SubLocationType.casino)
         {
             MainUI.WriteInMainArea("what game do you want to play, \nBlackjack : 1 \nRoulette : 2 \nor leave : 0");
@@ -88,26 +85,17 @@ public class SubLocation
             }
 
         }
-        if (type == SubLocationType.wilderness)
-        {
-            WildernessLogic();
-        }
-        if (type == SubLocationType.pond)
-        {
-            FishingLogic();
-        }
-        if (type == SubLocationType.graveyard)
-        {
-            GraveyardLogic();
-        }
-        if (type == SubLocationType.port)
-        {
-            PortLogic();
-        }
-        if(type == SubLocationType.marketplace)
-        {
-            MarketplaceLogic();
-        }
+        if (type == SubLocationType.wilderness) WildernessLogic();
+        
+        if (type == SubLocationType.pond) FishingLogic();
+        
+        if (type == SubLocationType.graveyard) GraveyardLogic();
+        
+        if (type == SubLocationType.port) PortLogic();
+        
+        if(type == SubLocationType.marketplace) MarketplaceLogic();
+
+        if (type == SubLocationType.mine) MineLogic();
 
 
 
@@ -1138,7 +1126,7 @@ public class SubLocation
         {
             if (Console.KeyAvailable)
             {
-                ConsoleKeyInfo key = Console.ReadKey(true);
+                ConsoleKeyInfo key = Console.ReadKey();
                 if (key.Key == ConsoleKey.Enter)
                 {
                     if (position == target)
@@ -1748,11 +1736,90 @@ public class SubLocation
 
     #endregion
 
+    #region mine
+
+    void MineLogic()
+    {
+        MainUI.WriteInMainArea("You ready to start mining?\nStart mining : 1 \nGo back to menu : 0");
+
+        string input = Console.ReadKey().KeyChar.ToString(); 
+        int.TryParse(input, out int r);
+        if (r == 0)
+        {
+            MainUI.ClearMainArea();
+            Program.MainMenu();
+            return;
+        }
+
+        Random rand = new Random();
+        int veinStability = 100;
+        int currentHaul = 0;
+        bool collapsed = false;
+
+        while (true)
+        {
+            MainUI.ClearMainArea();
+            MainUI.WriteInMainArea($"You are chipping at a promising iron vein\n\nVein Stability: {veinStability}%\nYour Haul: {currentHaul} Iron\n\n1 : Mine deeper \n2 : Walk away with your haul");
+
+            string choice = Console.ReadKey().KeyChar.ToString();
+
+            if (choice == "2")
+            {
+                break; 
+            }
+            else if (choice == "1")
+            {
+                int failChance = 100 - veinStability;
+                int roll = rand.Next(0, 100);
+
+                if (roll < failChance)
+                {
+                    int dm = rand.Next(1, 11);
+                    MainUI.ClearMainArea();
+                    MainUI.WriteInMainArea($"The vein collapsed and covers you in rocks \nYou walk away with 0 Iron and a hurt head, {dm} damage\n");
+                    Program.player.HP -= dm;
+                    collapsed = true;
+                    currentHaul = 0;
+                    MainUI.WriteInMainArea("press enter to continue...");
+                    Console.ReadLine();
+                    break; 
+                }
+                else
+                {
+                    int found = rand.Next(1, 4); 
+                    int stabilityLost = rand.Next(15, 31);
+
+                    currentHaul += found;
+                    veinStability -= stabilityLost;
+
+                    MainUI.WriteInMainArea($"\nSuccess\n You chip away and find {found} Iron");
+
+                    if (veinStability <= 0)
+                    {
+                        MainUI.WriteInMainArea("");
+                        MainUI.WriteInMainArea("You've mined all you can from this vein \nIt's too unstable to continue\n");
+                        MainUI.WriteInMainArea("Press enter to continue...");
+                        Console.ReadLine();
+                        break; 
+                    }
+                }
+            }
+        }
+        if (!collapsed)
+        {
+            MainUI.ClearMainArea();
+            MainUI.WriteInMainArea($"You walk away from the mine.\nYou collected {currentHaul} Iron.");
+            Inventory inv = new Inventory(Program.player);
+            inv.AddItem(ItemLibrary.iron, currentHaul);
+            MainUI.WriteInMainArea($"Press enter to continue...");
+            Console.ReadLine();
+        }
+
+        MineLogic();
+    }
 
 
-
-
-
+    #endregion
 
 
 
@@ -1760,8 +1827,5 @@ public class SubLocation
 
 
 }
-
-
-
 
 
