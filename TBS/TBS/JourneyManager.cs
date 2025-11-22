@@ -26,7 +26,7 @@ class JourneyManager
         else if (ride == 1)
         {
             MainUI.WriteInMainArea("\nwhere do you wish to travel (type out the number next to it)");
-            MainUI.WriteInMainArea("Locations you currently know: ");
+            MainUI.WriteInMainArea("Locations you currently know(inside this kingdom): ");
 
             for (int i = 0; i < Program.player.knownLocationnames.Count; i++)
             {
