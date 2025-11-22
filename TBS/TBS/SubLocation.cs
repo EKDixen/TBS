@@ -1351,7 +1351,7 @@ public class SubLocation
             for (int i = 0; i < pagePlayers.Count; i++)
             {
                 var p = pagePlayers[i];
-                MainUI.WriteInMainArea($"{i + 1,-7}{p.name,-20} {p.level,-7}{p.playerClass,-17}{p.HP}/{p.maxHP}");
+                MainUI.WriteInMainArea($"{i + 1,-7}{p.name,-20} {p.level,-7}{p.playerClass.name,-17}{p.HP}/{p.maxHP}");
             }
             
             MainUI.WriteInMainArea("");
@@ -1421,7 +1421,7 @@ public class SubLocation
         }
 
         MainUI.WriteInMainArea($"You have summoned the spirit of {deadPlayer.name}!");
-        MainUI.WriteInMainArea($"Level {deadPlayer.level} {deadPlayer.playerClass}");
+        MainUI.WriteInMainArea($"Level {deadPlayer.level} {deadPlayer.playerClass.name}");
         MainUI.WriteInMainArea($"HP: {deadPlayer.HP}/{deadPlayer.maxHP}");
         MainUI.WriteInMainArea("");
         MainUI.WriteInMainArea("Prepare for battle!");

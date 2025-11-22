@@ -222,7 +222,7 @@ namespace Game.Class
         {
             MainUI.ClearMainArea();
 
-            MainUI.WriteInMainArea($"\nAccount Name: {player.name} \n\n1 : Level: {player.level} \n2 : Class: {player.playerClass} \n3 : HP: {player.HP}/{player.maxHP} \n4 : Speed: {player.speed} \n5 : armor: {player.armor}" +
+            MainUI.WriteInMainArea($"\nAccount Name: {player.name} \n\n1 : Level: {player.level} \n2 : Class: {player.playerClass.name} \n3 : HP: {player.HP}/{player.maxHP} \n4 : Speed: {player.speed} \n5 : armor: {player.armor}" +
                 $"\n6 : Dodge: {player.dodge}% \n7 : DodgeNegation: {player.dodgeNegation}% \n8 : Crit-chance: {player.critChance}% \n9 : Crit-Damage: {player.critDamage}% \n 10 : Stun: {player.stun}%" +
                 $"\n11 : StunNegation: {player.stunNegation}%\n\n");
 
@@ -371,7 +371,7 @@ namespace Game.Class
             Console.WriteLine("");
             Console.WriteLine($"Character: {player.name}");
             Console.WriteLine($"Level: {player.level}");
-            Console.WriteLine($"Class: {player.playerClass}");
+            Console.WriteLine($"Class: {player.playerClass.name}");
             Console.WriteLine("");
             Console.WriteLine("Your character has died...");
             Console.WriteLine("They have been moved to the realm of the dead.");
@@ -409,7 +409,7 @@ namespace Game.Class
             Console.WriteLine("");
             Console.WriteLine($"Character: {deadPlayer.name}");
             Console.WriteLine($"Level: {deadPlayer.level}");
-            Console.WriteLine($"Class: {deadPlayer.playerClass}");
+            Console.WriteLine($"Class: {deadPlayer.playerClass.name}");
             Console.WriteLine("");
             Console.WriteLine("This character died and can no longer be played.");
             Console.WriteLine("Their spirit lingers in the realm of the dead...");
