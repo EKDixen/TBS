@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Newtonsoft.Json.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TBSLauncher
 {
@@ -286,24 +287,25 @@ namespace TBSLauncher
                 {
                     Process.Start(new ProcessStartInfo
                     {
-                        FileName = GAME_EXE,
-                        UseShellExecute = true,
+                        FileName = "conhost.exe",
+                        Arguments = $"\"{Path.Combine(Directory.GetCurrentDirectory(), GAME_EXE)}\"",
+                        UseShellExecute = false,
                         WorkingDirectory = Directory.GetCurrentDirectory()
                     });
-                    Application.Exit();
+                    System.Windows.Forms.Application.Exit();
                 }
                 else
                 {
-                    MessageBox.Show($"Game executable not found: {GAME_EXE}\n\nPlease reinstall the game.", 
+                    MessageBox.Show($"Game executable not found: {GAME_EXE}\n\nPlease reinstall the game.",
                         "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Application.Exit();
+                    System.Windows.Forms.Application.Exit();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error launching game: {ex.Message}", 
+                MessageBox.Show($"Error launching game: {ex.Message}",
                     "Launch Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Application.Exit();
+                System.Windows.Forms.Application.Exit();
             }
         }
 
