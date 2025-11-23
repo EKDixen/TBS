@@ -35,7 +35,7 @@ namespace Game.Class
                 Console.WriteLine("1. Login");
                 Console.WriteLine("2. Create a new character");
 
-                string choice = Console.ReadKey().KeyChar.ToString();
+                string choice = Console.ReadKey(true).KeyChar.ToString();
 
                 if (choice == "1")
                 {
@@ -174,7 +174,7 @@ namespace Game.Class
                         Console.ResetColor();
                         Console.WriteLine();
                         Console.WriteLine("Press any key to close...");
-                        Console.ReadKey();
+                        Console.ReadKey(true);
 
                         // Close the game
                         Environment.Exit(0);
@@ -220,7 +220,7 @@ namespace Game.Class
             MainUI.WriteInMainArea("Check stats : 4");
             //MainUI.WriteInMainArea("Check Encyclopedia : 5");
 
-            if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input) == false || input > 4 || input < 0)
+            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input) == false || input > 4 || input < 0)
             {
                 MainUI.WriteInMainArea("\nyou gotta type 0, 1, 2, 3, 4, or 5");
                 MainUI.WriteInMainArea("Press enter to continue...");
@@ -252,7 +252,7 @@ namespace Game.Class
                 MainUI.WriteInMainArea("\ntype out the number next to the location you want to go to\n");
 
                 int targetDes;
-                if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out targetDes))
+                if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out targetDes))
                 {
                     if (targetDes == 0)
                     {
