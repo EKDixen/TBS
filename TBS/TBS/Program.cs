@@ -1,9 +1,14 @@
 ﻿using System.Drawing;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
 
 namespace Game.Class
 {
     public class Program
     {
+        private const string CURRENT_VERSION = "1.0.4"; // Update this with each release
+        private const string GITHUB_API_URL = "https://api.github.com/repos/EKDixen/TBS/releases/latest";
+
         static bool stopMultibleLoad = false;
         public static Player? player = null;
         public static PlayerDatabase db = new PlayerDatabase();
@@ -11,16 +16,19 @@ namespace Game.Class
         static Inventory Inventory;
         static AttackManager atkManager;
         static Encyclopedia Encyclopedia;
-        
+
         public static Player? pendingDeadPlayerUpdate = null;
         public static Enemy? pendingSpiritEnemy = null;
 
         public static void Main(string[] args)
         {
+            // Check for updates before starting the game
+            CheckForUpdates();
+
             // Lock console window at startup (prevents resizing, which fucks up the UI)
             var ui = new CombatUI();
             ui.InitializeConsole();
-            
+
             while (true)
             {
                 Console.WriteLine("Welcome! Do you want to:");
@@ -46,7 +54,7 @@ namespace Game.Class
                             ShowDeadCharacterScreen(player);
                             continue;
                         }
-                        
+
                         Console.WriteLine($"Welcome back, {player.name} (Level {player.level})!");
                         break;
                     }
@@ -58,7 +66,7 @@ namespace Game.Class
                             ShowDeadCharacterScreen(deadPlayer);
                             continue;
                         }
-                        
+
                         Console.WriteLine("\nInvalid username or password.");
                         continue;
                     }
@@ -111,7 +119,7 @@ namespace Game.Class
                     Console.ResetColor();
 
                     PlayerCreator creator = new PlayerCreator();
-                    player = creator.PlayerCreatorFunction(db,name);
+                    player = creator.PlayerCreatorFunction(db, name);
                     db.SavePlayer(player);
                     Console.WriteLine("New character created and saved!");
                     break;
@@ -122,12 +130,68 @@ namespace Game.Class
                     continue;
                 }
             }
-          
+
             atkManager = new AttackManager(player);
             Inventory = new Inventory(player);
             MainUI.InitializeConsole();
             CheckPlayerLevel();
             MainMenu();
+        }
+
+        private static void CheckForUpdates()
+        {
+            try
+            {
+                Console.WriteLine("Checking for updates...");
+
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Add("User-Agent", "TBS-Game");
+                    client.Timeout = TimeSpan.FromSeconds(5);
+
+                    var response = client.GetStringAsync(GITHUB_API_URL).Result;
+                    JObject json = JObject.Parse(response);
+                    string latestVersion = json["tag_name"]?.ToString()?.TrimStart('v') ?? "";
+
+                    if (!string.IsNullOrEmpty(latestVersion) && latestVersion != CURRENT_VERSION)
+                    {
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("╔════════════════════════════════════════╗");
+                        Console.WriteLine("║                                        ║");
+                        Console.WriteLine("║          OUTDATED VERSION!             ║");
+                        Console.WriteLine("║                                        ║");
+                        Console.WriteLine("╚════════════════════════════════════════╝");
+                        Console.ResetColor();
+                        Console.WriteLine();
+                        Console.WriteLine($"Current version: {CURRENT_VERSION}");
+                        Console.WriteLine($"Latest version:  {latestVersion}");
+                        Console.WriteLine();
+                        Console.WriteLine("This version is outdated and cannot be used.");
+                        Console.WriteLine();
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine("Please use TBSLauncher.exe to download the latest version.");
+                        Console.ResetColor();
+                        Console.WriteLine();
+                        Console.WriteLine("Press any key to close...");
+                        Console.ReadKey();
+
+                        // Close the game
+                        Environment.Exit(0);
+                    }
+                    else if (!string.IsNullOrEmpty(latestVersion))
+                    {
+                        Console.WriteLine($"Game is up to date (v{CURRENT_VERSION})");
+                        Thread.Sleep(800);
+                        Console.Clear();
+                    }
+                }
+            }
+            catch
+            {
+                // Silently fail if can't check for updates (no internet, etc.)
+                // Game will continue normally
+            }
         }
 
         public static void MainMenu()
@@ -148,7 +212,7 @@ namespace Game.Class
             _ = Task.Run(() => db.SavePlayer(player));
 
             MainUI.WriteInMainArea("What do you wish to do? (type the number next to it)");
-            MainUI.WriteInMainArea(""); 
+            MainUI.WriteInMainArea("");
             MainUI.WriteInMainArea("Go somewhere : 0");
             MainUI.WriteInMainArea("Check Inventory : 1");
             MainUI.WriteInMainArea("Check Moves : 2");
@@ -341,7 +405,7 @@ namespace Game.Class
                         pendingSpiritEnemy = null;
                     }
                 }
-                
+
                 ShowDeathScreen();
             }
         }
@@ -356,10 +420,10 @@ namespace Game.Class
             {
                 Console.WriteLine($"Error saving dead player: {ex.Message}");
             }
-            
+
             Console.Clear();
             Console.CursorVisible = true;
-            
+
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("╔════════════════════════════════════════╗");
             Console.WriteLine("║                                        ║");
@@ -367,7 +431,7 @@ namespace Game.Class
             Console.WriteLine("║                                        ║");
             Console.WriteLine("╚════════════════════════════════════════╝");
             Console.ResetColor();
-            
+
             Console.WriteLine("");
             Console.WriteLine($"Character: {player.name}");
             Console.WriteLine($"Level: {player.level}");
@@ -377,19 +441,19 @@ namespace Game.Class
             Console.WriteLine("They have been moved to the realm of the dead.");
             Console.WriteLine("");
             Console.WriteLine("Press Enter to close the game...");
-            
+
             try
             {
                 Console.ReadLine();
             }
             catch { }
-            
+
             player = null;
-            
+
             Console.Clear();
             Console.WriteLine("Game closing...");
             Thread.Sleep(1000);
-            
+
             // Close the game
             Environment.Exit(0);
         }
@@ -397,7 +461,7 @@ namespace Game.Class
         private static void ShowDeadCharacterScreen(Player deadPlayer)
         {
             Console.Clear();
-            
+
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine("╔════════════════════════════════════════╗");
             Console.WriteLine("║                                        ║");
@@ -405,7 +469,7 @@ namespace Game.Class
             Console.WriteLine("║                                        ║");
             Console.WriteLine("╚════════════════════════════════════════╝");
             Console.ResetColor();
-            
+
             Console.WriteLine("");
             Console.WriteLine($"Character: {deadPlayer.name}");
             Console.WriteLine($"Level: {deadPlayer.level}");
@@ -415,7 +479,7 @@ namespace Game.Class
             Console.WriteLine("Their spirit lingers in the realm of the dead...");
             Console.WriteLine("");
             Console.WriteLine("Press Enter to return to login...");
-            
+
             Console.ReadLine();
         }
     }
