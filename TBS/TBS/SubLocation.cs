@@ -58,7 +58,7 @@ public class SubLocation
         if (type == SubLocationType.casino)
         {
             MainUI.WriteInMainArea("what game do you want to play, \nBlackjack : 1 \nRoulette : 2 \nor leave : 0");
-            int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input);
+            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input);
             if (input == null || input > 2 || input < 0)
             {
                 MainUI.ClearMainArea();
@@ -103,7 +103,7 @@ public class SubLocation
         if (type == SubLocationType.tavern)
         {
             MainUI.WriteInMainArea("do you want to buy something : 1  \nor do you want to rent a room : 2  \nor leave : 0");
-            int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input);
+            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input);
             if (input == null || input > 2 || input < 0)
             {
                 MainUI.ClearMainArea();
@@ -145,7 +145,7 @@ public class SubLocation
             MainUI.WriteInMainArea($" {i,-7}{item.name,-26} {item.weight,-7} {item.description,-20} {item.value}");
         }
         MainUI.WriteInMainArea("\nif you want to interact with anything type its corresponding number \nif not type 0");
-        var n = int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input);
+        var n = int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input);
         if (input == null || input > shopItems.Count || input < 0)
         {
             MainUI.ClearMainArea();
@@ -162,7 +162,7 @@ public class SubLocation
         MainUI.WriteInMainArea("1 : buy");
         MainUI.WriteInMainArea("\ntype out the number next to the action you want to perform");
 
-        var k = int.TryParse(Console.ReadKey().KeyChar.ToString(), out int ik);
+        var k = int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int ik);
         if (ik == null || ik < 0 || ik > 1)
         {
             MainUI.ClearMainArea();
@@ -227,7 +227,7 @@ public class SubLocation
             MainUI.WriteInMainArea("4 : Withdraw Money");
             MainUI.WriteInMainArea("0 : Leave");
 
-            if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input) == false || input > 4 || input < 0)
+            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input) == false || input > 4 || input < 0)
             {
                 MainUI.WriteInMainArea(" \nyou gotta type a number from 0-4");
                 Thread.Sleep(1000);
@@ -648,7 +648,7 @@ public class SubLocation
 
             MainUI.WriteInMainArea("\ndo you wish to hit : 1\nor stand : 2");
 
-            int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input2);
+            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input2);
             if (input2 == null || input2 > 2 || input2 < 0)
             {
                 MainUI.ClearMainArea();
@@ -739,7 +739,7 @@ public class SubLocation
             Program.SavePlayer();
 
             MainUI.WriteInMainArea("\nGamble some more!! : 1\nLeave : 0");
-            int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input3);
+            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input3);
             if (input3 == null || input3 > 2 || input3 < 0)
             {
                 MainUI.ClearMainArea();
@@ -767,7 +767,7 @@ public class SubLocation
             Program.SavePlayer();
 
             MainUI.WriteInMainArea("\nGamble some more!! : 1\nLeave : 0");
-            int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input3);
+            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input3);
             if (input3 == null || input3 > 2 || input3 < 0)
             {
                 MainUI.ClearMainArea();
@@ -796,7 +796,7 @@ public class SubLocation
             Program.SavePlayer();
 
             MainUI.WriteInMainArea( "\nGamble some more!! : 1\nLeave : 0");
-            int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input3);
+            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input3);
             if (input3 == null || input3 > 2 || input3 < 0)
             {
                 MainUI.ClearMainArea();
@@ -823,7 +823,7 @@ public class SubLocation
             Program.SavePlayer();
 
             MainUI.WriteInMainArea("\nGamble some more!! : 1\nLeave : 0");
-            int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input3);
+            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input3);
             if (input3 == null || input3 > 2 || input3 < 0)
             {
                 MainUI.ClearMainArea();
@@ -852,7 +852,7 @@ public class SubLocation
             Program.SavePlayer();
 
             MainUI.WriteInMainArea("\nGamble some more!! : 1\nLeave : 0");
-            int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input3);
+            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input3);
             if (input3 == null || input3 > 2 || input3 < 0)
             {
                 MainUI.ClearMainArea();
@@ -908,7 +908,7 @@ public class SubLocation
                     19, 21, 23, 25, 27, 30, 32, 34, 36
                 };
 
-        int.TryParse(Console.ReadKey().KeyChar.ToString(), out int betPlace);
+        int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int betPlace);
         switch (betPlace)
         {
             case 1:
@@ -1056,7 +1056,7 @@ public class SubLocation
         MainUI.WriteInMainArea($"you have {Program.player.money} Rai");
 
         MainUI.WriteInMainArea("\nGamble some more!! : 1\nLeave : 0");
-        int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input3);
+        int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input3);
         if (input3 == null || input3 > 2 || input3 < 0)
         {
             MainUI.ClearMainArea();
@@ -1111,7 +1111,7 @@ public class SubLocation
         fishingMeter = 1;
 
         MainUI.WriteInMainArea("You ready to start fishing?\nStart fishing : 1 \nGo back to menu : 0");
-        string input = Console.ReadKey().KeyChar.ToString();
+        string input = Console.ReadKey(true).KeyChar.ToString();
         int.TryParse(input, out int r);
         if (r==0)
         {
@@ -1126,7 +1126,7 @@ public class SubLocation
         {
             if (Console.KeyAvailable)
             {
-                ConsoleKeyInfo key = Console.ReadKey();
+                ConsoleKeyInfo key = Console.ReadKey(true);
                 if (key.Key == ConsoleKey.Enter)
                 {
                     if (position == target)
@@ -1260,7 +1260,7 @@ public class SubLocation
         MainUI.WriteInMainArea("0. Leave");
         MainUI.WriteInMainArea("");
 
-        int.TryParse(Console.ReadKey().KeyChar.ToString(), out int choice);
+        int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int choice);
         
         if (choice == 0)
         {
@@ -1348,7 +1348,7 @@ public class SubLocation
             MainUI.WriteInMainArea("Type spirit number (1-8) to challenge, or:");
             MainUI.WriteInMainArea("[N] Next Page  [P] Prev Page  [S] Search  [0] Back");
 
-            string input = Console.ReadKey().KeyChar.ToString().ToLower();
+            string input = Console.ReadKey(true).KeyChar.ToString().ToLower();
 
             if (input == "n")
             {
@@ -1604,7 +1604,7 @@ public class SubLocation
             MainUI.WriteInMainArea("1 : sell items");
             MainUI.WriteInMainArea("0 : Leave");
 
-            if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input2) == false || input2 > 1 || input2 < 0)
+            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input2) == false || input2 > 1 || input2 < 0)
             {
                 MainUI.WriteInMainArea(" \nyou gotta type a number from 0-1");
                 Thread.Sleep(1000);
@@ -1742,7 +1742,7 @@ public class SubLocation
     {
         MainUI.WriteInMainArea("You ready to start mining?\nStart mining : 1 \nGo back to menu : 0");
 
-        string input = Console.ReadKey().KeyChar.ToString(); 
+        string input = Console.ReadKey(true).KeyChar.ToString(); 
         int.TryParse(input, out int r);
         if (r == 0)
         {
@@ -1761,7 +1761,7 @@ public class SubLocation
             MainUI.ClearMainArea();
             MainUI.WriteInMainArea($"You are chipping at a promising iron vein\n\nVein Stability: {veinStability}%\nYour Haul: {currentHaul} Iron\n\n1 : Mine deeper \n2 : Walk away with your haul");
 
-            string choice = Console.ReadKey().KeyChar.ToString();
+            string choice = Console.ReadKey(true).KeyChar.ToString();
 
             if (choice == "2")
             {
