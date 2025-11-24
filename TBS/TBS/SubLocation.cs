@@ -132,7 +132,6 @@ public class SubLocation
     #region shop
     void ShopLogic()
     {
-        Inventory inventory = new Inventory(Program.player);
 
 
         MainUI.WriteInMainArea("Shop Items:");
@@ -194,7 +193,7 @@ public class SubLocation
             }
             if ((Program.player.money - shopItems[input].value * quantity) >= 0)
             {
-                inventory.AddItem(shopItems[input], quantity);
+                Inventory.AddItem(shopItems[input], quantity);
                 Program.player.money -= shopItems[input].value * quantity;
             }
             else
@@ -258,7 +257,6 @@ public class SubLocation
 
     private void DepositItems()
     {
-        Inventory inventory = new Inventory(Program.player);
 
         const float exponent = 1.5f;
         const float scale = 0.1f;
@@ -326,7 +324,7 @@ public class SubLocation
             if (equippedSlot >= 0)
             {
                 MainUI.WriteInMainArea($"\nThis item is equipped. Unequipping {selectedItem.name}...");
-                inventory.UnequipItem(equippedSlot);
+                Inventory.UnequipItem(equippedSlot);
                 Thread.Sleep(1000);
             }
 
@@ -339,16 +337,11 @@ public class SubLocation
             // Handle Stats & Effects
             if (selectedItem.type == ItemType.Artifact)
             {
-                inventory.RemoveEffects(selectedItem, null); // Remove stats for the whole stack
+                Inventory.RemoveEffects(selectedItem, null); // Remove stats for the whole stack
             }
 
             // Handle Weight & Speed 
-            float totalWeightRemoved = selectedItem.weight * quantity;
-
-            Program.player.speed += (int)MathF.Floor(MathF.Pow(Program.player.inventorySpeedModifier * scale, exponent));
-            Program.player.inventorySpeedModifier -= (selectedItem.weight - 20) * quantity;
-            Program.player.speed -= (int)MathF.Floor(MathF.Pow(Program.player.inventorySpeedModifier * scale, exponent));
-            Program.player.inventoryWeight -= totalWeightRemoved;
+            Inventory.UpdateWeight();
 
 
             // Handle Item List
@@ -366,7 +359,7 @@ public class SubLocation
             // Re-apply artifact stats if some items are left
             if (selectedItem.type == ItemType.Artifact && Program.player.ownedItems.Contains(selectedItem))
             {
-                inventory.ApplyEffects(selectedItem, null); 
+                Inventory.ApplyEffects(selectedItem, null); 
             }
 
 
@@ -377,7 +370,6 @@ public class SubLocation
 
     private void WithdrawItems()
     {
-        Inventory inventory = new Inventory(Program.player);
 
         while (true)
         {
@@ -439,7 +431,7 @@ public class SubLocation
             }
 
 
-            inventory.AddItem(selectedItem, quantity);
+            Inventory.AddItem(selectedItem, quantity);
 
             // --- Remove from bank ---
             if (selectedItem.type == ItemType.equipment || selectedItem.amount == quantity)
@@ -1186,8 +1178,8 @@ public class SubLocation
             {
                 MainUI.WriteInMainArea("\nYOU GOT FISH!!");
 
-                Inventory inv= new Inventory(Program.player);
-                inv.AddItem(ItemLibrary.fish,1);
+
+                Inventory.AddItem(ItemLibrary.fish,1);
 
                 MainUI.WriteInMainArea("Press Enter to continue...");
                 Console.ReadLine();
@@ -1617,7 +1609,6 @@ public class SubLocation
             }
             else if (input2 == 1)
             {
-                Inventory inventory = new Inventory(Program.player);
 
                 const float exponent = 1.5f;
                 const float scale = 0.1f;
@@ -1686,23 +1677,18 @@ public class SubLocation
                     if (equippedSlot >= 0)
                     {
                         MainUI.WriteInMainArea($"\nThis item is equipped. Unequipping {selectedItem.name}...");
-                        inventory.UnequipItem(equippedSlot);
+                        Inventory.UnequipItem(equippedSlot);
                         Thread.Sleep(1000);
                     }
 
                     // Handle Stats & Effects
                     if (selectedItem.type == ItemType.Artifact)
                     {
-                        inventory.RemoveEffects(selectedItem, null); // Remove stats for the whole stack
+                        Inventory.RemoveEffects(selectedItem, null); // Remove stats for the whole stack
                     }
 
                     // Handle Weight & Speed 
-                    float totalWeightRemoved = selectedItem.weight * quantity;
-
-                    Program.player.speed += (int)MathF.Floor(MathF.Pow(Program.player.inventorySpeedModifier * scale, exponent));
-                    Program.player.inventorySpeedModifier -= (selectedItem.weight) * quantity;
-                    Program.player.speed -= (int)MathF.Floor(MathF.Pow(Program.player.inventorySpeedModifier * scale, exponent));
-                    Program.player.inventoryWeight -= totalWeightRemoved;
+                    Inventory.UpdateWeight();
 
 
                     // Handle Item List
@@ -1720,7 +1706,7 @@ public class SubLocation
                     // Re-apply artifact stats if some items are left
                     if (selectedItem.type == ItemType.Artifact && Program.player.ownedItems.Contains(selectedItem))
                     {
-                        inventory.ApplyEffects(selectedItem, null);
+                        Inventory.ApplyEffects(selectedItem, null);
                     }
 
                     Program.player.money += selectedItem.value * quantity;
@@ -1809,8 +1795,7 @@ public class SubLocation
         {
             MainUI.ClearMainArea();
             MainUI.WriteInMainArea($"You walk away from the mine.\nYou collected {currentHaul} Iron.");
-            Inventory inv = new Inventory(Program.player);
-            inv.AddItem(ItemLibrary.iron, currentHaul);
+            Inventory.AddItem(ItemLibrary.iron, currentHaul);
             MainUI.WriteInMainArea($"Press enter to continue...");
             Console.ReadLine();
         }

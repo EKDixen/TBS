@@ -13,7 +13,6 @@ namespace Game.Class
         public static Player? player = null;
         public static PlayerDatabase db = new PlayerDatabase();
         static JourneyManager journeyManager = new JourneyManager();
-        static Inventory Inventory;
         static AttackManager atkManager;
         static Encyclopedia Encyclopedia;
 
@@ -130,9 +129,9 @@ namespace Game.Class
                     continue;
                 }
             }
-
+            Inventory.MakeInv();
+            Inventory.AddItem(ItemLibrary.rock, 1);
             atkManager = new AttackManager(player);
-            Inventory = new Inventory(player);
             MainUI.InitializeConsole();
             CheckPlayerLevel();
             MainMenu();

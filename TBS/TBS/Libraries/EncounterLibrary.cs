@@ -434,8 +434,7 @@ public static class EncounterLibrary
                 else
                 {
                     MainUI.WriteInMainArea("You successfully pick up the fish without issues!");
-                    Inventory inv = new Inventory(Program.player);
-                    inv.AddItem(ItemLibrary.fish,1);
+                    Inventory.AddItem(ItemLibrary.fish,1);
                 }
 
 

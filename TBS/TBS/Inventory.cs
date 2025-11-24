@@ -15,18 +15,21 @@ public static class Inventory
     static float scale = 0.1f;
 
     public static int freeweight = 20;
-
-    public static void ShowInventory()
+    public static void MakeInv() 
     {
-        UpdateWeight();
         player = Program.player;
 
         while (player.equippedItems.Count < 4)
         {
             player.equippedItems.Add(null);
         }
-
         filteredItems = player.ownedItems;
+    }
+
+    public static void ShowInventory()
+    {
+        UpdateWeight();
+
         while (true)
         {
             // Update the filtered list based on the search term
@@ -235,7 +238,7 @@ public static class Inventory
             for (int i = 0; i < tAmount; i++)
             {
                 Item newItem = new Item(templateItem); // Use the copy constructor
-
+                player.ownedItems.Add(newItem);
                 UpdateWeight();
             }
         }
@@ -244,7 +247,7 @@ public static class Inventory
             Item newItem = new Item(templateItem); // Use the copy constructor
 
             newItem.amount = tAmount;
-
+            player.ownedItems.Add(newItem);
             UpdateWeight();
 
             if (newItem.type == ItemType.Artifact)

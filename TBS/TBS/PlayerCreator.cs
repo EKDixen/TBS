@@ -53,9 +53,7 @@ public class PlayerCreator
         AttackManager atkManager = new AttackManager(newPlayer);
         atkManager.LearnAttack(AttackLibrary.ThrowHands);
         atkManager.EquipAttack(AttackLibrary.ThrowHands, 1);
-        Inventory inv = new Inventory(newPlayer);
 
-        inv.AddItem(ItemLibrary.rock, 1);
         players.Add(newPlayer);
         return newPlayer;
     }

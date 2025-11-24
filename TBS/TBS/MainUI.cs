@@ -140,8 +140,8 @@ namespace Game.Class
             Console.SetCursorPosition(x + 2, y + 7);
             Console.Write($"Rai      - {player.money}");
             Console.SetCursorPosition(x + 2, y + 8);
-            Inventory inv = new Inventory(Program.player);
-            Console.Write($"Weight   - {player.inventoryWeight}/{inv.freeweight}");
+
+            Console.Write($"Weight   - {player.inventoryWeight}/{Inventory.freeweight}");
             Console.SetCursorPosition(x + 2, y + 9);
             Console.Write($"Class    - {player.playerClass.name}");
             Console.SetCursorPosition(x + 2, y + 10);
