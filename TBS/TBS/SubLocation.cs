@@ -1700,7 +1700,7 @@ public class SubLocation
                     float totalWeightRemoved = selectedItem.weight * quantity;
 
                     Program.player.speed += (int)MathF.Floor(MathF.Pow(Program.player.inventorySpeedModifier * scale, exponent));
-                    Program.player.inventorySpeedModifier -= (selectedItem.weight - 20) * quantity;
+                    Program.player.inventorySpeedModifier -= (selectedItem.weight) * quantity;
                     Program.player.speed -= (int)MathF.Floor(MathF.Pow(Program.player.inventorySpeedModifier * scale, exponent));
                     Program.player.inventoryWeight -= totalWeightRemoved;
 
