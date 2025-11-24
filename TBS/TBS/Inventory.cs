@@ -224,6 +224,7 @@ public static class Inventory
                 RemoveEffects(existingItem,tAmount); 
             }
 
+            existingItem.amount += tAmount;
 
             if (existingItem.type == ItemType.Artifact)
             {
