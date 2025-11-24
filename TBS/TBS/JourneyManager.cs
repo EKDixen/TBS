@@ -45,6 +45,7 @@ class JourneyManager
                     else 
                     { 
                         MainUI.WriteInMainArea(LocationLibrary.Get(Program.player.knownLocationnames[i]).name + " : " + (l + 1) + " (current location)");
+                        travelLocations.Add(i);
                         l++;
                     }
                 }
@@ -54,18 +55,17 @@ class JourneyManager
             int targetDes;
             if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out targetDes))
             {
-
                 MainUI.WriteInMainArea("");
                 if (targetDes == 0) { MainUI.ClearMainArea(); ; Program.MainMenu(); return; }
-                else if (targetDes <= travelLocations.Count && targetDes >= 0 && LocationLibrary.Get(Program.player.knownLocationnames[travelLocations[targetDes] - 1]) != LocationLibrary.Get(Program.player.currentLocation)) 
+                else if ( targetDes <= travelLocations.Count && targetDes >= 0 && LocationLibrary.Get(Program.player.knownLocationnames[travelLocations[targetDes - 1]]) != LocationLibrary.Get(Program.player.currentLocation)) 
                 {
-                    float price = (LocationLibrary.Get(Program.player.currentLocation).location - LocationLibrary.Get(Program.player.knownLocationnames[travelLocations[targetDes] - 1]).location).Length() * 2 +
-                        LocationLibrary.Get(Program.player.currentLocation).travelPrice + LocationLibrary.Get(Program.player.knownLocationnames[travelLocations[targetDes] - 1]).travelPrice;
+                    float price = (LocationLibrary.Get(Program.player.currentLocation).location - LocationLibrary.Get(Program.player.knownLocationnames[travelLocations[targetDes - 1]]).location).Length() * 2 +
+                        LocationLibrary.Get(Program.player.currentLocation).travelPrice + LocationLibrary.Get(Program.player.knownLocationnames[travelLocations[targetDes - 1]]).travelPrice;
 
                     if (Program.player.money >= price)
                     {
                         Program.player.money -= (int)Math.Floor(price);
-                        Travel(LocationLibrary.Get(Program.player.knownLocationnames[travelLocations[targetDes] - 1]), true);
+                        Travel(LocationLibrary.Get(Program.player.knownLocationnames[travelLocations[targetDes - 1] ]), true);
                     }
                     else
                     {
