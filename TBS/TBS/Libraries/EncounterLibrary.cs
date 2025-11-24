@@ -271,7 +271,7 @@ public static class EncounterLibrary
         null,
         (player) => {
             MainUI.WriteInMainArea("Eat the mushrooms? (y/n): ");
-            string choice = Console.ReadKey().KeyChar.ToString().ToLower();
+            string choice = Console.ReadKey(true).KeyChar.ToString().ToLower();
             if (choice == "y" || choice == "yes")
             {
                 int roll = rng.Next(1, 101);
@@ -305,7 +305,7 @@ public static class EncounterLibrary
         null,
         (player) => {
             MainUI.WriteInMainArea("Pray at the shrine? (y/n): ");
-            string choice = Console.ReadKey().KeyChar.ToString().ToLower();
+            string choice = Console.ReadKey(true).KeyChar.ToString().ToLower();
             if (choice == "y" || choice == "yes")
             {
                 int roll = rng.Next(1, 101);
@@ -336,7 +336,7 @@ public static class EncounterLibrary
         null,
         (player) => {
             MainUI.WriteInMainArea("Buy the potion for 15 Rai? (y/n): ");
-            string choice = Console.ReadKey().KeyChar.ToString().ToLower();
+            string choice = Console.ReadKey(true).KeyChar.ToString().ToLower();
             if (choice == "y" || choice == "yes")
             {
                 if (player.money >= 15)
@@ -367,7 +367,7 @@ public static class EncounterLibrary
         null,
         (player) => {
             MainUI.WriteInMainArea("Accept his offer? (y/n): ");
-            string choice = Console.ReadKey().KeyChar.ToString().ToLower();
+            string choice = Console.ReadKey(true).KeyChar.ToString().ToLower();
             if (choice == "y" || choice == "yes")
             {
                 MainUI.WriteInMainArea($"how much do you want to bet? current Rai: {Program.player.money} \nYou're betting on heads");
@@ -416,7 +416,7 @@ public static class EncounterLibrary
         null,
         (player) => {
             MainUI.WriteInMainArea("Would you like to pick it up? (y/n): ");
-            string choice = Console.ReadKey().KeyChar.ToString().ToLower();
+            string choice = Console.ReadKey(true).KeyChar.ToString().ToLower();
             if (choice == "y" || choice == "yes")
             {
                 
@@ -455,7 +455,7 @@ public static class EncounterLibrary
                 {
                     MainUI.WriteInMainArea("The doctor sees you're wounded and offers to teach you first aid\n");
                     MainUI.WriteInMainArea("Learn the move first aid? (y/n): ");
-                    string choice = Console.ReadKey().KeyChar.ToString().ToLower();
+                    string choice = Console.ReadKey(true).KeyChar.ToString().ToLower();
                     if (choice == "y" || choice == "yes")
                     {
                         MainUI.WriteInMainArea("The doctor teaches you first aid!");
@@ -481,7 +481,7 @@ public static class EncounterLibrary
         null,
         (player) => {
             MainUI.WriteInMainArea("Do you talk to him? (y/n): ");
-            string choice = Console.ReadKey().KeyChar.ToString().ToLower();
+            string choice = Console.ReadKey(true).KeyChar.ToString().ToLower();
             if (choice == "y" || choice == "yes")
             {
                 int damage = rng.Next(5, 15);
@@ -491,7 +491,7 @@ public static class EncounterLibrary
                 Program.SavePlayer();
                 Program.CheckPlayerDeath();
                 MainUI.WriteInMainArea("Do you accept his offer? (y/n): ");
-                string choice2 = Console.ReadKey().KeyChar.ToString().ToLower();
+                string choice2 = Console.ReadKey(true).KeyChar.ToString().ToLower();
                 if (choice2 == "y" || choice2 == "yes")
                 {
                     AttackManager atkmanager = new AttackManager(Program.player);

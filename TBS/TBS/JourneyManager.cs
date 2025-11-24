@@ -16,7 +16,7 @@ class JourneyManager
 
         MainUI.WriteInMainArea($"Would you like to purchase a carriage ride to your destination : 1");
         MainUI.WriteInMainArea("or travel by foot (has the option of exploring) : 2");
-        int.TryParse(Console.ReadKey().KeyChar.ToString(), out int ride);
+        int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int ride);
         if (ride == null || ride > 2 || ride < 1)
         {
             MainUI.WriteInMainArea("--------look mate you gotta type a number----------- \n");
@@ -26,24 +26,26 @@ class JourneyManager
         else if (ride == 1)
         {
             MainUI.WriteInMainArea("\nwhere do you wish to travel (type out the number next to it)");
-            MainUI.WriteInMainArea("Locations you currently know: ");
+            MainUI.WriteInMainArea("Locations you currently know(inside this kingdom): ");
 
             for (int i = 0; i < Program.player.knownLocationnames.Count; i++)
             {
-                if (LocationLibrary.Get(Program.player.knownLocationnames[i]) != LocationLibrary.Get(Program.player.currentLocation) && 
-                    LocationLibrary.Get(Program.player.knownLocationnames[i]).kingdom == LocationLibrary.Get(Program.player.currentLocation).kingdom) 
+                if (LocationLibrary.Get(Program.player.knownLocationnames[i]).kingdom == LocationLibrary.Get(Program.player.currentLocation).kingdom)
                 {
-                    float price = (LocationLibrary.Get(Program.player.currentLocation).location - LocationLibrary.Get(Program.player.knownLocationnames[i]).location).Length() * 2 + 
-                        LocationLibrary.Get(Program.player.currentLocation).travelPrice + LocationLibrary.Get(Program.player.knownLocationnames[i]).travelPrice;
-                    MainUI.WriteInMainArea($"{LocationLibrary.Get(Program.player.knownLocationnames[i]).name}  :  {(i + 1)}  (price: {(int)Math.Floor(price)})"); 
-                    
+                    if (LocationLibrary.Get(Program.player.knownLocationnames[i]) != LocationLibrary.Get(Program.player.currentLocation))
+                    {
+                        float price = (LocationLibrary.Get(Program.player.currentLocation).location - LocationLibrary.Get(Program.player.knownLocationnames[i]).location).Length() * 2 +
+                            LocationLibrary.Get(Program.player.currentLocation).travelPrice + LocationLibrary.Get(Program.player.knownLocationnames[i]).travelPrice;
+                        MainUI.WriteInMainArea($"{LocationLibrary.Get(Program.player.knownLocationnames[i]).name}  :  {(i + 1)}  (price: {(int)Math.Floor(price)})");
+
+                    }
+                    else MainUI.WriteInMainArea(LocationLibrary.Get(Program.player.knownLocationnames[i]).name + " : " + (i + 1) + " (current location)");
                 }
-                else MainUI.WriteInMainArea(LocationLibrary.Get(Program.player.knownLocationnames[i]).name + " : " + (i + 1) + " (current location)");
             }
             MainUI.WriteInMainArea("or go back : 0");
 
             int targetDes;
-            if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out targetDes))
+            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out targetDes))
             {
 
                 MainUI.WriteInMainArea("");
@@ -109,7 +111,7 @@ class JourneyManager
             MainUI.WriteInMainArea("return to main menu : 0");
 
             int targetDes;
-            if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out targetDes))
+            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out targetDes))
             {
                 MainUI.WriteInMainArea("");
                 if (targetDes == 1) Explore();

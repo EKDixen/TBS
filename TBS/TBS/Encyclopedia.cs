@@ -80,7 +80,7 @@ public class Encyclopedia
             MainUI.WriteInMainArea("[N] Next Page  [P] Prev Page  [S] Search  [0] Back to Main Menu");
 
 
-            string inputString = Console.ReadKey().KeyChar.ToString().ToLower() ?? "";
+            string inputString = Console.ReadKey(true).KeyChar.ToString().ToLower() ?? "";
 
             if (inputString == "n")
             {
@@ -121,7 +121,7 @@ public class Encyclopedia
             MainUI.WriteInMainArea("1 : cancel");
 
 
-            var k = int.TryParse(Console.ReadKey().KeyChar.ToString(), out int ik);
+            var k = int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int ik);
             if (!k || ik < 0 || ik > 1)
             {
                 MainUI.ClearMainArea();

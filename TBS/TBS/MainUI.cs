@@ -140,11 +140,14 @@ namespace Game.Class
             Console.SetCursorPosition(x + 2, y + 7);
             Console.Write($"Rai      - {player.money}");
             Console.SetCursorPosition(x + 2, y + 8);
-            Console.Write($"Location - {player.currentLocation}");
-            Console.SetCursorPosition(x + 2, y + 9);
             Inventory inv = new Inventory(Program.player);
             Console.Write($"Weight   - {player.inventoryWeight}/{inv.freeweight}");
-            Console.SetCursorPosition(x + 2, y + 11);
+            Console.SetCursorPosition(x + 2, y + 9);
+            Console.Write($"Class    - {player.playerClass.name}");
+            Console.SetCursorPosition(x + 2, y + 10);
+            Console.Write($"Location - {player.currentLocation}");
+
+            Console.SetCursorPosition(x + 2, y + 12);
             Console.Write("Equiped items:");
             for (int j = 0; j < player.equippedItems.Capacity; j++)
             {
@@ -156,7 +159,7 @@ namespace Game.Class
                     case 2: place = "Legs"; break;
                     case 3: place = "Feet"; break;
                 }
-                Console.SetCursorPosition(x + 2, y + 11 + j);
+                Console.SetCursorPosition(x + 2, y + 13 + j);
                 Console.Write($"{j + 1} ({place}) : {player.equippedItems[j]?.name ?? "Empty"}");
             }
         }
@@ -296,7 +299,7 @@ namespace Game.Class
                 SetCursorInMainArea(mainAreaCurrentLine);
             }
         }
-        
+
         public static void ClearMainArea()
         {
             lock (consoleLock)

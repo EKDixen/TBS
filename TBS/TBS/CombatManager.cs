@@ -446,7 +446,7 @@ public class CombatManager
                 int totalOptions = moves.Count + consumables.Count;
                 while (true)
                 {
-                    if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out choice) && choice >= 0 && choice <= totalOptions)
+                    if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out choice) && choice >= 0 && choice <= totalOptions)
                         break;
                     ui.SetCursorInMainArea(lineNum + 1);
                     Console.Write("Invalid choice. Try again: ");
@@ -516,7 +516,7 @@ public class CombatManager
 
                         while (true)
                         {
-                            if (!int.TryParse(Console.ReadKey().KeyChar.ToString(), out int t) || t < 1 || t > enemies.Count)
+                            if (!int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int t) || t < 1 || t > enemies.Count)
                             {
                                 ui.SetCursorInMainArea(2 + enemies.Count + 3);
                                 Console.Write("Invalid. Try again: ");

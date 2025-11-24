@@ -143,6 +143,7 @@
         Tarmor = 2,  
     };
     #endregion
+
     #region hybrid
 
     public static readonly Class Templar = new Class("Templar")

@@ -131,7 +131,7 @@ public class AttackManager
             MainUI.WriteInMainArea("Type move number (1-8) to interact, or:");
             MainUI.WriteInMainArea("[N] Next Page  [P] Prev Page  [S] Search  [0] Back to Main Menu");
 
-            string inputString = Console.ReadKey().KeyChar.ToString().ToLower() ?? "";
+            string inputString = Console.ReadKey(true).KeyChar.ToString().ToLower() ?? "";
 
             if (inputString == "n")
             {
@@ -173,7 +173,7 @@ public class AttackManager
                 MainUI.WriteInMainArea("You can swap it to a different slot if you want.");
                 MainUI.WriteInMainArea("\nChoose a different slot (1-4) to swap, or 0 to cancel: ");
                 
-                if (!int.TryParse(Console.ReadKey().KeyChar.ToString(), out int newSlot) || newSlot < 0 || newSlot > 4)
+                if (!int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int newSlot) || newSlot < 0 || newSlot > 4)
                 {
                     MainUI.WriteInMainArea("\nInvalid input.");
                     MainUI.WriteInMainArea("\n-press Enter to continue-");
@@ -205,7 +205,7 @@ public class AttackManager
 
             // Equip to a slot
             MainUI.WriteInMainArea("\nChoose a slot (1-4) or 0 to cancel: ");
-            if (!int.TryParse(Console.ReadKey().KeyChar.ToString(), out int slot) || slot < 0 || slot > 4)
+            if (!int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int slot) || slot < 0 || slot > 4)
             {
                 MainUI.WriteInMainArea("\nInvalid input.");
                 MainUI.WriteInMainArea("\n-press Enter to continue-");
@@ -220,7 +220,7 @@ public class AttackManager
             {
                 MainUI.WriteInMainArea($"\nSlot {slot} already has {player.equippedAttacks[slot - 1].name}.");
                 MainUI.WriteInMainArea($"Replace it with {chosen.name}? (y/n): ");
-                string confirm = Console.ReadKey().KeyChar.ToString().ToLower();
+                string confirm = Console.ReadKey(true).KeyChar.ToString().ToLower();
                 
                 if (confirm != "y")
                 {

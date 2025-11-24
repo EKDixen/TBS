@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 public enum SubLocationType
 {
     shop,
+    marketplace,
     tavern,//no--
     blacksmith,//no--
     arena,//no--
@@ -16,7 +17,8 @@ public enum SubLocationType
     wilderness,
     graveyard,
     pond,
-    port
+    port,
+    mine
 }
 public class SubLocation
 {
@@ -49,18 +51,14 @@ public class SubLocation
     public void DoSubLocation()
     {
         MainUI.ClearMainArea();
-        if (type == SubLocationType.shop)
-        {
-            ShopLogic();
-        }
-        if (type == SubLocationType.bank)
-        {
-            BankLogic();
-        }
+        if (type == SubLocationType.shop) ShopLogic();
+        
+        if (type == SubLocationType.bank) BankLogic();
+        
         if (type == SubLocationType.casino)
         {
             MainUI.WriteInMainArea("what game do you want to play, \nBlackjack : 1 \nRoulette : 2 \nor leave : 0");
-            int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input);
+            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input);
             if (input == null || input > 2 || input < 0)
             {
                 MainUI.ClearMainArea();
@@ -87,22 +85,17 @@ public class SubLocation
             }
 
         }
-        if (type == SubLocationType.wilderness)
-        {
-            WildernessLogic();
-        }
-        if (type == SubLocationType.pond)
-        {
-            FishingLogic();
-        }
-        if (type == SubLocationType.graveyard)
-        {
-            GraveyardLogic();
-        }
-        if (type == SubLocationType.port)
-        {
-            PortLogic();
-        }
+        if (type == SubLocationType.wilderness) WildernessLogic();
+        
+        if (type == SubLocationType.pond) FishingLogic();
+        
+        if (type == SubLocationType.graveyard) GraveyardLogic();
+        
+        if (type == SubLocationType.port) PortLogic();
+        
+        if(type == SubLocationType.marketplace) MarketplaceLogic();
+
+        if (type == SubLocationType.mine) MineLogic();
 
 
 
@@ -110,7 +103,7 @@ public class SubLocation
         if (type == SubLocationType.tavern)
         {
             MainUI.WriteInMainArea("do you want to buy something : 1  \nor do you want to rent a room : 2  \nor leave : 0");
-            int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input);
+            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input);
             if (input == null || input > 2 || input < 0)
             {
                 MainUI.ClearMainArea();
@@ -152,7 +145,7 @@ public class SubLocation
             MainUI.WriteInMainArea($" {i,-7}{item.name,-26} {item.weight,-7} {item.description,-20} {item.value}");
         }
         MainUI.WriteInMainArea("\nif you want to interact with anything type its corresponding number \nif not type 0");
-        var n = int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input);
+        var n = int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input);
         if (input == null || input > shopItems.Count || input < 0)
         {
             MainUI.ClearMainArea();
@@ -169,7 +162,7 @@ public class SubLocation
         MainUI.WriteInMainArea("1 : buy");
         MainUI.WriteInMainArea("\ntype out the number next to the action you want to perform");
 
-        var k = int.TryParse(Console.ReadKey().KeyChar.ToString(), out int ik);
+        var k = int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int ik);
         if (ik == null || ik < 0 || ik > 1)
         {
             MainUI.ClearMainArea();
@@ -228,13 +221,13 @@ public class SubLocation
             MainUI.WriteInMainArea("Welcome to the bank");
             MainUI.WriteInMainArea($"You have {Program.player.bankMoney} Rai in your account.");
             MainUI.WriteInMainArea("Would you like to:");
-            MainUI.WriteInMainArea("1. Deposit Items");
-            MainUI.WriteInMainArea("2. Withdraw Items");
-            MainUI.WriteInMainArea("3. Deposit Money");
-            MainUI.WriteInMainArea("4. Withdraw Money");
-            MainUI.WriteInMainArea("0. Leave");
+            MainUI.WriteInMainArea("1 : Deposit Items");
+            MainUI.WriteInMainArea("2 : Withdraw Items");
+            MainUI.WriteInMainArea("3 : Deposit Money");
+            MainUI.WriteInMainArea("4 : Withdraw Money");
+            MainUI.WriteInMainArea("0 : Leave");
 
-            if (int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input) == false || input > 4 || input < 0)
+            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input) == false || input > 4 || input < 0)
             {
                 MainUI.WriteInMainArea(" \nyou gotta type a number from 0-4");
                 Thread.Sleep(1000);
@@ -282,7 +275,7 @@ public class SubLocation
             {
                 MainUI.WriteInMainArea("You have no items to deposit.");
                 MainUI.WriteInMainArea("");
-                MainUI.WriteInMainArea("0. Back");
+                MainUI.WriteInMainArea("0 : Back");
             }
             else
             {
@@ -292,7 +285,7 @@ public class SubLocation
                     MainUI.WriteInMainArea($"{i + 1,-7}{item.name,-25} {item.amount,-5}");
                 }
                 MainUI.WriteInMainArea("");
-                MainUI.WriteInMainArea("0. Back");
+                MainUI.WriteInMainArea("0 : Back");
             }
 
             string inputString = Console.ReadLine() ?? "";
@@ -305,7 +298,7 @@ public class SubLocation
 
             if (!n || input < 1 || input > Program.player.ownedItems.Count)
             {
-                MainUI.WriteInMainArea("\nInvalid selection. Please type a number from the list.");
+                MainUI.WriteInMainArea("\nInvalid selection. Please type a number from the list");
                 Thread.Sleep(1000);
                 continue;
             }
@@ -322,7 +315,7 @@ public class SubLocation
 
                 if (!q || quantity < 1 || quantity > selectedItem.amount)
                 {
-                    MainUI.WriteInMainArea("\nInvalid amount.");
+                    MainUI.WriteInMainArea("\nInvalid amount");
                     Thread.Sleep(1000);
                     continue;
                 }
@@ -379,7 +372,6 @@ public class SubLocation
 
             MainUI.WriteInMainArea($"\nDeposited {quantity}x {itemToBank.name}.");
             Thread.Sleep(1000);
-            // Loop continues to show the deposit inventory again
         }
     }
 
@@ -399,7 +391,7 @@ public class SubLocation
             {
                 MainUI.WriteInMainArea("Your bank is empty.");
                 MainUI.WriteInMainArea("");
-                MainUI.WriteInMainArea("0. Back");
+                MainUI.WriteInMainArea("0 : Back");
             }
             else
             {
@@ -409,7 +401,7 @@ public class SubLocation
                     MainUI.WriteInMainArea($"{i + 1,-7}{item.name,-25} {item.amount,-5} {location}");
                 }
                 MainUI.WriteInMainArea("");
-                MainUI.WriteInMainArea("0. Back");
+                MainUI.WriteInMainArea("0 : Back");
             }
 
             string inputString = Console.ReadLine() ?? "";
@@ -482,7 +474,7 @@ public class SubLocation
 
         if (!n || amount < 0)
         {
-            MainUI.WriteInMainArea("\nInvalid amount.");
+            MainUI.WriteInMainArea("\nInvalid amount");
             Thread.Sleep(1000);
             return;
         }
@@ -494,7 +486,7 @@ public class SubLocation
 
         if (amount > Program.player.money)
         {
-            MainUI.WriteInMainArea("\nYou don't have that much Rai.");
+            MainUI.WriteInMainArea("\nYou don't have that much Rai");
             Thread.Sleep(1000);
             return;
         }
@@ -502,8 +494,8 @@ public class SubLocation
         Program.player.money -= amount;
         Program.player.bankMoney += amount;
 
-        MainUI.WriteInMainArea($"\nDeposited {amount} Rai.");
-        MainUI.WriteInMainArea($"New balance: {Program.player.bankMoney} Rai.");
+        MainUI.WriteInMainArea($"\nDeposited {amount} Rai");
+        MainUI.WriteInMainArea($"New balance: {Program.player.bankMoney} Rai");
         Thread.Sleep(1500);
     }
 
@@ -656,7 +648,7 @@ public class SubLocation
 
             MainUI.WriteInMainArea("\ndo you wish to hit : 1\nor stand : 2");
 
-            int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input2);
+            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input2);
             if (input2 == null || input2 > 2 || input2 < 0)
             {
                 MainUI.ClearMainArea();
@@ -747,7 +739,7 @@ public class SubLocation
             Program.SavePlayer();
 
             MainUI.WriteInMainArea("\nGamble some more!! : 1\nLeave : 0");
-            int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input3);
+            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input3);
             if (input3 == null || input3 > 2 || input3 < 0)
             {
                 MainUI.ClearMainArea();
@@ -775,7 +767,7 @@ public class SubLocation
             Program.SavePlayer();
 
             MainUI.WriteInMainArea("\nGamble some more!! : 1\nLeave : 0");
-            int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input3);
+            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input3);
             if (input3 == null || input3 > 2 || input3 < 0)
             {
                 MainUI.ClearMainArea();
@@ -804,7 +796,7 @@ public class SubLocation
             Program.SavePlayer();
 
             MainUI.WriteInMainArea( "\nGamble some more!! : 1\nLeave : 0");
-            int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input3);
+            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input3);
             if (input3 == null || input3 > 2 || input3 < 0)
             {
                 MainUI.ClearMainArea();
@@ -831,7 +823,7 @@ public class SubLocation
             Program.SavePlayer();
 
             MainUI.WriteInMainArea("\nGamble some more!! : 1\nLeave : 0");
-            int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input3);
+            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input3);
             if (input3 == null || input3 > 2 || input3 < 0)
             {
                 MainUI.ClearMainArea();
@@ -860,7 +852,7 @@ public class SubLocation
             Program.SavePlayer();
 
             MainUI.WriteInMainArea("\nGamble some more!! : 1\nLeave : 0");
-            int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input3);
+            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input3);
             if (input3 == null || input3 > 2 || input3 < 0)
             {
                 MainUI.ClearMainArea();
@@ -916,7 +908,7 @@ public class SubLocation
                     19, 21, 23, 25, 27, 30, 32, 34, 36
                 };
 
-        int.TryParse(Console.ReadKey().KeyChar.ToString(), out int betPlace);
+        int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int betPlace);
         switch (betPlace)
         {
             case 1:
@@ -1064,7 +1056,7 @@ public class SubLocation
         MainUI.WriteInMainArea($"you have {Program.player.money} Rai");
 
         MainUI.WriteInMainArea("\nGamble some more!! : 1\nLeave : 0");
-        int.TryParse(Console.ReadKey().KeyChar.ToString(), out int input3);
+        int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input3);
         if (input3 == null || input3 > 2 || input3 < 0)
         {
             MainUI.ClearMainArea();
@@ -1118,8 +1110,8 @@ public class SubLocation
     {
         fishingMeter = 1;
 
-        MainUI.WriteInMainArea("You ready to start fishing?\nStart fishing : Enter \nGo back to menu : 0");
-        string input = Console.ReadKey().KeyChar.ToString();
+        MainUI.WriteInMainArea("You ready to start fishing?\nStart fishing : 1 \nGo back to menu : 0");
+        string input = Console.ReadKey(true).KeyChar.ToString();
         int.TryParse(input, out int r);
         if (r==0)
         {
@@ -1268,7 +1260,7 @@ public class SubLocation
         MainUI.WriteInMainArea("0. Leave");
         MainUI.WriteInMainArea("");
 
-        int.TryParse(Console.ReadKey().KeyChar.ToString(), out int choice);
+        int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int choice);
         
         if (choice == 0)
         {
@@ -1316,7 +1308,7 @@ public class SubLocation
             {
                 filteredPlayers = deadPlayers
                     .Where(p => p.name.ToLower().Contains(searchTerm.ToLower()) ||
-                               p.playerClass.ToLower().Contains(searchTerm.ToLower()))
+                               p.playerClass.name.ToLower().Contains(searchTerm.ToLower()))
                     .ToList();
             }
             
@@ -1347,7 +1339,7 @@ public class SubLocation
             for (int i = 0; i < pagePlayers.Count; i++)
             {
                 var p = pagePlayers[i];
-                MainUI.WriteInMainArea($"{i + 1,-7}{p.name,-20} {p.level,-7}{p.playerClass,-17}{p.HP}/{p.maxHP}");
+                MainUI.WriteInMainArea($"{i + 1,-7}{p.name,-20} {p.level,-7}{p.playerClass.name,-17}{p.HP}/{p.maxHP}");
             }
             
             MainUI.WriteInMainArea("");
@@ -1356,7 +1348,7 @@ public class SubLocation
             MainUI.WriteInMainArea("Type spirit number (1-8) to challenge, or:");
             MainUI.WriteInMainArea("[N] Next Page  [P] Prev Page  [S] Search  [0] Back");
 
-            string input = Console.ReadKey().KeyChar.ToString().ToLower();
+            string input = Console.ReadKey(true).KeyChar.ToString().ToLower();
 
             if (input == "n")
             {
@@ -1417,7 +1409,7 @@ public class SubLocation
         }
 
         MainUI.WriteInMainArea($"You have summoned the spirit of {deadPlayer.name}!");
-        MainUI.WriteInMainArea($"Level {deadPlayer.level} {deadPlayer.playerClass}");
+        MainUI.WriteInMainArea($"Level {deadPlayer.level} {deadPlayer.playerClass.name}");
         MainUI.WriteInMainArea($"HP: {deadPlayer.HP}/{deadPlayer.maxHP}");
         MainUI.WriteInMainArea("");
         MainUI.WriteInMainArea("Prepare for battle!");
@@ -1600,9 +1592,240 @@ public class SubLocation
     }
     #endregion
 
+    #region marketplace
 
-    //not done
+    public void MarketplaceLogic()
+    {
+        while (true)
+        {
+            MainUI.ClearMainArea();
+            MainUI.WriteInMainArea("Welcome to the market");
+            MainUI.WriteInMainArea("Would you like to:");
+            MainUI.WriteInMainArea("1 : sell items");
+            MainUI.WriteInMainArea("0 : Leave");
+
+            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input2) == false || input2 > 1 || input2 < 0)
+            {
+                MainUI.WriteInMainArea(" \nyou gotta type a number from 0-1");
+                Thread.Sleep(1000);
+                continue;
+            }
+            else if (input2 == 0)
+            {
+                Program.MainMenu();
+                break;
+            }
+            else if (input2 == 1)
+            {
+                Inventory inventory = new Inventory(Program.player);
+
+                const float exponent = 1.5f;
+                const float scale = 0.1f;
+
+                while (true)
+                {
+                    MainUI.ClearMainArea();
+                    MainUI.WriteInMainArea("Select an item to deposit:");
+                    MainUI.WriteInMainArea("");
+                    MainUI.WriteInMainArea("nr     Name                      Qty     Value");
+                    MainUI.WriteInMainArea("------------------------------------------------");
+
+                    if (Program.player.ownedItems.Count == 0)
+                    {
+                        MainUI.WriteInMainArea("You have no items to deposit.");
+                        MainUI.WriteInMainArea("");
+                        MainUI.WriteInMainArea("0 : Back");
+                    }
+                    else
+                    {
+                        for (int i = 0; i < Program.player.ownedItems.Count; i++)
+                        {
+                            var item = Program.player.ownedItems[i];
+                            MainUI.WriteInMainArea($"{i + 1,-7}{item.name,-25} {item.amount,-7}  {item.value}");
+                        }
+                        MainUI.WriteInMainArea("");
+                        MainUI.WriteInMainArea("0 : Back");
+                    }
+
+                    string inputString = Console.ReadLine() ?? "";
+                    var n = int.TryParse(inputString, out int input);
+
+                    if (input == 0)
+                    {
+                        Program.MainMenu();
+                        return;
+                    }
+
+                    if (!n || input < 1 || input > Program.player.ownedItems.Count)
+                    {
+                        MainUI.WriteInMainArea("\nInvalid selection. Please type a number from the list");
+                        Thread.Sleep(1000);
+                        continue;
+                    }
+
+                    Item selectedItem = Program.player.ownedItems[input - 1];
+                    int quantity = 1;
+
+                    // If stackable, ask how many
+                    if (selectedItem.type != ItemType.equipment)
+                    {
+                        MainUI.WriteInMainArea($"How many {selectedItem.name} would you like to deposit? (Max: {selectedItem.amount})");
+                        string quantityString = Console.ReadLine() ?? "";
+                        var q = int.TryParse(quantityString, out quantity);
+
+                        if (!q || quantity < 1 || quantity > selectedItem.amount)
+                        {
+                            MainUI.WriteInMainArea("\nInvalid amount");
+                            Thread.Sleep(1000);
+                            continue;
+                        }
+                    }
+
+                    // Check if item is equipped
+                    int equippedSlot = Program.player.equippedItems.IndexOf(selectedItem);
+                    if (equippedSlot >= 0)
+                    {
+                        MainUI.WriteInMainArea($"\nThis item is equipped. Unequipping {selectedItem.name}...");
+                        inventory.UnequipItem(equippedSlot);
+                        Thread.Sleep(1000);
+                    }
+
+                    // Handle Stats & Effects
+                    if (selectedItem.type == ItemType.Artifact)
+                    {
+                        inventory.RemoveEffects(selectedItem, null); // Remove stats for the whole stack
+                    }
+
+                    // Handle Weight & Speed 
+                    float totalWeightRemoved = selectedItem.weight * quantity;
+
+                    Program.player.speed += (int)MathF.Floor(MathF.Pow(Program.player.inventorySpeedModifier * scale, exponent));
+                    Program.player.inventorySpeedModifier -= (selectedItem.weight - 20) * quantity;
+                    Program.player.speed -= (int)MathF.Floor(MathF.Pow(Program.player.inventorySpeedModifier * scale, exponent));
+                    Program.player.inventoryWeight -= totalWeightRemoved;
+
+
+                    // Handle Item List
+                    if (selectedItem.type == ItemType.equipment || selectedItem.amount <= quantity)
+                    {
+                        // Remove the item completely
+                        Program.player.ownedItems.Remove(selectedItem);
+                    }
+                    else
+                    {
+                        // Just subtract the amount
+                        selectedItem.amount -= quantity;
+                    }
+
+                    // Re-apply artifact stats if some items are left
+                    if (selectedItem.type == ItemType.Artifact && Program.player.ownedItems.Contains(selectedItem))
+                    {
+                        inventory.ApplyEffects(selectedItem, null);
+                    }
+
+                    Program.player.money += selectedItem.value * quantity;
+
+                    MainUI.WriteInMainArea($"\nSold {quantity}x {selectedItem.name} for {selectedItem.value * quantity} Rai");
+                    Thread.Sleep(1000);
+                }
+            }
+
+            Program.SavePlayer();
+        }
+    }
+
+    #endregion
+
+    #region mine
+
+    void MineLogic()
+    {
+        MainUI.WriteInMainArea("You ready to start mining?\nStart mining : 1 \nGo back to menu : 0");
+
+        string input = Console.ReadKey(true).KeyChar.ToString(); 
+        int.TryParse(input, out int r);
+        if (r == 0)
+        {
+            MainUI.ClearMainArea();
+            Program.MainMenu();
+            return;
+        }
+
+        Random rand = new Random();
+        int veinStability = 100;
+        int currentHaul = 0;
+        bool collapsed = false;
+
+        while (true)
+        {
+            MainUI.ClearMainArea();
+            MainUI.WriteInMainArea($"You are chipping at a promising iron vein\n\nVein Stability: {veinStability}%\nYour Haul: {currentHaul} Iron\n\n1 : Mine deeper \n2 : Walk away with your haul");
+
+            string choice = Console.ReadKey(true).KeyChar.ToString();
+
+            if (choice == "2")
+            {
+                break; 
+            }
+            else if (choice == "1")
+            {
+                int failChance = 100 - veinStability;
+                int roll = rand.Next(0, 100);
+
+                if (roll < failChance)
+                {
+                    int dm = rand.Next(1, 11);
+                    MainUI.ClearMainArea();
+                    MainUI.WriteInMainArea($"The vein collapsed and covers you in rocks \nYou walk away with 0 Iron and a hurt head, {dm} damage\n");
+                    Program.player.HP -= dm;
+                    collapsed = true;
+                    currentHaul = 0;
+                    MainUI.WriteInMainArea("press enter to continue...");
+                    Console.ReadLine();
+                    break; 
+                }
+                else
+                {
+                    int found = rand.Next(1, 4); 
+                    int stabilityLost = rand.Next(15, 31);
+
+                    currentHaul += found;
+                    veinStability -= stabilityLost;
+
+                    MainUI.WriteInMainArea($"\nSuccess\n You chip away and find {found} Iron");
+
+                    if (veinStability <= 0)
+                    {
+                        MainUI.WriteInMainArea("");
+                        MainUI.WriteInMainArea("You've mined all you can from this vein \nIt's too unstable to continue\n");
+                        MainUI.WriteInMainArea("Press enter to continue...");
+                        Console.ReadLine();
+                        break; 
+                    }
+                }
+            }
+        }
+        if (!collapsed)
+        {
+            MainUI.ClearMainArea();
+            MainUI.WriteInMainArea($"You walk away from the mine.\nYou collected {currentHaul} Iron.");
+            Inventory inv = new Inventory(Program.player);
+            inv.AddItem(ItemLibrary.iron, currentHaul);
+            MainUI.WriteInMainArea($"Press enter to continue...");
+            Console.ReadLine();
+        }
+
+        MineLogic();
+    }
+
+
+    #endregion
+
+
+
 
 
 
 }
+
+

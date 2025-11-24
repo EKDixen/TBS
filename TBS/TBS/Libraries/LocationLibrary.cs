@@ -26,7 +26,12 @@ public static class LocationLibrary
         new SubLocation("Bank", SubLocationType.bank)
         {
 
+        },
+        new SubLocation("Market", SubLocationType.marketplace)
+        {
+
         }
+
     },
     new Dictionary<Encounter, int>
     {
@@ -51,6 +56,10 @@ public static class LocationLibrary
 
         },
         new SubLocation("Port", SubLocationType.port)
+        {
+
+        },
+        new SubLocation("Market", SubLocationType.marketplace)
         {
 
         }
@@ -127,6 +136,10 @@ public static class LocationLibrary
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
 
+        },
+        new SubLocation("Market", SubLocationType.marketplace)
+        {
+
         }
     },
     new Dictionary<Encounter, int>
@@ -196,7 +209,8 @@ public static class LocationLibrary
         { EncounterLibrary.FoundTreasure, 30},
         { EncounterLibrary.MysteriousShrine, 25},
         { EncounterLibrary.WanderingMerchant, 20},
-        { EncounterLibrary.BanditAmbush, 15}
+        { EncounterLibrary.BanditFight, 50},
+        { EncounterLibrary.BanditAmbush, 3}
     }, "Fallen Kingdom");
 
     public static Location ShattershoreCliffs = new Location("Shattershore Cliffs", new System.Numerics.Vector2(-2, 0), 1, new List<SubLocation>
@@ -205,6 +219,10 @@ public static class LocationLibrary
         {
         },
         new SubLocation("Wilderness",SubLocationType.wilderness)
+        {
+
+        },
+        new SubLocation("Market", SubLocationType.marketplace)
         {
 
         }
@@ -224,6 +242,10 @@ public static class LocationLibrary
         {
         },
         new SubLocation("Wilderness",SubLocationType.wilderness)
+        {
+
+        },
+        new SubLocation("Mine",SubLocationType.mine)
         {
 
         }
@@ -255,6 +277,10 @@ public static class LocationLibrary
                 (ItemLibrary.NightStalkerGreaves),
                 (ItemLibrary.VampireMask)
             }
+        },
+        new SubLocation("Market", SubLocationType.marketplace)
+        {
+
         }
     },
     new Dictionary<Encounter, int>
@@ -279,6 +305,10 @@ public static class LocationLibrary
                 (ItemLibrary.FallenGuardHelmet),
                 (ItemLibrary.SilverfallAmulet)
             }
+        },        
+        new SubLocation("Mine",SubLocationType.mine)
+        {
+
         }
     },
 new Dictionary<Encounter, int>
@@ -355,6 +385,10 @@ new Dictionary<Encounter, int>
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
 
+        },
+        new SubLocation("Market", SubLocationType.marketplace)
+        {
+
         }
     },
     new Dictionary<Encounter, int>
@@ -372,6 +406,10 @@ new Dictionary<Encounter, int>
         {
         },
         new SubLocation("Wilderness",SubLocationType.wilderness)
+        {
+
+        },
+        new SubLocation("Mine",SubLocationType.mine)
         {
 
         }
@@ -434,6 +472,10 @@ new Dictionary<Encounter, int>
             }
         },
         new SubLocation("Port", SubLocationType.port)
+        {
+
+        },
+        new SubLocation("Market", SubLocationType.marketplace)
         {
 
         }
