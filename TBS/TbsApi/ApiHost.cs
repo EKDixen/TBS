@@ -1,97 +1,82 @@
-﻿using System.Net;
-using System.Text;
-using System.IO;
-using Amazon.S3;
-using Amazon.S3.Model;
+﻿using System.Text;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Read required configuration from environment variables (available via builder.Configuration)
+// Read Redis URL from environment
 var cfg = builder.Configuration;
-string? endpoint = cfg["B2_S3_ENDPOINT"];       // e.g. https://s3.us-east-005.backblazeb2.com
-string? region  = cfg["B2_REGION"];             // e.g. us-east-005
-string? bucket  = cfg["B2_BUCKET"];             // e.g. TBS-playerdatabase
-string? keyId   = cfg["B2_KEY_ID"];             // Application Key ID
-string? appKey  = cfg["B2_APP_KEY"];            // Application Key Secret
+string? redisUrl = cfg["redis://red-d4i8lfqdbo4c73bsklu0:6379"];
 
-if (string.IsNullOrWhiteSpace(endpoint) ||
-    string.IsNullOrWhiteSpace(region) ||
-    string.IsNullOrWhiteSpace(bucket) ||
-    string.IsNullOrWhiteSpace(keyId) ||
-    string.IsNullOrWhiteSpace(appKey))
+if (string.IsNullOrWhiteSpace(redisUrl))
 {
-    throw new InvalidOperationException("Missing required B2 configuration. Ensure B2_S3_ENDPOINT, B2_REGION, B2_BUCKET, B2_KEY_ID, and B2_APP_KEY are set.");
+    throw new InvalidOperationException("Missing REDIS_URL environment variable.");
 }
 
-var s3Config = new AmazonS3Config
+// Parse Redis URL (format: redis://host:port or rediss://host:port)
+var redisUri = new Uri(redisUrl);
+var redisConfig = new ConfigurationOptions
 {
-    ServiceURL = endpoint,
-    AuthenticationRegion = region,
-    ForcePathStyle = true,
+    EndPoints = { { redisUri.Host, redisUri.Port } },
+    Ssl = redisUri.Scheme == "rediss",
+    AbortOnConnectFail = false,
+    ConnectTimeout = 10000,
+    SyncTimeout = 5000
 };
 
-IAmazonS3 s3Client = new AmazonS3Client(keyId, appKey, s3Config);
+// Add password if present
+if (!string.IsNullOrEmpty(redisUri.UserInfo))
+{
+    var parts = redisUri.UserInfo.Split(':');
+    if (parts.Length > 1)
+    {
+        redisConfig.Password = parts[1];
+    }
+}
 
-builder.Services.AddSingleton(s3Client);
-builder.Services.AddSingleton(new BucketOptions(bucket!));
+IConnectionMultiplexer redis = ConnectionMultiplexer.Connect(redisConfig);
+IDatabase db = redis.GetDatabase();
+
+builder.Services.AddSingleton(redis);
+builder.Services.AddSingleton(db);
 
 static string Canonical(string name) => (name ?? string.Empty).Trim().ToLowerInvariant();
-static string PlayerKey(string canonical) => $"players/{canonical}.json";
-static string DeadPlayerKey(string canonical) => $"dead-players/{canonical}.json";
-
-static async Task DeleteKeyWithVersionsAsync(IAmazonS3 s3, string bucket, string key, CancellationToken ct)
-{
-    try
-    {
-        var verReq = new ListVersionsRequest { BucketName = bucket, Prefix = key };
-        ListVersionsResponse verResp;
-        do
-        {
-            verResp = await s3.ListVersionsAsync(verReq, ct);
-            foreach (var v in verResp.Versions)
-            {
-                if (!string.Equals(v.Key, key, StringComparison.Ordinal)) continue;
-                try
-                {
-                    var delReq = new DeleteObjectRequest
-                    {
-                        BucketName = bucket,
-                        Key = key,
-                        VersionId = v.VersionId
-                    };
-                    await s3.DeleteObjectAsync(delReq, ct);
-                }
-                catch { }
-            }
-            verReq.KeyMarker = verResp.NextKeyMarker;
-            verReq.VersionIdMarker = verResp.NextVersionIdMarker;
-        } while (verResp.IsTruncated);
-    }
-    catch { }
-
-    try { await s3.DeleteObjectAsync(bucket, key, ct); } catch { }
-}
+static string PlayerKey(string canonical) => $"player:{canonical}";
+static string DeadPlayerKey(string canonical) => $"dead:{canonical}";
 
 var app = builder.Build();
 
 // Health check
-app.MapGet("/", (HttpResponse resp) => { resp.Headers["Cache-Control"] = "no-store"; return Results.Text("pong", "text/plain"); });
-app.MapGet("/ping", (HttpResponse resp) => { resp.Headers["Cache-Control"] = "no-store"; return Results.Text("pong", "text/plain"); });
-app.MapGet("/health", (HttpResponse resp) => { resp.Headers["Cache-Control"] = "no-store"; return Results.Text("pong", "text/plain"); });
+app.MapGet("/", (HttpResponse resp) =>
+{
+    resp.Headers["Cache-Control"] = "no-store";
+    return Results.Text("pong", "text/plain");
+});
 
-app.MapGet("/debug/info", (BucketOptions bucketOpt, HttpResponse resp) =>
+app.MapGet("/ping", (HttpResponse resp) =>
+{
+    resp.Headers["Cache-Control"] = "no-store";
+    return Results.Text("pong", "text/plain");
+});
+
+app.MapGet("/health", (HttpResponse resp) =>
+{
+    resp.Headers["Cache-Control"] = "no-store";
+    return Results.Text("pong", "text/plain");
+});
+
+app.MapGet("/debug/info", (HttpResponse resp) =>
 {
     resp.Headers["Cache-Control"] = "no-store";
     return Results.Json(new
     {
-        storage = "backblaze-b2-s3",
-        bucket = bucketOpt.Name,
-        endpoint,
-        region
+        storage = "redis",
+        connected = redis.IsConnected,
+        endpoint = redisUrl?.Split('@').LastOrDefault()?.Split('?').FirstOrDefault() ?? "unknown"
     });
 });
 
-app.MapPut("/players/{name}", async (string name, HttpRequest request, IAmazonS3 s3, BucketOptions bucketOpt, CancellationToken ct, HttpResponse resp) =>
+// Save/update player
+app.MapPut("/players/{name}", async (string name, HttpRequest request, IDatabase db, HttpResponse resp) =>
 {
     using var reader = new StreamReader(request.Body, Encoding.UTF8, leaveOpen: false);
     string json = await reader.ReadToEndAsync();
@@ -102,65 +87,53 @@ app.MapPut("/players/{name}", async (string name, HttpRequest request, IAmazonS3
     var canonical = Canonical(name);
     string key = PlayerKey(canonical);
 
-    // Delete old versions before putting new one to prevent flooding
-    await DeleteKeyWithVersionsAsync(s3, bucketOpt.Name, key, ct);
-
-    var putReq = new PutObjectRequest
-    {
-        BucketName = bucketOpt.Name,
-        Key = key,
-        ContentType = "application/json",
-        // Omit SSE AES256 to avoid Backblaze rejection
-        InputStream = new MemoryStream(Encoding.UTF8.GetBytes(json))
-    };
-
-    await s3.PutObjectAsync(putReq, ct);
+    // Write to Redis
+    await db.StringSetAsync(key, json);
 
     resp.Headers["Cache-Control"] = "no-store";
-    resp.Headers["X-TBS-Bucket"] = bucketOpt.Name;
+    resp.Headers["X-TBS-Storage"] = "redis";
     resp.Headers["X-TBS-Key"] = key;
     return Results.NoContent();
 });
 
-app.MapGet("/players/{name}", async (string name, IAmazonS3 s3, BucketOptions bucketOpt, CancellationToken ct, HttpResponse resp) =>
+// Get player
+app.MapGet("/players/{name}", async (string name, IDatabase db, HttpResponse resp) =>
 {
     var canonical = Canonical(name);
     string key = PlayerKey(canonical);
 
-    try
-    {
-        using var s3resp = await s3.GetObjectAsync(bucketOpt.Name, key, ct);
-        using var reader = new StreamReader(s3resp.ResponseStream, Encoding.UTF8);
-        string json = await reader.ReadToEndAsync();
-        resp.Headers["Cache-Control"] = "no-store";
-        resp.Headers["X-TBS-Bucket"] = bucketOpt.Name;
-        resp.Headers["X-TBS-Key"] = key;
-        return Results.Text(json, "application/json", Encoding.UTF8);
-    }
-    catch (AmazonS3Exception ex) when (ex.StatusCode == HttpStatusCode.NotFound || ex.ErrorCode == "NoSuchKey")
+    var json = await db.StringGetAsync(key);
+
+    if (!json.HasValue)
     {
         resp.Headers["Cache-Control"] = "no-store";
-        resp.Headers["X-TBS-Bucket"] = bucketOpt.Name;
+        resp.Headers["X-TBS-Storage"] = "redis";
         resp.Headers["X-TBS-Key"] = key;
         return Results.NotFound();
     }
+
+    resp.Headers["Cache-Control"] = "no-store";
+    resp.Headers["X-TBS-Storage"] = "redis";
+    resp.Headers["X-TBS-Key"] = key;
+    return Results.Text(json!, "application/json", Encoding.UTF8);
 });
 
-app.MapDelete("/players/{name}", async (string name, IAmazonS3 s3, BucketOptions bucketOpt, CancellationToken ct, HttpResponse resp) =>
+// Delete player
+app.MapDelete("/players/{name}", async (string name, IDatabase db, HttpResponse resp) =>
 {
     var canonical = Canonical(name);
     string key = PlayerKey(canonical);
 
-    await DeleteKeyWithVersionsAsync(s3, bucketOpt.Name, key, ct);
+    await db.KeyDeleteAsync(key);
 
     resp.Headers["Cache-Control"] = "no-store";
-    resp.Headers["X-TBS-Bucket"] = bucketOpt.Name;
+    resp.Headers["X-TBS-Storage"] = "redis";
     resp.Headers["X-TBS-Deleted-Canonical"] = canonical;
     return Results.NoContent();
 });
 
-// Dead Players Endpoints
-app.MapPut("/dead-players/{name}", async (string name, HttpRequest request, IAmazonS3 s3, BucketOptions bucketOpt, CancellationToken ct, HttpResponse resp) =>
+// Save dead player
+app.MapPut("/dead-players/{name}", async (string name, HttpRequest request, IDatabase db, HttpResponse resp) =>
 {
     using var reader = new StreamReader(request.Body, Encoding.UTF8, leaveOpen: false);
     string json = await reader.ReadToEndAsync();
@@ -171,94 +144,70 @@ app.MapPut("/dead-players/{name}", async (string name, HttpRequest request, IAma
     var canonical = Canonical(name);
     string key = DeadPlayerKey(canonical);
 
-    // Delete old versions before putting new one to prevent flooding
-    await DeleteKeyWithVersionsAsync(s3, bucketOpt.Name, key, ct);
-
-    var putReq = new PutObjectRequest
-    {
-        BucketName = bucketOpt.Name,
-        Key = key,
-        ContentType = "application/json",
-        InputStream = new MemoryStream(Encoding.UTF8.GetBytes(json))
-    };
-
-    await s3.PutObjectAsync(putReq, ct);
+    await db.StringSetAsync(key, json);
 
     resp.Headers["Cache-Control"] = "no-store";
-    resp.Headers["X-TBS-Bucket"] = bucketOpt.Name;
+    resp.Headers["X-TBS-Storage"] = "redis";
     resp.Headers["X-TBS-Key"] = key;
     return Results.NoContent();
 });
 
-app.MapGet("/dead-players/{name}", async (string name, IAmazonS3 s3, BucketOptions bucketOpt, CancellationToken ct, HttpResponse resp) =>
+// Get dead player
+app.MapGet("/dead-players/{name}", async (string name, IDatabase db, HttpResponse resp) =>
 {
     var canonical = Canonical(name);
     string key = DeadPlayerKey(canonical);
 
-    try
-    {
-        using var s3resp = await s3.GetObjectAsync(bucketOpt.Name, key, ct);
-        using var reader = new StreamReader(s3resp.ResponseStream, Encoding.UTF8);
-        string json = await reader.ReadToEndAsync();
-        resp.Headers["Cache-Control"] = "no-store";
-        resp.Headers["X-TBS-Bucket"] = bucketOpt.Name;
-        resp.Headers["X-TBS-Key"] = key;
-        return Results.Text(json, "application/json", Encoding.UTF8);
-    }
-    catch (AmazonS3Exception ex) when (ex.StatusCode == HttpStatusCode.NotFound || ex.ErrorCode == "NoSuchKey")
+    var json = await db.StringGetAsync(key);
+
+    if (!json.HasValue)
     {
         resp.Headers["Cache-Control"] = "no-store";
-        resp.Headers["X-TBS-Bucket"] = bucketOpt.Name;
+        resp.Headers["X-TBS-Storage"] = "redis";
         resp.Headers["X-TBS-Key"] = key;
         return Results.NotFound();
     }
+
+    resp.Headers["Cache-Control"] = "no-store";
+    resp.Headers["X-TBS-Storage"] = "redis";
+    resp.Headers["X-TBS-Key"] = key;
+    return Results.Text(json!, "application/json", Encoding.UTF8);
 });
 
-app.MapDelete("/dead-players/{name}", async (string name, IAmazonS3 s3, BucketOptions bucketOpt, CancellationToken ct, HttpResponse resp) =>
+// Delete dead player
+app.MapDelete("/dead-players/{name}", async (string name, IDatabase db, HttpResponse resp) =>
 {
     var canonical = Canonical(name);
     string key = DeadPlayerKey(canonical);
 
-    await DeleteKeyWithVersionsAsync(s3, bucketOpt.Name, key, ct);
+    await db.KeyDeleteAsync(key);
 
     resp.Headers["Cache-Control"] = "no-store";
-    resp.Headers["X-TBS-Bucket"] = bucketOpt.Name;
+    resp.Headers["X-TBS-Storage"] = "redis";
     resp.Headers["X-TBS-Deleted-Canonical"] = canonical;
     return Results.NoContent();
 });
 
-app.MapGet("/dead-players", async (IAmazonS3 s3, BucketOptions bucketOpt, CancellationToken ct, HttpResponse resp) =>
+// List all dead players
+app.MapGet("/dead-players", async (IDatabase db, IConnectionMultiplexer redis, HttpResponse resp) =>
 {
     resp.Headers["Cache-Control"] = "no-store";
-    
-    var listRequest = new ListObjectsV2Request
-    {
-        BucketName = bucketOpt.Name,
-        Prefix = "dead-players/"
-    };
 
-    var playerNames = new List<string>();
-    
     try
     {
-        ListObjectsV2Response listResponse;
-        do
+        var playerNames = new List<string>();
+        var server = redis.GetServer(redis.GetEndPoints().First());
+
+        // Scan for keys matching pattern "dead:*"
+        await foreach (var key in server.KeysAsync(pattern: "dead:*"))
         {
-            listResponse = await s3.ListObjectsV2Async(listRequest, ct);
-            
-            foreach (var obj in listResponse.S3Objects)
+            var keyStr = key.ToString();
+            if (keyStr.StartsWith("dead:"))
             {
-                if (obj.Key.EndsWith(".json") && obj.Key.StartsWith("dead-players/"))
-                {
-                    var fileName = obj.Key.Substring("dead-players/".Length);
-                    fileName = fileName.Substring(0, fileName.Length - ".json".Length);
-                    playerNames.Add(fileName);
-                }
+                playerNames.Add(keyStr.Substring(5)); // Remove "dead:" prefix
             }
-            
-            listRequest.ContinuationToken = listResponse.NextContinuationToken;
-        } while (listResponse.IsTruncated);
-        
+        }
+
         return Results.Json(playerNames);
     }
     catch (Exception ex)
@@ -268,5 +217,3 @@ app.MapGet("/dead-players", async (IAmazonS3 s3, BucketOptions bucketOpt, Cancel
 });
 
 app.Run();
-
-internal record BucketOptions(string Name);
