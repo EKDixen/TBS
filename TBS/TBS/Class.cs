@@ -7,15 +7,15 @@ public class Class
     public bool isMagic;       
 
     public int THP = 0;
-    public int TmaxHP = 5;
-    public int Tspeed = 1;
-    public int Tarmor = 1;
-    public int Tdodge = 5;
-    public int TdodgeNegation = 5;
-    public int Tcritchance = 5;
-    public int TcritDamage = 5;
-    public int Tstun = 5;
-    public int TstunNegation = 5;
+    public int TmaxHP = 0;
+    public int Tspeed = 0;
+    public int Tarmor = 0;
+    public int Tdodge = 0;
+    public int TdodgeNegation = 0;
+    public int Tcritchance = 0;
+    public int TcritDamage = 0;
+    public int Tstun = 0;
+    public int TstunNegation = 0;
     public int Tluck  = 0; 
 
     public Class() { }//never forget😔
