@@ -565,35 +565,35 @@ public class CombatManager
             Thread.Sleep(400);
 
             // Apply item effects
-            foreach (var stat in item.stats)
+            foreach (var stat in item.effects)
             {
-                switch (stat.Key)
+                switch (stat.type)
                 {
                     case "heal":
                         int before = player.HP;
-                        player.HP = Math.Min(player.maxHP, player.HP + stat.Value);
+                        player.HP = Math.Min(player.maxHP, player.HP + stat.value);
                         int healed = player.HP - before;
                         ui.AddToLog($"{player.name} heals {healed} HP ({before} -> {player.HP})");
                         break;
                     case "speed":
-                        player.speed += stat.Value;
-                        ui.AddToLog($"{player.name} speed {(stat.Value >= 0 ? "+" : "")}{stat.Value}");
+                        player.speed += stat.value;
+                        ui.AddToLog($"{player.name} speed {(stat.value >= 0 ? "+" : "")}{stat.value}");
                         break;
                     case "armor":
-                        player.armor += stat.Value;
-                        ui.AddToLog($"{player.name} armor {(stat.Value >= 0 ? "+" : "")}{stat.Value}");
+                        player.armor += stat.value;
+                        ui.AddToLog($"{player.name} armor {(stat.value >= 0 ? "+" : "")}{stat.value}");
                         break;
                     case "dodge":
-                        player.dodge += stat.Value;
-                        ui.AddToLog($"{player.name} dodge {(stat.Value >= 0 ? "+" : "")}{stat.Value}");
+                        player.dodge += stat.value;
+                        ui.AddToLog($"{player.name} dodge {(stat.value >= 0 ? "+" : "")}{stat.value}");
                         break;
                     case "critChance":
-                        player.critChance += stat.Value;
-                        ui.AddToLog($"{player.name} crit chance {(stat.Value >= 0 ? "+" : "")}{stat.Value}");
+                        player.critChance += stat.value;
+                        ui.AddToLog($"{player.name} crit chance {(stat.value >= 0 ? "+" : "")}{stat.value}");
                         break;
                     case "critDamage":
-                        player.critDamage += stat.Value;
-                        ui.AddToLog($"{player.name} crit damage {(stat.Value >= 0 ? "+" : "")}{stat.Value}");
+                        player.critDamage += stat.value;
+                        ui.AddToLog($"{player.name} crit damage {(stat.value >= 0 ? "+" : "")}{stat.value}");
                         break;
                 }
                 ui.RenderCombatScreen(player, combatants);
