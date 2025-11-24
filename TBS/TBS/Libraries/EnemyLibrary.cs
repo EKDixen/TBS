@@ -105,7 +105,7 @@ public static class EnemyLibrary
     #endregion
 
     #region Fallen Kingdom Enemies
-    public static Enemy VampireSpawn = new Enemy("Vampire Spawn", 5, 25, 40, 12, 0, 10, 10, 10, 160, 5, 5, 25)
+    public static Enemy VampireSpawn = new Enemy("Vampire Spawn", 5, 25, 40, 12, 0, 10, 10, 10, 160, 5, 5, 12)
     {
         attacks = new List<Attack>
         {

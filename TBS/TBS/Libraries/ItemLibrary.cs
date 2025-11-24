@@ -104,6 +104,12 @@
         equipmentType = EquipmentType.torso,
         detailsLore = "Black velvet cloak that blends perfectly with shadows"
     };
+    public static Item frozenchestplate = new Item("Frozen chestplate", "+50 max hp, +5 armor", 350, 13, ItemType.equipment)
+    {
+        stats = { ["maxHP"] = 1, ["armor"] = 5 },
+        equipmentType = EquipmentType.torso,
+        detailsLore = "Black velvet cloak that blends perfectly with shadows"
+    };
     #endregion
 
     #region legs
