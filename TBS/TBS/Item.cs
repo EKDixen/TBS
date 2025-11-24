@@ -22,7 +22,7 @@ public class Item
 
     public int amount = 1;
 
-    public float weight { get; set; }
+    public int weight { get; set; }
 
     public int value { get; set; }
 

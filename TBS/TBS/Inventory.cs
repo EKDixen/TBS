@@ -2,22 +2,24 @@ using Game.Class;
 using System.Reflection.Metadata;
 using System.Xml.Linq;
 using static System.Formats.Asn1.AsnWriter;
-public class Inventory
+public static class Inventory
 {
-    private Player player;
+    private static Player player;
 
-    private int currentPage = 1; 
-    private int itemsPerPage = 9;  
-    private string searchTerm = ""; 
-    private List<Item> filteredItems; // This will hold the items we are currently viewing
+    private static int currentPage = 1; 
+    private static int itemsPerPage = 9;  
+    private static string searchTerm = ""; 
+    private static List<Item> filteredItems; // This will hold the items we are currently viewing
 
-    const float exponent = 1.5f;
-    const float scale = 0.1f;
-    public int freeweight = 20;
+    static float exponent = 1.5f;
+    static float scale = 0.1f;
 
-    public Inventory(Player p)
+    public static int freeweight = 20;
+
+    public static void ShowInventory()
     {
-        player = p;
+        UpdateWeight();
+        player = Program.player;
 
         while (player.equippedItems.Count < 4)
         {
@@ -25,9 +27,6 @@ public class Inventory
         }
 
         filteredItems = player.ownedItems;
-    }
-    public void ShowInventory()
-    {
         while (true)
         {
             // Update the filtered list based on the search term
@@ -61,7 +60,7 @@ public class Inventory
 
             
             float excessWeight = MathF.Max(player.inventorySpeedModifier - freeweight, 0);
-            MainUI.WriteInMainArea($"your items weigh {player.inventoryWeight} therefore your speed is being reduced by {(int)MathF.Floor(MathF.Pow(excessWeight * scale, exponent))} \n");
+            MainUI.WriteInMainArea($"your items weigh {player.inventoryWeight} therefore your speed is being reduced by {player.inventorySpeedModifier} \n");
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -203,7 +202,7 @@ public class Inventory
             break;
         }
     }
-    private void HandleSearch()
+    private static void HandleSearch()
     {
         MainUI.ClearMainArea();
         MainUI.WriteInMainArea("Enter search term (or leave empty to clear):");
@@ -211,7 +210,7 @@ public class Inventory
         searchTerm = Console.ReadLine()?.ToLower() ?? "";
         currentPage = 1; // ALWAYS reset to page 1 after a search
     }
-    public void AddItem(Item templateItem, int tAmount)
+    public static void AddItem(Item templateItem, int tAmount)
     {
         Item existingItem = player.ownedItems.FirstOrDefault(i => i.name == templateItem.name);
 
@@ -222,28 +221,13 @@ public class Inventory
                 RemoveEffects(existingItem,tAmount); 
             }
 
-            player.inventoryWeight += existingItem.weight * tAmount;
-            existingItem.amount += tAmount;
 
             if (existingItem.type == ItemType.Artifact)
             {
                 ApplyEffects(existingItem, null); 
             }
 
-
-
-
-            // remove the old speed modifier effect
-            player.speed += (int)MathF.Floor(MathF.Pow(MathF.Max(player.inventorySpeedModifier - freeweight, 0) * scale, exponent));
-
-            // update the modifier based on new weight
-            player.inventorySpeedModifier += existingItem.weight * tAmount;
-
-            // apply the new effect only if weight exceeds freeweight int
-            float excessWeight = MathF.Max(player.inventorySpeedModifier - freeweight, 0);
-            player.speed -= (int)MathF.Floor(MathF.Pow(excessWeight * scale, exponent));
-
-
+            UpdateWeight();
 
         }
         else if(templateItem.type == ItemType.equipment)
@@ -252,18 +236,7 @@ public class Inventory
             {
                 Item newItem = new Item(templateItem); // Use the copy constructor
 
-                player.ownedItems.Add(newItem);
-                player.inventoryWeight += newItem.weight;
-
-                // remove the old speed modifier effect
-                player.speed += (int)MathF.Floor(MathF.Pow(MathF.Max(player.inventorySpeedModifier - freeweight, 0) * scale, exponent));
-
-                // update the modifier based on new weight
-                player.inventorySpeedModifier += newItem.weight;
-
-                // apply the new effect only if weight exceeds freeweight int
-                float excessWeight = MathF.Max(player.inventorySpeedModifier - freeweight, 0);
-                player.speed -= (int)MathF.Floor(MathF.Pow(excessWeight * scale, exponent));
+                UpdateWeight();
             }
         }
         else
@@ -272,43 +245,37 @@ public class Inventory
 
             newItem.amount = tAmount;
 
-            player.ownedItems.Add(newItem);
-            player.inventoryWeight += newItem.weight * tAmount;
+            UpdateWeight();
 
             if (newItem.type == ItemType.Artifact)
             {
                 ApplyEffects(newItem, null);
             }
 
-
-            // remove the old speed modifier effect
-            player.speed += (int)MathF.Floor(MathF.Pow(MathF.Max(player.inventorySpeedModifier - freeweight, 0) * scale, exponent));
-
-            // update the modifier based on new weight
-            player.inventorySpeedModifier += newItem.weight * tAmount;
-
-            // apply the new effect only if weight exceeds freeweight int
-            float excessWeight = MathF.Max(player.inventorySpeedModifier - freeweight, 0);
-            player.speed -= (int)MathF.Floor(MathF.Pow(excessWeight * scale, exponent));
-
         }
     }
 
-    public void DropItem(Item Titem, int quantity)
+    public static void UpdateWeight()
     {
+        player.inventoryWeight = 0;
+        foreach (var item in player.ownedItems)
+        {
+            player.inventoryWeight += item.weight * item.amount;
+        }
         // remove the old speed modifier effect
-        player.speed += (int)MathF.Floor(MathF.Pow(MathF.Max(player.inventorySpeedModifier - freeweight, 0) * scale, exponent));
+        player.speed += player.inventorySpeedModifier;
 
         // update the modifier based on new weight
-        player.inventorySpeedModifier -= Titem.weight * quantity;
+        player.inventorySpeedModifier = (int)MathF.Floor(MathF.Pow(MathF.Max(player.inventorySpeedModifier - freeweight, 0) * scale, exponent));
 
         // apply the new effect only if weight exceeds freeweight int
         float excessWeight = MathF.Max(player.inventorySpeedModifier - freeweight, 0);
-        player.speed -= (int)MathF.Floor(MathF.Pow(excessWeight * scale, exponent));
+        player.speed -= player.inventorySpeedModifier;
+    }
 
-
-        player.inventoryWeight -= Titem.weight * quantity;
-
+    public static void DropItem(Item Titem, int quantity)
+    {
+        UpdateWeight();
         int equippedSlot = player.equippedItems.IndexOf(Titem);
         if (equippedSlot >= 0)
         {
@@ -334,7 +301,7 @@ public class Inventory
             }
         }
     }
-    public void ApplyEffects(Item Titem, int? amount)
+    public static void ApplyEffects(Item Titem, int? amount)
     {
         int namount;
         if (amount == null)
@@ -364,7 +331,7 @@ public class Inventory
             }
         }
     }
-    public void RemoveEffects(Item Titem, int? amount)
+    public static void RemoveEffects(Item Titem, int? amount)
     {
         int namount;
         if (amount == null)
@@ -392,7 +359,7 @@ public class Inventory
             }
         }
     }
-    public void Consume(Item Titem)
+    public static void Consume(Item Titem)
     {
         foreach (var effect in Titem.effects)
         {
@@ -420,7 +387,7 @@ public class Inventory
         DropItem(Titem, 1);
     }
 
-    public void UnequipItem(int slot)
+    public static void UnequipItem(int slot)
     {
         Item itemToUnequip = player.equippedItems[slot]; 
         if (itemToUnequip != null)
