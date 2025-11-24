@@ -512,5 +512,55 @@ public static class EncounterLibrary
         },
         EncounterType.Event
     );
+    public static Encounter Snowman = new Encounter(
+     "Snowman",
+     false,
+     "You see a snowman in the distance..",
+     null,
+     (player) => {
+         MainUI.WriteInMainArea("Do you approach it? (y/n): ");
+         string choice = Console.ReadKey(true).KeyChar.ToString().ToLower();
+         if (choice == "y" || choice == "yes")
+         {
+             int number = rng.Next(1, 3);
+             if (number == 1)
+             {
+                 MainUI.WriteInMainArea($"The snowman begins moving, and asks if u wanna see something funny.");
+                 MainUI.WriteInMainArea("Do you accept his offer? (y/n): ");
+                 string choice2 = Console.ReadKey(true).KeyChar.ToString().ToLower();
+                 if (choice2 == "y" || choice2 == "yes")
+                 {
+                     int number2 = rng.Next(1, 3);
+                     if (number2 == 1)
+                     {
+                         int damage = rng.Next(15, 50);
+                         player.HP -= damage;
+                         MainUI.WriteInMainArea($"The snowman throws a snowball at you and deals {damage} damage!");
+                         Program.SavePlayer();
+                         Program.CheckPlayerDeath();
+                     }
+                     else
+                     {
+                         AttackManager atkmanager = new AttackManager(Program.player);
+                         atkmanager.LearnAttack(AttackLibrary.Snowball);
+                     }
+                 }
+                 else
+                 {
+                     MainUI.WriteInMainArea("You respectfully decline the snowman's offer.");
+                 }
+             }
+             else
+             {
+                 MainUI.WriteInMainArea($"You walk up to the snowman, just to see its a normal snowman, like any other.");
+             }
+         }
+         else
+         {
+             MainUI.WriteInMainArea("You decide not to risk it and move on.");
+         }
+     },
+     EncounterType.Event
+ );
     #endregion
 }

@@ -397,6 +397,7 @@ new Dictionary<Encounter, int>
         { EncounterLibrary.FrozenHorde, 30},
         { EncounterLibrary.FrostTrollAmbush, 25},
         { EncounterLibrary.FoundTreasure, 30},
+        { EncounterLibrary.Snowman, 15 },
         { EncounterLibrary.MysteriousShrine, 10}
     }, "Frostborn Dominion");
 
@@ -420,6 +421,7 @@ new Dictionary<Encounter, int>
         { EncounterLibrary.FrostTrollAmbush, 30},
         { EncounterLibrary.IceWolfPack, 25},
         { EncounterLibrary.FoundTreasure, 25},
+        { EncounterLibrary.Snowman, 15 },
         { EncounterLibrary.FallenIntoTrap, 10}
     }, "Frostborn Dominion");
 
@@ -437,7 +439,8 @@ new Dictionary<Encounter, int>
             shopItems = new List<Item>
             {
                 (ItemLibrary.bigHealthPotion),
-                (ItemLibrary.knightHelmet)
+                (ItemLibrary.frozenChestplate),
+                (ItemLibrary.iceSkates)
             }
         },
         new SubLocation("Casino", SubLocationType.casino)

@@ -104,7 +104,7 @@
         equipmentType = EquipmentType.torso,
         detailsLore = "Black velvet cloak that blends perfectly with shadows"
     };
-    public static Item frozenchestplate = new Item("Frozen chestplate", "+50 max hp, +5 armor", 350, 13, ItemType.equipment)
+    public static Item frozenChestplate = new Item("Frozen chestplate", "+50 max hp, +5 armor", 350, 13, ItemType.equipment)
     {
         stats = { ["maxHP"] = 50, ["armor"] = 5 },
         equipmentType = EquipmentType.torso,
@@ -141,6 +141,13 @@
         equipmentType = EquipmentType.feet,
         detailsLore = "Dark greaves that allow for perfect stalking of the pray\n no matter how agile it may be",
         
+    };
+    public static Item iceSkates = new Item("Ice Skates", "+5 speed, -2 armor ", 250, 4, ItemType.equipment)
+    {
+        stats = { ["speed"] = 5, ["armor"] = -2 },
+        equipmentType = EquipmentType.feet,
+        detailsLore = "Dark greaves that allow for perfect stalking of the pray\n no matter how agile it may be",
+
     };
     #endregion
 
