@@ -113,7 +113,7 @@ public class Item
                 parts.Add(desc);
             }
         }
-        parts.Add($"Weights {weight}\n");
+        parts.Add($"Weighs {weight}\n");
         parts.Add(detailsLore);
 
         return string.Join("", parts);
