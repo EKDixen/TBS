@@ -217,11 +217,12 @@ namespace Game.Class
             MainUI.WriteInMainArea("Go somewhere : 0");
             MainUI.WriteInMainArea("Check Inventory : 1");
             MainUI.WriteInMainArea("Check Moves : 2");
-            MainUI.WriteInMainArea($"Do something at {player.currentLocation} : 3");
-            MainUI.WriteInMainArea("Check stats : 4");
-            //MainUI.WriteInMainArea("Check Encyclopedia : 5");
+            MainUI.WriteInMainArea("Check Material Bag : 3");
+            MainUI.WriteInMainArea($"Do something at {player.currentLocation} : 4");
+            MainUI.WriteInMainArea("Check stats : 5");
+            //MainUI.WriteInMainArea("Check Encyclopedia : 6");
 
-            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input) == false || input > 4 || input < 0)
+            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input) == false || input > 5 || input < 0)
             {
                 MainUI.WriteInMainArea("\nyou gotta type 0, 1, 2, 3, 4, or 5");
                 MainUI.WriteInMainArea("Press enter to continue...");
@@ -232,7 +233,8 @@ namespace Game.Class
             else if (input == 0) journeyManager.ChoseTravelDestination();
             else if (input == 1) Inventory.ShowInventory();
             else if (input == 2) atkManager.ShowMovesMenu();
-            else if (input == 3)
+            else if (input == 3) Inventory.ShowMaterialBag();
+            else if (input == 4)
             {
                 MainUI.ClearMainArea();
                 MainUI.WriteInMainArea("all establisments in your current location\n");
@@ -378,6 +380,7 @@ namespace Game.Class
                     player.level++;
                     player.exp = 0;
 
+                    // Recalculate all derived stats based on current class & level
                     player.RecalculateStats();
                 }
 

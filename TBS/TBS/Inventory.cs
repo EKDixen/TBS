@@ -26,6 +26,37 @@ public static class Inventory
         filteredItems = player.ownedItems;
     }
 
+    public static void ShowMaterialBag()
+    {
+        player = Program.player;
+
+        MainUI.ClearMainArea();
+        MainUI.WriteInMainArea("--- Material Bag ---\n");
+        MainUI.WriteInMainArea($"Load: {player.currentMaterialLoad}/{player.baseMaterialCapacity + GetBackpackCapacityFromInventory(player)}\n");
+
+        if (player.materialItems.Count == 0)
+        {
+            MainUI.WriteInMainArea("You have no materials stored.\n");
+            MainUI.WriteInMainArea("Press Enter to return...");
+            Console.ReadLine();
+            Program.MainMenu();
+            return;
+        }
+
+        MainUI.WriteInMainArea("nr     Name                      Qty   Description");
+        MainUI.WriteInMainArea("--------------------------------------------------------");
+
+        for (int i = 0; i < player.materialItems.Count; i++)
+        {
+            var mat = player.materialItems[i];
+            MainUI.WriteInMainArea($"{i + 1,-7}{mat.name,-25} {mat.amount,-5} {mat.description}");
+        }
+
+        MainUI.WriteInMainArea("\nPress Enter to return...");
+        Console.ReadLine();
+        Program.MainMenu();
+    }
+
     public static void ShowInventory()
     {
         UpdateWeight();

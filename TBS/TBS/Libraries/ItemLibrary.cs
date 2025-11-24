@@ -28,14 +28,13 @@
     {
         detailsLore = "Its just a small pebble. Useful for basic crafting, or throwing at kings.",
     };
-    public static Item iron = new Item("Iron", "Useless", 3, 11, ItemType.Artifact)
+    public static Item iron = new Item("Iron", "Raw iron ore used for basic forging.", 3, 0, ItemType.Material)
     {
-        detailsLore = "some nice iron ore.. worth some money:)"
-
+        detailsLore = "Some nice iron ore. Useful for crafting weapons and armor.",
     };
-    public static Item fish = new Item("Fish", "Useless", 1,3, ItemType.Artifact)
+    public static Item fish = new Item("Fish", "A fresh fish, sometimes used in recipes.", 1, 0, ItemType.Material)
     {
-        detailsLore = "its a fish.. i like fish:)"
+        detailsLore = "It's a fish. You like fish.",
     };
     #endregion
 
