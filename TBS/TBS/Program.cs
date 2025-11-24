@@ -278,8 +278,7 @@ namespace Game.Class
                     return;
                 }
             }
-            else if (input == 4) ShowPlayerStats();
-            //else if (input == 5) Inventory.ShowInventory();
+            else if (input == 5) ShowPlayerStats();
 
             // Save in background without blocking UI
             _ = Task.Run(() => db.SavePlayer(player));
