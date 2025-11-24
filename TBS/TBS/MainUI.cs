@@ -154,7 +154,7 @@ namespace Game.Class
             // Depending on context, show either equipped items or equipped moves
             if (!ShowMovesInPlayerPanel)
             {
-                Console.SetCursorPosition(x + 2, y + 12);
+                Console.SetCursorPosition(x + 2, y + 13);
                 Console.Write("Equiped items:");
                 for (int j = 0; j < player.equippedItems.Capacity; j++)
                 {
