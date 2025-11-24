@@ -46,6 +46,12 @@
         detailsLore = "Silver ring rumored to strengthen \nits wearer’s blood using magic.",
         stats = { ["critChance"] = 3 },
     };
+
+    public static Item BasicBackpack = new Item("Basic Backpack", "A simple pack for carrying crafting materials.", 50, 2, ItemType.Backpack)
+    {
+        stats = { ["materialCapacity"] = 50 },
+        detailsLore = "A sturdy canvas backpack. Increases how many materials you can carry without weighing you down."
+    };
     public static Item SilverfallAmulet = new Item("Silverfall Amulet", "+5 maxHP, +3% critChance", 12,1, ItemType.Artifact)
     {
         stats = { ["maxHP"] = 5, ["critChance"] = 3},

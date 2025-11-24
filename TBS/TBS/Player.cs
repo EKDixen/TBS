@@ -29,8 +29,8 @@ public class Player : Combatant
     // Current material load in abstract units (not normal weight)
     public int currentMaterialLoad = 0;
 
-    // Base capacity without backpacks; can be 0 or a small default if desired
-    public int baseMaterialCapacity = 0;
+    // Base capacity without backpacks; start with 100 units so players can carry some mats even without a pack
+    public int baseMaterialCapacity = 100;
 
     public List<Attack> ownedAttacks = new List<Attack>();
 
