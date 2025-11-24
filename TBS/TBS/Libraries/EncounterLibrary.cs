@@ -315,6 +315,10 @@ public static class EncounterLibrary
                     player.exp += exp;
                     MainUI.WriteInMainArea($"The shrine blesses you! You gained {exp} experience!");
                 }
+                if (roll == 89)
+                {
+                    player.HP -= player.HP-1;
+                }
                 else
                 {
                     MainUI.WriteInMainArea("Nothing happens...");
@@ -391,7 +395,7 @@ public static class EncounterLibrary
                 int coin = rand.Next(1, 3);
                 if (coin == 1)
                 {
-                    MainUI.WriteInMainArea($"The coin landed on heads, you win {bet} cash!");
+                    MainUI.WriteInMainArea($"The coin landed on heads, you win {bet} Rai!");
                     Program.player.money += bet * 2;
                 }
                 else

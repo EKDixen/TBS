@@ -1625,14 +1625,14 @@ public class SubLocation
                 while (true)
                 {
                     MainUI.ClearMainArea();
-                    MainUI.WriteInMainArea("Select an item to deposit:");
+                    MainUI.WriteInMainArea("Select an item to sell:");
                     MainUI.WriteInMainArea("");
                     MainUI.WriteInMainArea("nr     Name                      Qty     Value");
                     MainUI.WriteInMainArea("------------------------------------------------");
 
                     if (Program.player.ownedItems.Count == 0)
                     {
-                        MainUI.WriteInMainArea("You have no items to deposit.");
+                        MainUI.WriteInMainArea("You have no items to sell.");
                         MainUI.WriteInMainArea("");
                         MainUI.WriteInMainArea("0 : Back");
                     }
@@ -1669,7 +1669,7 @@ public class SubLocation
                     // If stackable, ask how many
                     if (selectedItem.type != ItemType.equipment)
                     {
-                        MainUI.WriteInMainArea($"How many {selectedItem.name} would you like to deposit? (Max: {selectedItem.amount})");
+                        MainUI.WriteInMainArea($"How many {selectedItem.name} would you like to sell? (Max: {selectedItem.amount})");
                         string quantityString = Console.ReadLine() ?? "";
                         var q = int.TryParse(quantityString, out quantity);
 
