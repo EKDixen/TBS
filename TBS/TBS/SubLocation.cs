@@ -1774,7 +1774,7 @@ public class SubLocation
 
                 if (roll < failChance)
                 {
-                    int dm = rand.Next(1, 11);
+                    int dm = rand.Next(1, 21);
                     MainUI.ClearMainArea();
                     MainUI.WriteInMainArea($"The vein collapsed and covers you in rocks \nYou walk away with 0 Iron and a hurt head, {dm} damage\n");
                     Program.player.HP -= dm;
@@ -1786,7 +1786,7 @@ public class SubLocation
                 }
                 else
                 {
-                    int found = rand.Next(1, 4); 
+                    int found = rand.Next(1, 3); 
                     int stabilityLost = rand.Next(15, 31);
 
                     currentHaul += found;

@@ -29,7 +29,7 @@
         detailsLore = "its just a small pebble, doesn't hold much of worth... \nunless you want to fight the king ofc"
         
     };
-    public static Item iron = new Item("Iron", "Useless", 5, 11, ItemType.Artifact)
+    public static Item iron = new Item("Iron", "Useless", 3, 11, ItemType.Artifact)
     {
         detailsLore = "some nice iron ore.. worth some money:)"
 

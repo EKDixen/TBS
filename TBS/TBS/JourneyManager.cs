@@ -28,6 +28,8 @@ class JourneyManager
             MainUI.WriteInMainArea("\nwhere do you wish to travel (type out the number next to it)");
             MainUI.WriteInMainArea("Locations you currently know(inside this kingdom): ");
 
+            List<int> travelLocations = new List<int>();
+            int l = 0;
             for (int i = 0; i < Program.player.knownLocationnames.Count; i++)
             {
                 if (LocationLibrary.Get(Program.player.knownLocationnames[i]).kingdom == LocationLibrary.Get(Program.player.currentLocation).kingdom)
@@ -36,10 +38,15 @@ class JourneyManager
                     {
                         float price = (LocationLibrary.Get(Program.player.currentLocation).location - LocationLibrary.Get(Program.player.knownLocationnames[i]).location).Length() * 2 +
                             LocationLibrary.Get(Program.player.currentLocation).travelPrice + LocationLibrary.Get(Program.player.knownLocationnames[i]).travelPrice;
-                        MainUI.WriteInMainArea($"{LocationLibrary.Get(Program.player.knownLocationnames[i]).name}  :  {(i + 1)}  (price: {(int)Math.Floor(price)})");
-
+                        MainUI.WriteInMainArea($"{LocationLibrary.Get(Program.player.knownLocationnames[i]).name}  :  {(l + 1)}  (price: {(int)Math.Floor(price)})");
+                        travelLocations.Add(i);
+                        l++;
                     }
-                    else MainUI.WriteInMainArea(LocationLibrary.Get(Program.player.knownLocationnames[i]).name + " : " + (i + 1) + " (current location)");
+                    else 
+                    { 
+                        MainUI.WriteInMainArea(LocationLibrary.Get(Program.player.knownLocationnames[i]).name + " : " + (l + 1) + " (current location)");
+                        l++;
+                    }
                 }
             }
             MainUI.WriteInMainArea("or go back : 0");
@@ -50,15 +57,15 @@ class JourneyManager
 
                 MainUI.WriteInMainArea("");
                 if (targetDes == 0) { MainUI.ClearMainArea(); ; Program.MainMenu(); return; }
-                else if (targetDes <= Program.player.knownLocationnames.Count && targetDes >= 0 && LocationLibrary.Get(Program.player.knownLocationnames[targetDes - 1]) != LocationLibrary.Get(Program.player.currentLocation)) 
+                else if (targetDes <= travelLocations.Count && targetDes >= 0 && LocationLibrary.Get(Program.player.knownLocationnames[travelLocations[targetDes] - 1]) != LocationLibrary.Get(Program.player.currentLocation)) 
                 {
-                    float price = (LocationLibrary.Get(Program.player.currentLocation).location - LocationLibrary.Get(Program.player.knownLocationnames[targetDes - 1]).location).Length() * 2 +
-                        LocationLibrary.Get(Program.player.currentLocation).travelPrice + LocationLibrary.Get(Program.player.knownLocationnames[targetDes - 1]).travelPrice;
+                    float price = (LocationLibrary.Get(Program.player.currentLocation).location - LocationLibrary.Get(Program.player.knownLocationnames[travelLocations[targetDes] - 1]).location).Length() * 2 +
+                        LocationLibrary.Get(Program.player.currentLocation).travelPrice + LocationLibrary.Get(Program.player.knownLocationnames[travelLocations[targetDes] - 1]).travelPrice;
 
                     if (Program.player.money >= price)
                     {
                         Program.player.money -= (int)Math.Floor(price);
-                        Travel(LocationLibrary.Get(Program.player.knownLocationnames[targetDes - 1]), true);
+                        Travel(LocationLibrary.Get(Program.player.knownLocationnames[travelLocations[targetDes] - 1]), true);
                     }
                     else
                     {
