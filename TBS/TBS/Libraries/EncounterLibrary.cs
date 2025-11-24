@@ -421,8 +421,8 @@ public static class EncounterLibrary
             {
                 
                 Random rand = new Random();
-                int bite = rand.Next(1, 6);
-                if (bite == 5)
+                int slap = rand.Next(1, 6);
+                if (slap == 5)
                 {
                     player.HP -= 1;
                     MainUI.WriteInMainArea($"The fish slaps your hand away with its fins! You took 1 damage!");
@@ -438,7 +438,7 @@ public static class EncounterLibrary
             }
             else
             {
-                MainUI.WriteInMainArea("You respectfully decline his offer.");
+                MainUI.WriteInMainArea("You don't pick the fish up out of respect");
             }
         },
         EncounterType.Mystery
