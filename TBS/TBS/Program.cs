@@ -120,6 +120,8 @@ namespace Game.Class
                     PlayerCreator creator = new PlayerCreator();
                     player = creator.PlayerCreatorFunction(db, name);
                     db.SavePlayer(player);
+                    Inventory.MakeInv();
+                    Inventory.AddItem(ItemLibrary.rock, 1);
                     Console.WriteLine("New character created and saved!");
                     break;
                 }
@@ -129,8 +131,6 @@ namespace Game.Class
                     continue;
                 }
             }
-            Inventory.MakeInv();
-            Inventory.AddItem(ItemLibrary.rock, 1);
             atkManager = new AttackManager(player);
             MainUI.InitializeConsole();
             CheckPlayerLevel();
