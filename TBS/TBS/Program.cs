@@ -196,6 +196,8 @@ namespace Game.Class
         public static void MainMenu()
         {
 
+            MainUI.ShowMovesInPlayerPanel = false;
+
             Console.Clear(); //do not remove
             MainUI.ClearMainArea();
 

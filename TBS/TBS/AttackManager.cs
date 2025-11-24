@@ -241,7 +241,7 @@ public class AttackManager
         }
         // Leaving moves menu: restore default equipment view in player panel
         MainUI.ShowMovesInPlayerPanel = false;
-        Program.MainMenu();
+        return;
     }
     private void HandleSearch()
     {
