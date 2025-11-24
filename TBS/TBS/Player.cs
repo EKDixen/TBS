@@ -6,6 +6,17 @@ public class Player : Combatant
     public string password;
     public Class playerClass;
     public int luck;
+
+    public int baseMaxHP;
+    public int baseSpeed;
+    public int baseArmor;
+    public int baseDodge;
+    public int baseDodgeNegation;
+    public int baseCritChance;
+    public int baseCritDamage;
+    public int baseStun;
+    public int baseStunNegation;
+    public int baseLuck;
     public bool isDead = false;
 
     public string currentLocation;
@@ -47,6 +58,18 @@ public class Player : Combatant
         playerClass = TplayerClass;
         level = Tlevel;
         exp = Texp;
+
+        baseMaxHP        = TmaxHP;
+        baseSpeed        = Tspeed;
+        baseArmor        = Tarmor;
+        baseDodge        = Tdodge;
+        baseDodgeNegation= TdodgeNegation;
+        baseCritChance   = Tcritchance;
+        baseCritDamage   = TcritDamage;
+        baseStun         = Tstun;
+        baseStunNegation = TstunNegation;
+        baseLuck         = Tluck;
+
         HP = THP;
         maxHP = TmaxHP;
         speed = Tspeed;
@@ -57,11 +80,30 @@ public class Player : Combatant
         critDamage = TcritDamage;
         stun = Tstun;
         stunNegation = TstunNegation;
+        luck = Tluck;
 
         money = Tmoney;
-        luck = Tluck;
 
         knownLocationnames.Add(LocationLibrary.Maplecross.name);
         currentLocation = LocationLibrary.Maplecross.name;
+    }
+
+    public void RecalculateStats()
+    {
+        int levelsAbove1 = Math.Max(level - 1, 0);
+        var c = playerClass;
+
+        maxHP        = baseMaxHP        + c.TmaxHP        * levelsAbove1;
+        speed        = baseSpeed        + c.Tspeed        * levelsAbove1;
+        armor        = baseArmor        + c.Tarmor        * levelsAbove1;
+        dodge        = baseDodge        + c.Tdodge        * levelsAbove1;
+        dodgeNegation= baseDodgeNegation+ c.TdodgeNegation* levelsAbove1;
+        critChance   = baseCritChance   + c.Tcritchance   * levelsAbove1;
+        critDamage   = baseCritDamage   + c.TcritDamage   * levelsAbove1;
+        stun         = baseStun         + c.Tstun         * levelsAbove1;
+        stunNegation = baseStunNegation + c.TstunNegation * levelsAbove1;
+        luck         = baseLuck         + c.Tluck         * levelsAbove1;
+
+        if (HP > maxHP) HP = maxHP;
     }
 }

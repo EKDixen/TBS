@@ -378,7 +378,7 @@ namespace Game.Class
                     player.level++;
                     player.exp = 0;
 
-                    player.playerClass.LevelupStats();
+                    player.RecalculateStats();
                 }
 
                 await Task.Delay(3200);

@@ -20,6 +20,9 @@ public static class LocationLibrary
                 (ItemLibrary.BasicBackpack)
             }
         },
+        new SubLocation("Blacksmith", SubLocationType.blacksmith)
+        {
+        },
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
 

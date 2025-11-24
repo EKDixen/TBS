@@ -54,6 +54,8 @@ public class SubLocation
         if (type == SubLocationType.shop) ShopLogic();
         
         if (type == SubLocationType.bank) BankLogic();
+
+        if (type == SubLocationType.blacksmith) BlacksmithLogic();
         
         if (type == SubLocationType.casino)
         {
@@ -128,6 +130,143 @@ public class SubLocation
 
     }
 
+
+    #region blacksmith / forge
+    void BlacksmithLogic()
+    {
+        while (true)
+        {
+            MainUI.ClearMainArea();
+            MainUI.WriteInMainArea("--- Blacksmith (Forge) ---\n");
+
+            var currentLoc = LocationLibrary.Get(Program.player.currentLocation);
+            string areaTag = currentLoc?.kingdom;
+
+            var recipes = RecipeLibrary.GetRecipesFor(areaTag, CraftingStationType.Forge).ToList();
+
+            if (recipes.Count == 0)
+            {
+                MainUI.WriteInMainArea("The blacksmith here doesn't know any recipes yet.\n");
+                MainUI.WriteInMainArea("Press Enter to leave...");
+                Console.ReadLine();
+                Program.MainMenu();
+                return;
+            }
+
+            MainUI.WriteInMainArea("nr  Recipe / Output                          Requirements");
+            MainUI.WriteInMainArea("--------------------------------------------------------------------");
+
+            for (int i = 0; i < recipes.Count; i++)
+            {
+                var r = recipes[i];
+                string line = $"{i + 1,-3} {r.Name,-30} -> {r.OutputItem.name}";
+                MainUI.WriteInMainArea(line);
+
+                string req = "   Requires: ";
+                bool first = true;
+                foreach (var mc in r.Materials)
+                {
+                    if (!first) req += ", ";
+                    req += $"{mc.Quantity}x {mc.Material.name}";
+                    first = false;
+                }
+                if (r.MoneyCost > 0)
+                {
+                    if (!first) req += ", ";
+                    req += $"{r.MoneyCost} Rai";
+                }
+                MainUI.WriteInMainArea(req);
+            }
+
+            MainUI.WriteInMainArea("\n0 : Leave");
+            MainUI.WriteInMainArea("Type recipe number to craft it: ");
+
+            string input = Console.ReadLine() ?? "";
+            if (!int.TryParse(input, out int choice) || choice < 0 || choice > recipes.Count)
+            {
+                MainUI.WriteInMainArea("Invalid choice. Press Enter to continue...");
+                Console.ReadLine();
+                continue;
+            }
+
+            if (choice == 0)
+            {
+                Program.MainMenu();
+                return;
+            }
+
+            var selected = recipes[choice - 1];
+
+            if (!CanCraft(selected))
+            {
+                MainUI.WriteInMainArea("\nYou lack the required materials or money.\nPress Enter to continue...");
+                Console.ReadLine();
+                continue;
+            }
+
+            CraftRecipe(selected);
+
+            MainUI.WriteInMainArea($"\nCrafted {selected.OutputQuantity}x {selected.OutputItem.name}!\nPress Enter to continue...");
+            Console.ReadLine();
+        }
+    }
+
+    bool CanCraft(Recipe recipe)
+    {
+        if (Program.player.money < recipe.MoneyCost)
+            return false;
+
+        foreach (var cost in recipe.Materials)
+        {
+            int have = 0;
+            foreach (var mat in Program.player.materialItems)
+            {
+                if (mat.name == cost.Material.name)
+                {
+                    have += mat.amount;
+                }
+            }
+            if (have < cost.Quantity) return false;
+        }
+
+        return true;
+    }
+
+    void CraftRecipe(Recipe recipe)
+    {
+        Program.player.money -= recipe.MoneyCost;
+
+        foreach (var cost in recipe.Materials)
+        {
+            int remaining = cost.Quantity;
+            for (int i = 0; i < Program.player.materialItems.Count && remaining > 0; i++)
+            {
+                var mat = Program.player.materialItems[i];
+                if (mat.name != cost.Material.name) continue;
+
+                int take = Math.Min(mat.amount, remaining);
+                mat.amount -= take;
+                remaining -= take;
+
+                Program.player.currentMaterialLoad -= take;
+                if (Program.player.currentMaterialLoad < 0) Program.player.currentMaterialLoad = 0;
+
+                if (mat.amount <= 0)
+                {
+                    Program.player.materialItems.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
+
+        for (int i = 0; i < recipe.OutputQuantity; i++)
+        {
+            Inventory.AddItem(recipe.OutputItem, 1);
+        }
+
+        Program.SavePlayer();
+    }
+    #endregion
 
     #region shop
     void ShopLogic()
