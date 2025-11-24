@@ -41,7 +41,8 @@ public static class AttackLibrary
         new AttackEffect("speed", -1, 2, "enemy")
     });
     public static Attack Bite = new Attack("Bite", new List<AttackEffect> {
-        new AttackEffect("damage", 8, 3, "enemy"),
+        new AttackEffect("damage", 8, 0, "enemy"),
+        new AttackEffect("damage", 5, 3, "enemy"),
     });
     public static Attack Hailstorm = new Attack("Hailstorm", new List<AttackEffect> {
         new AttackEffect("damage", 10, 0, "enemies"),

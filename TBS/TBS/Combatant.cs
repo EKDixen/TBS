@@ -25,6 +25,8 @@ public class Combatant
     public bool IsPlayer;
 
     public List<ActiveEffect> activeEffects = new List<ActiveEffect>();
+    public List<DamageOverTimeEffect> damageOverTimeEffects = new List<DamageOverTimeEffect>();
+    public List<HealOverTimeEffect> healOverTimeEffects = new List<HealOverTimeEffect>();
 
     public Combatant() { } // Deserialize
 
@@ -45,5 +47,33 @@ public class ActiveEffect
         this.type = type;
         this.value = value;
         this.remainingTurns = remainingTurns;
+    }
+}
+
+public class DamageOverTimeEffect
+{
+    public int damagePerTurn;
+    public int remainingTurns;
+    public string sourceName; // name of the attack that caused it
+
+    public DamageOverTimeEffect(int damagePerTurn, int remainingTurns, string sourceName)
+    {
+        this.damagePerTurn = damagePerTurn;
+        this.remainingTurns = remainingTurns;
+        this.sourceName = sourceName;
+    }
+}
+
+public class HealOverTimeEffect
+{
+    public int healPerTurn;
+    public int remainingTurns;
+    public string sourceName;
+
+    public HealOverTimeEffect(int healPerTurn, int remainingTurns, string sourceName)
+    {
+        this.healPerTurn = healPerTurn;
+        this.remainingTurns = remainingTurns;
+        this.sourceName = sourceName;
     }
 }

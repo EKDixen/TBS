@@ -304,6 +304,11 @@ public static class Inventory
     // Add materials into the separate material bag, respecting capacity from backpacks
     public static void AddMaterial(Item templateItem, int tAmount)
     {
+        if (player == null)
+        {
+            player = Program.player;
+        }
+
         int unitCost = GetMaterialUnitCost(templateItem);
         int totalCost = unitCost * tAmount;
 
@@ -356,6 +361,7 @@ public static class Inventory
 
     public static void UpdateWeight()
     {
+        // Calculate total weight from all items in inventory
         player.inventoryWeight = 0;
         foreach (var item in player.ownedItems)
         {

@@ -288,6 +288,16 @@ public class CombatManager
             ui.AddToLog($"{defender.name} takes {dmg} damage{(crit ? " (CRIT!)" : "")} ({before} -> {after})");
             ui.RenderCombatScreen(player, combatants);
             Thread.Sleep(350);
+
+            // Check if this damage has a duration (DoT effect like bleed)
+            if (effect.duration > 0 && defender.damageOverTimeEffects != null)
+            {
+                defender.damageOverTimeEffects.Add(new DamageOverTimeEffect(effect.value, effect.duration, attack.name));
+                ui.AddToLog($"{defender.name} is afflicted with {attack.name} for {effect.duration} turns!");
+                ui.RenderCombatScreen(player, combatants);
+                Thread.Sleep(300);
+            }
+
             if (stunInflicted)
             {
             stunnedTurns[defender] = Math.Max(stunnedTurns.ContainsKey(defender) ? stunnedTurns[defender] : 0, 1);
@@ -306,6 +316,15 @@ public class CombatManager
             ui.AddToLog($"{target.name} heals {healed} HP ({before} -> {target.HP})");
             ui.RenderCombatScreen(player, combatants);
             Thread.Sleep(350);
+
+            // Check if this heal has a duration (HoT effect like regeneration)
+            if (effect.duration > 0 && target.healOverTimeEffects != null)
+            {
+                target.healOverTimeEffects.Add(new HealOverTimeEffect(effect.value, effect.duration, attack.name));
+                ui.AddToLog($"{target.name} gains {attack.name} regeneration for {effect.duration} turns!");
+                ui.RenderCombatScreen(player, combatants);
+                Thread.Sleep(300);
+            }
             }
             else
             {
@@ -401,32 +420,89 @@ public class CombatManager
             
         private void UpdateTimedEffects(Combatant c)
         {
-            if (c.activeEffects == null || c.activeEffects.Count == 0) return;
-
-            var expired = new List<ActiveEffect>();
-            foreach (var ae in c.activeEffects)
+            // Update stat-based timed effects (buffs/debuffs)
+            if (c.activeEffects != null && c.activeEffects.Count > 0)
             {
-                ae.remainingTurns--;
-                if (ae.remainingTurns <= 0)
+                var expired = new List<ActiveEffect>();
+                foreach (var ae in c.activeEffects)
                 {
-                    switch (ae.type)
+                    ae.remainingTurns--;
+                    if (ae.remainingTurns <= 0)
                     {
-                        case "dodge": c.dodge -= ae.value; break;
-                        case "dodgeNegation": c.dodgeNegation -= ae.value; break;
-                        case "critChance": c.critChance -= ae.value; break;
-                        case "critDamage": c.critDamage -= ae.value; break;
-                        case "armor": c.armor -= ae.value; break;
-                        case "stun": c.stun -= ae.value; break;
-                        case "stunNegation": c.stunNegation -= ae.value; break;
-                        case "speed": c.speed -= ae.value; break;
+                        switch (ae.type)
+                        {
+                            case "dodge": c.dodge -= ae.value; break;
+                            case "dodgeNegation": c.dodgeNegation -= ae.value; break;
+                            case "critChance": c.critChance -= ae.value; break;
+                            case "critDamage": c.critDamage -= ae.value; break;
+                            case "armor": c.armor -= ae.value; break;
+                            case "stun": c.stun -= ae.value; break;
+                            case "stunNegation": c.stunNegation -= ae.value; break;
+                            case "speed": c.speed -= ae.value; break;
+                        }
+                        expired.Add(ae);
                     }
-                    expired.Add(ae);
+                }
+
+                foreach (var ae in expired)
+                {
+                    c.activeEffects.Remove(ae);
                 }
             }
 
-            foreach (var ae in expired)
+            // Apply and update damage over time effects (bleed, poison, burn, etc.)
+            if (c.damageOverTimeEffects != null && c.damageOverTimeEffects.Count > 0)
             {
-                c.activeEffects.Remove(ae);
+                for (int i = c.damageOverTimeEffects.Count - 1; i >= 0; i--)
+                {
+                    var dot = c.damageOverTimeEffects[i];
+                    
+                    // Apply damage
+                    c.HP -= dot.damagePerTurn;
+                    ui.AddToLog($"{c.name} takes {dot.damagePerTurn} damage from {dot.sourceName}!");
+                    ui.RenderCombatScreen(player, combatants);
+                    Thread.Sleep(300);
+
+                    dot.remainingTurns--;
+                    if (dot.remainingTurns <= 0)
+                    {
+                        c.damageOverTimeEffects.RemoveAt(i);
+                        ui.AddToLog($"{c.name}'s {dot.sourceName} effect has worn off.");
+                        ui.RenderCombatScreen(player, combatants);
+                        Thread.Sleep(200);
+                    }
+                }
+            }
+
+            // Apply and update heal over time effects (regeneration, etc.)
+            if (c.healOverTimeEffects != null && c.healOverTimeEffects.Count > 0)
+            {
+                for (int i = c.healOverTimeEffects.Count - 1; i >= 0; i--)
+                {
+                    var hot = c.healOverTimeEffects[i];
+                    
+                    // Apply healing
+                    int oldHP = c.HP;
+                    c.HP += hot.healPerTurn;
+                    if (c.HP > c.maxHP) c.HP = c.maxHP;
+                    int actualHeal = c.HP - oldHP;
+
+                    if (actualHeal > 0)
+                    {
+                        ui.AddToLog($"{c.name} heals {actualHeal} HP from {hot.sourceName}!");
+                        ui.RenderCombatScreen(player, combatants);
+                        Thread.Sleep(300);
+                    }
+
+                    hot.remainingTurns--;
+                    if (hot.remainingTurns <= 0)
+                    {
+                        c.healOverTimeEffects.RemoveAt(i);
+                        ui.AddToLog($"{c.name}'s {hot.sourceName} effect has worn off.");
+                        ui.RenderCombatScreen(player, combatants);
+                        Thread.Sleep(200);
+                    }
+                }
             }
         }
 

@@ -10,7 +10,7 @@ public enum SubLocationType
     shop,
     marketplace,
     tavern,//no--
-    blacksmith,//no--
+    blacksmith,
     arena,//no--
     bank,
     casino,
@@ -179,9 +179,16 @@ public class SubLocation
             }
 
             MainUI.WriteInMainArea("\n0 : Leave");
-            MainUI.WriteInMainArea("Type recipe number to craft it: ");
+            MainUI.WriteInMainArea("\nType recipe number to craft, or 'D' + number for details (e.g., 'D1'): ");
 
             string input = Console.ReadLine() ?? "";
+            
+            bool wantsDetails = input.StartsWith("d", StringComparison.OrdinalIgnoreCase) || input.StartsWith("D");
+            if (wantsDetails && input.Length > 1)
+            {
+                input = input.Substring(1);
+            }
+
             if (!int.TryParse(input, out int choice) || choice < 0 || choice > recipes.Count)
             {
                 MainUI.WriteInMainArea("Invalid choice. Press Enter to continue...");
@@ -196,6 +203,44 @@ public class SubLocation
             }
 
             var selected = recipes[choice - 1];
+
+            if (wantsDetails)
+            {
+                MainUI.ClearMainArea();
+                MainUI.WriteInMainArea($"=== {selected.Name} ===\n");
+                MainUI.WriteInMainArea($"Output: {selected.OutputQuantity}x {selected.OutputItem.name}");
+                MainUI.WriteInMainArea($"Value: {selected.OutputItem.value} Rai each\n");
+                MainUI.WriteInMainArea("Item Stats:");
+                MainUI.WriteInMainArea(selected.OutputItem.GetDescription());
+                if (!string.IsNullOrEmpty(selected.OutputItem.detailsLore))
+                {
+                    MainUI.WriteInMainArea($"\n\"{selected.OutputItem.detailsLore}\"\n");
+                }
+                
+                MainUI.WriteInMainArea("Requirements:");
+                foreach (var mc in selected.Materials)
+                {
+                    int have = 0;
+                    foreach (var mat in Program.player.materialItems)
+                    {
+                        if (mat.name == mc.Material.name)
+                        {
+                            have += mat.amount;
+                        }
+                    }
+                    string status = have >= mc.Quantity ? "[✓]" : "[X]";
+                    MainUI.WriteInMainArea($"  {status} {mc.Quantity}x {mc.Material.name} (You have: {have})");
+                }
+                if (selected.MoneyCost > 0)
+                {
+                    string status = Program.player.money >= selected.MoneyCost ? "[✓]" : "[X]";
+                    MainUI.WriteInMainArea($"  {status} {selected.MoneyCost} Rai (You have: {Program.player.money})");
+                }
+                
+                MainUI.WriteInMainArea("\nPress Enter to return...");
+                Console.ReadLine();
+                continue;
+            }
 
             if (!CanCraft(selected))
             {

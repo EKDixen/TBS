@@ -1,4 +1,4 @@
-using Game.Class;
+﻿using Game.Class;
 using System.Diagnostics;
 
 public class Encounter
@@ -99,8 +99,24 @@ public class Encounter
                     enemy.speed, enemy.armor, enemy.dodge, enemy.dodgeNegation,
                     enemy.critChance, enemy.critDamage, enemy.stun, enemy.stunNegation, enemy.money
                 );
-                newEnemy.attacks = new List<Attack>(enemy.attacks);
+                
+                if (enemy.attacks != null)
+                {
+                    newEnemy.attacks = new List<Attack>(enemy.attacks);
+                }
+                
+                if (enemy.attackWeights != null)
+                {
+                    newEnemy.attackWeights = new Dictionary<Attack, int>(enemy.attackWeights);
+                }
+                
                 newEnemy.maxHP = enemy.HP;
+                
+                if (enemy.materialDrops != null && enemy.materialDrops.Count > 0)
+                {
+                    newEnemy.materialDrops = new List<MaterialDrop>(enemy.materialDrops);
+                }
+                
                 combatEnemies.Add(newEnemy);
             }
             

@@ -114,7 +114,7 @@
         stats = { ["critChance"] = 3 },
     };
 
-    public static Item BasicBackpack = new Item("Basic Backpack", "A simple pack for carrying crafting materials.", 50, 2, ItemType.Backpack)
+    public static Item BasicBackpack = new Item("Basic Backpack", "A simple backpack", 50, 2, ItemType.Backpack)
     {
         stats = { ["materialCapacity"] = 50 },
         detailsLore = "A sturdy canvas backpack. Increases how many materials you can carry without weighing you down."
