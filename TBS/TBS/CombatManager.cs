@@ -48,6 +48,7 @@ public class CombatManager
 
     public void StartCombat()
     {
+        playerFled = false;
         playerInCombat = true;
 
         ui.AddToLog("--- Combat Started! ---");
