@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Read Redis URL from environment
 var cfg = builder.Configuration;
-string? redisUrl = cfg["redis://red-d4i8lfqdbo4c73bsklu0:6379"];
+string? redisUrl = cfg["REDIS_URL"];
 
 if (string.IsNullOrWhiteSpace(redisUrl))
 {
