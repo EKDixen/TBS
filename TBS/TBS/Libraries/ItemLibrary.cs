@@ -23,7 +23,7 @@
 */
 
 
-    //artifacts
+    #region material
     public static Item rock = new Item("Rock", "Useless", 3,4, ItemType.Artifact)
     {
         detailsLore = "its just a small pebble, doesn't hold much of worth... \nunless you want to fight the king ofc"
@@ -38,6 +38,9 @@
     {
         detailsLore = "its a fish.. i like fish:)"
     };
+    #endregion
+
+    #region artifacts
     public static Item VampireRing = new Item("Vampire Ring", "+3% CritChance", 11,1, ItemType.Artifact)
     {
         detailsLore = "Silver ring rumored to strengthen \nits wearer’s blood using magic.",
@@ -48,11 +51,12 @@
         stats = { ["maxHP"] = 5, ["critChance"] = 3},
         detailsLore = "Old amulet with a tiny silver waterfall engraved\n hums faintly with magic" 
     };
+    #endregion
 
+    #region equipment
+    #endregion
 
-    //equipment ------
-
-    //head -----
+    #region head
     public static Item baseballCap = new Item("Baseball Cap", "+1 armor", 5,2, ItemType.equipment)
     {
         stats = { ["armor"] = 1},
@@ -85,7 +89,9 @@
         equipmentType = EquipmentType.head,
         detailsLore = "A weather-worn hat from a long-forgotten villager"
     };
-    //torso ----
+    #endregion
+
+    #region torso
     public static Item constructionVest = new Item("Construction Vest", "+2 armor, -40% dodge",6,5,ItemType.equipment)
     {
         stats = { ["armor"] = 2, ["dodge"] = -40 },
@@ -98,20 +104,18 @@
         equipmentType = EquipmentType.torso,
         detailsLore = "Black velvet cloak that blends perfectly with shadows"
     };
+    #endregion
 
-
-
-
-    //legs ----
+    #region legs
     public static Item camoPants = new Item("Camo Pants", "+20% dodge", 3,2, ItemType.equipment)
     {
         stats = { ["dodge"] = 20 },
         equipmentType = EquipmentType.legs,
         detailsLore = "military grade camo pants..\n makes it harder to hit you"
     };
+    #endregion
 
-
-    //feet ----
+    #region boots
     public static Item sandals = new Item("Sandals", "+1 speed", 5,1, ItemType.equipment)
     {
         stats = { ["speed"] = 1 },
@@ -132,9 +136,9 @@
         detailsLore = "Dark greaves that allow for perfect stalking of the pray\n no matter how agile it may be",
         
     };
+    #endregion
 
-
-    //consumables
+    #region consumeables
     public static Item smallHealthPotion = new Item("Small Health Potion", "+20 Health", 2,2, ItemType.consumable)
     {
         effects = new List<AttackEffect>()
@@ -166,3 +170,4 @@
 
 }
 
+#endregion
