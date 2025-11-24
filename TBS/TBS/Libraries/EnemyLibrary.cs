@@ -18,7 +18,7 @@ public static class EnemyLibrary
         }
     };
 
-    public static Enemy Goblin = new Enemy("Goblin", 1, 5, 5, 16, 0, 25, 0, 10, 100, 5, 0, 5)
+    public static Enemy Goblin = new Enemy("Goblin", 1, 5, 5, 16, 0, 25, 0, 10, 100, 5, 0, 0)
     {
         attacks = new List<Attack>
         {
@@ -29,6 +29,11 @@ public static class EnemyLibrary
         {
             { AttackLibrary.Slash, 70 },
             { AttackLibrary.ThrowHands, 30 }
+        },
+        materialDrops = new List<MaterialDrop>
+        {
+            new MaterialDrop(ItemLibrary.goblinEar, 1, 2, 0.5f),
+            new MaterialDrop(ItemLibrary.rock, 0, 1, 0.2f)
         }
     };
     #endregion
@@ -75,7 +80,7 @@ public static class EnemyLibrary
     #endregion
 
     #region Greenwood Territories Enemies
-    public static Enemy ForestSpider = new Enemy("Forest Spider", 4, 20, 35, 8, 2, 5, 10, 6, 110, 8, 4, 12)
+    public static Enemy ForestSpider = new Enemy("Forest Spider", 4, 20, 35, 8, 2, 5, 10, 6, 110, 8, 4, 0)
     {
         attacks = new List<Attack>
         {
@@ -86,10 +91,14 @@ public static class EnemyLibrary
         {
             { AttackLibrary.Slash, 75 },
             { AttackLibrary.Bite, 25 }
+        },
+        materialDrops = new List<MaterialDrop>
+        {
+            new MaterialDrop(ItemLibrary.spiderSilk, 1, 3, 0.3f)
         }
     };
 
-    public static Enemy DireWolf = new Enemy("Dire Wolf", 3, 35, 50, 12, 3, 8, 10, 8, 140, 12, 6, 18)
+    public static Enemy DireWolf = new Enemy("Dire Wolf", 3, 35, 50, 12, 3, 8, 10, 8, 140, 12, 6, 0)
     {
         attacks = new List<Attack>
         {
@@ -100,6 +109,10 @@ public static class EnemyLibrary
         {
             { AttackLibrary.Slash, 85 },
             { AttackLibrary.Bite, 15 }
+        },
+        materialDrops = new List<MaterialDrop>
+        {
+            new MaterialDrop(ItemLibrary.wolfPelt, 1, 2, 0.3f)
         }
     };
     #endregion
@@ -183,7 +196,7 @@ public static class EnemyLibrary
     #endregion
 
     #region Frostborn Dominion Enemies
-    public static Enemy IceWolf = new Enemy("Ice Wolf", 6, 40, 60, 10, 3, 8, 8, 8, 120, 10, 5, 20)
+    public static Enemy IceWolf = new Enemy("Ice Wolf", 6, 40, 60, 10, 3, 8, 8, 8, 120, 10, 5, 0)
     {
         attacks = new List<Attack>
         {
@@ -194,6 +207,11 @@ public static class EnemyLibrary
         {
             { AttackLibrary.Slash, 60 },
             { AttackLibrary.Bite, 40 }
+        },
+        materialDrops = new List<MaterialDrop>
+        {
+            new MaterialDrop(ItemLibrary.frostCore, 1, 1, 0.1f),
+            new MaterialDrop(ItemLibrary.wolfPelt, 1, 2, 0.3f)
         }
     };
 

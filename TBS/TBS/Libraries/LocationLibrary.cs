@@ -115,6 +115,9 @@ public static class LocationLibrary
                 (ItemLibrary.camoPants)
             }
         },
+        new SubLocation("Blacksmith", SubLocationType.blacksmith)
+        {
+        },
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
 
@@ -197,6 +200,9 @@ public static class LocationLibrary
                 (ItemLibrary.knightHelmet),
                 (ItemLibrary.constructionVest)
             }
+        },
+        new SubLocation("Blacksmith", SubLocationType.blacksmith)
+        {
         },
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
@@ -448,6 +454,9 @@ new Dictionary<Encounter, int>
                 (ItemLibrary.frozenChestplate),
                 (ItemLibrary.iceSkates)
             }
+        },
+        new SubLocation("Blacksmith", SubLocationType.blacksmith)
+        {
         },
         new SubLocation("Casino", SubLocationType.casino)
         {

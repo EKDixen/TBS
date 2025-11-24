@@ -1,7 +1,24 @@
-﻿public class Enemy : Combatant
+﻿public class MaterialDrop
+{
+    public Item Material { get; set; }
+    public int MinQuantity { get; set; }
+    public int MaxQuantity { get; set; }
+    public float DropChance { get; set; } // 0.0 to 1.0
+
+    public MaterialDrop(Item material, int minQty, int maxQty, float dropChance)
+    {
+        Material = material;
+        MinQuantity = minQty;
+        MaxQuantity = maxQty;
+        DropChance = dropChance;
+    }
+}
+
+public class Enemy : Combatant
 {
     public List<Attack> attacks = new List<Attack>();
     public Dictionary<Attack, int> attackWeights = new Dictionary<Attack, int>();
+    public List<MaterialDrop> materialDrops = new List<MaterialDrop>();
 
     public Enemy(string TenemyName, int Tlevel, int Texp, int THP, int Tspeed, int Tarmor,
         int Tdodge, int TdodgeNegation, int Tcritchance, int TcritDamage, int Tstun,

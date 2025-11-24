@@ -36,6 +36,75 @@
     {
         detailsLore = "It's a fish. You like fish.",
     };
+
+    // Monster-specific materials
+    public static Item goblinEar = new Item("Goblin Ear", "A trophy from a defeated goblin.", 5, 0, ItemType.Material)
+    {
+        detailsLore = "Goblins have surprisingly large ears. Useful for certain crafts.",
+    };
+
+    public static Item spiderSilk = new Item("Spider Silk", "Strong silk from a forest spider.", 8, 0, ItemType.Material)
+    {
+        detailsLore = "Incredibly strong and flexible. Prized by armorers.",
+    };
+
+    public static Item wolfPelt = new Item("Wolf Pelt", "Thick fur from a dire wolf.", 12, 0, ItemType.Material)
+    {
+        detailsLore = "Warm and durable. Perfect for crafting protective gear.",
+    };
+
+    public static Item frostCore = new Item("Frost Core", "A frozen crystal from an ice wolf.", 20, 0, ItemType.Material)
+    {
+        detailsLore = "Radiates cold. Used in advanced frost-based crafting.",
+    };
+    #endregion
+
+    #region craftable equipment (not sold in stores)
+    // Head
+    public static Item goblinSkullHelm = new Item("Goblin Skull Helm", "+2 armor, +5% dodge", 25, 5, ItemType.equipment)
+    {
+        stats = { ["armor"] = 2, ["dodge"] = 5 },
+        equipmentType = EquipmentType.head,
+        detailsLore = "A crude helmet fashioned from goblin trophies and reinforced cloth.\nLightweight but surprisingly effective."
+    };
+
+    public static Item frostforgedHelm = new Item("Frostforged Helm", "+4 armor, +10 maxHP", 80, 12, ItemType.equipment)
+    {
+        stats = { ["armor"] = 4, ["maxHP"] = 10 },
+        equipmentType = EquipmentType.head,
+        detailsLore = "A helmet infused with frost magic. The cold never bothered you anyway."
+    };
+
+    // Torso
+    public static Item spidersilkVest = new Item("Spidersilk Vest", "+3 armor, +15% dodge", 60, 7, ItemType.equipment)
+    {
+        stats = { ["armor"] = 3, ["dodge"] = 15 },
+        equipmentType = EquipmentType.torso,
+        detailsLore = "Woven from spider silk and reinforced with wolf pelt.\nFlexible yet protective."
+    };
+
+    public static Item reinforcedIronPlate = new Item("Reinforced Iron Plate", "+6 armor, +15 maxHP, -1 speed", 70, 15, ItemType.equipment)
+    {
+        stats = { ["armor"] = 6, ["maxHP"] = 15, ["speed"] = -1 },
+        equipmentType = EquipmentType.torso,
+        detailsLore = "Heavy iron plating reinforced with quality materials.\nProvides excellent protection at the cost of mobility."
+    };
+
+    // Legs
+    public static Item spidersilkLeggings = new Item("Spidersilk Leggings", "+1 armor, +25% dodge, +1 speed", 55, 4, ItemType.equipment)
+    {
+        stats = { ["armor"] = 1, ["dodge"] = 25, ["speed"] = 1 },
+        equipmentType = EquipmentType.legs,
+        detailsLore = "Lightweight leggings woven from spider silk.\nEnhances agility significantly."
+    };
+
+    // Feet
+    public static Item wolfhideBoots = new Item("Wolfhide Boots", "+2 speed, +2 armor", 40, 3, ItemType.equipment)
+    {
+        stats = { ["speed"] = 2, ["armor"] = 2 },
+        equipmentType = EquipmentType.feet,
+        detailsLore = "Sturdy boots lined with wolf pelt.\nProvides both protection and mobility."
+    };
     #endregion
 
     #region artifacts

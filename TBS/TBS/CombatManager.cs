@@ -106,8 +106,34 @@ public class CombatManager
             player.money += totalMoney;
             player.exp += totalExp;
             
+            List<string> materialRewards = new List<string>();
+            foreach (var enemy in enemies)
+            {
+                if (enemy.materialDrops != null && enemy.materialDrops.Count > 0)
+                {
+                    foreach (var drop in enemy.materialDrops)
+                    {
+                        float roll = (float)rng.NextDouble();
+                        if (roll < drop.DropChance)
+                        {
+                            int qty = rng.Next(drop.MinQuantity, drop.MaxQuantity + 1);
+                            if (qty > 0)
+                            {
+                                Inventory.AddItem(drop.Material, qty);
+                                materialRewards.Add($"+{qty}x {drop.Material.name}");
+                            }
+                        }
+                    }
+                }
+            }
+            
             ui.AddToLog("--- VICTORY! ---");
-            ui.AddToLog($"Rewards: +{totalExp} EXP, +{totalMoney} Rai");
+            string rewardText = $"Rewards: +{totalExp} EXP, +{totalMoney} Rai";
+            if (materialRewards.Count > 0)
+            {
+                rewardText += ", " + string.Join(", ", materialRewards);
+            }
+            ui.AddToLog(rewardText);
             ui.ClearMainArea();
             ui.RenderCombatScreen(player, combatants);
             ui.WriteInMainArea(1, "+----------------------------------------+");

@@ -1732,12 +1732,13 @@ public class SubLocation
             MainUI.ClearMainArea();
             MainUI.WriteInMainArea("Welcome to the market");
             MainUI.WriteInMainArea("Would you like to:");
-            MainUI.WriteInMainArea("1 : sell items");
+            MainUI.WriteInMainArea("1 : Sell items");
+            MainUI.WriteInMainArea("2 : Sell materials");
             MainUI.WriteInMainArea("0 : Leave");
 
-            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input2) == false || input2 > 1 || input2 < 0)
+            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input2) == false || input2 > 2 || input2 < 0)
             {
-                MainUI.WriteInMainArea(" \nyou gotta type a number from 0-1");
+                MainUI.WriteInMainArea(" \nyou gotta type a number from 0-2");
                 Thread.Sleep(1000);
                 continue;
             }
@@ -1851,6 +1852,80 @@ public class SubLocation
                     Program.player.money += selectedItem.value * quantity;
 
                     MainUI.WriteInMainArea($"\nSold {quantity}x {selectedItem.name} for {selectedItem.value * quantity} Rai");
+                    Thread.Sleep(1000);
+                }
+            }
+            else if (input2 == 2)
+            {
+                // Sell materials from material bag
+                while (true)
+                {
+                    MainUI.ClearMainArea();
+                    MainUI.WriteInMainArea("Select a material to sell:");
+                    MainUI.WriteInMainArea("");
+                    MainUI.WriteInMainArea("nr     Name                      Qty     Value");
+                    MainUI.WriteInMainArea("------------------------------------------------");
+
+                    if (Program.player.materialItems.Count == 0)
+                    {
+                        MainUI.WriteInMainArea("You have no materials to sell.");
+                        MainUI.WriteInMainArea("");
+                        MainUI.WriteInMainArea("0 : Back");
+                    }
+                    else
+                    {
+                        for (int i = 0; i < Program.player.materialItems.Count; i++)
+                        {
+                            var mat = Program.player.materialItems[i];
+                            MainUI.WriteInMainArea($"{i + 1,-7}{mat.name,-25} {mat.amount,-7}  {mat.value}");
+                        }
+                        MainUI.WriteInMainArea("");
+                        MainUI.WriteInMainArea("0 : Back");
+                    }
+
+                    string inputString = Console.ReadLine() ?? "";
+                    var n = int.TryParse(inputString, out int input);
+
+                    if (input == 0)
+                    {
+                        break;
+                    }
+
+                    if (!n || input < 1 || input > Program.player.materialItems.Count)
+                    {
+                        MainUI.WriteInMainArea("\nInvalid selection. Please type a number from the list");
+                        Thread.Sleep(1000);
+                        continue;
+                    }
+
+                    Item selectedMat = Program.player.materialItems[input - 1];
+                    int quantity = 1;
+
+                    MainUI.WriteInMainArea($"How many {selectedMat.name} would you like to sell? (Max: {selectedMat.amount})");
+                    string quantityString = Console.ReadLine() ?? "";
+                    var q = int.TryParse(quantityString, out quantity);
+
+                    if (!q || quantity < 1 || quantity > selectedMat.amount)
+                    {
+                        MainUI.WriteInMainArea("\nInvalid amount");
+                        Thread.Sleep(1000);
+                        continue;
+                    }
+
+                    // Remove from material bag
+                    selectedMat.amount -= quantity;
+                    Program.player.currentMaterialLoad -= quantity;
+                    if (Program.player.currentMaterialLoad < 0) Program.player.currentMaterialLoad = 0;
+
+                    if (selectedMat.amount <= 0)
+                    {
+                        Program.player.materialItems.Remove(selectedMat);
+                    }
+
+                    // Add money
+                    Program.player.money += selectedMat.value * quantity;
+
+                    MainUI.WriteInMainArea($"\nSold {quantity}x {selectedMat.name} for {selectedMat.value * quantity} Rai");
                     Thread.Sleep(1000);
                 }
             }
