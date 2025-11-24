@@ -101,7 +101,7 @@ public class CombatManager
         else if (player.IsAlive())
         {
             int totalMoney = enemies.Sum(e => e.money);
-            int totalExp = enemies.Sum(e => e.exp);
+            int totalExp = enemies.Where(e => player.level - e.level < 5).Sum(e => e.exp);
             player.money += totalMoney;
             player.exp += totalExp;
             
