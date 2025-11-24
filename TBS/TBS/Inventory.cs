@@ -362,14 +362,17 @@ public static class Inventory
             // Materials are not stored in ownedItems anymore; everything here counts towards normal weight
             player.inventoryWeight += item.weight * item.amount;
         }
-        // remove the old speed modifier effect
+
+        // Remove the old speed modifier effect before recalculating
         player.speed += player.inventorySpeedModifier;
 
-        // update the modifier based on new weight
-        player.inventorySpeedModifier = (int)MathF.Floor(MathF.Pow(MathF.Max(player.inventorySpeedModifier - freeweight, 0) * scale, exponent));
+        // Calculate excess weight beyond the free weight allowance
+        float excessWeight = MathF.Max(player.inventoryWeight - freeweight, 0);
 
-        // apply the new effect only if weight exceeds freeweight int
-        float excessWeight = MathF.Max(player.inventorySpeedModifier - freeweight, 0);
+        // Calculate new speed modifier based on excess weight
+        player.inventorySpeedModifier = (int)MathF.Floor(MathF.Pow(excessWeight * scale, exponent));
+
+        // Apply the new speed penalty
         player.speed -= player.inventorySpeedModifier;
     }
 
