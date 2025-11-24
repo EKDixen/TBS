@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public static class EnemyLibrary
 {
     #region Basic/Starter Enemies
-    public static Enemy Thug = new Enemy("Thug", 2, 10, 30,  8, 2, 5, 5, 5, 150, 0, 0, 10)
+    public static Enemy Thug = new Enemy("Thug", 1, 10, 30,  8, 2, 5, 5, 5, 150, 0, 0, 10)
     {
         attacks = new List<Attack>
         {
@@ -18,7 +18,7 @@ public static class EnemyLibrary
         }
     };
 
-    public static Enemy Goblin = new Enemy("Goblin", 2, 5, 5, 16, 0, 25, 0, 10, 100, 5, 0, 5)
+    public static Enemy Goblin = new Enemy("Goblin", 1, 5, 5, 16, 0, 25, 0, 10, 100, 5, 0, 5)
     {
         attacks = new List<Attack>
         {
@@ -34,7 +34,7 @@ public static class EnemyLibrary
     #endregion
 
     #region Coastal Alliance Enemies
-    public static Enemy SeaBandit = new Enemy("Sea Bandit", 3, 15, 35, 9, 2, 6, 7, 6, 130, 5, 3, 15)
+    public static Enemy SeaBandit = new Enemy("Sea Bandit", 2, 15, 35, 9, 2, 6, 7, 6, 130, 5, 3, 15)
     {
         attacks = new List<Attack>
         {
@@ -48,7 +48,7 @@ public static class EnemyLibrary
         }
     };
 
-    public static Enemy Smuggler = new Enemy("Smuggler", 5, 25, 45, 10, 3, 8, 9, 8, 150, 8, 5, 22)
+    public static Enemy Smuggler = new Enemy("Smuggler",3, 25, 45, 10, 3, 8, 9, 8, 150, 8, 5, 22)
     {
         attacks = new List<Attack>
         {
@@ -61,7 +61,7 @@ public static class EnemyLibrary
             { AttackLibrary.ThrowHands, 35 }
         }
     };
-    public static Enemy Healer = new Enemy("Healer", 5, 25, 45, 10, 3, 8, 9, 8, 150, 8, 5, 22)
+    public static Enemy Healer = new Enemy("Healer", 3, 25, 45, 10, 3, 8, 9, 8, 150, 8, 5, 22)
     {
         attacks = new List<Attack>
         {
@@ -84,12 +84,12 @@ public static class EnemyLibrary
         },
         attackWeights = new Dictionary<Attack, int>
         {
-            { AttackLibrary.Slash, 90 },
-            { AttackLibrary.Bite, 10 }
+            { AttackLibrary.Slash, 75 },
+            { AttackLibrary.Bite, 25 }
         }
     };
 
-    public static Enemy DireWolf = new Enemy("Dire Wolf", 6, 35, 50, 12, 3, 8, 10, 8, 140, 12, 6, 18)
+    public static Enemy DireWolf = new Enemy("Dire Wolf", 3, 35, 50, 12, 3, 8, 10, 8, 140, 12, 6, 18)
     {
         attacks = new List<Attack>
         {
@@ -105,7 +105,7 @@ public static class EnemyLibrary
     #endregion
 
     #region Fallen Kingdom Enemies
-    public static Enemy VampireSpawn = new Enemy("Vampire Spawn", 5, 25, 40, 12, 0, 10, 10, 10, 160, 5, 5, 12)
+    public static Enemy VampireSpawn = new Enemy("Vampire Spawn", 3, 25, 40, 12, 0, 10, 10, 10, 160, 5, 5, 12)
     {
         attacks = new List<Attack>
         {
@@ -117,7 +117,7 @@ public static class EnemyLibrary
         }
     };
 
-    public static Enemy GhostlyApparition = new Enemy("Ghostly Apparition", 10, 70, 25, 8, 0, 20, 10, 5, 0, 200, 0, 15)
+    public static Enemy GhostlyApparition = new Enemy("Ghostly Apparition", 6, 30, 25, 8, 0, 20, 10, 5, 0, 200, 0, 15)
     {
         attacks = new List<Attack>
         {
@@ -129,7 +129,7 @@ public static class EnemyLibrary
         }
     };
 
-    public static Enemy SkeletonWarrior = new Enemy("Skeleton Warrior", 10, 50, 50, 5, 1, 1, 0, 20, 50, 100, 300, 10)
+    public static Enemy SkeletonWarrior = new Enemy("Skeleton Warrior", 4, 25, 50, 5, 1, 1, 0, 20, 50, 100, 300, 10)
     {
         attacks = new List<Attack>
         {
@@ -141,7 +141,7 @@ public static class EnemyLibrary
         }
     };
 
-    public static Enemy KingdomGuard = new Enemy("Kingdom Guard", 6, 30, 55, 10, 2, 12, 6, 8, 130, 8, 6, 18)
+    public static Enemy KingdomGuard = new Enemy("Kingdom Guard", 5, 30, 55, 10, 2, 12, 6, 8, 130, 8, 6, 18)
     {
         attacks = new List<Attack>
         {
@@ -155,7 +155,7 @@ public static class EnemyLibrary
         }
     };
 
-    public static Enemy CorruptedKnight = new Enemy("Corrupted Knight", 12, 70, 90, 14, 1, 18, 8, 12, 140, 15, 15, 40)
+    public static Enemy CorruptedKnight = new Enemy("Corrupted Knight", 6, 70, 90, 14, 1, 18, 8, 12, 140, 15, 15, 40)
     {
         attacks = new List<Attack>
         {
@@ -169,7 +169,7 @@ public static class EnemyLibrary
         }
     };
 
-    public static Enemy RuinedGolem = new Enemy("Ruined Golem", 15, 120, 150, 20, 0, 25, 3, 15, 100, 20, 20, 60)
+    public static Enemy RuinedGolem = new Enemy("Ruined Golem", 7, 120, 150, 20, 0, 25, 3, 15, 100, 20, 20, 60)
     {
         attacks = new List<Attack>
         {
@@ -220,8 +220,8 @@ public static class EnemyLibrary
         },
         attackWeights = new Dictionary<Attack, int>
         {
-            { AttackLibrary.EtherealTouch, 50 },
-            { AttackLibrary.GroupHeal, 50 }
+            { AttackLibrary.EtherealTouch, 40 },
+            { AttackLibrary.GroupHeal, 60 }
         }
     };
 
