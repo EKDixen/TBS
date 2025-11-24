@@ -43,4 +43,12 @@ public static class AttackLibrary
     public static Attack Bite = new Attack("Bite", new List<AttackEffect> {
         new AttackEffect("damage", 8, 3, "enemy"),
     });
+    public static Attack Hailstorm = new Attack("Hailstorm", new List<AttackEffect> {
+        new AttackEffect("damage", 10, 0, "enemies"),
+        new AttackEffect("dodge", -10, 1, "enemy"),
+    });
+    public static Attack GlacialCoating = new Attack("Glacial Coating", new List<AttackEffect> {
+        new AttackEffect("speed", -2, 2, "self"),
+        new AttackEffect("armor", 5, 2, "self"),
+    });
 }

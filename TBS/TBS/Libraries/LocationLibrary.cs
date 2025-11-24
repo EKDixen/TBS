@@ -373,6 +373,7 @@ new Dictionary<Encounter, int>
         { EncounterLibrary.IceWolfPack, 30},
         { EncounterLibrary.SnowWraithAttack, 25},
         { EncounterLibrary.IceMageEncounter, 20},
+        { EncounterLibrary.FrozenGolemHealer, 2},
         { EncounterLibrary.FoundTreasure, 20},
         { EncounterLibrary.MysteriousShrine, 10}
     }, "Frostborn Dominion");
@@ -396,7 +397,7 @@ new Dictionary<Encounter, int>
         { EncounterLibrary.SnowWraithAttack, 35},
         { EncounterLibrary.FrozenHorde, 30},
         { EncounterLibrary.FrostTrollAmbush, 25},
-        { EncounterLibrary.FoundTreasure, 30},
+        { EncounterLibrary.FrozenGolemHealer, 5},
         { EncounterLibrary.Snowman, 15 },
         { EncounterLibrary.MysteriousShrine, 10}
     }, "Frostborn Dominion");
@@ -421,6 +422,7 @@ new Dictionary<Encounter, int>
         { EncounterLibrary.FrostTrollAmbush, 30},
         { EncounterLibrary.IceWolfPack, 25},
         { EncounterLibrary.FoundTreasure, 25},
+        { EncounterLibrary.FrozenGolemHealer, 5},
         { EncounterLibrary.Snowman, 15 },
         { EncounterLibrary.FallenIntoTrap, 10}
     }, "Frostborn Dominion");

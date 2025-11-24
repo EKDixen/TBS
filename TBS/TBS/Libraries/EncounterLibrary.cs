@@ -261,6 +261,14 @@ public static class EncounterLibrary
         null,
         EncounterType.Combat
     );
+    public static Encounter FrozenGolemHealer = new Encounter(
+    "FrozenGolem Healer",
+    true,
+    "You're surrounded by frozen creatures!",
+    new List<Enemy> { EnemyLibrary.Healer, EnemyLibrary.Healer, EnemyLibrary.GlacierGolem },
+    null,
+    EncounterType.Combat
+);
     #endregion
 
     #region Event Encounters

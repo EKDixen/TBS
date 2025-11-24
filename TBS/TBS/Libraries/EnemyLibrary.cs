@@ -183,7 +183,7 @@ public static class EnemyLibrary
     #endregion
 
     #region Frostborn Dominion Enemies
-    public static Enemy IceWolf = new Enemy("Ice Wolf", 8, 40, 60, 10, 3, 8, 8, 8, 120, 10, 5, 20)
+    public static Enemy IceWolf = new Enemy("Ice Wolf", 6, 40, 60, 10, 3, 8, 8, 8, 120, 10, 5, 20)
     {
         attacks = new List<Attack>
         {
@@ -197,30 +197,44 @@ public static class EnemyLibrary
         }
     };
 
-    public static Enemy FrostTroll = new Enemy("Frost Troll", 12, 80, 120, 15, 1, 15, 5, 12, 110, 15, 10, 35)
+    public static Enemy FrostTroll = new Enemy("Frost Troll", 9, 70, 120, 15, 1, 15, 5, 12, 100, 15, 10, 35)
     {
         attacks = new List<Attack>
         {
             AttackLibrary.ThrowHands,
-            AttackLibrary.Snowball
+            AttackLibrary.GlacialCoating
         },
         attackWeights = new Dictionary<Attack, int>
         {
-            { AttackLibrary.ThrowHands, 65 },
-            { AttackLibrary.Snowball, 35 }
+            { AttackLibrary.ThrowHands, 60 },
+            { AttackLibrary.GlacialCoating, 40 }
         }
     };
 
-    public static Enemy IceMage = new Enemy("Ice Mage", 10, 60, 50, 12, 2, 10, 12, 10, 150, 20, 8, 30)
+    public static Enemy GlacierGolem = new Enemy("Glacier Golem", 12, 150, 250, 5, 5, 15, 50, 10, 200, 75, 50, 50)
     {
         attacks = new List<Attack>
         {
-            AttackLibrary.EtherealTouch,
+            AttackLibrary.ThrowHands,
+            AttackLibrary.GlacialCoating
+        },
+        attackWeights = new Dictionary<Attack, int>
+        {
+            { AttackLibrary.ThrowHands, 50 },
+            { AttackLibrary.GlacialCoating, 50 }
+        }
+    };
+
+    public static Enemy IceMage = new Enemy("Ice Mage", 9, 60, 50, 12, 2, 10, 12, 10, 150, 20, 8, 30)
+    {
+        attacks = new List<Attack>
+        {
+            AttackLibrary.Hailstorm,
             AttackLibrary.GroupHeal
         },
         attackWeights = new Dictionary<Attack, int>
         {
-            { AttackLibrary.EtherealTouch, 40 },
+            { AttackLibrary.Hailstorm, 40 },
             { AttackLibrary.GroupHeal, 60 }
         }
     };
