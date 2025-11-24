@@ -212,10 +212,6 @@ public class SubLocation
                 MainUI.WriteInMainArea($"Value: {selected.OutputItem.value} Rai each\n");
                 MainUI.WriteInMainArea("Item Stats:");
                 MainUI.WriteInMainArea(selected.OutputItem.GetDescription());
-                if (!string.IsNullOrEmpty(selected.OutputItem.detailsLore))
-                {
-                    MainUI.WriteInMainArea($"\n\"{selected.OutputItem.detailsLore}\"\n");
-                }
                 
                 MainUI.WriteInMainArea("Requirements:");
                 foreach (var mc in selected.Materials)
