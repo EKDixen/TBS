@@ -17,6 +17,8 @@ namespace Game.Class
         private static readonly object consoleLock = new();
         private static int mainAreaCurrentLine = 0;
 
+        public static bool ShowMovesInPlayerPanel = false;
+
         //main area lines type shit
         private static int maxMainAreaLine = 26;
         private const int mainAreaTopLine = 1;
@@ -143,24 +145,41 @@ namespace Game.Class
 
             Console.Write($"Weight   - {player.inventoryWeight}/{Inventory.freeweight}");
             Console.SetCursorPosition(x + 2, y + 9);
-            Console.Write($"Class    - {player.playerClass.name}");
+            Console.Write($"Materials- {player.currentMaterialLoad}/{player.baseMaterialCapacity + Inventory.GetBackpackCapacityFromInventory(player)}");
             Console.SetCursorPosition(x + 2, y + 10);
+            Console.Write($"Class    - {player.playerClass.name}");
+            Console.SetCursorPosition(x + 2, y + 11);
             Console.Write($"Location - {player.currentLocation}");
 
-            Console.SetCursorPosition(x + 2, y + 12);
-            Console.Write("Equiped items:");
-            for (int j = 0; j < player.equippedItems.Capacity; j++)
+            // Depending on context, show either equipped items or equipped moves
+            if (!ShowMovesInPlayerPanel)
             {
-                string place = "";
-                switch (j)
+                Console.SetCursorPosition(x + 2, y + 12);
+                Console.Write("Equiped items:");
+                for (int j = 0; j < player.equippedItems.Capacity; j++)
                 {
-                    case 0: place = "Head"; break;
-                    case 1: place = "Body"; break;
-                    case 2: place = "Legs"; break;
-                    case 3: place = "Feet"; break;
+                    string place = "";
+                    switch (j)
+                    {
+                        case 0: place = "Head"; break;
+                        case 1: place = "Body"; break;
+                        case 2: place = "Legs"; break;
+                        case 3: place = "Feet"; break;
+                    }
+                    Console.SetCursorPosition(x + 2, y + 13 + j);
+                    Console.Write($"{j + 1} ({place}) : {player.equippedItems[j]?.name ?? "Empty"}");
                 }
-                Console.SetCursorPosition(x + 2, y + 13 + j);
-                Console.Write($"{j + 1} ({place}) : {player.equippedItems[j]?.name ?? "Empty"}");
+            }
+            else
+            {
+                Console.SetCursorPosition(x + 2, y + 12);
+                Console.Write("Equipped moves:");
+                for (int j = 0; j < player.equippedAttacks.Count; j++)
+                {
+                    Console.SetCursorPosition(x + 2, y + 13 + j);
+                    string moveName = player.equippedAttacks[j]?.name ?? "Empty";
+                    Console.Write($"Slot {j + 1}: {moveName}");
+                }
             }
         }
 

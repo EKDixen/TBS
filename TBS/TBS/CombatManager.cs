@@ -285,6 +285,12 @@ public class CombatManager
             {
             var target = (effect.targetType == "self") ? attacker : defender;
             effect.Apply(attacker, defender);
+
+            if (effect.duration > 0 && target.activeEffects != null)
+            {
+                target.activeEffects.Add(new ActiveEffect(effect.type, effect.value, effect.duration));
+            }
+
             string sign = effect.value >= 0 ? "+" : "";
             string dur = effect.duration > 0 ? $" for {effect.duration} turns" : "";
             ui.AddToLog($"{target.name}: {effect.type} {sign}{effect.value}{dur}");
@@ -349,6 +355,12 @@ public class CombatManager
             else
             {
                 effect.Apply(attacker, d);
+
+                if (effect.duration > 0 && d.activeEffects != null)
+                {
+                    d.activeEffects.Add(new ActiveEffect(effect.type, effect.value, effect.duration));
+                }
+
                 string sign = effect.value >= 0 ? "+" : "";
                 string dur = effect.duration > 0 ? $" for {effect.duration} turns" : "";
                 ui.AddToLog($"{d.name}: {effect.type} {sign}{effect.value}{dur}");
@@ -361,9 +373,42 @@ public class CombatManager
             }
             
             
+        private void UpdateTimedEffects(Combatant c)
+        {
+            if (c.activeEffects == null || c.activeEffects.Count == 0) return;
+
+            var expired = new List<ActiveEffect>();
+            foreach (var ae in c.activeEffects)
+            {
+                ae.remainingTurns--;
+                if (ae.remainingTurns <= 0)
+                {
+                    switch (ae.type)
+                    {
+                        case "dodge": c.dodge -= ae.value; break;
+                        case "dodgeNegation": c.dodgeNegation -= ae.value; break;
+                        case "critChance": c.critChance -= ae.value; break;
+                        case "critDamage": c.critDamage -= ae.value; break;
+                        case "armor": c.armor -= ae.value; break;
+                        case "stun": c.stun -= ae.value; break;
+                        case "stunNegation": c.stunNegation -= ae.value; break;
+                        case "speed": c.speed -= ae.value; break;
+                    }
+                    expired.Add(ae);
+                }
+            }
+
+            foreach (var ae in expired)
+            {
+                c.activeEffects.Remove(ae);
+            }
+        }
+
         private void TakeTurn(Combatant actor)
         {
             if (!actor.IsAlive()) return;
+
+            UpdateTimedEffects(actor);
 
             ui.RenderCombatScreen(player, combatants);
             ui.AddToLog("");

@@ -79,6 +79,9 @@ public class AttackManager
     // Show moves menu for equipping/unequipping/viewing ig
     public void ShowMovesMenu()
     {
+        // While in the moves menu, show equipped moves in the player panel
+        MainUI.ShowMovesInPlayerPanel = true;
+
         while (true)
         {
             // Update the filtered list based on the search term
@@ -118,8 +121,8 @@ public class AttackManager
             {
                 Attack atk = pageMoves[i];
 
-                // check if equipped
-                int slotIndex = pageMoves.IndexOf(atk);
+                // Check if this attack is currently equipped and in which slot
+                int slotIndex = player.equippedAttacks.IndexOf(atk);
                 string equippedInfo = slotIndex >= 0 ? $"(Slot {slotIndex + 1})" : "";
 
                 MainUI.WriteInMainArea($"{i + 1}. {atk.name} {equippedInfo}");
@@ -236,6 +239,8 @@ public class AttackManager
             MainUI.WriteInMainArea("\n-press Enter to continue-");
             Console.ReadLine();
         }
+        // Leaving moves menu: restore default equipment view in player panel
+        MainUI.ShowMovesInPlayerPanel = false;
         Program.MainMenu();
     }
     private void HandleSearch()

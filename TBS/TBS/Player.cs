@@ -19,8 +19,18 @@ public class Player : Combatant
 
     public List<Item> equippedItems = new List<Item>(4);
 
+    // Normal inventory weight & encumbrance
     public int inventoryWeight = 0;
     public int inventorySpeedModifier = 0;
+
+    // Material bag: stores crafting materials separately from normal inventory weight
+    public List<Item> materialItems = new List<Item>();
+
+    // Current material load in abstract units (not normal weight)
+    public int currentMaterialLoad = 0;
+
+    // Base capacity without backpacks; can be 0 or a small default if desired
+    public int baseMaterialCapacity = 0;
 
     public List<Attack> ownedAttacks = new List<Attack>();
 

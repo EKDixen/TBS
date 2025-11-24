@@ -1,4 +1,4 @@
-using Game.Class;
+﻿using Game.Class;
 using System.Reflection.Metadata;
 using System.Xml.Linq;
 using static System.Formats.Asn1.AsnWriter;
@@ -215,6 +215,13 @@ public static class Inventory
     }
     public static void AddItem(Item templateItem, int tAmount)
     {
+        // Materials are routed into the material bag instead of normal inventory
+        if (templateItem.type == ItemType.Material)
+        {
+            AddMaterial(templateItem, tAmount);
+            return;
+        }
+
         Item existingItem = player.ownedItems.FirstOrDefault(i => i.name == templateItem.name);
 
         if (existingItem != null && templateItem.type != ItemType.equipment)
@@ -256,11 +263,72 @@ public static class Inventory
         UpdateWeight();
     }
 
+    // Compute how many material-capacity units a single unit of this item consumes
+    // For now this is just 1 per material, but can be extended per-material later.
+    public static int GetMaterialUnitCost(Item material)
+    {
+        return 1;
+    }
+
+    // Add materials into the separate material bag, respecting capacity from backpacks
+    public static void AddMaterial(Item templateItem, int tAmount)
+    {
+        int unitCost = GetMaterialUnitCost(templateItem);
+        int totalCost = unitCost * tAmount;
+
+        int totalCapacity = player.baseMaterialCapacity + GetBackpackCapacityFromInventory(player);
+
+        // If capacity is zero, nothing can be added
+        if (totalCapacity <= 0)
+        {
+            MainUI.WriteInMainArea("You have no space for materials. Find or buy a backpack first.\n");
+            return;
+        }
+
+        // If adding full amount would exceed capacity, clamp to what fits
+        int available = totalCapacity - player.currentMaterialLoad;
+        int maxAllowedUnits = available / Math.Max(unitCost, 1);
+
+        if (maxAllowedUnits <= 0)
+        {
+            MainUI.WriteInMainArea("Your material bag is full.\n");
+            return;
+        }
+
+        int toAdd = Math.Min(tAmount, maxAllowedUnits);
+        if (toAdd <= 0) return;
+
+        // Try to find an existing stack of this material
+        Item existingMaterial = player.materialItems.FirstOrDefault(i => i.name == templateItem.name);
+
+        if (existingMaterial != null)
+        {
+            existingMaterial.amount += toAdd;
+        }
+        else
+        {
+            Item newItem = new Item(templateItem); // copy template
+            newItem.amount = toAdd;
+            player.materialItems.Add(newItem);
+        }
+
+        player.currentMaterialLoad += unitCost * toAdd;
+
+        // If we couldn't add the full requested amount, inform the player
+        if (toAdd < tAmount)
+        {
+            MainUI.WriteInMainArea($"Your material bag is full; only {toAdd} out of {tAmount} could be stored.\n");
+        }
+
+        // Material bag does not affect normal inventory weight, so we do not call UpdateWeight here.
+    }
+
     public static void UpdateWeight()
     {
         player.inventoryWeight = 0;
         foreach (var item in player.ownedItems)
         {
+            // Materials are not stored in ownedItems anymore; everything here counts towards normal weight
             player.inventoryWeight += item.weight * item.amount;
         }
         // remove the old speed modifier effect
@@ -272,6 +340,20 @@ public static class Inventory
         // apply the new effect only if weight exceeds freeweight int
         float excessWeight = MathF.Max(player.inventorySpeedModifier - freeweight, 0);
         player.speed -= player.inventorySpeedModifier;
+    }
+
+    // Sum material capacity provided by all backpack items in the player's inventory
+    public static int GetBackpackCapacityFromInventory(Player p)
+    {
+        int bonus = 0;
+        foreach (var item in p.ownedItems)
+        {
+            if (item.type == ItemType.Backpack && item.stats != null && item.stats.ContainsKey("materialCapacity"))
+            {
+                bonus += item.stats["materialCapacity"] * item.amount;
+            }
+        }
+        return bonus;
     }
 
     public static void DropItem(Item Titem, int quantity)

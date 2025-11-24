@@ -1,10 +1,19 @@
 ﻿using Game.Class;
 
+[System.Flags]
+public enum ClassRole
+{
+    Physical = 1,
+    Magic    = 2
+}
+
 public class Class
 {
     public string name;
     public string description; 
-    public bool isMagic;       
+
+    // Role flags: Physical, Magic, or both for hybrids
+    public ClassRole roles;       
 
     public int THP = 0;
     public int TmaxHP = 0;

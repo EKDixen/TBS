@@ -1,4 +1,6 @@
-﻿public class Combatant
+﻿using System.Collections.Generic;
+
+public class Combatant
 {
     //Stats
     public string name;
@@ -22,10 +24,26 @@
     public double ActionGauge;
     public bool IsPlayer;
 
+    public List<ActiveEffect> activeEffects = new List<ActiveEffect>();
+
     public Combatant() { } // Deserialize
 
     public bool IsAlive()
     {
         return HP > 0;
+    }
+}
+
+public class ActiveEffect
+{
+    public string type;
+    public int value;
+    public int remainingTurns;
+
+    public ActiveEffect(string type, int value, int remainingTurns)
+    {
+        this.type = type;
+        this.value = value;
+        this.remainingTurns = remainingTurns;
     }
 }
