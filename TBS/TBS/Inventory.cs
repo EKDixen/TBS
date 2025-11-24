@@ -230,8 +230,6 @@ public static class Inventory
                 ApplyEffects(existingItem, null); 
             }
 
-            UpdateWeight();
-
         }
         else if(templateItem.type == ItemType.equipment)
         {
@@ -239,7 +237,6 @@ public static class Inventory
             {
                 Item newItem = new Item(templateItem); // Use the copy constructor
                 player.ownedItems.Add(newItem);
-                UpdateWeight();
             }
         }
         else
@@ -248,7 +245,6 @@ public static class Inventory
 
             newItem.amount = tAmount;
             player.ownedItems.Add(newItem);
-            UpdateWeight();
 
             if (newItem.type == ItemType.Artifact)
             {
@@ -256,6 +252,7 @@ public static class Inventory
             }
 
         }
+        UpdateWeight();
     }
 
     public static void UpdateWeight()
@@ -278,7 +275,7 @@ public static class Inventory
 
     public static void DropItem(Item Titem, int quantity)
     {
-        UpdateWeight();
+       
         int equippedSlot = player.equippedItems.IndexOf(Titem);
         if (equippedSlot >= 0)
         {
@@ -303,6 +300,7 @@ public static class Inventory
                 ApplyEffects(Titem,null);
             }
         }
+        UpdateWeight();
     }
     public static void ApplyEffects(Item Titem, int? amount)
     {
