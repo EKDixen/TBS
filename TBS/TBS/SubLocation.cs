@@ -159,8 +159,7 @@ public class SubLocation
             for (int i = 0; i < recipes.Count; i++)
             {
                 var r = recipes[i];
-                string line = $"{i + 1,-3} {r.Name,-30} -> {r.OutputItem.name}";
-                MainUI.WriteInMainArea(line);
+
 
                 string req = "   Requires: ";
                 bool first = true;
@@ -175,7 +174,9 @@ public class SubLocation
                     if (!first) req += ", ";
                     req += $"{r.MoneyCost} Rai";
                 }
-                MainUI.WriteInMainArea(req);
+                string line = $"{i + 1,-3} {r.OutputItem.name,-30}";
+                MainUI.WriteInMainArea(line);
+                MainUI.WriteInMainArea($" -> {req}");
             }
 
             MainUI.WriteInMainArea("\n0 : Leave");
