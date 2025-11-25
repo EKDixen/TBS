@@ -1872,10 +1872,6 @@ public class SubLocation
                         Inventory.RemoveEffects(selectedItem, null); // Remove stats for the whole stack
                     }
 
-                    // Handle Weight & Speed 
-                    Inventory.UpdateWeight();
-
-
                     // Handle Item List
                     if (selectedItem.type == ItemType.equipment || selectedItem.amount <= quantity)
                     {
@@ -1895,6 +1891,9 @@ public class SubLocation
                     }
 
                     Program.player.money += selectedItem.value * quantity;
+
+                    // Handle Weight & Speed 
+                    Inventory.UpdateWeight();
 
                     MainUI.WriteInMainArea($"\nSold {quantity}x {selectedItem.name} for {selectedItem.value * quantity} Rai");
                     Thread.Sleep(1000);
