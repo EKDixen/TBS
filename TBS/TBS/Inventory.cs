@@ -312,8 +312,6 @@ public static class Inventory
 
         }
         UpdateWeight();
-
-
     }
 
     // Compute how many material-capacity units a single unit of this item consumes
@@ -368,6 +366,7 @@ public static class Inventory
             Item newItem = new Item(templateItem); // copy template
             newItem.amount = toAdd;
             player.materialItems.Add(newItem);
+            player.knownItems.Add(newItem);
         }
 
         player.currentMaterialLoad += unitCost * toAdd;
