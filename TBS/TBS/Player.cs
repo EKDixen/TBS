@@ -30,6 +30,10 @@ public class Player : Combatant
 
     public List<Item> equippedItems = new List<Item>(4);
 
+    //the different things the player knows for the encyclopedia
+    public List<Item> knownItems = new List<Item>();
+    public List<Item> knownEnemies = new List<Item>();
+
     public Item? equippedWeapon;
 
     // Normal inventory weight & encumbrance
