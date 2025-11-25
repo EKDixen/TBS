@@ -226,11 +226,18 @@
     #endregion
 
     #region legs
-    public static Item camoPants = new Item("Camo Pants", "+20% dodge", 3,2, ItemType.equipment)
+    public static Item camoPants = new Item("Camo Pants", "+20% dodge", 5,2, ItemType.equipment)
     {
         stats = { ["dodge"] = 20 },
         equipmentType = EquipmentType.legs,
         detailsLore = "military grade camo pants..\n makes it harder to hit you"
+    };
+
+    public static Item RoughTrousers = new Item("Rough Trousers", "+1 armor", 4, 2, ItemType.equipment)
+    {
+        stats = { ["armor"] = 1 },
+        equipmentType = EquipmentType.legs, 
+        detailsLore = "Simple, thick trousers reinforced with leather patches \nThey offer a tiny bit of defense",
     };
     #endregion
 
@@ -284,6 +291,12 @@
         equipmentType = EquipmentType.weapon,
         weaponAttack = AttackLibrary.RecklessSwing
     };
+    public static Item FoulHook = new Item("Foul Hook", "Foul Thrust", 15, 6, ItemType.equipment)
+    {
+        weaponAttack = AttackLibrary.FoulThrust,
+        equipmentType = EquipmentType.weapon,
+        detailsLore = "A rusty, crude hook.. It’s dirty and unbalanced, \nbut the sharp point can easily catch clothing or skin.",
+    };
 
     #endregion
 
@@ -319,6 +332,16 @@
         detailsLore = "speed potion, drink it to become faster for a bit"
     };
 
+    public static Item CheapAle = new Item("Cheap Ale", "+15 HP, -15% Dodge", 1, 2, ItemType.consumable)
+    {
+        effects = new List<AttackEffect>()
+        {
+            new AttackEffect("dodge", -15, 1, "self"), 
+            new AttackEffect("heal", 15, 0, "self")
+        },
+        duration = 0,
+        detailsLore = "A harsh, watery brew common in dockside taverns. \nIt grants a small heal and a brief surge of reckless courage, but makes you stumble."
+    };
 }
 
 #endregion

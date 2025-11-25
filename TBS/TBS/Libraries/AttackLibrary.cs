@@ -99,6 +99,10 @@ public static class AttackLibrary
         new AttackEffect("damage", 10, 0, "enemy"),       
         new AttackEffect("stunNegation", -25, 3, "enemy")
     });
+    public static Attack FoulThrust = new Attack("Foul Thrust", new List<AttackEffect> {
+        new AttackEffect("damage", 15, 0, "enemy"),       
+        new AttackEffect("dodge", -15, 1, "enemy")        
+    });
     #endregion
 
 
