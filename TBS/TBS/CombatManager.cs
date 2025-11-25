@@ -478,9 +478,25 @@ public class CombatManager
                 {
                     var dot = c.damageOverTimeEffects[i];
                     
-                    // Apply damage
-                    c.HP -= dot.damagePerTurn;
-                    ui.AddToLog($"{c.name} takes {dot.damagePerTurn} damage from {dot.sourceName}!");
+                    int rawDamage = dot.damagePerTurn;
+                    int armorReduction = Math.Max(0, c.armor);
+                    int actualDamage = Math.Max(0, rawDamage - armorReduction);
+                    
+                    c.HP -= actualDamage;
+                    
+                    if (armorReduction > 0 && rawDamage > armorReduction)
+                    {
+                        ui.AddToLog($"{c.name} takes {actualDamage} damage from {dot.sourceName} ({rawDamage} - {armorReduction} armor)!");
+                    }
+                    else if (armorReduction >= rawDamage)
+                    {
+                        ui.AddToLog($"{c.name} takes {actualDamage} damage from {dot.sourceName} (blocked by armor)!");
+                    }
+                    else
+                    {
+                        ui.AddToLog($"{c.name} takes {actualDamage} damage from {dot.sourceName}!");
+                    }
+                    
                     ui.RenderCombatScreen(player, combatants);
                     Thread.Sleep(300);
 
@@ -532,6 +548,16 @@ public class CombatManager
             if (!actor.IsAlive()) return;
 
             UpdateTimedEffects(actor);
+
+            if (!actor.IsAlive())
+            {
+                ui.AddToLog($"{actor.name} has been defeated by damage over time!");
+                ui.RenderCombatScreen(player, combatants);
+                Thread.Sleep(800);
+                actor.ActionGauge -= ActionThreshold;
+                if (actor.ActionGauge < 0) actor.ActionGauge = 0;
+                return;
+            }
 
             ui.RenderCombatScreen(player, combatants);
             ui.AddToLog("");
