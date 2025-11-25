@@ -207,6 +207,7 @@ public static class LocationLibrary
         { EncounterLibrary.GoblinPack, 15},
         { EncounterLibrary.RoadGambling, 10},
         { EncounterLibrary.LearnFirstAid, 15},
+        { EncounterLibrary.RogueUnlock, 5},
         { EncounterLibrary.WeakRopeBridge, 5}
     }, "Greenwood Territories");
 

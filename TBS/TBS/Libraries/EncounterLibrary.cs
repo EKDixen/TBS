@@ -648,7 +648,7 @@ public static class EncounterLibrary
              int number = rng.Next(1, 3);
              if (number == 1)
              {
-                 MainUI.WriteInMainArea($"The snowman begins moving, and asks if u wanna see something funny.");
+                 MainUI.WriteInMainArea($"The snowman begins moving, and asks if u wanna see something funny, and he begins grinning..");
                  MainUI.WriteInMainArea("Do you accept his offer? (y/n): ");
                  string choice2 = Console.ReadKey(true).KeyChar.ToString().ToLower();
                  if (choice2 == "y" || choice2 == "yes")
@@ -665,6 +665,7 @@ public static class EncounterLibrary
                      else
                      {
                          AttackManager atkmanager = new AttackManager(Program.player);
+                         MainUI.WriteInMainArea($"The snowman makes a snowball and teaches you how to do it aswell!");
                          atkmanager.LearnAttack(AttackLibrary.Snowball);
                      }
                  }
@@ -739,6 +740,110 @@ public static class EncounterLibrary
     },
     EncounterType.Event
 );
+    public static Encounter RogueUnlock = new Encounter(
+ "RogueUnlock",
+ false,
+ "You see a small cave entrance, lit by a torch in the distance",
+ null,
+ (player) => {
+     int flawlessVictories = player.GetStat("totalFlawlessVictories");
+
+     if (flawlessVictories < 1)
+     {
+         MainUI.WriteInMainArea("You approach the cave, but see what looks like a trap near the entrance. You move on.");
+         return;
+     }
+
+     MainUI.WriteInMainArea("Do you approach it? (y/n): ");
+     string choice = Console.ReadKey(true).KeyChar.ToString().ToLower();
+
+     if (choice == "y" || choice == "yes")
+     {
+         MainUI.WriteInMainArea("\nAs you enter the cave, a shadowy figure emerges from the darkness...");
+         MainUI.WriteInMainArea("The figure studies you silently for a moment.");
+
+         if (flawlessVictories >= 5)
+         {
+             if (player.playerClass == ClassLibrary.Rogue)
+             {
+                 MainUI.WriteInMainArea("Welcome back, shadow walker, the figure says with a nod.");
+                 MainUI.WriteInMainArea("I see you continue to walk the path of stealth and precision.");
+
+                 if (!player.ownedAttacks.Contains(AttackLibrary.Lunge))
+                 {
+                     MainUI.WriteInMainArea("Let me teach you a new technique...");
+                     AttackManager atkmanager = new AttackManager(player);
+                     atkmanager.LearnAttack(AttackLibrary.Lunge);
+                 }
+                 else
+                 {
+                     if (player.level >= 10 && flawlessVictories >= 25)
+                     {
+                         if (!player.ownedAttacks.Contains(AttackLibrary.Bloodieddagger))
+                         {
+                             MainUI.WriteInMainArea("\n\"Let me teach you a new technique...\"");
+                             AttackManager atkmanager = new AttackManager(player);
+                             atkmanager.LearnAttack(AttackLibrary.Bloodieddagger);
+                         }
+                         else
+                         {
+                             MainUI.WriteInMainArea("You have grown strong, shadow walker, the figure says.");
+                         }
+                     }
+                     else
+                     {
+                         MainUI.WriteInMainArea("You have learned what I can teach you for now.");
+                         MainUI.WriteInMainArea($"Return when you reach level 10 and have 25 flawless victories.");
+                         MainUI.WriteInMainArea($"Then I will teach you further.");
+                         MainUI.WriteInMainArea($"(Current: Level {player.level}/10, Flawless Victories: {flawlessVictories}/25)");
+                     }
+                 }
+
+                 MainUI.WriteInMainArea("The figure fades back into the shadows.");
+             }
+             else
+             {
+                 MainUI.WriteInMainArea("Impressive, the figure says in a low voice.");
+                 MainUI.WriteInMainArea("I've been watching you. Your technique is flawless.");
+                 MainUI.WriteInMainArea("You strike without giving your enemies a chance to retaliate.");
+                 MainUI.WriteInMainArea("I am a master of the shadows. Would you like to learn my ways?");
+                 MainUI.WriteInMainArea("Become a Rogue? (y/n): ");
+
+                 string classChoice = Console.ReadKey(true).KeyChar.ToString().ToLower();
+                 if (classChoice == "y" || classChoice == "yes")
+                 {
+                     player.playerClass = ClassLibrary.Rogue;
+                     player.RecalculateStats();
+                     MainUI.WriteInMainArea("The figure nods approvingly.");
+                     MainUI.WriteInMainArea("Welcome to the shadows. You are now a Rogue.");
+                     MainUI.WriteInMainArea("The figure vanishes into the darkness.");
+                     Program.SavePlayer();
+                 }
+                 else
+                 {
+                     MainUI.WriteInMainArea("Perhaps another time, the figure says, fading into the shadows.");
+                 }
+             }
+         }
+         else
+         {
+             // Has 1-4 flawless victories
+             MainUI.WriteInMainArea("You show promise, the figure says.");
+             MainUI.WriteInMainArea("But you are not yet strong enough to be my disciple.");
+             MainUI.WriteInMainArea("Get more fighting experience before returning.");
+             MainUI.WriteInMainArea($"(Flawless Victories: {flawlessVictories}/5)");
+             MainUI.WriteInMainArea("The figure disappears back into the shadows.");
+         }
+     }
+     else
+     {
+         MainUI.WriteInMainArea("You decide not to risk it and move on.");
+     }
+ },
+ EncounterType.Event
+);
+
+
 
     #endregion
 }
