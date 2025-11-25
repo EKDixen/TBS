@@ -108,10 +108,10 @@
     #endregion
 
     #region artifacts
-    public static Item VampireRing = new Item("Vampire Ring", "+3% CritChance", 11,1, ItemType.Artifact)
+    public static Item VampireRing = new Item("Vampire Ring", "+4% CritChance", 11,1, ItemType.Artifact)
     {
         detailsLore = "Silver ring rumored to strengthen \nits wearer’s blood using magic.",
-        stats = { ["critChance"] = 3 },
+        stats = { ["critChance"] = 4 },
     };
 
     public static Item BasicBackpack = new Item("Basic Backpack", "A simple backpack", 50, 2, ItemType.Artifact)

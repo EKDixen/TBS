@@ -1294,7 +1294,10 @@ public class SubLocation
         }
 
         fishing = true;
-        
+
+        Random rand = new Random();
+        fishingMeterTarget = rand.Next(15,26);
+
         while (fishing) 
         {
             if (Console.KeyAvailable)
