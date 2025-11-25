@@ -6,7 +6,7 @@ namespace Game.Class
 {
     public class Program
     {
-        private const string CURRENT_VERSION = "1.0.24"; // Update this with each release
+        private const string CURRENT_VERSION = "1.0.25"; // Update this with each release
         private const string GITHUB_API_URL = "https://api.github.com/repos/EKDixen/TBS/releases/latest";
 
         static bool stopMultibleLoad = false;
