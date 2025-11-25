@@ -34,6 +34,9 @@ public static class AdminTools
             Console.WriteLine("  8. List All Dead Players");
             Console.WriteLine("  9. Check if Player Exists");
             Console.WriteLine();
+            Console.WriteLine("CHARACTER MOD:");
+            Console.WriteLine("  10. Character Mod Menu");
+            Console.WriteLine();
             Console.WriteLine("  0. Exit");
             Console.WriteLine();
             Console.Write("Choice: ");
@@ -127,7 +130,10 @@ public static class AdminTools
         try
         {
             var baseUrl = Environment.GetEnvironmentVariable("TBS_API_BASEURL") ?? "https://tbs-wlt8.onrender.com";
-            var http = new System.Net.Http.HttpClient();
+            var handler = new System.Net.Http.HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+            var http = new System.Net.Http.HttpClient(handler);
+            http.Timeout = TimeSpan.FromSeconds(30);
             var url = $"{baseUrl.TrimEnd('/')}/players/{Uri.EscapeDataString(playerName)}";
 
             using var resp = http.DeleteAsync(url).GetAwaiter().GetResult();
@@ -171,7 +177,10 @@ public static class AdminTools
 
         try
         {
-            var http = new System.Net.Http.HttpClient();
+            var handler = new System.Net.Http.HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+            var http = new System.Net.Http.HttpClient(handler);
+            http.Timeout = TimeSpan.FromSeconds(30);
             var listUrl = $"{baseUrl.TrimEnd('/')}/players";
             
             // Get all player names
@@ -326,8 +335,12 @@ public static class AdminTools
     {
         try
         {
-            var http = new System.Net.Http.HttpClient();
+            var handler = new System.Net.Http.HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+            var http = new System.Net.Http.HttpClient(handler);
+            http.Timeout = TimeSpan.FromSeconds(30);
             var url = $"{baseUrl.TrimEnd('/')}/players";
+            Console.WriteLine($"\nFetching player list from: {url}...");
             
             using var resp = http.GetAsync(url).GetAwaiter().GetResult();
             
@@ -440,6 +453,28 @@ public static class AdminTools
         }
     }
 
+    private static void CharacterModMenu(PlayerDatabase db, string baseUrl)
+    {
+        Console.Write("\nEnter player name to modify: ");
+        var playerName = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(playerName)) { Console.WriteLine("Invalid player name."); return; }
+        try {
+            var handler = new System.Net.Http.HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+            var http = new System.Net.Http.HttpClient(handler);
+            http.Timeout = TimeSpan.FromSeconds(30);
+            var url = $"{baseUrl.TrimEnd('/')}/players/{Uri.EscapeDataString(playerName)}";
+            Console.WriteLine($"\nLoading player: {playerName}...");
+            using var resp = http.GetAsync(url).GetAwaiter().GetResult();
+            if (!resp.IsSuccessStatusCode) { Console.WriteLine($"\n✗ Could not load player. Status: {resp.StatusCode}"); return; }
+            string json = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var player = Serializer.FromJson<Player>(json);
+            if (player == null) { Console.WriteLine("\n✗ Failed to deserialize player data."); return; }
+            Console.WriteLine($"\n✓ Loaded: {player.name} (Level {player.level})");
+            Console.WriteLine("Character Mod Menu - Coming soon!");
+        } catch (Exception ex) { Console.WriteLine($"\n✗ Error: {ex.Message}"); }
+    }
+    
     private static void PressAnyKey()
     {
         Console.WriteLine("\nPress any key to continue...");
