@@ -9,7 +9,7 @@ public static class AttackLibrary
     });
 
     public static Attack GroupHeal = new Attack("Group heal", new List<AttackEffect> {
-        new AttackEffect("heal", 10, 0, "ally")
+        new AttackEffect("heal", 10, 0, "allAllies")
     });
 
     #endregion

@@ -272,7 +272,7 @@ public class CombatManager
             
             foreach (var effect in attack.effects)
             {
-            if (effect.targetType == "allEnemies") continue;
+            if (effect.targetType == "allEnemies" || effect.targetType == "allAllies") continue;
             
             if (effect.type == "damage")
             {
@@ -368,13 +368,15 @@ public class CombatManager
             
             private void ExecuteAttackAoE(Combatant attacker, Attack attack, List<Combatant> defenders)
             {
-            ui.AddToLog($"{attacker.name} uses {attack.name} on ALL enemies!");
+            bool isAllyAoE = attack.effects.Any(e => e.targetType == "allAllies");
+            string targetDescription = isAllyAoE ? "ALL allies" : "ALL enemies";
+            ui.AddToLog($"{attacker.name} uses {attack.name} on {targetDescription}!");
             ui.RenderCombatScreen(player, combatants);
             Thread.Sleep(400);
             
             foreach (var effect in attack.effects)
             {
-            if (effect.targetType != "allEnemies") continue;
+            if (effect.targetType != "allEnemies" && effect.targetType != "allAllies") continue;
             
             if (effect.type == "damage")
             {
@@ -478,6 +480,7 @@ public class CombatManager
                 {
                     var dot = c.damageOverTimeEffects[i];
                     
+                    // Apply damage with armor reduction
                     int rawDamage = dot.damagePerTurn;
                     int armorReduction = Math.Max(0, c.armor);
                     int actualDamage = Math.Max(0, rawDamage - armorReduction);
@@ -549,6 +552,7 @@ public class CombatManager
 
             UpdateTimedEffects(actor);
 
+            // Check if actor died from DOT effects
             if (!actor.IsAlive())
             {
                 ui.AddToLog($"{actor.name} has been defeated by damage over time!");
@@ -585,7 +589,6 @@ public class CombatManager
                 Console.ReadLine();
 
                 var moves = player.equippedAttacks.Where(a => a != null).ToList();
-                if (player.equippedWeapon != null && player.equippedWeapon.weaponAttack != null) moves.Add(player.equippedWeapon.weaponAttack);
                 var consumables = player.ownedItems.Where(i => i.type == ItemType.consumable && i.amount > 0).ToList();
                 
                 if (moves.Count == 0 && consumables.Count == 0 && !canFlee)
@@ -686,13 +689,19 @@ public class CombatManager
                     // They chose an attack
                     var chosen = moves[choice - 1];
 
-                    bool isAoE = chosen.effects.Any(e => e.targetType == "allEnemies");
+                    bool isAoEEnemies = chosen.effects.Any(e => e.targetType == "allEnemies");
+                    bool isAoEAllies = chosen.effects.Any(e => e.targetType == "allAllies");
                     bool targetsSelfOrAlly = chosen.effects.All(e => e.targetType == "self" || e.targetType == "ally");
                     
-                    if (isAoE)
+                    if (isAoEEnemies)
                     {
                         var allEnemies = enemies.Cast<Combatant>().ToList();
                         ExecuteAttackAoE(player, chosen, allEnemies);
+                    }
+                    else if (isAoEAllies)
+                    {
+                        var allAllies = combatants.Where(c => c.IsAlive() && c.IsPlayer).ToList();
+                        ExecuteAttackAoE(player, chosen, allAllies);
                     }
                     else if (targetsSelfOrAlly)
                     {
@@ -753,7 +762,24 @@ public class CombatManager
                     return;
                 }
                 var chosen = enemy.SelectWeightedAttack();
-                ExecuteAttackSingle(enemy, chosen, player);
+                
+                bool isAoEEnemies = chosen.effects.Any(e => e.targetType == "allEnemies");
+                bool isAoEAllies = chosen.effects.Any(e => e.targetType == "allAllies");
+                
+                if (isAoEEnemies)
+                {
+                    var allPlayers = combatants.Where(c => c.IsAlive() && c.IsPlayer).ToList();
+                    ExecuteAttackAoE(enemy, chosen, allPlayers);
+                }
+                else if (isAoEAllies)
+                {
+                    var allEnemyAllies = combatants.Where(c => c.IsAlive() && !c.IsPlayer).ToList();
+                    ExecuteAttackAoE(enemy, chosen, allEnemyAllies);
+                }
+                else
+                {
+                    ExecuteAttackSingle(enemy, chosen, player);
+                }
             }
             actor.ActionGauge -= ActionThreshold;
             if (actor.ActionGauge < 0) actor.ActionGauge = 0;
