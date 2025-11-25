@@ -38,6 +38,10 @@
     };
 
     // Monster-specific materials
+    public static Item bone = new Item("Bone", "A piece of bone", 5, 2, ItemType.Material)
+    {
+        detailsLore = "A piece of skeletal remains, sharp enough to fashion into tools.",
+    };
     public static Item goblinEar = new Item("Goblin Ear", "A trophy from a defeated goblin.", 5, 0, ItemType.Material)
     {
         detailsLore = "Goblins have surprisingly large ears. Useful for certain crafts.",
@@ -60,7 +64,8 @@
     #endregion
 
     #region craftable equipment (not sold in stores)
-    // Head
+
+    #region head
     public static Item goblinSkullHelm = new Item("Goblin Skull Helm", "+2 armor, +5% dodge", 25, 5, ItemType.equipment)
     {
         stats = { ["armor"] = 2, ["dodge"] = 5 },
@@ -74,8 +79,9 @@
         equipmentType = EquipmentType.head,
         detailsLore = "A helmet infused with frost magic. The cold never bothered you anyway."
     };
+    #endregion
 
-    // Torso
+    #region torso
     public static Item spidersilkVest = new Item("Spidersilk Vest", "+3 armor, +15% dodge", 60, 7, ItemType.equipment)
     {
         stats = { ["armor"] = 3, ["dodge"] = 15 },
@@ -89,24 +95,27 @@
         equipmentType = EquipmentType.torso,
         detailsLore = "Heavy iron plating reinforced with quality materials.\nProvides excellent protection at the cost of mobility."
     };
+    #endregion
 
-    // Legs
+    #region legs
     public static Item spidersilkLeggings = new Item("Spidersilk Leggings", "+1 armor, +25% dodge, +1 speed", 55, 4, ItemType.equipment)
     {
         stats = { ["armor"] = 1, ["dodge"] = 25, ["speed"] = 1 },
         equipmentType = EquipmentType.legs,
         detailsLore = "Lightweight leggings woven from spider silk.\nEnhances agility significantly."
     };
+    #endregion
 
-    // Feet
+    #region feet
     public static Item wolfhideBoots = new Item("Wolfhide Boots", "+2 speed, +2 armor", 40, 3, ItemType.equipment)
     {
         stats = { ["speed"] = 2, ["armor"] = 2 },
         equipmentType = EquipmentType.feet,
         detailsLore = "Sturdy boots lined with wolf pelt.\nProvides both protection and mobility."
     };
+    #endregion
 
-    //weapon
+    #region weapon
     public static Item IronWarhammer = new Item("Iron Warhammer", "Heavy Slam", 50, 18, ItemType.equipment)
     {
         detailsLore = "A massive iron hammer, Hits with incredible force and \nshattering enemy defenses.",
@@ -120,12 +129,22 @@
         equipmentType = EquipmentType.weapon,
         weaponAttack = AttackLibrary.GlacialSweep
     };
+
     public static Item WinterfangGauntlet = new Item("Winterfang Gauntlet", "Frost Barrier", 500, 30, ItemType.equipment)
     {
         detailsLore = "A reinforced gauntlet using it to strike an enemy instantly coats the wearer in a brittle layer of protective frost.",
         equipmentType = EquipmentType.weapon,
         weaponAttack = AttackLibrary.FrostBarrier
     };
+
+    public static Item SpineBreaker = new Item("Spine Breaker", "Bone Shatter", 40, 12, ItemType.equipment)
+    {
+        detailsLore = "A jagged, heavy bone club fashioned from a large spine, \nMakes the target extremely vulnerable to future stuns",
+        equipmentType = EquipmentType.weapon,
+        weaponAttack = AttackLibrary.BoneShatter
+    };
+    #endregion
+
     #endregion
 
     #region artifacts

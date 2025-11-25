@@ -94,6 +94,11 @@ public static class AttackLibrary
         new AttackEffect("damage", 20, 0, "enemies"), 
         new AttackEffect("speed", -3, 1, "enemies")  
     });
+
+    public static Attack BoneShatter = new Attack("Bone Shatter", new List<AttackEffect> {
+        new AttackEffect("damage", 10, 0, "enemy"),       
+        new AttackEffect("stunNegation", -25, 3, "enemy")
+    });
     #endregion
 
 

@@ -141,6 +141,21 @@ public static class RecipeLibrary
         MoneyCost = 40, 
         AreaTag = "Fallen Kingdom"
     };
+    public static readonly Recipe SpineBreakerRecipe = new Recipe
+    {
+        Id = "spine_breaker",
+        Name = "Spine Breaker",
+        Station = CraftingStationType.Forge,
+        OutputItem = ItemLibrary.SpineBreaker,
+        OutputQuantity = 1,
+        Materials = new List<MaterialCost>
+        {
+            new MaterialCost(ItemLibrary.bone, 8),
+            new MaterialCost(ItemLibrary.spiderSilk, 2)
+        },
+        MoneyCost = 30,
+        AreaTag = "Fallen Kingdom"
+    };
 
     public static readonly Recipe FrostforgedHelm = new Recipe
     {
@@ -200,7 +215,8 @@ public static class RecipeLibrary
         FrostforgedHelm, 
         IronWarhammerRecipe,
         GlacierReaverRecipe,
-        WinterfangGauntletRecipe
+        WinterfangGauntletRecipe,
+        SpineBreakerRecipe
     };
 
     public static IEnumerable<Recipe> GetRecipesFor(string areaTag, CraftingStationType station)
