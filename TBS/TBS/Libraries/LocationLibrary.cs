@@ -44,7 +44,8 @@ public static class LocationLibrary
         { EncounterLibrary.LostCoins, 30},
         { EncounterLibrary.BanditFight, 20},
         { EncounterLibrary.WanderingMerchant, 15},
-        { EncounterLibrary.MysteriousShrine, 5}
+        { EncounterLibrary.MysteriousShrine, 5},
+        { EncounterLibrary.LostChild, 5}
     }, "Coastal Alliance");
 
     public static Location Mistport = new Location("Mistport", new System.Numerics.Vector2(0, -1), 0, new List<SubLocation>
@@ -76,7 +77,8 @@ public static class LocationLibrary
         { EncounterLibrary.StrangeMushrooms, 20},
         { EncounterLibrary.WanderingMerchant, 15},
         { EncounterLibrary.FallenIntoTrap, 10},
-        { EncounterLibrary.FallingFish, 10}
+        { EncounterLibrary.FallingFish, 10},
+        { EncounterLibrary.LostChild, 5}
    }, "Coastal Alliance");
 
     public static Location SaltmarshShore = new Location("Saltmarsh Shore", new System.Numerics.Vector2(-1, -1), 0, new List<SubLocation>
@@ -371,7 +373,8 @@ new Dictionary<Encounter, int>
         { EncounterLibrary.IceWolfPack, 40},
         { EncounterLibrary.FrostTrollAmbush, 30},
         { EncounterLibrary.IceMageEncounter, 25},
-        { EncounterLibrary.FrozenHorde, 15}
+        { EncounterLibrary.FrozenHorde, 15},
+        { EncounterLibrary.LostChild, 1}
     }, null);
 
     public static Location TundraMarch = new Location("Tundra March", new System.Numerics.Vector2(-4, 1), 2, new List<SubLocation>
