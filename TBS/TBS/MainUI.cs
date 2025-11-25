@@ -172,11 +172,11 @@ namespace Game.Class
             }
             else
             {
-                Console.SetCursorPosition(x + 2, y + 12);
+                Console.SetCursorPosition(x + 2, y + 13);
                 Console.Write("Equipped moves:");
                 for (int j = 0; j < player.equippedAttacks.Count; j++)
                 {
-                    Console.SetCursorPosition(x + 2, y + 13 + j);
+                    Console.SetCursorPosition(x + 2, y + 14 + j);
                     string moveName = player.equippedAttacks[j]?.name ?? "Empty";
                     Console.Write($"Slot {j + 1}: {moveName}");
                 }

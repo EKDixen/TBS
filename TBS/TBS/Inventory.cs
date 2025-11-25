@@ -100,7 +100,7 @@ public static class Inventory
             }
 
             MainUI.WriteInMainArea("");
-            MainUI.WriteInMainArea("nr     Name                      Qty   Description         value");
+            MainUI.WriteInMainArea("nr     Name                      Qty   Description         weight");
             MainUI.WriteInMainArea("----------------------------------------------------------------");
             int i = 0;
             foreach (var item in pageItems)
@@ -112,7 +112,7 @@ public static class Inventory
                 string equippedInfo = slotIndex >= 0 ? $"(Slot {slotIndex + 1})" : "";
 
 
-                MainUI.WriteInMainArea($"{i,-7}{item.name,-25} {item.amount,-5} {item.description,-20} {item.value} {equippedInfo}");
+                MainUI.WriteInMainArea($"{i,-7}{item.name,-25} {item.amount,-5} {item.description,-20} {item.weight} {equippedInfo}");
             }
             MainUI.WriteInMainArea("");
             MainUI.WriteInMainArea($"--- Page {currentPage} of {totalPages} ---");
