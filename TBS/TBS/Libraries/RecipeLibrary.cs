@@ -29,7 +29,7 @@ public class Recipe
     public int MoneyCost { get; set; } = 0;
     public string AreaTag { get; set; } // e.g. "Coastal Alliance", "Frostborn Dominion"
 }
-
+#region Coastal Alliance Recipes
 public static class RecipeLibrary
 {
     public static readonly Recipe StarterIronHelm = new Recipe
@@ -78,7 +78,9 @@ public static class RecipeLibrary
         MoneyCost = 20,
         AreaTag = "Coastal Alliance"
     };
+    #endregion
 
+    #region Greenwood Territories Recipes
     public static readonly Recipe WolfhideBoots = new Recipe
     {
         Id = "wolfhide_boots",
@@ -126,6 +128,9 @@ public static class RecipeLibrary
         MoneyCost = 20,
         AreaTag = "Greenwood Territories"
     };
+    #endregion
+
+    #region Fallen Kingdom Recipes
     public static readonly Recipe IronWarhammerRecipe = new Recipe
     {
         Id = "iron_warhammer",
@@ -156,6 +161,9 @@ public static class RecipeLibrary
         MoneyCost = 30,
         AreaTag = "Fallen Kingdom"
     };
+    #endregion
+
+    #region Frostborn Dominion Recipes
 
     public static readonly Recipe FrostforgedHelm = new Recipe
     {
