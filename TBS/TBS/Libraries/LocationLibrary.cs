@@ -87,7 +87,16 @@ public static class LocationLibrary
         new SubLocation("pond", SubLocationType.pond)
         {
 
-        }
+        },        
+        new SubLocation("Store", SubLocationType.shop)
+        {
+            shopItems = new List<Item>
+            {
+                (ItemLibrary.smallHealthPotion),
+                (ItemLibrary.RoughTrousers),
+                (ItemLibrary.CheapAle)
+            }
+        },
     },
     new Dictionary<Encounter, int>
     {
