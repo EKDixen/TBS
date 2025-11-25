@@ -70,6 +70,8 @@ class JourneyManager
                     else
                     {
                         MainUI.WriteInMainArea("--------you dont have enough Rai for that------- \n");
+                        MainUI.WriteInMainArea("Press enter to continue...");
+                        Console.ReadLine();
                         ChoseTravelDestination();
                         return;
                     }
@@ -79,6 +81,8 @@ class JourneyManager
                 else
                 {
                     MainUI.WriteInMainArea("--------dude you dont know any location with that number------- \n");
+                    MainUI.WriteInMainArea("Press enter to continue...");
+                    Console.ReadLine();
                     ChoseTravelDestination();
                     return;
                 }
@@ -86,6 +90,8 @@ class JourneyManager
             else
             {
                 MainUI.WriteInMainArea("--------look mate you gotta type a number----------- \n");
+                MainUI.WriteInMainArea("Press enter to continue...");
+                Console.ReadLine();
                 ChoseTravelDestination();
                 return;
             }
