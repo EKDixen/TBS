@@ -334,6 +334,23 @@ public static class Minimap
                     viewOffsetY--;
                     break;
 
+                case ConsoleKey.A:
+                    viewOffsetX--;
+                    break;
+
+                case ConsoleKey.D:
+                    viewOffsetX++;
+                    break;
+
+                case ConsoleKey.W:
+                    viewOffsetY++;
+                    break;
+
+                case ConsoleKey.S:
+                    viewOffsetY--;
+                    break;
+
+
                 case ConsoleKey.Enter:
                     Program.MainMenu();
                     return;

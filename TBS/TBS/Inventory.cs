@@ -303,6 +303,7 @@ public static class Inventory
 
             newItem.amount = tAmount;
             player.ownedItems.Add(newItem);
+            player.knownItems.Add(newItem);
 
             if (newItem.type == ItemType.Artifact)
             {
@@ -365,6 +366,7 @@ public static class Inventory
             Item newItem = new Item(templateItem); // copy template
             newItem.amount = toAdd;
             player.materialItems.Add(newItem);
+            player.knownItems.Add(newItem);
         }
 
         player.currentMaterialLoad += unitCost * toAdd;
