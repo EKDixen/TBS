@@ -66,7 +66,7 @@
         description = "Gains more speed per level, but less HP and armor.",
         roles = ClassRole.Physical,
         Tspeed = 1,
-        THP = -3,
+        TmaxHP = -3,
         Tarmor = -0,
     };
 

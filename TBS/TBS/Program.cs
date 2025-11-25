@@ -367,8 +367,9 @@ namespace Game.Class
                         MainUI.WriteInMainArea($"    {player.playerClass.TstunNegation} stunNegation");
                         break;
                     case 2:
-                        MainUI.WriteInMainArea($"your class is{player.playerClass.name}");
+                        MainUI.WriteInMainArea($"your class is {player.playerClass.name}");
                         MainUI.WriteInMainArea($"{player.playerClass.description}");
+                        MainUI.WriteInMainArea("Check level for specific numbers for the class");
                         break;
                     case 3:
                         MainUI.WriteInMainArea("Your hp stat is how much you can get hit before you die");
