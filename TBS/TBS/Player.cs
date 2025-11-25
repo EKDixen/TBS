@@ -115,7 +115,10 @@ public class Player : Combatant
         }
         foreach(Item item in equippedItems)
         {
-            Inventory.ApplyEffects(item, null);
+            if (item != null)
+            {
+                Inventory.ApplyEffects(item, 1);
+            }
         }
     }
 }
