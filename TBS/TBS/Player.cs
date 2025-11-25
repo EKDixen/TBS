@@ -49,6 +49,8 @@ public class Player : Combatant
 
     public List<Attack> equippedAttacks = new List<Attack>(4);
 
+    public Dictionary<string, int> statTracker = new Dictionary<string, int>();
+
     public Player() { } //Deserialize
 
     public Player(string TplayerName, string Tpassword, Class TplayerClass, int Tlevel, int Texp, int THP, int TmaxHP,
@@ -122,5 +124,32 @@ public class Player : Combatant
         }
 
         if (HP > maxHP) HP = maxHP;
+    }
+
+    public void IncrementStat(string statName, int amount = 1)
+    {
+        if (!statTracker.ContainsKey(statName))
+            statTracker[statName] = 0;
+        statTracker[statName] += amount;
+    }
+
+    public int GetStat(string statName)
+    {
+        return statTracker.GetValueOrDefault(statName, 0);
+    }
+
+    public void SetStat(string statName, int value)
+    {
+        statTracker[statName] = value;
+    }
+
+    public void ResetStat(string statName)
+    {
+        statTracker[statName] = 0;
+    }
+
+    public bool HasStat(string statName)
+    {
+        return statTracker.ContainsKey(statName);
     }
 }

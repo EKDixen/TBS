@@ -33,8 +33,15 @@ namespace Game.Class
                 Console.WriteLine("Welcome! Do you want to:");
                 Console.WriteLine("1. Login");
                 Console.WriteLine("2. Create a new character");
+                //Console.WriteLine("9. Admin Tools (Migration & Database)");
 
                 string choice = Console.ReadKey(true).KeyChar.ToString();
+
+                //if (choice == "9")
+                //{
+                //    AdminTools.ShowAdminMenu();
+                //    continue;
+                //}
 
                 if (choice == "1")
                 {

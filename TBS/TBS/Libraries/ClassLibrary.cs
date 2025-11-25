@@ -65,9 +65,9 @@
     {
         description = "Gains more speed per level, but less HP and armor.",
         roles = ClassRole.Physical,
-        Tspeed = 3,  
-        TmaxHP = 3,  
-        Tarmor = 0, 
+        Tspeed = 1,
+        THP = -3,
+        Tarmor = -0,
     };
 
     public static readonly Class Gambler = new Class("Gambler")
