@@ -27,8 +27,16 @@ namespace Game.Class
             var ui = new CombatUI();
             ui.InitializeConsole();
 
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("=====================================");
+            Console.WriteLine("         WELCOME TO TBS!!!           ");
+            Console.WriteLine("=====================================");
+            Console.ResetColor();
             while (true)
             {
+                Console.WriteLine("\nPress enter to continue...");
+                Console.ReadLine();
+                Console.Clear();
                 Console.WriteLine("Welcome! Do you want to:");
                 Console.WriteLine("1. Login");
                 Console.WriteLine("2. Create a new character");
@@ -89,7 +97,10 @@ namespace Game.Class
                     do
                     {
                         Console.WriteLine("\nName your character (needed to login):");
+                        Console.WriteLine("0 : cancel");
                         name = Console.ReadLine();
+
+                        if (name == "0")break;
 
                         isValidUsername = (name.Length <= MaxUsernameLength && !name.Contains(' ') && name != null);
 
@@ -119,6 +130,7 @@ namespace Game.Class
                         }
 
                     } while (!isValidUsername);
+                    if (name == "0") continue;
 
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Username accepted!");
