@@ -104,8 +104,6 @@ public class Player : Combatant
         stunNegation = baseStunNegation + c.TstunNegation * levelsAbove1;
         luck         = baseLuck         + c.Tluck         * levelsAbove1;
 
-        if (HP > maxHP) HP = maxHP;
-
         foreach (Item item in ownedItems)
         {
             if(item.type == ItemType.Artifact)
@@ -120,5 +118,7 @@ public class Player : Combatant
                 Inventory.ApplyEffects(item, 1);
             }
         }
+
+        if (HP > maxHP) HP = maxHP;
     }
 }
