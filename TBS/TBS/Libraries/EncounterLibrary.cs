@@ -323,7 +323,7 @@ public static class EncounterLibrary
                     player.exp += exp;
                     MainUI.WriteInMainArea($"The shrine blesses you! You gained {exp} experience!");
                 }
-                if (roll == 89)
+                else if (roll == 89)
                 {
                     player.HP -= player.HP-1;
                 }
