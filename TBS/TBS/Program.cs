@@ -14,7 +14,6 @@ namespace Game.Class
         public static PlayerDatabase db = new PlayerDatabase();
         static JourneyManager journeyManager = new JourneyManager();
         static AttackManager atkManager;
-        static Encyclopedia Encyclopedia;
 
         public static Player? pendingDeadPlayerUpdate = null;
         public static Enemy? pendingSpiritEnemy = null;
