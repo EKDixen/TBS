@@ -104,6 +104,87 @@ public static class EncounterLibrary
         EncounterType.Trap
     );
 
+    public static Encounter WeakRopeBridge = new Encounter(
+    "WeakRopeBridge",
+    false,
+    "You come across a very old and suspicious rope bridge dangling over\n a shallow ravine.",
+    null,
+    (player) => {
+        MainUI.WriteInMainArea("");
+        MainUI.WriteInMainArea("Do you want to cross the bridge or go around? \ncross : 1 \naround : 2\n");
+        string choice = Console.ReadKey(true).KeyChar.ToString();
+
+        if (choice =="1")
+        {
+            int outcome = rng.Next(1, 101);
+
+            if (outcome <= 30)
+            {
+                MainUI.WriteInMainArea("You cross the bridge carefully... \nIt holds. Nothing happens.");
+            }
+            else if (outcome <= 65)
+            {
+                int dmg = rng.Next(2, 6);
+                player.HP -= dmg;
+                MainUI.WriteInMainArea($"One of the planks snaps! \nYou fall halfway through and take {dmg} damage.");
+                Program.CheckPlayerDeath();
+            }
+            else if (outcome <= 85)
+            {
+                int coins = rng.Next(3, 5);
+                player.money += coins;
+                MainUI.WriteInMainArea($"You notice a pouch stuck between two loose ropes! \nYou gain {coins} Rai!");
+            }
+            else
+            {
+                int dmg = rng.Next(8, 18);
+                player.HP -= dmg;
+                MainUI.WriteInMainArea($"The entire bridge collapses beneath you! \nYou crash into the ravine and take {dmg} damage!");
+                Program.CheckPlayerDeath();
+            }
+
+            
+        }
+        else if (choice == "2")
+        {
+            MainUI.WriteInMainArea("You decide to take the longer route around the ravine...\n");
+            MainUI.WriteInMainArea("Press enter to continue...");
+            Console.ReadLine();
+
+            int totalSteps = 100;
+            int barWidth = 50;
+
+            for (int i = 0; i <= totalSteps; i++)
+            {
+                double progress = (double)i / totalSteps;
+                int filled = (int)(progress * barWidth);
+                int empty = barWidth - filled;
+
+                string bar = new string('█', filled) + new string('░', empty);
+                int percent = (int)(progress * 100);
+                MainUI.ClearMainArea();
+                MainUI.WriteInMainArea($"Finding a safe path: {bar} {percent}%");
+
+                Thread.Sleep(400);
+            }
+            MainUI.ClearMainArea();
+            MainUI.WriteInMainArea("You found a safe path across!!!");
+        }
+        else
+        {
+            int coins = rng.Next(0, player.money/2);
+            coins = (int)MathF.Floor(coins);
+            player.money -= coins;
+            MainUI.WriteInMainArea("");
+            MainUI.WriteInMainArea($"You stand there unsure what to do... eventually you decide to move on.\n" +
+                $"However during your moment of thought, a pickpocket snatches {coins} of your Rai!");
+        }
+        Program.SavePlayer();
+    },
+    EncounterType.Event
+);
+
+
     #endregion
 
     #region Combat Encounters - Basic/Starter Areas

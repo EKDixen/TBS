@@ -8,13 +8,15 @@ public static void EncyclopediaLogic()
     while (true)
     {
         MainUI.ClearMainArea();
-        MainUI.WriteInMainArea("Welcome to the bank");
-        MainUI.WriteInMainArea($"You have {Program.player.bankMoney} Rai in your account.");
-        MainUI.WriteInMainArea("Would you like to:");
-        MainUI.WriteInMainArea("2 : Withdraw Items");
+        MainUI.WriteInMainArea("Welcome to the Encyclopedia!");
+
+        MainUI.WriteInMainArea("What would you like to view?");
+        MainUI.WriteInMainArea("1 : View items");
+        MainUI.WriteInMainArea("2 : View Enemies");
+        MainUI.WriteInMainArea("3 : View Locations");
         MainUI.WriteInMainArea("0 : Leave");
 
-        if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input) == false || input > 4 || input < 0)
+        if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input) == false || input > 3 || input < 0)
         {
             MainUI.WriteInMainArea(" \nyou gotta type a number from 0-4");
             Thread.Sleep(1000);
@@ -27,9 +29,13 @@ public static void EncyclopediaLogic()
                 Program.MainMenu();
                 return;
             case 1:
+                ViewItems();
                 break;
             case 2:
-                WithdrawItems();
+                ViewItems();
+                break;
+            case 3:
+                ViewItems();
                 break;
         }
         Program.SavePlayer();
@@ -37,7 +43,7 @@ public static void EncyclopediaLogic()
 }
 
 
-private static void WithdrawItems()
+private static void ViewItems()
 {
 
     while (true)
