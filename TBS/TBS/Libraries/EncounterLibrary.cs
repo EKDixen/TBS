@@ -39,6 +39,39 @@ public static class EncounterLibrary
         EncounterType.Treasure
     );
 
+    public static Encounter AbandonedBackpack = new Encounter(
+    "AbandonedBackpack",
+    false,
+    "An old backpack lies partially buried in dirt.",
+    null,
+    (player) => {
+
+        // Get ALL materials :)
+        var materialItems = typeof(ItemLibrary)
+            .GetFields(System.Reflection.BindingFlags.Public |
+                       System.Reflection.BindingFlags.Static |
+                       System.Reflection.BindingFlags.FlattenHierarchy)
+                    .Where(f => f.FieldType == typeof(Item))
+                    .Select(f => (Item)f.GetValue(null))
+                    .Where(i => i.type == ItemType.Material)
+                    .ToList();
+
+        if (materialItems.Count == 0)
+        {
+            MainUI.WriteInMainArea("The backpack is empty...");
+            return;
+        }
+
+        Item selected = materialItems[rng.Next(materialItems.Count)];
+
+        Inventory.AddItem(selected, 1);
+
+        MainUI.WriteInMainArea($"You found a {selected.name} inside the backpack!");
+    },
+    EncounterType.Treasure
+);
+
+
     #endregion
 
     #region Trap/Hazard Encounters

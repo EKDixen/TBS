@@ -177,7 +177,8 @@ public static class LocationLibrary
         { EncounterLibrary.Wolfsensei, 15},
         { EncounterLibrary.DireWolfPack, 10},
         { EncounterLibrary.StrangeMushrooms, 20},
-        { EncounterLibrary.FoundTreasure, 15}
+        { EncounterLibrary.FoundTreasure, 15},
+        { EncounterLibrary.AbandonedBackpack, 5}
     }, "Greenwood Territories");
 
     public static Location MossGate = new Location("MossGate", new System.Numerics.Vector2(2, 0), 0, new List<SubLocation>
@@ -289,7 +290,8 @@ public static class LocationLibrary
         { EncounterLibrary.CorruptedKnightBattle, 25},
         { EncounterLibrary.GhostlyApparition, 30},
         { EncounterLibrary.SkeletonWarriors, 30},
-        { EncounterLibrary.FoundTreasure, 20}
+        { EncounterLibrary.FoundTreasure, 20},
+        { EncounterLibrary.AbandonedBackpack, 2}
     }, "Fallen Kingdom");
 
     public static Location Nightreach = new Location("Nightreach", new System.Numerics.Vector2(-1, 1), 0, new List<SubLocation>
@@ -348,7 +350,8 @@ new Dictionary<Encounter, int>
 {
         { EncounterLibrary.FoundTreasure, 20},
         { EncounterLibrary.GhostlyApparition, 60},
-        { EncounterLibrary.SkeletonWarriors, 60}
+        { EncounterLibrary.SkeletonWarriors, 60},
+        { EncounterLibrary.AbandonedBackpack, 2}
 }, "Fallen Kingdom");
     #endregion
 
