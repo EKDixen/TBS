@@ -167,8 +167,10 @@ namespace Game.Class
                         case 3: place = "Feet"; break;
                     }
                     Console.SetCursorPosition(x + 2, y + 14 + j);
-                    Console.Write($"{j + 1} ({place}) : {player.equippedItems[j]?.name ?? "Empty"}");
+                    Console.Write($"{j + 1} ({place})   : {player.equippedItems[j]?.name ?? "Empty"}");
                 }
+                Console.SetCursorPosition(x + 2, y + 18);
+                Console.Write($"5 (Weapon) : {player.equippedWeapon?.name ?? "Empty"}");
             }
             else
             {

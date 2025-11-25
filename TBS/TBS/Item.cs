@@ -12,7 +12,8 @@ public enum EquipmentType
     head,
     torso,
     legs,
-    feet
+    feet,
+    weapon
 }
 
 public class Item
@@ -29,6 +30,9 @@ public class Item
 
     public ItemType type { get; set; }
     public EquipmentType equipmentType;
+
+    public Attack weaponAttack { get; set; }
+
     public int duration;
 
     // Flexible stats
@@ -62,11 +66,12 @@ public class Item
         this.detailsLore = template.detailsLore;
         this.amount = 1; // Default amount for a new item is 1
         this.weight = template.weight;
+        this.weaponAttack = template.weaponAttack;
     }
     public string GetDescription()
     {
         List<string> parts = new List<string>();
-        if (type == ItemType.equipment || type == ItemType.Artifact)
+        if (type == ItemType.equipment && equipmentType != EquipmentType.weapon || type == ItemType.Artifact)
         {
             foreach (var stat in stats)
             {
@@ -113,6 +118,10 @@ public class Item
 
                 parts.Add(desc);
             }
+        }
+        else if (type == ItemType.equipment && equipmentType == EquipmentType.weapon) 
+        {
+            parts.Add($"gives you the move {weaponAttack.name} as long as its equipped\n");
         }
         parts.Add($"Weighs {weight}\n");
         parts.Add(detailsLore);

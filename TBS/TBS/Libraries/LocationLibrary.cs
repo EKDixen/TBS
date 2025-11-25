@@ -17,7 +17,8 @@ public static class LocationLibrary
                 (ItemLibrary.baseballCap),
                 (ItemLibrary.sandals),
                 (ItemLibrary.speedPotion),
-                (ItemLibrary.BasicBackpack)
+                (ItemLibrary.BasicBackpack),
+                (ItemLibrary.sword)
             }
         },
         new SubLocation("Blacksmith", SubLocationType.blacksmith)

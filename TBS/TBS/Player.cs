@@ -30,6 +30,8 @@ public class Player : Combatant
 
     public List<Item> equippedItems = new List<Item>(4);
 
+    public Item? equippedWeapon;
+
     // Normal inventory weight & encumbrance
     public int inventoryWeight = 0;
     public int inventorySpeedModifier = 0;

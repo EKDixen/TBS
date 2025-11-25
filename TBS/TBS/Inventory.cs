@@ -109,6 +109,7 @@ public static class Inventory
 
                 // check if equipped
                 int slotIndex = player.equippedItems.IndexOf(item);
+                if (player.equippedWeapon == item) slotIndex = 4;
                 string equippedInfo = slotIndex >= 0 ? $"(Slot {slotIndex + 1})" : "";
 
 
@@ -195,7 +196,7 @@ public static class Inventory
                 MainUI.WriteInMainArea($"\nyou drop the {selectedItem.name}");
                 DropItem(selectedItem,1);
             }
-            else if (ik == 3 && selectedItem.type == ItemType.equipment)
+            else if (ik == 3 && selectedItem.type == ItemType.equipment && selectedItem.equipmentType != EquipmentType.weapon)
             {
 
                 Item chosen = selectedItem;
@@ -226,6 +227,24 @@ public static class Inventory
 
 
 
+            }
+            else if (ik == 3 && selectedItem.type == ItemType.equipment && selectedItem.equipmentType == EquipmentType.weapon)
+            {
+                Item chosen = selectedItem;
+
+
+                if (player.equippedWeapon == chosen)
+                {
+                    MainUI.WriteInMainArea($"{chosen.name} is currently in Slot 5. Unequipping...");
+                    player.equippedWeapon = null;
+                }
+                else
+                {
+                    if (player.equippedWeapon != null) player.equippedWeapon = null;
+
+                    player.equippedWeapon = chosen;
+                    MainUI.WriteInMainArea($"{chosen.name} equipped into Slot 5!");
+                }
             }
             else if (ik == 3 && selectedItem.type == ItemType.consumable)
             {

@@ -224,6 +224,17 @@
     };
     #endregion
 
+    #region weapon
+
+    public static Item sword = new Item("Sword", "Slash", 11, 1, ItemType.equipment)
+    {
+        detailsLore = "Just a simple sword, can cut a bit",
+        equipmentType = EquipmentType.weapon,
+        weaponAttack = AttackLibrary.Slash
+    };
+
+    #endregion
+
     #endregion
 
     #region consumables
