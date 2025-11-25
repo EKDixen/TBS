@@ -94,6 +94,7 @@ public static class LocationLibrary
             {
                 (ItemLibrary.smallHealthPotion),
                 (ItemLibrary.RoughTrousers),
+                (ItemLibrary.FoulHook),
                 (ItemLibrary.CheapAle)
             }
         },
@@ -162,7 +163,10 @@ public static class LocationLibrary
         {
             shopItems = new List<Item>
             {
-                (ItemLibrary.CrudePoisonSpear)
+                (ItemLibrary.CrudePoisonSpear),
+                (ItemLibrary.ExpeditionVest),
+                (ItemLibrary.WildBerries)
+
             }
         },
     },

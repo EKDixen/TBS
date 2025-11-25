@@ -223,6 +223,12 @@
         equipmentType = EquipmentType.torso,
         detailsLore = "Black velvet cloak that blends perfectly with shadows"
     };
+    public static Item ExpeditionVest = new Item("Expedition Vest", "+10 maxHP, +2 speed", 20, 13, ItemType.equipment)
+    {
+        stats ={ ["maxHP"] = 10, ["speed"] = 2 },
+        equipmentType = EquipmentType.torso,
+        detailsLore = "A vest made of tough canvas. \nIt's light enough to enhance movement",
+    };
     #endregion
 
     #region legs
@@ -341,6 +347,16 @@
         },
         duration = 0,
         detailsLore = "A harsh, watery brew common in dockside taverns. \nIt grants a small heal and a brief surge of reckless courage, but makes you stumble."
+    };
+    public static Item WildBerries = new Item("Wild Berries", "+10 HP, +10% CritDamage", 5, 1, ItemType.consumable)
+    {
+        effects = new List<AttackEffect>()
+        {
+            new AttackEffect("heal", 10, 0, "self"), 
+            new AttackEffect("critDamage", 10, 1, "self")
+        },
+        duration = 0,
+        detailsLore = "A handful of wild berries found deep in the woods, \nThey offer a burst of energy and sharpen the senses.",
     };
 }
 
