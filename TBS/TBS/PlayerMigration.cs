@@ -24,32 +24,25 @@ public class PlayerMigration
     }
 
     /// <summary>
-    /// Migrate multiple players by entering their names
     /// </summary>
     public void MigrateAllPlayers()
     {
         Console.WriteLine("=== PLAYER MIGRATION ===");
-        Console.WriteLine("Note: Your API doesn't support listing all players.");
-        Console.WriteLine("Enter player names one at a time to migrate them.\n");
-        Console.WriteLine("Enter player names (one per line, empty line to finish):");
+        Console.WriteLine("This will add the statTracker field to all existing players.");
+        Console.WriteLine("\nPress ENTER to continue or Ctrl+C to cancel...");
+        Console.ReadLine();
 
-        var playerNames = new List<string>();
-        while (true)
+        try
         {
-            Console.Write("> ");
-            var name = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(name))
-                break;
-            playerNames.Add(name.Trim());
-        }
+            var playerNames = GetAllPlayerNames();
+            
+            if (playerNames.Count == 0)
+            {
+                Console.WriteLine("No players found to migrate.");
+                return;
+            }
 
-        if (playerNames.Count == 0)
-        {
-            Console.WriteLine("\nNo player names entered.");
-            return;
-        }
-
-        Console.WriteLine($"\nMigrating {playerNames.Count} players...\n");
+            Console.WriteLine($"\nFound {playerNames.Count} players to migrate.\n");
         
         int successCount = 0;
         int skipCount = 0;
@@ -104,13 +97,44 @@ public class PlayerMigration
         }
 
         Console.WriteLine($"\n=== MIGRATION COMPLETE ===");
-        Console.WriteLine($"Successfully migrated: {successCount}");
-        Console.WriteLine($"Skipped (already migrated): {skipCount}");
-        Console.WriteLine($"Errors: {errorCount}");
-        Console.WriteLine($"Total: {playerNames.Count}");
+            Console.WriteLine($"Successfully migrated: {successCount}");
+            Console.WriteLine($"Skipped (already migrated): {skipCount}");
+            Console.WriteLine($"Errors: {errorCount}");
+            Console.WriteLine($"Total: {playerNames.Count}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"\nMigration failed: {ex.Message}");
+            Console.WriteLine($"Stack trace: {ex.StackTrace}");
+        }
     }
 
     /// <summary>
+
+    private List<string> GetAllPlayerNames()
+    {
+        try
+        {
+            var url = $"{_baseUrl}/players";
+            using var resp = _http.GetAsync(url).GetAwaiter().GetResult();
+            
+            if (!resp.IsSuccessStatusCode)
+            {
+                Console.WriteLine($"Warning: Could not fetch player list (Status: {resp.StatusCode})");
+                return new List<string>();
+            }
+            
+            string json = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var names = Serializer.FromJson<List<string>>(json);
+            return names ?? new List<string>();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching player names: {ex.Message}");
+            return new List<string>();
+        }
+    }
+
     /// Migrate a single player by name
     /// </summary>
     public bool MigrateSinglePlayer(string playerName)
@@ -187,27 +211,19 @@ public class PlayerMigration
     public void DryRun()
     {
         Console.WriteLine("=== MIGRATION DRY RUN ===");
-        Console.WriteLine("Note: Your API doesn't support listing all players.");
-        Console.WriteLine("Enter player names one at a time to check their migration status.\n");
-        Console.WriteLine("Enter player names (one per line, empty line to finish):");
+        Console.WriteLine("This will show what would be migrated without making changes.\n");
 
-        var playerNames = new List<string>();
-        while (true)
+        try
         {
-            Console.Write("> ");
-            var name = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(name))
-                break;
-            playerNames.Add(name.Trim());
-        }
+            var playerNames = GetAllPlayerNames();
+            
+            if (playerNames.Count == 0)
+            {
+                Console.WriteLine("No players found.");
+                return;
+            }
 
-        if (playerNames.Count == 0)
-        {
-            Console.WriteLine("\nNo player names entered.");
-            return;
-        }
-
-        Console.WriteLine($"\nChecking {playerNames.Count} players:\n");
+            Console.WriteLine($"Found {playerNames.Count} players:\n");
         
         int needsMigration = 0;
         int alreadyMigrated = 0;
@@ -244,9 +260,14 @@ public class PlayerMigration
         }
 
         Console.WriteLine($"\n=== DRY RUN SUMMARY ===");
-        Console.WriteLine($"Needs migration: {needsMigration}");
-        Console.WriteLine($"Already migrated: {alreadyMigrated}");
-        Console.WriteLine($"Not found: {notFound}");
-        Console.WriteLine($"Total checked: {playerNames.Count}");
+            Console.WriteLine($"Needs migration: {needsMigration}");
+            Console.WriteLine($"Already migrated: {alreadyMigrated}");
+            Console.WriteLine($"Not found: {notFound}");
+            Console.WriteLine($"Total checked: {playerNames.Count}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"\nDry run failed: {ex.Message}");
+        }
     }
 }

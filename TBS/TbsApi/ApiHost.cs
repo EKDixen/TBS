@@ -188,6 +188,34 @@ app.MapDelete("/dead-players/{name}", async (string name, IDatabase db, HttpResp
     return Results.NoContent();
 });
 
+// List all alive players
+app.MapGet("/players", async (IDatabase db, IConnectionMultiplexer redis, HttpResponse resp) =>
+{
+    resp.Headers["Cache-Control"] = "no-store";
+
+    try
+    {
+        var playerNames = new List<string>();
+        var server = redis.GetServer(redis.GetEndPoints().First());
+
+        // Scan for keys matching pattern "player:*"
+        await foreach (var key in server.KeysAsync(pattern: "player:*"))
+        {
+            var keyStr = key.ToString();
+            if (keyStr.StartsWith("player:"))
+            {
+                playerNames.Add(keyStr.Substring(7)); // Remove "player:" prefix
+            }
+        }
+
+        return Results.Json(playerNames);
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Error listing players: {ex.Message}");
+    }
+});
+
 // List all dead players
 app.MapGet("/dead-players", async (IDatabase db, IConnectionMultiplexer redis, HttpResponse resp) =>
 {
