@@ -43,6 +43,12 @@ public class AttackManager
             return;
         }
 
+        if (attack.requiredClass != null && player.playerClass != attack.requiredClass)
+        {
+            MainUI.WriteInMainArea($"{attack.name} can only be used by the {attack.requiredClass.name} class!");
+            return;
+        }
+
         if (slot < 1 || slot > 4)
         {
             MainUI.WriteInMainArea("Invalid slot. Choose between 1 and 4.");
@@ -124,8 +130,15 @@ public class AttackManager
                 // Check if this attack is currently equipped and in which slot
                 int slotIndex = player.equippedAttacks.IndexOf(atk);
                 string equippedInfo = slotIndex >= 0 ? $"(Slot {slotIndex + 1})" : "";
+                
+                // Check if player can use this attack
+                string classRestriction = "";
+                if (atk.requiredClass != null && player.playerClass != atk.requiredClass)
+                {
+                    classRestriction = $" [Requires {atk.requiredClass.name}]";
+                }
 
-                MainUI.WriteInMainArea($"{i + 1}. {atk.name} {equippedInfo}");
+                MainUI.WriteInMainArea($"{i + 1}. {atk.name} {equippedInfo}{classRestriction}");
                 MainUI.WriteInMainArea($"   -> {atk.GetDescription()}");
             }
             MainUI.WriteInMainArea("");
@@ -167,6 +180,15 @@ public class AttackManager
             }
 
             Attack chosen = pageMoves[input - 1];
+
+            // Check if player can use this attack
+            if (chosen.requiredClass != null && player.playerClass != chosen.requiredClass)
+            {
+                MainUI.WriteInMainArea($"\n{chosen.name} can only be used by the {chosen.requiredClass.name} class!");
+                MainUI.WriteInMainArea("\n-press Enter to continue-");
+                Console.ReadLine();
+                continue;
+            }
 
             // Check if already equipped
             int equippedSlot = player.equippedAttacks.IndexOf(chosen);

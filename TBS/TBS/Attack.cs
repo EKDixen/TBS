@@ -5,14 +5,16 @@ public class Attack
 {
     public string name;
     public List<AttackEffect> effects;
+    public Class requiredClass; // Class requirement for this attack (null if no requirement)
 
     public Attack() { } // Deserialization
 
 
-    public Attack(string Tname, List<AttackEffect> Teffects)
+    public Attack(string Tname, List<AttackEffect> Teffects, Class TrequiredClass = null)
     {
         name = Tname;
         effects = Teffects;
+        requiredClass = TrequiredClass;
     }
 
     public void Apply(Combatant attacker, Combatant defender)

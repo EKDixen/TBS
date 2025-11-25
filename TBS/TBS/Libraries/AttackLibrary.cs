@@ -106,11 +106,11 @@ public static class AttackLibrary
     public static Attack Lunge = new Attack("Lunge", new List<AttackEffect> {
         new AttackEffect("damage", 30, 0, "enemy"),
         new AttackEffect("speed", -5, 1, "self")
-    });
+    }, ClassLibrary.Rogue);
     public static Attack Bloodieddagger = new Attack("Bloodied Dagger", new List<AttackEffect> {
         new AttackEffect("damage", 40, 0, "enemy"),
-        new AttackEffect("damage", -15, 1, "self")
-    });
+        new AttackEffect("damage", -15, 0, "self")
+    }, ClassLibrary.Rogue);
     #endregion
 
 

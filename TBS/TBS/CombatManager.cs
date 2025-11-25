@@ -696,6 +696,18 @@ public class CombatManager
                     // They chose an attack
                     var chosen = moves[choice - 1];
 
+                    if (chosen.requiredClass != null && player.playerClass != chosen.requiredClass)
+                    {
+                        ui.AddToLog($"{player.name} cannot use {chosen.name} - requires {chosen.requiredClass.name} class!");
+                        ui.RenderCombatScreen(player, combatants);
+                        Thread.Sleep(1000);
+                        ui.AddToLog("Choose a different action...");
+                        ui.RenderCombatScreen(player, combatants);
+                        Thread.Sleep(500);
+                        TakeTurn(actor);
+                        return;
+                    }
+
                     bool isAoEEnemies = chosen.effects.Any(e => e.targetType == "allEnemies");
                     bool isAoEAllies = chosen.effects.Any(e => e.targetType == "allAllies");
                     bool targetsSelfOrAlly = chosen.effects.All(e => e.targetType == "self" || e.targetType == "ally");
@@ -729,16 +741,23 @@ public class CombatManager
                             ui.WriteInMainArea(2 + i, $"{i + 1}. {name}{indexAmongSame}{tag} [{enemies[i].HP}/{enemies[i].maxHP}]");
                         }
                         ui.WriteInMainArea(2 + enemies.Count + 1, "");
-                        ui.SetCursorInMainArea(2 + enemies.Count + 2);
+                        ui.WriteInMainArea(2 + enemies.Count + 2, "0. Back (choose different action)");
+                        ui.WriteInMainArea(2 + enemies.Count + 3, "");
+                        ui.SetCursorInMainArea(2 + enemies.Count + 4);
                         Console.Write("Target #: ");
 
                         while (true)
                         {
-                            if (!int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int t) || t < 1 || t > enemies.Count)
+                            if (!int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int t) || t < 0 || t > enemies.Count)
                             {
-                                ui.SetCursorInMainArea(2 + enemies.Count + 3);
+                                ui.SetCursorInMainArea(2 + enemies.Count + 5);
                                 Console.Write("Invalid. Try again: ");
                                 continue;
+                            }
+                            if (t == 0)
+                            {
+                                TakeTurn(actor);
+                                return;
                             }
                             var target = enemies[t - 1];
                             ExecuteAttackSingle(player, chosen, target);
