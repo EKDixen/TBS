@@ -1994,7 +1994,7 @@ public class SubLocation
         }
 
         Random rand = new Random();
-        int veinStability = 100;
+        int veinStability = rand.Next(75, 101);
         int currentHaul = 0;
         bool collapsed = false;
 
@@ -2016,10 +2016,11 @@ public class SubLocation
 
                 if (roll < failChance)
                 {
-                    int dm = rand.Next(1, 21);
+                    int dm = rand.Next(1, 36);
                     MainUI.ClearMainArea();
                     MainUI.WriteInMainArea($"The vein collapsed and covers you in rocks \nYou walk away with 0 Iron and a hurt head, {dm} damage\n");
                     Program.player.HP -= dm;
+                    Program.CheckPlayerDeath();
                     collapsed = true;
                     currentHaul = 0;
                     MainUI.WriteInMainArea("press enter to continue...");
