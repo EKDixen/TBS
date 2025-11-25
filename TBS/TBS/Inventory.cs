@@ -28,8 +28,6 @@ public static class Inventory
 
     public static void ShowMaterialBag()
     {
-        player = Program.player;
-
         MainUI.ClearMainArea();
         MainUI.WriteInMainArea("--- Material Bag ---\n");
         MainUI.WriteInMainArea($"Load: {player.currentMaterialLoad}/{player.baseMaterialCapacity + GetBackpackCapacityFromInventory(player)}\n");
@@ -59,7 +57,6 @@ public static class Inventory
 
     public static void ShowInventory()
     {
-        player = Program.player;
         UpdateWeight();
 
         while (true)

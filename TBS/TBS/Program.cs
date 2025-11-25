@@ -55,6 +55,7 @@ namespace Game.Class
                         }
 
                         Console.WriteLine($"Welcome back, {player.name} (Level {player.level})!");
+                        Inventory.MakeInv();
                         break;
                     }
                     else
