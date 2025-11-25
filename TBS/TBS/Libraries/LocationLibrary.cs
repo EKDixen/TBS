@@ -145,7 +145,8 @@ public static class LocationLibrary
         { EncounterLibrary.FallenIntoTrap, 20},
         { EncounterLibrary.FoundTreasure, 10},
         { EncounterLibrary.RoadGambling, 10},
-        { EncounterLibrary.LearnFirstAid, 5}
+        { EncounterLibrary.LearnFirstAid, 5},
+        { EncounterLibrary.WeakRopeBridge, 5}
     }, "Greenwood Territories");
 
     public static Location WhisperWood = new Location("WhisperWood", new System.Numerics.Vector2(2, 1), 3, new List<SubLocation>
@@ -180,7 +181,8 @@ public static class LocationLibrary
         { EncounterLibrary.DireWolfPack, 10},
         { EncounterLibrary.StrangeMushrooms, 20},
         { EncounterLibrary.FoundTreasure, 15},
-        { EncounterLibrary.AbandonedBackpack, 5}
+        { EncounterLibrary.AbandonedBackpack, 5},
+        { EncounterLibrary.WeakRopeBridge, 5}
     }, "Greenwood Territories");
 
     public static Location MossGate = new Location("MossGate", new System.Numerics.Vector2(2, 0), 0, new List<SubLocation>
@@ -204,7 +206,8 @@ public static class LocationLibrary
         { EncounterLibrary.FallenIntoTrap, 10},
         { EncounterLibrary.GoblinPack, 15},
         { EncounterLibrary.RoadGambling, 10},
-        { EncounterLibrary.LearnFirstAid, 15}
+        { EncounterLibrary.LearnFirstAid, 15},
+        { EncounterLibrary.WeakRopeBridge, 5}
     }, "Greenwood Territories");
 
     #endregion
@@ -243,7 +246,8 @@ public static class LocationLibrary
         { EncounterLibrary.MysteriousShrine, 25},
         { EncounterLibrary.WanderingMerchant, 20},
         { EncounterLibrary.BanditFight, 50},
-        { EncounterLibrary.BanditAmbush, 3}
+        { EncounterLibrary.BanditAmbush, 3},
+        { EncounterLibrary.WeakRopeBridge, 3}
     }, "Fallen Kingdom");
 
     public static Location ShattershoreCliffs = new Location("Shattershore Cliffs", new System.Numerics.Vector2(-2, 0), 3, new List<SubLocation>
@@ -269,7 +273,8 @@ public static class LocationLibrary
         { EncounterLibrary.SmugglerAmbush, 25},
         { EncounterLibrary.FoundTreasure, 25},
         { EncounterLibrary.BanditAmbush, 15},
-        { EncounterLibrary.FallenIntoTrap, 10}
+        { EncounterLibrary.FallenIntoTrap, 10},
+        { EncounterLibrary.WeakRopeBridge, 15}
     }, "Fallen Kingdom");
 
     public static Location WitheredRuins = new Location("Withered Ruins", new System.Numerics.Vector2(-2, 2), 3, new List<SubLocation>
