@@ -57,7 +57,7 @@ namespace Game.Class
 
                     Console.Write("Enter password: ");
                     string password = Console.ReadLine();
-
+                    if (username == null) continue;
                     player = db.LoadPlayer(username, password);
 
                     if (player != null)
@@ -97,7 +97,7 @@ namespace Game.Class
                     do
                     {
                         Console.WriteLine("\nName your character (needed to login):");
-                        Console.WriteLine("0 : cancel");
+                        Console.WriteLine("0 : cancel\n");
                         name = Console.ReadLine();
 
                         if (name == "0")break;
@@ -238,6 +238,7 @@ namespace Game.Class
             MainUI.WriteInMainArea("Check Moves : 2");
             MainUI.WriteInMainArea($"Do something at {player.currentLocation} : 3");
             MainUI.WriteInMainArea("Check stats : 4");
+            MainUI.WriteInMainArea("Check main map : 5");
             //MainUI.WriteInMainArea("Check Encyclopedia : 6");
 
             if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input) == false || input > 5 || input < 0)
@@ -249,13 +250,13 @@ namespace Game.Class
                 return;
             }
             else if (input == 0) journeyManager.ChoseTravelDestination();
-            else if (input == 1) 
+            else if (input == 1)
             {
                 MainUI.ClearMainArea();
                 MainUI.WriteInMainArea("Inventory : 0");
                 MainUI.WriteInMainArea("MaterialBag : 1");
 
-                if(int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input2) == false || input2 > 1 || input2 < 0)
+                if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input2) == false || input2 > 1 || input2 < 0)
                 {
                     MainUI.WriteInMainArea("\nyou gotta type 0 or 1");
                     MainUI.WriteInMainArea("Press enter to continue...");
@@ -271,7 +272,7 @@ namespace Game.Class
                 {
                     Inventory.ShowMaterialBag();
                 }
-        }
+            }
             else if (input == 2) atkManager.ShowMovesMenu();
             else if (input == 3)
             {
@@ -318,6 +319,7 @@ namespace Game.Class
                 }
             }
             else if (input == 4) ShowPlayerStats();
+            else if (input == 5) Minimap.DisplayMainmap(5,7,75);
 
             // Save in background without blocking UI
             _ = Task.Run(() => db.SavePlayer(player));

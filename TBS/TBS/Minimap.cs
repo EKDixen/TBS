@@ -12,7 +12,7 @@ public static class Minimap
         { "Frostborn Dominion", ConsoleColor.Blue }
     };
 
-    public static void DisplayMinimap(int startX,int startY, int maxContentWidth)
+    public static void DisplayMinimap(int startX, int startY, int maxContentWidth)
     {
         List<int?> travelLocations = new List<int?> { null, null, null, null, null, null, null, null, null, null };
 
@@ -38,7 +38,7 @@ public static class Minimap
         }
 
 
-        int cellWidth = (maxContentWidth -3) / 3; // -2 for the two separators "|"
+        int cellWidth = (maxContentWidth - 3) / 3; // -2 for the two separators "|"
 
         string Cell(string s, int maxLength)
         {
@@ -60,7 +60,7 @@ public static class Minimap
 
         // --- SEPARATOR ---
         Console.SetCursorPosition(startX, currentY);
-        Console.Write(new string('-', maxContentWidth+2));
+        Console.Write(new string('-', maxContentWidth + 2));
         currentY++;
 
         // --- LINE 2 (Current Location) ---
@@ -75,7 +75,7 @@ public static class Minimap
 
         // --- SEPARATOR ---
         Console.SetCursorPosition(startX, currentY);
-        Console.Write(new string('-', maxContentWidth+2));
+        Console.Write(new string('-', maxContentWidth + 2));
         currentY++;
 
         // --- LINE 3 ---
@@ -90,25 +90,25 @@ public static class Minimap
         void WriteColoredCell(List<int?> travelLocations, int travelIndex, int cellWidth, int x, int y)
         {
             Console.SetCursorPosition(x, y);
-            
+
             string locationName = SafeLocationName(travelLocations, travelIndex);
-            
+
             // Don't color ??? or ... locations
             if (locationName == "???" || locationName == "...")
             {
                 Console.Write(Cell(locationName, cellWidth));
                 return;
             }
-            
+
             string kingdom = GetLocationKingdom(travelLocations, travelIndex);
-            
+
             // Get color for this kingdom
             ConsoleColor color = ConsoleColor.Gray; // Default color
             if (kingdom != null && kingdomColors.ContainsKey(kingdom))
             {
                 color = kingdomColors[kingdom];
             }
-            
+
             // Write with color
             Console.ForegroundColor = color;
             Console.Write(Cell(locationName, cellWidth));
@@ -119,13 +119,13 @@ public static class Minimap
         {
             var currentLocation = LocationLibrary.Get(Program.player.currentLocation);
             string kingdom = currentLocation?.kingdom;
-            
+
             ConsoleColor color = ConsoleColor.Gray; // Default for no kingdom
             if (kingdom != null && kingdomColors.ContainsKey(kingdom))
             {
                 color = kingdomColors[kingdom];
             }
-            
+
             Console.ForegroundColor = color;
             Console.Write(Cell("current", cellWidth));
             Console.ResetColor();
@@ -168,6 +168,170 @@ public static class Minimap
         }
 
 
+
+    }
+    public static void DisplayMainmap(int startX, int startY, int maxContentWidth)
+    {
+        MainUI.ClearMainArea();
+
+        int rows = 9;   
+        int cols = 5;        
+
+        int totalCells = rows * cols;
+        List<int?> travelLocations = Enumerable.Repeat<int?>(null, totalCells).ToList();
+
+        var current = LocationLibrary.Get(Program.player.currentLocation).location;
+
+
+        int centerRow = rows / 2;
+        int centerCol = cols / 2; 
+
+        for (int i = 0; i < LocationLibrary.locations.Count; i++)
+        {
+            var loc = LocationLibrary.locations[i].location;
+
+            int dx = (int)(loc.X - current.X);
+            int dy = (int)(loc.Y - current.Y);
+
+            // dx range is left/right, dy is up/down
+            if (Math.Abs(dx) <= centerCol && Math.Abs(dy) <= centerRow)
+            {
+                int row = centerRow - dy; 
+                int col = centerCol + dx;
+
+                if (row >= 0 && row < rows && col >= 0 && col < cols)
+                {
+                    int index = row * cols + col;
+                    travelLocations[index] = i;
+                }
+            }
+        }
+
+        int separatorWidth = 3;
+        int cellWidth = Math.Max(1, (maxContentWidth - (cols - 1) * separatorWidth) / cols);
+
+        int totalPrintedWidth = cols * cellWidth + (cols - 1) * separatorWidth;
+
+        string Cell(string s, int maxLength)
+        {
+            if (s == null) s = "";
+            if (s.Length > maxLength)
+                return s.Substring(0, Math.Max(0, maxLength - 2)) + "..";
+            return s.PadRight(maxLength);
+        }
+
+        int currentY = startY;
+
+        // DRAW rows × cols
+        for (int row = 0; row < rows; row++)
+        {
+            Console.SetCursorPosition(startX, currentY);
+
+            for (int col = 0; col < cols; col++)
+            {
+                int index = row * cols + col;
+
+                if (row == centerRow && col == centerCol)
+                {
+                    WriteCurrentLocationColored(cellWidth);
+                }
+                else
+                {
+                    WriteColoredCell(travelLocations, index, cellWidth);
+                }
+
+                if (col < cols - 1)
+                    Console.Write(" | ");
+            }
+
+            currentY++;
+
+            // draw separator line between rows (not after last row)
+            if (row < rows - 1)
+            {
+                Console.SetCursorPosition(startX, currentY);
+                Console.Write(new string('-', totalPrintedWidth));
+                currentY++;
+            }
+        }
+
+
+        void WriteColoredCell(List<int?> travelLocationsLocal, int travelIndex, int w)
+        {
+            Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop); // ensure pos is current
+
+            string locationName = SafeLocationName(travelLocationsLocal, travelIndex);
+
+            if (locationName == "???" || locationName == "...")
+            {
+                Console.Write(Cell(locationName, w));
+                return;
+            }
+
+            string kingdom = GetLocationKingdom(travelLocationsLocal, travelIndex);
+
+            ConsoleColor color = ConsoleColor.Gray;
+            if (kingdom != null && kingdomColors.ContainsKey(kingdom))
+                color = kingdomColors[kingdom];
+
+            Console.ForegroundColor = color;
+            Console.Write(Cell(locationName, w));
+            Console.ResetColor();
+        }
+
+        void WriteCurrentLocationColored(int w)
+        {
+            var loc = LocationLibrary.Get(Program.player.currentLocation);
+            string kingdom = loc?.kingdom;
+
+            ConsoleColor color = ConsoleColor.Gray;
+            if (kingdom != null && kingdomColors.ContainsKey(kingdom))
+                color = kingdomColors[kingdom];
+
+            Console.ForegroundColor = color;
+            Console.Write(Cell("Hovering", w));
+            Console.ResetColor();
+        }
+
+        static string GetLocationKingdom(List<int?> travelLocations, int travelIndex)
+        {
+            if (travelIndex < 0 || travelIndex >= travelLocations.Count)
+                return null;
+
+            int? locIndex = travelLocations[travelIndex];
+
+            if (locIndex == null || locIndex < 0 || locIndex >= LocationLibrary.locations.Count)
+                return null;
+
+            var location = LocationLibrary.locations[locIndex.Value];
+            return location?.kingdom;
+        }
+
+        static string SafeLocationName(List<int?> travelLocations, int travelIndex)
+        {
+            // Check if travelLocations has this
+            if (travelIndex < 0 || travelIndex >= travelLocations.Count)
+                return "...";
+
+            int? locIndex = travelLocations[travelIndex];
+
+            // Check if the location is valid
+            if (locIndex == null || locIndex < 0 || locIndex >= LocationLibrary.locations.Count)
+                return "...";
+
+            var location = LocationLibrary.locations[locIndex.Value];
+
+            // If the location exists but is not known
+            if (!Program.player.knownLocationnames.Contains(location.name))
+                return "???";
+
+            // If location exists and is known, return its name
+            return location?.name ?? "...";
+        }
+
+        int targetDir;
+        int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out targetDir);
+        //if(targetDir)
 
     }
 
