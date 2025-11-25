@@ -1,215 +1,122 @@
 ﻿using Game.Class;
-using System.ComponentModel;
-using System.Reflection.Metadata;
-using static System.Formats.Asn1.AsnWriter;
-public class Encyclopedia
+
+
+public static class Encyclopedia
 {
-    private Player player;
-
-    private int currentPage = 1;
-    private int itemsPerPage = 8;
-    private string searchTerm = "";
-    private List<Item> filteredItems; // This will hold the items we are currently viewing
-
-    const float exponent = 1.5f;
-    const float scale = 0.1f;
-
-    public Encyclopedia(Player p)
-    {
-        player = p;
-
-        while (player.equippedItems.Count < 4)
-        {
-            player.equippedItems.Add(null);
-        }
-
-        filteredItems = player.ownedItems;
-    }
-    public void ShowEncyclopedia()
-    {
-        while (true)
-        {
-            // Update the filtered list based on the search term
-            if (string.IsNullOrEmpty(searchTerm))
-            {
-                filteredItems = player.ownedItems; // full list
-            }
-            else
-            {
-                filteredItems = player.ownedItems
-                    .Where(item => item.name.ToLower().Contains(searchTerm.ToLower()) ||
-                                   item.description.ToLower().Contains(searchTerm.ToLower()))
-                    .ToList();
-            }
-
-            // Calculate total pages and get the items for the current page
-            int totalItems = filteredItems.Count;
-            int totalPages = (int)Math.Ceiling((double)totalItems / itemsPerPage);
-            if (totalPages == 0) totalPages = 1;
-            if (currentPage > totalPages) currentPage = totalPages; // Fix if we are on a page that no longer exists
-            if (currentPage < 1) currentPage = 1;
-
-            List<Item> pageItems = filteredItems
-                .Skip((currentPage - 1) * itemsPerPage) // Skip items on previous pages
-                .Take(itemsPerPage)                     // Get just the items for this page
-                .ToList();
-
-
-            MainUI.ClearMainArea();
-
-           
-            if (!string.IsNullOrEmpty(searchTerm))
-            {
-                MainUI.WriteInMainArea($"\nShowing results for: \"{searchTerm}\"");
-            }
-
-            MainUI.WriteInMainArea("");
-            MainUI.WriteInMainArea("nr     Name                      Qty   Description         value");
-            MainUI.WriteInMainArea("----------------------------------------------------------------");
-            int i = 0;
-            foreach (var item in pageItems)
-            {
-                i++;
-
-                MainUI.WriteInMainArea($"{i,-7}{item.name,-25} {item.weight,-5} {item.description,-20} {item.value}");
-            }
-            MainUI.WriteInMainArea("");
-            MainUI.WriteInMainArea($"--- Page {currentPage} of {totalPages} ---");
-            MainUI.WriteInMainArea("");
-            MainUI.WriteInMainArea("Type item number (1-8) to interact, or:");
-            MainUI.WriteInMainArea("[N] Next Page  [P] Prev Page  [S] Search  [0] Back to Main Menu");
-
-
-            string inputString = Console.ReadKey(true).KeyChar.ToString().ToLower() ?? "";
-
-            if (inputString == "n")
-            {
-                if (currentPage < totalPages) currentPage++;
-                continue;
-            }
-            if (inputString == "p")
-            {
-                if (currentPage > 1) currentPage--;
-                continue;
-            }
-            if (inputString == "s")
-            {
-                HandleSearch();
-                continue;
-            }
-
-            var n = int.TryParse(inputString, out int input);
-
-            if (input == 0) { Program.MainMenu(); return; }
-
-            if (!n || input < 1 || input > pageItems.Count)
-            {
-                MainUI.ClearMainArea();
-                MainUI.WriteInMainArea("sweetie you gotta type a usable number *from this page* ");
-                MainUI.WriteInMainArea("");
-                MainUI.WriteInMainArea("Press Enter to continue...");
-                Console.ReadLine();
-                continue;
-            }
-
-            Item selectedItem = pageItems[input - 1];
-
-            MainUI.ClearMainArea();
-            MainUI.WriteInMainArea($"you're looking at {selectedItem.name}");
-
-            MainUI.WriteInMainArea("0 : details");
-            MainUI.WriteInMainArea("1 : cancel");
-
-
-            var k = int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int ik);
-            if (!k || ik < 0 || ik > 1)
-            {
-                MainUI.ClearMainArea();
-                MainUI.WriteInMainArea("my love would you please type a number this time\n ");
-
-                MainUI.WriteInMainArea("Press Enter to continue...");
-                Console.ReadLine();
-                continue;
-            }
-            else if (ik == 0)
-            {
-                MainUI.WriteInMainArea("");
-                MainUI.WriteInMainArea($"you've picked {selectedItem.name}");
-                MainUI.WriteInMainArea($"{selectedItem.detailsLore}\n");
-
-                MainUI.WriteInMainArea($"Press Enter to continue...");
-                Console.ReadLine();
-                continue;
-            }
-            else if (ik == 1)
-            {
-                //go back to the Encyclopedia here
-            }
-            Program.SavePlayer();
-            Program.MainMenu();
-            break;
-        }
-    }
-    private void HandleSearch()
+public static void EncyclopediaLogic()
+{
+    while (true)
     {
         MainUI.ClearMainArea();
-        MainUI.WriteInMainArea("Enter search term (or leave empty to clear):");
-        MainUI.WriteInMainArea("> ");
-        searchTerm = Console.ReadLine()?.ToLower() ?? "";
-        currentPage = 1; // ALWAYS reset to page 1 after a search
-    }
+        MainUI.WriteInMainArea("Welcome to the bank");
+        MainUI.WriteInMainArea($"You have {Program.player.bankMoney} Rai in your account.");
+        MainUI.WriteInMainArea("Would you like to:");
+        MainUI.WriteInMainArea("2 : Withdraw Items");
+        MainUI.WriteInMainArea("0 : Leave");
 
-    //I---------------------I
-    //I find a way to       I
-    //I add everything here I
-    //I---------------------I
-
-    /*public void AddItem(Item templateItem, int tAmount)
-    {
-        Item existingItem = player.ownedItems.FirstOrDefault(i => i.name == templateItem.name);
-
-        if (existingItem != null && templateItem.type != ItemType.equipment)
+        if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input) == false || input > 4 || input < 0)
         {
-            if (existingItem.type == ItemType.Artifact)
-            {
-                RemoveEffects(existingItem, tAmount);
-            }
+            MainUI.WriteInMainArea(" \nyou gotta type a number from 0-4");
+            Thread.Sleep(1000);
+            continue;
+        }
 
-            player.inventoryWeight += existingItem.weight * tAmount;
-            existingItem.amount += tAmount;
+        switch (input)
+        {
+            case 0:
+                Program.MainMenu();
+                return;
+            case 1:
+                break;
+            case 2:
+                WithdrawItems();
+                break;
+        }
+        Program.SavePlayer();
+    }
+}
 
-            if (existingItem.type == ItemType.Artifact)
-            {
-                ApplyEffects(existingItem, null);
-            }
 
+private static void WithdrawItems()
+{
+
+    while (true)
+    {
+        MainUI.ClearMainArea();
+        MainUI.WriteInMainArea("Select an item to withdraw:");
+        MainUI.WriteInMainArea("");
+        MainUI.WriteInMainArea("nr     Name                      Qty   Location");
+        MainUI.WriteInMainArea("--------------------------------------------------");
+
+        if (Program.player.bankItems.Count == 0)
+        {
+            MainUI.WriteInMainArea("Your bank is empty.");
+            MainUI.WriteInMainArea("");
+            MainUI.WriteInMainArea("0 : Back");
         }
         else
         {
-            Item newItem = new Item(templateItem); // Use the copy constructor
-
-            newItem.amount = tAmount;
-
-            player.ownedItems.Add(newItem);
-            player.inventoryWeight += newItem.weight * tAmount;
-
-            if (newItem.type == ItemType.Artifact)
+            for (int i = 0; i < Program.player.bankItems.Count; i++)
             {
-                ApplyEffects(newItem, null);
+                var (location, item) = Program.player.bankItems[i];
+                MainUI.WriteInMainArea($"{i + 1,-7}{item.name,-25} {item.amount,-5} {location}");
             }
+            MainUI.WriteInMainArea("");
+            MainUI.WriteInMainArea("0 : Back");
+        }
+
+        string inputString = Console.ReadLine() ?? "";
+        var n = int.TryParse(inputString, out int input);
+
+        if (input == 0)
+        {
+            return;
+        }
+
+        if (!n || input < 1 || input > Program.player.bankItems.Count)
+        {
+            MainUI.WriteInMainArea("\nInvalid selection. Please type a number from the list.");
+            Thread.Sleep(1000);
+            continue;
+        }
+
+        var (loc, selectedItem) = Program.player.bankItems[input - 1];
+        int quantity = 1;
+
+        // If stackable, ask how many
+        if (selectedItem.type != ItemType.equipment)
+        {
+            MainUI.ClearMainArea();
+            MainUI.WriteInMainArea($"How many {selectedItem.name} would you like to withdraw? (Max: {selectedItem.amount})");
+            string quantityString = Console.ReadLine() ?? "";
+            var q = int.TryParse(quantityString, out quantity);
+
+            if (!q || quantity < 1 || quantity > selectedItem.amount)
+            {
+                MainUI.WriteInMainArea("\nInvalid amount.");
+                Thread.Sleep(1000);
+                continue;
+            }
+        }
 
 
-            // remove the old speed modifier effect
-            player.speed += (int)MathF.Floor(MathF.Pow(MathF.Max(player.inventorySpeedModifier - 20, 0) * scale, exponent));
+        Inventory.AddItem(selectedItem, quantity);
 
-            // update the modifier based on new weight
-            player.inventorySpeedModifier += existingItem.weight * tAmount;
-
-            // apply the new effect only if weight exceeds 20
-            float excessWeight = MathF.Max(player.inventorySpeedModifier - 20, 0);
-            player.speed -= (int)MathF.Floor(MathF.Pow(excessWeight * scale, exponent));
+        // --- Remove from bank ---
+        if (selectedItem.type == ItemType.equipment || selectedItem.amount == quantity)
+        {
+            // Remove the item completely from bank
+            Program.player.bankItems.RemoveAt(input - 1);
+        }
+        else
+        {
+            // Just subtract the amount
+            selectedItem.amount -= quantity;
 
         }
-    }*/
 
+        MainUI.WriteInMainArea($"\nWithdrew {quantity}x {selectedItem.name}.");
+        Thread.Sleep(1000);
+    }
+}
 }
