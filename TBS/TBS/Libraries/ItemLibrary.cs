@@ -105,6 +105,27 @@
         equipmentType = EquipmentType.feet,
         detailsLore = "Sturdy boots lined with wolf pelt.\nProvides both protection and mobility."
     };
+
+    //weapon
+    public static Item IronWarhammer = new Item("Iron Warhammer", "Heavy Slam", 50, 18, ItemType.equipment)
+    {
+        detailsLore = "A massive iron hammer, Hits with incredible force and \nshattering enemy defenses.",
+        equipmentType = EquipmentType.weapon,
+        weaponAttack = AttackLibrary.HeavySlam
+    }; 
+    
+    public static Item GlacierReaver = new Item("Glacier Reaver", "Glacial Sweep", 150, 25, ItemType.equipment)
+    {
+        detailsLore = "A massive sharp blade carved from a single big shard of ice",
+        equipmentType = EquipmentType.weapon,
+        weaponAttack = AttackLibrary.GlacialSweep
+    };
+    public static Item WinterfangGauntlet = new Item("Winterfang Gauntlet", "Frost Barrier", 500, 30, ItemType.equipment)
+    {
+        detailsLore = "A reinforced gauntlet using it to strike an enemy instantly coats the wearer in a brittle layer of protective frost.",
+        equipmentType = EquipmentType.weapon,
+        weaponAttack = AttackLibrary.FrostBarrier
+    };
     #endregion
 
     #region artifacts
@@ -226,11 +247,23 @@
 
     #region weapon
 
-    public static Item sword = new Item("Sword", "Slash", 11, 1, ItemType.equipment)
+    public static Item sword = new Item("Sword", "Slash", 11, 5, ItemType.equipment)
     {
         detailsLore = "Just a simple sword, can cut a bit",
         equipmentType = EquipmentType.weapon,
         weaponAttack = AttackLibrary.Slash
+    };
+    public static Item CrudePoisonSpear = new Item("Crude Poison Spear", "Venom Strike", 20, 4, ItemType.equipment)
+    {
+        detailsLore = "A simple stone tipped spear coated in a foul smelling venom",
+        equipmentType = EquipmentType.weapon,
+        weaponAttack = AttackLibrary.VenomStrike
+    };
+    public static Item StoneMaul = new Item("Two-Handed Stone Maul", "Reckless Swing", 15, 30, ItemType.equipment)
+    {
+        detailsLore = "BIG STONE ON A STICK:D",
+        equipmentType = EquipmentType.weapon,
+        weaponAttack = AttackLibrary.RecklessSwing
     };
 
     #endregion

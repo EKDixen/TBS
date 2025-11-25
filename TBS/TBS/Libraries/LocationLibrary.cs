@@ -148,7 +148,14 @@ public static class LocationLibrary
         new SubLocation("Market", SubLocationType.marketplace)
         {
 
-        }
+        },        
+        new SubLocation("Store", SubLocationType.shop)
+        {
+            shopItems = new List<Item>
+            {
+                (ItemLibrary.CrudePoisonSpear)
+            }
+        },
     },
     new Dictionary<Encounter, int>
     {
@@ -199,11 +206,10 @@ public static class LocationLibrary
                 (ItemLibrary.bigHealthPotion),
                 (ItemLibrary.runningShoes),
                 (ItemLibrary.knightHelmet),
-                (ItemLibrary.constructionVest)
+                (ItemLibrary.constructionVest),
+                (ItemLibrary.StoneMaul)
+
             }
-        },
-        new SubLocation("Blacksmith", SubLocationType.blacksmith)
-        {
         },
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
@@ -236,6 +242,9 @@ public static class LocationLibrary
         new SubLocation("Market", SubLocationType.marketplace)
         {
 
+        },
+        new SubLocation("Blacksmith", SubLocationType.blacksmith)
+        {
         }
     },
     new Dictionary<Encounter, int>

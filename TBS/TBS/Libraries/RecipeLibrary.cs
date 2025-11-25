@@ -126,6 +126,21 @@ public static class RecipeLibrary
         MoneyCost = 20,
         AreaTag = "Greenwood Territories"
     };
+    public static readonly Recipe IronWarhammerRecipe = new Recipe
+    {
+        Id = "iron_warhammer",
+        Name = "Iron Warhammer",
+        Station = CraftingStationType.Forge,
+        OutputItem = ItemLibrary.IronWarhammer,
+        OutputQuantity = 1,
+        Materials = new List<MaterialCost>
+        {
+            new MaterialCost(ItemLibrary.iron, 50),
+            new MaterialCost(ItemLibrary.rock, 5)
+        },
+        MoneyCost = 40, 
+        AreaTag = "Fallen Kingdom"
+    };
 
     public static readonly Recipe FrostforgedHelm = new Recipe
     {
@@ -142,8 +157,38 @@ public static class RecipeLibrary
         },
         MoneyCost = 30,
         AreaTag = "Frostborn Dominion"
+    }; 
+    public static readonly Recipe GlacierReaverRecipe = new Recipe
+    {
+        Id = "glacier_reaver",
+        Name = "Glacier Reaver",
+        Station = CraftingStationType.Forge,
+        OutputItem = ItemLibrary.GlacierReaver, 
+        OutputQuantity = 1,
+        Materials = new List<MaterialCost>
+        {
+            new MaterialCost(ItemLibrary.iron, 15),
+            new MaterialCost(ItemLibrary.frostCore, 5)
+        },
+        MoneyCost = 150,
+        AreaTag = "Frostborn Dominion"
     };
-
+    public static readonly Recipe WinterfangGauntletRecipe = new Recipe
+    {
+        Id = "winterfang_gauntlet",
+        Name = "Winterfang Gauntlet",
+        Station = CraftingStationType.Forge,
+        OutputItem = ItemLibrary.WinterfangGauntlet,
+        OutputQuantity = 1,
+        Materials = new List<MaterialCost>
+        {
+            new MaterialCost(ItemLibrary.iron, 10),     
+            new MaterialCost(ItemLibrary.spiderSilk, 5),
+            new MaterialCost(ItemLibrary.frostCore, 10)  
+        },
+        MoneyCost = 100,
+        AreaTag = "Frostborn Dominion"
+    };
     public static readonly List<Recipe> AllRecipes = new List<Recipe>
     {
         StarterIronHelm,
@@ -152,7 +197,10 @@ public static class RecipeLibrary
         WolfhideBoots,
         SpidersilkLeggings,
         SpidersilkVest,
-        FrostforgedHelm
+        FrostforgedHelm, 
+        IronWarhammerRecipe,
+        GlacierReaverRecipe,
+        WinterfangGauntletRecipe
     };
 
     public static IEnumerable<Recipe> GetRecipesFor(string areaTag, CraftingStationType station)
