@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public static class EnemyLibrary
 {
     #region Basic/Starter Enemies
-    public static Enemy Thug = new Enemy("Thug", 1, 10, 30,  8, 2, 5, 5, 5, 150, 0, 0, 10)
+    public static Enemy Thug = new Enemy("Thug", 1, 10, 30,  8, 2, 5, 5, 5, 100, 0, 0, 10)
     {
         attacks = new List<Attack>
         {
