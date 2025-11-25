@@ -386,7 +386,7 @@ public static class Inventory
         int bonus = 0;
         foreach (var item in p.ownedItems)
         {
-            if (item.type == ItemType.Backpack && item.stats != null && item.stats.ContainsKey("materialCapacity"))
+            if (item.type == ItemType.Artifact && item.stats != null && item.stats.ContainsKey("materialCapacity"))
             {
                 bonus += item.stats["materialCapacity"] * item.amount;
             }
