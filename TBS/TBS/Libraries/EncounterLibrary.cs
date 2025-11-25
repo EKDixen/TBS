@@ -87,7 +87,7 @@ public static class EncounterLibrary
         "BanditAmbush",
         true,
         "Bandits jump out from behind the trees!",
-        new List<Enemy> { EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug},
+        new List<Enemy> { EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Thug, EnemyLibrary.Healer},
         null,
         EncounterType.Combat
     );
@@ -265,7 +265,7 @@ public static class EncounterLibrary
     "FrozenGolem Healer",
     true,
     "You're surrounded by frozen creatures!",
-    new List<Enemy> { EnemyLibrary.Healer, EnemyLibrary.Healer, EnemyLibrary.GlacierGolem },
+    new List<Enemy> { EnemyLibrary.IceMage, EnemyLibrary.IceMage, EnemyLibrary.GlacierGolem },
     null,
     EncounterType.Combat
 );
