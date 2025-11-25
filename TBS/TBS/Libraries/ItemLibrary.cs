@@ -114,7 +114,7 @@
         stats = { ["critChance"] = 3 },
     };
 
-    public static Item BasicBackpack = new Item("Basic Backpack", "A simple backpack", 50, 2, ItemType.Backpack)
+    public static Item BasicBackpack = new Item("Basic Backpack", "A simple backpack", 50, 2, ItemType.Artifact)
     {
         stats = { ["materialCapacity"] = 50 },
         detailsLore = "A sturdy canvas backpack. Increases how many materials you can carry without weighing you down."
@@ -225,6 +225,7 @@
     #endregion
 
     #endregion
+
     #region consumeables
     public static Item smallHealthPotion = new Item("Small Health Potion", "+20 Health", 2,2, ItemType.consumable)
     {

@@ -5,7 +5,6 @@ public enum ItemType
     consumable,
     equipment,
     Artifact,
-    Backpack,
     Material
 }
 public enum EquipmentType

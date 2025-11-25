@@ -105,5 +105,17 @@ public class Player : Combatant
         luck         = baseLuck         + c.Tluck         * levelsAbove1;
 
         if (HP > maxHP) HP = maxHP;
+
+        foreach (Item item in ownedItems)
+        {
+            if(item.type == ItemType.Artifact)
+            {
+                Inventory.ApplyEffects(item, null);
+            }
+        }
+        foreach(Item item in equippedItems)
+        {
+            Inventory.ApplyEffects(item, null);
+        }
     }
 }
