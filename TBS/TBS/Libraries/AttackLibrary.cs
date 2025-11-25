@@ -29,7 +29,7 @@ public static class AttackLibrary
     });
 
     public static Attack EtherealTouch = new Attack("EtherealTouch", new List<AttackEffect> {
-        new AttackEffect("damage", 20, 0, "enemy"),
+        new AttackEffect("damage", 15, 0, "enemy"),
         new AttackEffect("dodge", -10, 3, "enemy"),
         new AttackEffect("speed", -1, 5, "enemy")
     });

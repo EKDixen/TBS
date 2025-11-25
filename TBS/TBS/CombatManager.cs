@@ -126,9 +126,9 @@ public class CombatManager
                     }
                 }
             }
-            foreach (var ae in player.activeEffects)
+            if (player.activeEffects != null)
             {
-                player.activeEffects.Remove(ae);
+                player.activeEffects.Clear();
             }
             ui.AddToLog("--- VICTORY! ---");
             string rewardText = $"Rewards: +{totalExp} EXP, +{totalMoney} Rai";
