@@ -44,7 +44,8 @@ public static class LocationLibrary
         { EncounterLibrary.LostCoins, 30},
         { EncounterLibrary.BanditFight, 20},
         { EncounterLibrary.WanderingMerchant, 15},
-        { EncounterLibrary.MysteriousShrine, 5}
+        { EncounterLibrary.MysteriousShrine, 5},
+        { EncounterLibrary.LostChild, 5}
     }, "Coastal Alliance");
 
     public static Location Mistport = new Location("Mistport", new System.Numerics.Vector2(0, -1), 0, new List<SubLocation>
@@ -76,7 +77,8 @@ public static class LocationLibrary
         { EncounterLibrary.StrangeMushrooms, 20},
         { EncounterLibrary.WanderingMerchant, 15},
         { EncounterLibrary.FallenIntoTrap, 10},
-        { EncounterLibrary.FallingFish, 10}
+        { EncounterLibrary.FallingFish, 10},
+        { EncounterLibrary.LostChild, 5}
    }, "Coastal Alliance");
 
     public static Location SaltmarshShore = new Location("Saltmarsh Shore", new System.Numerics.Vector2(-1, -1), 0, new List<SubLocation>
@@ -146,7 +148,7 @@ public static class LocationLibrary
         { EncounterLibrary.LearnFirstAid, 5}
     }, "Greenwood Territories");
 
-    public static Location WhisperWood = new Location("WhisperWood", new System.Numerics.Vector2(2, 1), 1, new List<SubLocation>
+    public static Location WhisperWood = new Location("WhisperWood", new System.Numerics.Vector2(2, 1), 3, new List<SubLocation>
     {
         new SubLocation("Graveyard", SubLocationType.graveyard)
         {
@@ -177,7 +179,8 @@ public static class LocationLibrary
         { EncounterLibrary.Wolfsensei, 15},
         { EncounterLibrary.DireWolfPack, 10},
         { EncounterLibrary.StrangeMushrooms, 20},
-        { EncounterLibrary.FoundTreasure, 15}
+        { EncounterLibrary.FoundTreasure, 15},
+        { EncounterLibrary.AbandonedBackpack, 5}
     }, "Greenwood Territories");
 
     public static Location MossGate = new Location("MossGate", new System.Numerics.Vector2(2, 0), 0, new List<SubLocation>
@@ -243,7 +246,7 @@ public static class LocationLibrary
         { EncounterLibrary.BanditAmbush, 3}
     }, "Fallen Kingdom");
 
-    public static Location ShattershoreCliffs = new Location("Shattershore Cliffs", new System.Numerics.Vector2(-2, 0), 1, new List<SubLocation>
+    public static Location ShattershoreCliffs = new Location("Shattershore Cliffs", new System.Numerics.Vector2(-2, 0), 3, new List<SubLocation>
     {
         new SubLocation("Graveyard", SubLocationType.graveyard)
         {
@@ -269,7 +272,7 @@ public static class LocationLibrary
         { EncounterLibrary.FallenIntoTrap, 10}
     }, "Fallen Kingdom");
 
-    public static Location WitheredRuins = new Location("Withered Ruins", new System.Numerics.Vector2(-2, 2), 2, new List<SubLocation>
+    public static Location WitheredRuins = new Location("Withered Ruins", new System.Numerics.Vector2(-2, 2), 3, new List<SubLocation>
     {
         new SubLocation("Graveyard", SubLocationType.graveyard)
         {
@@ -289,10 +292,11 @@ public static class LocationLibrary
         { EncounterLibrary.CorruptedKnightBattle, 25},
         { EncounterLibrary.GhostlyApparition, 30},
         { EncounterLibrary.SkeletonWarriors, 30},
-        { EncounterLibrary.FoundTreasure, 20}
+        { EncounterLibrary.FoundTreasure, 20},
+        { EncounterLibrary.AbandonedBackpack, 2}
     }, "Fallen Kingdom");
 
-    public static Location Nightreach = new Location("Nightreach", new System.Numerics.Vector2(-1, 1), 0, new List<SubLocation>
+    public static Location Nightreach = new Location("Nightreach", new System.Numerics.Vector2(-1, 1), 1, new List<SubLocation>
     {
         new SubLocation("Graveyard", SubLocationType.graveyard)
         {
@@ -322,7 +326,7 @@ public static class LocationLibrary
         { EncounterLibrary.VampireAttack, 60}
     }, "Fallen Kingdom");
 
-    public static Location SilverfallRuins = new Location("Silverfall Ruins", new System.Numerics.Vector2(-2, 1), 0, new List<SubLocation>
+    public static Location SilverfallRuins = new Location("Silverfall Ruins", new System.Numerics.Vector2(-2, 1), 3, new List<SubLocation>
     {
         new SubLocation("Graveyard", SubLocationType.graveyard)
         {
@@ -348,12 +352,13 @@ new Dictionary<Encounter, int>
 {
         { EncounterLibrary.FoundTreasure, 20},
         { EncounterLibrary.GhostlyApparition, 60},
-        { EncounterLibrary.SkeletonWarriors, 60}
+        { EncounterLibrary.SkeletonWarriors, 60},
+        { EncounterLibrary.AbandonedBackpack, 2}
 }, "Fallen Kingdom");
     #endregion
 
     #region "wilderness"
-    public static Location FrozenWastes = new Location("Frozen Wastes", new System.Numerics.Vector2(-3, 1), 2, new List<SubLocation>
+    public static Location FrozenWastes = new Location("Frozen Wastes", new System.Numerics.Vector2(-3, 1), 20, new List<SubLocation>
     {
         new SubLocation("Graveyard", SubLocationType.graveyard)
         {
@@ -368,10 +373,11 @@ new Dictionary<Encounter, int>
         { EncounterLibrary.IceWolfPack, 40},
         { EncounterLibrary.FrostTrollAmbush, 30},
         { EncounterLibrary.IceMageEncounter, 25},
-        { EncounterLibrary.FrozenHorde, 15}
+        { EncounterLibrary.FrozenHorde, 15},
+        { EncounterLibrary.LostChild, 1}
     }, null);
 
-    public static Location TundraMarch = new Location("Tundra March", new System.Numerics.Vector2(-4, 1), 2, new List<SubLocation>
+    public static Location TundraMarch = new Location("Tundra March", new System.Numerics.Vector2(-4, 1), 20, new List<SubLocation>
     {
         new SubLocation("Graveyard", SubLocationType.graveyard)
         {
@@ -391,7 +397,7 @@ new Dictionary<Encounter, int>
     #endregion
 
     #region"Frostborn Dominion"
-    public static Location SnowfallRidge = new Location("Snowfall Ridge", new System.Numerics.Vector2(-5, 1), 2, new List<SubLocation>
+    public static Location SnowfallRidge = new Location("Snowfall Ridge", new System.Numerics.Vector2(-5, 1), 5, new List<SubLocation>
     {
         new SubLocation("Graveyard", SubLocationType.graveyard)
         {
@@ -411,7 +417,7 @@ new Dictionary<Encounter, int>
         { EncounterLibrary.MysteriousShrine, 10}
     }, "Frostborn Dominion");
 
-    public static Location EternalIcefall = new Location("Eternal Icefall", new System.Numerics.Vector2(-6, 1), 3, new List<SubLocation>
+    public static Location EternalIcefall = new Location("Eternal Icefall", new System.Numerics.Vector2(-6, 1), 15, new List<SubLocation>
     {
         new SubLocation("Graveyard", SubLocationType.graveyard)
         {
@@ -435,7 +441,7 @@ new Dictionary<Encounter, int>
         { EncounterLibrary.MysteriousShrine, 10}
     }, "Frostborn Dominion");
 
-    public static Location FrostfangCrag = new Location("Frostfang Crag", new System.Numerics.Vector2(-6, 0), 3, new List<SubLocation>
+    public static Location FrostfangCrag = new Location("Frostfang Crag", new System.Numerics.Vector2(-6, 0), 15, new List<SubLocation>
     {
         new SubLocation("Graveyard", SubLocationType.graveyard)
         {
@@ -460,7 +466,7 @@ new Dictionary<Encounter, int>
         { EncounterLibrary.FallenIntoTrap, 10}
     }, "Frostborn Dominion");
 
-    public static Location Everwinter = new Location("Everwinter", new System.Numerics.Vector2(-5, 0), 3, new List<SubLocation>
+    public static Location Everwinter = new Location("Everwinter", new System.Numerics.Vector2(-5, 0), 10, new List<SubLocation>
     {
         new SubLocation("Graveyard", SubLocationType.graveyard)
         {
@@ -495,7 +501,7 @@ new Dictionary<Encounter, int>
         { EncounterLibrary.WanderingMerchant, 10}
     }, "Frostborn Dominion");
 
-    public static Location IceboundPort = new Location("Icebound Port", new System.Numerics.Vector2(-5, -1), 3, new List<SubLocation>
+    public static Location IceboundPort = new Location("Icebound Port", new System.Numerics.Vector2(-5, -1), 13, new List<SubLocation>
     {
         new SubLocation("Graveyard", SubLocationType.graveyard)
         {

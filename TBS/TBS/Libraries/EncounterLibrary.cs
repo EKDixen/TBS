@@ -39,6 +39,39 @@ public static class EncounterLibrary
         EncounterType.Treasure
     );
 
+    public static Encounter AbandonedBackpack = new Encounter(
+    "AbandonedBackpack",
+    false,
+    "An old backpack lies partially buried in dirt.",
+    null,
+    (player) => {
+
+        // Get ALL materials :)
+        var materialItems = typeof(ItemLibrary)
+            .GetFields(System.Reflection.BindingFlags.Public |
+                       System.Reflection.BindingFlags.Static |
+                       System.Reflection.BindingFlags.FlattenHierarchy)
+                    .Where(f => f.FieldType == typeof(Item))
+                    .Select(f => (Item)f.GetValue(null))
+                    .Where(i => i.type == ItemType.Material)
+                    .ToList();
+
+        if (materialItems.Count == 0)
+        {
+            MainUI.WriteInMainArea("The backpack is empty...");
+            return;
+        }
+
+        Item selected = materialItems[rng.Next(materialItems.Count)];
+
+        Inventory.AddItem(selected, 1);
+
+        MainUI.WriteInMainArea($"You found a {selected.name} inside the backpack!");
+    },
+    EncounterType.Treasure
+);
+
+
     #endregion
 
     #region Trap/Hazard Encounters
@@ -571,5 +604,60 @@ public static class EncounterLibrary
      },
      EncounterType.Event
  );
+
+    public static Encounter LostChild = new Encounter(
+    "LostChild",
+    false,
+    "A small child is crying alone on the roadside.",
+    null,
+    (player) => {
+        MainUI.WriteInMainArea("Help the child? (y/n): ");
+        string choice = Console.ReadKey(true).KeyChar.ToString().ToLower();
+
+        if (choice == "y" || choice == "yes")
+        {
+            int outcome = rng.Next(1, 101); 
+
+            if (outcome <= 50)
+            {
+                
+                int reward = rng.Next(1, 11);
+                player.money += reward;
+                MainUI.WriteInMainArea(
+                    $"The child's parent arrives running and gratefully rewards you {reward} Rai!");
+            }
+            else if (outcome <= 80)
+            {
+                
+                int stolen = Math.Min(player.money, rng.Next(3, 11));
+                player.money -= stolen;
+                MainUI.WriteInMainArea(
+                    $"When you turn around, the child is gone... and so are {stolen} of your Rai!");
+            }
+            else if (outcome <= 95)
+            {
+                
+                int damage = rng.Next(5, 16);
+                player.HP -= damage;
+                MainUI.WriteInMainArea(
+                    $"As you approach, the child panics and swings a stick! You take {damage} damage!");
+                Program.CheckPlayerDeath();
+            }
+            else
+            {
+                
+                MainUI.WriteInMainArea("The child calms down, but no one shows up. You move on.");
+            }
+
+            Program.SavePlayer();
+        }
+        else
+        {
+            MainUI.WriteInMainArea("You walk past the crying child.");
+        }
+    },
+    EncounterType.Event
+);
+
     #endregion
 }
