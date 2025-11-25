@@ -303,6 +303,7 @@ public static class Inventory
 
             newItem.amount = tAmount;
             player.ownedItems.Add(newItem);
+            player.knownItems.Add(newItem);
 
             if (newItem.type == ItemType.Artifact)
             {
@@ -311,6 +312,8 @@ public static class Inventory
 
         }
         UpdateWeight();
+
+
     }
 
     // Compute how many material-capacity units a single unit of this item consumes

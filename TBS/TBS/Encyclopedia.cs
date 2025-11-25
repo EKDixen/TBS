@@ -3,14 +3,17 @@
 
 public static class Encyclopedia
 {
-public static void EncyclopediaLogic()
+
+    
+  //  public static void Add
+
+    public static void EncyclopediaLogic()
 {
     while (true)
     {
         MainUI.ClearMainArea();
         MainUI.WriteInMainArea("Welcome to the Encyclopedia!");
-
-        MainUI.WriteInMainArea("What would you like to view?");
+        MainUI.WriteInMainArea($"What would you like to view?\n");
         MainUI.WriteInMainArea("1 : View items");
         MainUI.WriteInMainArea("2 : View Enemies");
         MainUI.WriteInMainArea("3 : View Locations");
@@ -49,23 +52,23 @@ private static void ViewItems()
     while (true)
     {
         MainUI.ClearMainArea();
-        MainUI.WriteInMainArea("Select an item to withdraw:");
+        MainUI.WriteInMainArea("Select an item to view");
         MainUI.WriteInMainArea("");
-        MainUI.WriteInMainArea("nr     Name                      Qty   Location");
+        MainUI.WriteInMainArea("nr     Name        Description      Value   Weight");
         MainUI.WriteInMainArea("--------------------------------------------------");
 
-        if (Program.player.bankItems.Count == 0)
+        if (Program.player.knownItems.Count == 0)
         {
-            MainUI.WriteInMainArea("Your bank is empty.");
+            MainUI.WriteInMainArea("You havent discovered any items.");
             MainUI.WriteInMainArea("");
             MainUI.WriteInMainArea("0 : Back");
         }
         else
         {
-            for (int i = 0; i < Program.player.bankItems.Count; i++)
+            for (int i = 0; i < Program.player.knownItems.Count; i++)
             {
-                var (location, item) = Program.player.bankItems[i];
-                MainUI.WriteInMainArea($"{i + 1,-7}{item.name,-25} {item.amount,-5} {location}");
+                var item = Program.player.knownItems[i];
+                MainUI.WriteInMainArea($"{i + 1,-7}{item.name,-25} {item.description,-5} {item.value} {item.weight}");
             }
             MainUI.WriteInMainArea("");
             MainUI.WriteInMainArea("0 : Back");
@@ -79,32 +82,15 @@ private static void ViewItems()
             return;
         }
 
-        if (!n || input < 1 || input > Program.player.bankItems.Count)
+        if (!n || input < 1 || input > Program.player.knownItems.Count)
         {
             MainUI.WriteInMainArea("\nInvalid selection. Please type a number from the list.");
             Thread.Sleep(1000);
             continue;
         }
 
-        var (loc, selectedItem) = Program.player.bankItems[input - 1];
+        var selectedItem = Program.player.knownItems[input - 1];
         int quantity = 1;
-
-        // If stackable, ask how many
-        if (selectedItem.type != ItemType.equipment)
-        {
-            MainUI.ClearMainArea();
-            MainUI.WriteInMainArea($"How many {selectedItem.name} would you like to withdraw? (Max: {selectedItem.amount})");
-            string quantityString = Console.ReadLine() ?? "";
-            var q = int.TryParse(quantityString, out quantity);
-
-            if (!q || quantity < 1 || quantity > selectedItem.amount)
-            {
-                MainUI.WriteInMainArea("\nInvalid amount.");
-                Thread.Sleep(1000);
-                continue;
-            }
-        }
-
 
         Inventory.AddItem(selectedItem, quantity);
 
@@ -123,6 +109,7 @@ private static void ViewItems()
 
         MainUI.WriteInMainArea($"\nWithdrew {quantity}x {selectedItem.name}.");
         Thread.Sleep(1000);
+            
     }
 }
 }
