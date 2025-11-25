@@ -226,7 +226,7 @@
 
     #endregion
 
-    #region consumeables
+    #region consumables
     public static Item smallHealthPotion = new Item("Small Health Potion", "+20 Health", 2,2, ItemType.consumable)
     {
         effects = new List<AttackEffect>()
