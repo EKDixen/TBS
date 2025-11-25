@@ -191,6 +191,10 @@ public static class EnemyLibrary
         attackWeights = new Dictionary<Attack, int>
         {
             { AttackLibrary.ThrowHands, 100 }
+        },
+        materialDrops = new List<MaterialDrop>
+        {
+            new MaterialDrop(ItemLibrary.rock, 4, 8, 5f)
         }
     };
     #endregion

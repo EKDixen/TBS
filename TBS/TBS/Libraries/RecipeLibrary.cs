@@ -167,7 +167,7 @@ public static class RecipeLibrary
         OutputQuantity = 1,
         Materials = new List<MaterialCost>
         {
-            new MaterialCost(ItemLibrary.iron, 15),
+            new MaterialCost(ItemLibrary.iron, 20),
             new MaterialCost(ItemLibrary.frostCore, 5)
         },
         MoneyCost = 150,
@@ -183,7 +183,7 @@ public static class RecipeLibrary
         Materials = new List<MaterialCost>
         {
             new MaterialCost(ItemLibrary.iron, 10),     
-            new MaterialCost(ItemLibrary.spiderSilk, 5),
+            new MaterialCost(ItemLibrary.spiderSilk, 7),
             new MaterialCost(ItemLibrary.frostCore, 10)  
         },
         MoneyCost = 100,

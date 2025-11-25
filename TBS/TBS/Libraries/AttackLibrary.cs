@@ -33,7 +33,8 @@ public static class AttackLibrary
     public static Attack FrostBarrier = new Attack("Frost Barrier", new List<AttackEffect> {
         new AttackEffect("damage", 5, 0, "enemy"),       
         new AttackEffect("armor", 15, 2, "self"),         
-        new AttackEffect("dodge", 50, 2, "self")          
+        new AttackEffect("dodge", 50, 2, "self"),
+        new AttackEffect("speed", -5, 3, "self")
     });
 
     #endregion
@@ -79,8 +80,7 @@ public static class AttackLibrary
         new AttackEffect("armor", -5, 2, "enemy")       
     });
 
-    public static Attack VenomStrike = new Attack("Venom Strike", new List<AttackEffect> {
-        new AttackEffect("damage", 5, 0, "enemy"),       
+    public static Attack VenomStrike = new Attack("Venom Strike", new List<AttackEffect> {   
         new AttackEffect("damage", 5, 5, "enemy")        
     });
 
@@ -91,7 +91,7 @@ public static class AttackLibrary
     });
 
     public static Attack GlacialSweep = new Attack("Glacial Sweep", new List<AttackEffect> {
-        new AttackEffect("damage", 23, 0, "enemies"), 
+        new AttackEffect("damage", 20, 0, "enemies"), 
         new AttackEffect("speed", -3, 1, "enemies")  
     });
     #endregion
