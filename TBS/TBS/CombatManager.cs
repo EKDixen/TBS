@@ -16,6 +16,7 @@ public class CombatManager
     private bool canFlee;
     private Location previousLocation;
     private bool playerFled = false;
+    private bool enemyAttackedThisCombat = false;
 
     public static bool playerInCombat = false;
     public static bool playerFledLastCombat = false;
@@ -101,6 +102,12 @@ public class CombatManager
         }
         else if (player.IsAlive())
         {
+            // Track flawless victories (no enemy attacks)
+            if (!enemyAttackedThisCombat)
+            {
+                player.IncrementStat("totalFlawlessVictories");
+            }
+            
             int totalMoney = enemies.Sum(e => e.money);
             int totalExp = enemies.Where(e => player.level - e.level < 5).Sum(e => e.exp);
             player.money += totalMoney;
@@ -762,6 +769,8 @@ public class CombatManager
                     return;
                 }
                 var chosen = enemy.SelectWeightedAttack();
+                
+                enemyAttackedThisCombat = true;
                 
                 bool isAoEEnemies = chosen.effects.Any(e => e.targetType == "allEnemies");
                 bool isAoEAllies = chosen.effects.Any(e => e.targetType == "allAllies");
