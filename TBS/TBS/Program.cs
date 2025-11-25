@@ -217,9 +217,8 @@ namespace Game.Class
             MainUI.WriteInMainArea("Go somewhere : 0");
             MainUI.WriteInMainArea("Check Inventory : 1");
             MainUI.WriteInMainArea("Check Moves : 2");
-            MainUI.WriteInMainArea("Check Material Bag : 3");
-            MainUI.WriteInMainArea($"Do something at {player.currentLocation} : 4");
-            MainUI.WriteInMainArea("Check stats : 5");
+            MainUI.WriteInMainArea($"Do something at {player.currentLocation} : 3");
+            MainUI.WriteInMainArea("Check stats : 4");
             //MainUI.WriteInMainArea("Check Encyclopedia : 6");
 
             if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input) == false || input > 5 || input < 0)
@@ -231,10 +230,31 @@ namespace Game.Class
                 return;
             }
             else if (input == 0) journeyManager.ChoseTravelDestination();
-            else if (input == 1) Inventory.ShowInventory();
+            else if (input == 1) 
+            {
+                MainUI.ClearMainArea();
+                MainUI.WriteInMainArea("Inventory : 0");
+                MainUI.WriteInMainArea("MaterialBag : 1");
+
+                if(int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input2) == false || input2 > 1 || input2 < 0)
+                {
+                    MainUI.WriteInMainArea("\nyou gotta type 0 or 1");
+                    MainUI.WriteInMainArea("Press enter to continue...");
+                    Console.ReadLine();
+                    MainMenu();
+                    return;
+                }
+                else if (input2 == 0)
+                {
+                    Inventory.ShowInventory();
+                }
+                else if (input2 == 1)
+                {
+                    Inventory.ShowMaterialBag();
+                }
+        }
             else if (input == 2) atkManager.ShowMovesMenu();
-            else if (input == 3) Inventory.ShowMaterialBag();
-            else if (input == 4)
+            else if (input == 3)
             {
                 MainUI.ClearMainArea();
                 MainUI.WriteInMainArea("all establisments in your current location\n");
@@ -278,7 +298,7 @@ namespace Game.Class
                     return;
                 }
             }
-            else if (input == 5) ShowPlayerStats();
+            else if (input == 4) ShowPlayerStats();
 
             // Save in background without blocking UI
             _ = Task.Run(() => db.SavePlayer(player));

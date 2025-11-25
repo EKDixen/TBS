@@ -127,7 +127,7 @@
     #endregion
 
     #region equipment
-    #endregion
+    
 
     #region head
     public static Item baseballCap = new Item("Baseball Cap", "+1 armor", 5,2, ItemType.equipment)
@@ -224,6 +224,7 @@
     };
     #endregion
 
+    #endregion
     #region consumeables
     public static Item smallHealthPotion = new Item("Small Health Potion", "+20 Health", 2,2, ItemType.consumable)
     {
