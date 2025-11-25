@@ -66,7 +66,7 @@ public static class EnemyLibrary
             { AttackLibrary.ThrowHands, 35 }
         }
     };
-    public static Enemy Healer = new Enemy("Healer", 3, 25, 45, 10, 3, 8, 9, 8, 150, 8, 5, 22)
+    public static Enemy Healer = new Enemy("Healer", 3, 25, 25, 10, 3, 8, 9, 8, 150, 8, 5, 22)
     {
         attacks = new List<Attack>
         {
