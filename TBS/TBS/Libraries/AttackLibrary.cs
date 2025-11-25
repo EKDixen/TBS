@@ -50,6 +50,6 @@ public static class AttackLibrary
     });
     public static Attack GlacialCoating = new Attack("Glacial Coating", new List<AttackEffect> {
         new AttackEffect("speed", -2, 2, "self"),
-        new AttackEffect("armor", 5, 2, "self"),
+        new AttackEffect("armor", 5, 3, "self"),
     });
 }

@@ -311,7 +311,16 @@ public class CombatManager
             }
             else if (effect.type == "heal")
             {
-            var target = (effect.targetType == "self") ? attacker : defender;
+            Combatant target;
+            if (effect.targetType == "self" || effect.targetType == "ally")
+            {
+                target = attacker;
+            }
+            else
+            {
+                target = defender;
+            }
+            
             int before = target.HP;
             int max = target.maxHP > 0 ? target.maxHP : int.MaxValue;
             target.HP = Math.Min(before + effect.value, max);
@@ -331,7 +340,16 @@ public class CombatManager
             }
             else
             {
-            var target = (effect.targetType == "self") ? attacker : defender;
+            Combatant target;
+            if (effect.targetType == "self" || effect.targetType == "ally")
+            {
+                target = attacker;
+            }
+            else
+            {
+                target = defender;
+            }
+            
             effect.Apply(attacker, defender);
 
             if (effect.duration > 0 && target.activeEffects != null)
@@ -641,11 +659,17 @@ public class CombatManager
                     // They chose an attack
                     var chosen = moves[choice - 1];
 
-                bool isAoE = chosen.effects.Any(e => e.targetType == "allEnemies");
+                    bool isAoE = chosen.effects.Any(e => e.targetType == "allEnemies");
+                    bool targetsSelfOrAlly = chosen.effects.All(e => e.targetType == "self" || e.targetType == "ally");
+                    
                     if (isAoE)
                     {
                         var allEnemies = enemies.Cast<Combatant>().ToList();
                         ExecuteAttackAoE(player, chosen, allEnemies);
+                    }
+                    else if (targetsSelfOrAlly)
+                    {
+                        ExecuteAttackSingle(player, chosen, player);
                     }
                     else
                     {
