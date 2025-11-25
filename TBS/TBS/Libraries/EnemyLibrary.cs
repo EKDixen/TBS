@@ -257,7 +257,7 @@ public static class EnemyLibrary
         }
     };
 
-    public static Enemy SnowWraith = new Enemy("Snow Wraith", 14, 200, 80, 14, 4, 12, 15, 15, 180, 20, 12, 50)
+    public static Enemy SnowWraith = new Enemy("Snow Wraith", 14, 200, 80, 14, 4, 12, 15, 15, 50, 20, 12, 50)
     {
         attacks = new List<Attack>
         {
