@@ -59,6 +59,7 @@ public static class Inventory
 
     public static void ShowInventory()
     {
+        player = Program.player;
         UpdateWeight();
 
         while (true)
