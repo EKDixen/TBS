@@ -216,6 +216,8 @@ public static class Inventory
                     if (chosen.equipmentType == EquipmentType.legs) slot = 3;
                     if (chosen.equipmentType == EquipmentType.feet) slot = 4;
 
+                    if(player.equippedItems[slot - 1] != null)UnequipItem(slot);
+
                     ApplyEffects(chosen, 1);
                     player.equippedItems[slot - 1] = chosen;
                     MainUI.WriteInMainArea($"{chosen.name} equipped into Slot {slot}!");
