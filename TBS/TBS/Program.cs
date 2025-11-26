@@ -1,6 +1,7 @@
-﻿using System.Drawing;
+﻿using Newtonsoft.Json.Linq;
+using System.Drawing;
 using System.Net.Http;
-using Newtonsoft.Json.Linq;
+using System.Reflection.Emit;
 
 namespace Game.Class
 {
@@ -365,12 +366,34 @@ namespace Game.Class
                         MainUI.WriteInMainArea($"    {player.playerClass.Tcritchance} critChance");
                         MainUI.WriteInMainArea($"    {player.playerClass.TcritDamage} critDamage");
                         MainUI.WriteInMainArea($"    {player.playerClass.Tstun} stun");
-                        MainUI.WriteInMainArea($"    {player.playerClass.TstunNegation} stunNegation");
+                        MainUI.WriteInMainArea($"    {player.playerClass.TstunNegation} stunNegationn\n");
+
+                        int levelsAbove1 = Math.Max(player.level - 1, 0);
+                        MainUI.WriteInMainArea("your level gives you a total of:");
+                        MainUI.WriteInMainArea($"    {player.playerClass.TmaxHP * levelsAbove1} maxHP");
+                        MainUI.WriteInMainArea($"    {player.playerClass.Tspeed * levelsAbove1} speed");
+                        MainUI.WriteInMainArea($"    {player.playerClass.Tarmor * levelsAbove1} armor");
+                        MainUI.WriteInMainArea($"    {player.playerClass.Tdodge * levelsAbove1} dodge");
+                        MainUI.WriteInMainArea($"    {player.playerClass.TdodgeNegation * levelsAbove1} dodgeNegation");
+                        MainUI.WriteInMainArea($"    {player.playerClass.Tcritchance * levelsAbove1} critChance");
+                        MainUI.WriteInMainArea($"    {player.playerClass.TcritDamage * levelsAbove1} critDamage");
+                        MainUI.WriteInMainArea($"    {player.playerClass.Tstun * levelsAbove1} stun");
+                        MainUI.WriteInMainArea($"    {player.playerClass.TstunNegation * levelsAbove1} stunNegation");
+                        
                         break;
                     case 2:
                         MainUI.WriteInMainArea($"your class is {player.playerClass.name}");
                         MainUI.WriteInMainArea($"{player.playerClass.description}");
-                        MainUI.WriteInMainArea("Check level for specific numbers for the class");
+                        MainUI.WriteInMainArea("Cause of your class you gain: (pr level)");
+                        MainUI.WriteInMainArea($"    {player.playerClass.TmaxHP} maxHP");
+                        MainUI.WriteInMainArea($"    {player.playerClass.Tspeed} speed");
+                        MainUI.WriteInMainArea($"    {player.playerClass.Tarmor} armor");
+                        MainUI.WriteInMainArea($"    {player.playerClass.Tdodge} dodge");
+                        MainUI.WriteInMainArea($"    {player.playerClass.TdodgeNegation} dodgeNegation");
+                        MainUI.WriteInMainArea($"    {player.playerClass.Tcritchance} critChance");
+                        MainUI.WriteInMainArea($"    {player.playerClass.TcritDamage} critDamage");
+                        MainUI.WriteInMainArea($"    {player.playerClass.Tstun} stun");
+                        MainUI.WriteInMainArea($"    {player.playerClass.TstunNegation} stunNegation");
                         break;
                     case 3:
                         MainUI.WriteInMainArea("Your hp stat is how much you can get hit before you die");
