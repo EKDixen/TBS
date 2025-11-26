@@ -238,10 +238,9 @@ namespace Game.Class
             MainUI.WriteInMainArea("Manage Moves : 2");
             MainUI.WriteInMainArea($"Do something at {player.currentLocation} : 3");
             MainUI.WriteInMainArea("Check stats : 4");
-            MainUI.WriteInMainArea("Look at main map : 5");
-            MainUI.WriteInMainArea("Read Encyclopedia : 6");
+            MainUI.WriteInMainArea("Read Encyclopedia or Map : 5");
 
-            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input) == false || input > 6 || input < 0)
+            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input) == false || input > 5 || input < 0)
             {
                 MainUI.WriteInMainArea("\nyou gotta type 0, 1, 2, 3, 4, or 5");
                 MainUI.WriteInMainArea("Press enter to continue...");
@@ -319,11 +318,31 @@ namespace Game.Class
                 }
             }
             else if (input == 4) ShowPlayerStats();
-            else if (input == 5) Minimap.DisplayMainmap(4,7,75);
-            else if (input == 6) Encyclopedia.EncyclopediaLogic();
+            else if (input == 5) 
+            {
+                MainUI.WriteInMainArea("");
+                MainUI.WriteInMainArea("Read map : 1");
+                MainUI.WriteInMainArea("Read Encyclopedia : 2");
+                MainUI.WriteInMainArea("Cancel : 0");
+                if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int inpu2t) == false || inpu2t > 2 || inpu2t < 0)
+                {
+                    MainUI.WriteInMainArea("\nyou gotta type 0, 1, 2, 3, 4, or 5");
+                    MainUI.WriteInMainArea("Press enter to continue...");
+                    Console.ReadLine();
+                    MainMenu();
+                    return;
+                }
+                else if (inpu2t == 1) Minimap.DisplayMainmap(4, 7, 75);
+                else if (inpu2t == 2) Encyclopedia.EncyclopediaLogic();
+                else if (inpu2t == 0) MainMenu();
 
-            // Save in background without blocking UI
-            _ = Task.Run(() => db.SavePlayer(player));
+
+
+            }
+
+
+                // Save in background without blocking UI
+                _ = Task.Run(() => db.SavePlayer(player));
         }
 
         public static void ShowPlayerStats()
