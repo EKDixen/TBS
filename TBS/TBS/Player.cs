@@ -156,4 +156,35 @@ public class Player : Combatant
     {
         return statTracker.ContainsKey(statName);
     }
+
+    public void UpdateActivity()
+    {
+        SetStat("lastActivity", (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds());
+    }
+
+    public bool IsIdle(int timeoutMinutes = 10)
+    {
+        if (!HasStat("lastActivity"))
+            return true;
+
+        long lastActivityTimestamp = GetStat("lastActivity");
+        long currentTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        long elapsedSeconds = currentTimestamp - lastActivityTimestamp;
+        
+        return elapsedSeconds >= (timeoutMinutes * 60);
+    }
+
+    public bool IsOnline()
+    {
+        return GetStat("isOnline") == 1;
+    }
+
+    public void SetOnline(bool online)
+    {
+        SetStat("isOnline", online ? 1 : 0);
+        if (online)
+        {
+            UpdateActivity();
+        }
+    }
 }

@@ -675,12 +675,16 @@ public class CombatManager
 
             if (actor == player)
             {
+                player.UpdateActivity();
+                
                 Thread.Sleep(300);
                 ui.RenderCombatScreen(player, combatants);
                 ui.WriteInMainArea(12, "");
                 ui.WriteInMainArea(13, "Press Enter to continue...");
                 ui.SetCursorInMainArea(22);
                 Console.ReadLine();
+                
+                player.UpdateActivity();
 
                 var moves = player.equippedAttacks.Where(a => a != null).ToList();
                 if (player.equippedWeapon != null && player.equippedWeapon.weaponAttack != null) moves.Add(player.equippedWeapon.weaponAttack);
@@ -741,7 +745,10 @@ public class CombatManager
                 while (true)
                 {
                     if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out choice) && choice >= 0 && choice <= totalOptions)
+                    {
+                        player.UpdateActivity();
                         break;
+                    }
                     ui.SetCursorInMainArea(lineNum + 1);
                     Console.Write("Invalid choice. Try again: ");
                 }
@@ -842,6 +849,7 @@ public class CombatManager
                                 Console.Write("Invalid. Try again: ");
                                 continue;
                             }
+                            player.UpdateActivity();
                             if (t == 0)
                             {
                                 TakeTurn(actor);

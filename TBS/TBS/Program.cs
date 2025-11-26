@@ -15,12 +15,26 @@ namespace Game.Class
         public static PlayerDatabase db = new PlayerDatabase();
         static JourneyManager journeyManager = new JourneyManager();
         static AttackManager atkManager;
+        static CancellationTokenSource? idleCheckCancellation = null;
 
         public static Player? pendingDeadPlayerUpdate = null;
         public static Enemy? pendingSpiritEnemy = null;
 
         public static void Main(string[] args)
         {
+            Console.CancelKeyPress += (sender, e) =>
+            {
+                e.Cancel = true;
+                Console.WriteLine("\nDisconnecting...");
+                DisconnectPlayer();
+                Environment.Exit(0);
+            };
+
+            AppDomain.CurrentDomain.ProcessExit += (sender, e) =>
+            {
+                DisconnectPlayer();
+            };
+
             // Check for updates before starting the game
             CheckForUpdates();
 
@@ -70,6 +84,8 @@ namespace Game.Class
 
                         Console.WriteLine($"Welcome back, {player.name} (Level {player.level})!");
                         Inventory.MakeInv();
+                        
+                        StartIdleTimeoutMonitoring();
                         break;
                     }
                     else
@@ -142,6 +158,8 @@ namespace Game.Class
                     Inventory.MakeInv();
                     Inventory.AddItem(ItemLibrary.rock, 1);
                     Console.WriteLine("New character created and saved!");
+                    
+                    StartIdleTimeoutMonitoring();
                     break;
                 }
                 else
@@ -236,6 +254,7 @@ namespace Game.Class
 
         public static void MainMenu()
         {
+            player?.UpdateActivity();
 
             MainUI.ShowMovesInPlayerPanel = false;
 
@@ -267,10 +286,15 @@ namespace Game.Class
                 MainUI.WriteInMainArea("\nyou gotta type 0, 1, 2, 3, 4, or 5");
                 MainUI.WriteInMainArea("Press enter to continue...");
                 Console.ReadLine();
+                player?.UpdateActivity();
                 MainMenu();
                 return;
             }
-            else if (input == 0) journeyManager.ChoseTravelDestination();
+            
+
+            player?.UpdateActivity();
+            
+            if (input == 0) journeyManager.ChoseTravelDestination();
             else if (input == 1)
             {
                 MainUI.ClearMainArea();
@@ -523,12 +547,15 @@ namespace Game.Class
         {
             try
             {
+                player.SetOnline(false);
                 db.MarkPlayerAsDead(player);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error saving dead player: {ex.Message}");
             }
+
+            idleCheckCancellation?.Cancel();
 
             Console.Clear();
             Console.CursorVisible = true;
@@ -590,6 +617,68 @@ namespace Game.Class
             Console.WriteLine("Press Enter to return to login...");
 
             Console.ReadLine();
+        }
+
+        private static void StartIdleTimeoutMonitoring()
+        {
+            idleCheckCancellation?.Cancel();
+            idleCheckCancellation = new CancellationTokenSource();
+
+            Task.Run(async () =>
+            {
+                try
+                {
+                    while (!idleCheckCancellation.Token.IsCancellationRequested)
+                    {
+                        await Task.Delay(30000, idleCheckCancellation.Token);
+
+                        if (player != null && player.IsIdle(10))
+                        {
+                            Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("╔════════════════════════════════════════╗");
+                            Console.WriteLine("║                                        ║");
+                            Console.WriteLine("║      AUTO-DISCONNECT: IDLE TIMEOUT     ║");
+                            Console.WriteLine("║                                        ║");
+                            Console.WriteLine("╚════════════════════════════════════════╝");
+                            Console.ResetColor();
+                            Console.WriteLine();
+                            Console.WriteLine("You have been disconnected due to 10 minutes of inactivity.");
+                            Console.WriteLine();
+                            Console.WriteLine("Press Enter to close the game...");
+
+                            player.SetOnline(false);
+                            await db.SavePlayer(player);
+
+                            try
+                            {
+                                Console.ReadLine();
+                            }
+                            catch { }
+
+                            Environment.Exit(0);
+                        }
+                    }
+                }
+                catch (TaskCanceledException)
+                {
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error in idle monitoring: {ex.Message}");
+                }
+            }, idleCheckCancellation.Token);
+        }
+
+        public static void DisconnectPlayer()
+        {
+            if (player != null)
+            {
+                player.SetOnline(false);
+                db.SavePlayer(player).GetAwaiter().GetResult();
+            }
+            
+            idleCheckCancellation?.Cancel();
         }
     }
 }

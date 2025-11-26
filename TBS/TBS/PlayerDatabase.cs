@@ -160,9 +160,32 @@ public class PlayerDatabase
                 resp.EnsureSuccessStatusCode();
                 string json = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                 var player = Serializer.FromJson<Player>(json);
-                if (player.password == password)
-                    return player;
-                return null;
+                
+                if (player.password != password)
+                    return null;
+
+                if (player.IsOnline())
+                {
+                    if (!player.IsIdle(10))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nThis account is already logged in!");
+                        Console.WriteLine("Please wait for the other session to disconnect or timeout.");
+                        Console.ResetColor();
+                        return null;
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("\nPrevious session timed out. Logging you in...");
+                        Console.ResetColor();
+                    }
+                }
+
+                player.SetOnline(true);
+                SavePlayer(player).GetAwaiter().GetResult();
+                
+                return player;
             }
             catch (Exception ex) when (ex is TaskCanceledException || ex is TimeoutException || ex is HttpRequestException || ex is IOException)
             {
@@ -179,9 +202,35 @@ public class PlayerDatabase
             resp2.EnsureSuccessStatusCode();
             string json = resp2.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             var player = Serializer.FromJson<Player>(json);
-            if (player.password == password)
-                return player;
-            return null;
+            
+            if (player.password != password)
+                return null;
+
+            // Check if player is already online
+            if (player.IsOnline())
+            {
+                // Check if they've been idle for more than 10 minutes
+                if (!player.IsIdle(10))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nThis account is already logged in!");
+                    Console.WriteLine("Please wait for the other session to disconnect or timeout.");
+                    Console.ResetColor();
+                    return null;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("\nPrevious session timed out. Logging you in...");
+                    Console.ResetColor();
+                }
+            }
+
+            // Set player as online and update activity
+            player.SetOnline(true);
+            SavePlayer(player).GetAwaiter().GetResult();
+            
+            return player;
         }
     }
 
