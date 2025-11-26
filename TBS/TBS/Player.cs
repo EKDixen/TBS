@@ -114,7 +114,7 @@ public class Player : Combatant
 
         foreach (Item item in ownedItems)
         {
-            if(item.type == ItemType.artifact)
+            if(item.type == ItemType.Artifact)
             {
                 Inventory.ApplyEffects(item, null);
             }

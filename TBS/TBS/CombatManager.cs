@@ -688,7 +688,7 @@ public class CombatManager
 
                 var moves = player.equippedAttacks.Where(a => a != null).ToList();
                 if (player.equippedWeapon != null && player.equippedWeapon.weaponAttack != null) moves.Add(player.equippedWeapon.weaponAttack);
-                var consumables = player.ownedItems.Where(i => i.type == ItemType.consumable && i.amount > 0).ToList();
+                var consumables = player.ownedItems.Where(i => i.type == ItemType.Consumable && i.amount > 0).ToList();
                 
                 if (moves.Count == 0 && consumables.Count == 0 && !canFlee)
                 {

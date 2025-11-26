@@ -128,13 +128,13 @@ public class Encyclopedia
             }
 
             MainUI.WriteInMainArea("");
-            MainUI.WriteInMainArea("nr     Name                   Value      Type      Weight");
+            MainUI.WriteInMainArea("nr     Name                   Value         Type          Weight");
             MainUI.WriteInMainArea("----------------------------------------------------------------");
             int i = 0;
             foreach (var item in pageItems)
             {
                 i++;
-                MainUI.WriteInMainArea($"{i,-7}{item.name,-25} {item.value,-5} {item.type,-20} {item.weight}");
+                MainUI.WriteInMainArea($"{i,-7}{item.name,-24} {item.value,-10} {item.type,-17} {item.weight}");
             }
             MainUI.WriteInMainArea("");
             MainUI.WriteInMainArea($"--- Page {currentPage} of {totalPages} ---");

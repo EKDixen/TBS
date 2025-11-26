@@ -162,8 +162,8 @@ public static class Inventory
             MainUI.WriteInMainArea("0 : cancel");
             MainUI.WriteInMainArea("1 : details");
             MainUI.WriteInMainArea("2 : drop");
-            if (selectedItem.type == ItemType.equipment) MainUI.WriteInMainArea("3 : Equip/Unequip");
-            if (selectedItem.type == ItemType.consumable && selectedItem.duration == 0) MainUI.WriteInMainArea("3 : consume");
+            if (selectedItem.type == ItemType.Equipment) MainUI.WriteInMainArea("3 : Equip/Unequip");
+            if (selectedItem.type == ItemType.Consumable && selectedItem.duration == 0) MainUI.WriteInMainArea("3 : consume");
             MainUI.WriteInMainArea("");
             MainUI.WriteInMainArea("type out the number next to the action you want to perform");
 
@@ -196,7 +196,7 @@ public static class Inventory
                 MainUI.WriteInMainArea($"\nyou drop the {selectedItem.name}");
                 DropItem(selectedItem,1);
             }
-            else if (ik == 3 && selectedItem.type == ItemType.equipment && selectedItem.equipmentType != EquipmentType.weapon)
+            else if (ik == 3 && selectedItem.type == ItemType.Equipment && selectedItem.equipmentType != EquipmentType.weapon)
             {
 
                 Item chosen = selectedItem;
@@ -228,7 +228,7 @@ public static class Inventory
 
 
             }
-            else if (ik == 3 && selectedItem.type == ItemType.equipment && selectedItem.equipmentType == EquipmentType.weapon)
+            else if (ik == 3 && selectedItem.type == ItemType.Equipment && selectedItem.equipmentType == EquipmentType.weapon)
             {
                 Item chosen = selectedItem;
 
@@ -246,7 +246,7 @@ public static class Inventory
                     MainUI.WriteInMainArea($"{chosen.name} equipped into Slot 5!");
                 }
             }
-            else if (ik == 3 && selectedItem.type == ItemType.consumable)
+            else if (ik == 3 && selectedItem.type == ItemType.Consumable)
             {
                 Consume(selectedItem);
             }
@@ -266,7 +266,7 @@ public static class Inventory
     public static void AddItem(Item templateItem, int tAmount)
     {
         // Materials are routed into the material bag instead of normal inventory
-        if (templateItem.type == ItemType.material)
+        if (templateItem.type == ItemType.Material)
         {
             AddMaterial(templateItem, tAmount);
             return;
@@ -274,22 +274,22 @@ public static class Inventory
 
         Item existingItem = player.ownedItems.FirstOrDefault(i => i.name == templateItem.name);
 
-        if (existingItem != null && templateItem.type != ItemType.equipment)
+        if (existingItem != null && templateItem.type != ItemType.Equipment)
         {
-            if (existingItem.type == ItemType.artifact)
+            if (existingItem.type == ItemType.Artifact)
             {
                 RemoveEffects(existingItem,tAmount); 
             }
 
             existingItem.amount += tAmount;
 
-            if (existingItem.type == ItemType.artifact)
+            if (existingItem.type == ItemType.Artifact)
             {
                 ApplyEffects(existingItem, null); 
             }
 
         }
-        else if(templateItem.type == ItemType.equipment)
+        else if(templateItem.type == ItemType.Equipment)
         {
             for (int i = 0; i < tAmount; i++)
             {
@@ -305,7 +305,7 @@ public static class Inventory
             player.ownedItems.Add(newItem);
             player.knownItems.Add(newItem);
 
-            if (newItem.type == ItemType.artifact)
+            if (newItem.type == ItemType.Artifact)
             {
                 ApplyEffects(newItem, null);
             }
@@ -409,7 +409,7 @@ public static class Inventory
         int bonus = 0;
         foreach (var item in p.ownedItems)
         {
-            if (item.type == ItemType.artifact && item.stats != null && item.stats.ContainsKey("materialCapacity"))
+            if (item.type == ItemType.Artifact && item.stats != null && item.stats.ContainsKey("materialCapacity"))
             {
                 bonus += item.stats["materialCapacity"] * item.amount;
             }
@@ -426,7 +426,7 @@ public static class Inventory
             UnequipItem(equippedSlot);
         }
 
-        if (Titem.type == ItemType.artifact)
+        if (Titem.type == ItemType.Artifact)
         {
             RemoveEffects(Titem,quantity);
         }
@@ -439,7 +439,7 @@ public static class Inventory
         {
             Titem.amount -= quantity;
 
-            if (Titem.type == ItemType.artifact)
+            if (Titem.type == ItemType.Artifact)
             {
                 ApplyEffects(Titem,null);
             }

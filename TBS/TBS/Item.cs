@@ -2,10 +2,10 @@
 using static System.Net.Mime.MediaTypeNames;
 public enum ItemType
 {
-    consumable,
-    equipment,
-    artifact,
-    material
+    Consumable,
+    Equipment,
+    Artifact,
+    Material
 }
 public enum EquipmentType
 {
@@ -71,7 +71,7 @@ public class Item
     public string GetDescription()
     {
         List<string> parts = new List<string>();
-        if (type == ItemType.equipment && equipmentType != EquipmentType.weapon || type == ItemType.artifact)
+        if (type == ItemType.Equipment && equipmentType != EquipmentType.weapon || type == ItemType.Artifact)
         {
             foreach (var stat in stats)
             {
@@ -97,14 +97,14 @@ public class Item
                 parts.Add(desc);
             }
         }
-        else if (type == ItemType.consumable)
+        else if (type == ItemType.Consumable)
         {
             foreach (var effect in effects)
             {
                 string desc = effect.type switch
                 {
                     "damage" => $"Deal {effect.value} damage to yourself {(effect.duration > 0 ? $" for {effect.duration} turns\n" : "\n")}",
-                    "heal" => $"Heal yourself for{effect.value} HP {(effect.duration > 0 ? $" for {effect.duration} turns\n" : "\n")}",
+                    "heal" => $"Heal yourself for {effect.value} HP {(effect.duration > 0 ? $" for {effect.duration} turns\n" : "\n")}",
                     "armor" => $"Increase your armor by {effect.value}{(effect.duration > 0 ? $" for {effect.duration} turns\n" : "\n")}",
                     "critChance" => $"Increase your crit chance by {effect.value}%{(effect.duration > 0 ? $" for {effect.duration} turns\n" : "\n")}",
                     "critDamage" => $"Increase your crit damage by {effect.value}%{(effect.duration > 0 ? $" for {effect.duration} turns\n" : "\n")}",
@@ -119,7 +119,7 @@ public class Item
                 parts.Add(desc);
             }
         }
-        else if (type == ItemType.equipment && equipmentType == EquipmentType.weapon) 
+        else if (type == ItemType.Equipment && equipmentType == EquipmentType.weapon) 
         {
             parts.Add($"gives you the move {weaponAttack.name} as long as its equipped\n");
             parts.Add($"{weaponAttack.GetDescription()}\n");
