@@ -417,8 +417,8 @@ namespace Game.Class
             {
                 if (player.exp >= player.level * 100)
                 {
+                    player.exp -= player.level * 100;
                     player.level++;
-                    player.exp = 0;
 
                     // Recalculate all derived stats based on current class & level
                     player.RecalculateStats();
