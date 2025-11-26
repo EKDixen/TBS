@@ -275,6 +275,14 @@
         detailsLore = "Dark greaves that allow for perfect stalking of the pray\n no matter how agile it may be",
         
     };
+
+    public static Item MoonleafGreaves = new Item("Moonleaf Greaves", "+20% dodge, +40% dodgeNegation", 40, 2, ItemType.equipment)
+    {
+        stats = { ["dodge"] = 20, ["dodgeNegation"] = 40 },
+        equipmentType = EquipmentType.legs,
+        detailsLore = "Light greaves that allow for very swift movement"
+    };
+
     public static Item iceSkates = new Item("Ice Skates", "+5 speed, -2 armor ", 250, 4, ItemType.equipment)
     {
         stats = { ["speed"] = 5, ["armor"] = -2 },
@@ -343,6 +351,37 @@
             new AttackEffect("speed", 10, 2, "self")
         },
         detailsLore = "speed potion, drink it to become faster for a bit"
+    };
+
+    public static Item ElixirOfEvasion = new Item("Elixir of Evasion", "+30% Dodge", 8, 1, ItemType.consumable)
+    {
+        duration = 3,
+        effects = new List<AttackEffect>()
+        {
+            new AttackEffect("dodge", 30, 3, "self")
+        },
+        detailsLore = "A vial of shimmering brew, \nDrink it to become a blur for a short while."
+    };
+
+    public static Item LeafsongSolution = new Item("Leafsong Solution", "+50% DodgeNegation", 11, 1, ItemType.consumable)
+    {
+        duration = 2,
+        effects = new List<AttackEffect>()
+        {
+            new AttackEffect("dodgeNegation", 50, 2, "self")
+        },
+        detailsLore = "Solution of crushed willow bark\n sharpens the mind against swift foes"
+    };
+
+    public static Item WillowTea = new Item("Willow Tea", "+20 HP, +10% Dodge", 4, 1, ItemType.consumable)
+    {
+        duration = 1,
+        effects = new List<AttackEffect>()
+        {
+            new AttackEffect("heal", 20, 0, "self"),
+            new AttackEffect("dodge", 10, 1, "self")
+        },
+        detailsLore = "A warm brew that steadies the nerves and loosens the limbs"
     };
 
     public static Item CheapAle = new Item("Cheap Ale", "+15 HP, -15% Dodge", 1, 2, ItemType.consumable)

@@ -614,6 +614,16 @@ new Dictionary<Encounter, int>
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
 
+        },
+        new SubLocation("Store", SubLocationType.shop)
+        {
+            shopItems = new List<Item>
+            {
+                ItemLibrary.MoonleafGreaves,
+                ItemLibrary.ElixirOfEvasion,
+                ItemLibrary.LeafsongSolution,
+                ItemLibrary.WillowTea
+            }
         }
     },
     new Dictionary<Encounter, int>
