@@ -211,6 +211,20 @@ public static class LocationLibrary
         { EncounterLibrary.WeakRopeBridge, 5}
     }, "Greenwood Territories");
 
+    public static Location Fernshade = new Location("Fernshade", new System.Numerics.Vector2(3, 1), 0, new List<SubLocation>
+    {
+        new SubLocation("Graveyard", SubLocationType.graveyard)
+        {
+        },
+        new SubLocation("Wilderness",SubLocationType.wilderness)
+        {
+
+        }
+    },
+    new Dictionary<Encounter, int>
+    {
+        { EncounterLibrary.FoundCoins, 100}
+    }, "Greenwood Territories");
     #endregion
 
     #region "Fallen Kingdom"
@@ -400,6 +414,22 @@ new Dictionary<Encounter, int>
         { EncounterLibrary.IceMageEncounter, 20},
         { EncounterLibrary.SnowWraithAttack, 10}
     }, null);
+    public static Location SvalbardWastes = new Location("Svalbard Wastes", new System.Numerics.Vector2(3, 0), 0, new List<SubLocation>
+    {
+        new SubLocation("Graveyard", SubLocationType.graveyard)
+        {
+        },
+        new SubLocation("Wilderness",SubLocationType.wilderness)
+        {
+
+        }
+    },
+    new Dictionary<Encounter, int>
+    {
+        { EncounterLibrary.DireWolfPack, 50},
+        { EncounterLibrary.GoblinPack, 20}
+    }, null);
+
     #endregion
 
     #region"Frostborn Dominion"
@@ -544,11 +574,93 @@ new Dictionary<Encounter, int>
     }, "Frostborn Dominion");
     #endregion
 
+    #region"Rootbound Empire"
+    public static Location SylvanVeil = new Location("Sylvan Veil", new System.Numerics.Vector2(2, 2), 0, new List<SubLocation>
+    {
+        new SubLocation("Graveyard", SubLocationType.graveyard)
+        {
+        },
+        new SubLocation("Wilderness",SubLocationType.wilderness)
+        {
+
+        }
+    },
+        new Dictionary<Encounter, int>
+        {
+        { EncounterLibrary.FoundCoins, 100}
+        }, "Rootbound Empire");
+
+    public static Location SerenityPass = new Location("Serenity Pass", new System.Numerics.Vector2(3, 2), 0, new List<SubLocation>
+    {
+        new SubLocation("Graveyard", SubLocationType.graveyard)
+        {
+        },
+        new SubLocation("Wilderness",SubLocationType.wilderness)
+        {
+
+        }
+    },
+    new Dictionary<Encounter, int>
+    {
+        { EncounterLibrary.FoundCoins, 100}
+    }, "Rootbound Empire");
+
+    public static Location FaelandGlen = new Location("Faeland Glen", new System.Numerics.Vector2(4, 2), 0, new List<SubLocation>
+    {
+        new SubLocation("Graveyard", SubLocationType.graveyard)
+        {
+        },
+        new SubLocation("Wilderness",SubLocationType.wilderness)
+        {
+
+        }
+    },
+    new Dictionary<Encounter, int>
+    {
+        { EncounterLibrary.FoundCoins, 100}
+    }, "Rootbound Empire");
+
+    public static Location WillowWeave = new Location("WillowWeave", new System.Numerics.Vector2(4, 0), 0, new List<SubLocation>
+    {
+        new SubLocation("Graveyard", SubLocationType.graveyard)
+        {
+        },
+        new SubLocation("Wilderness",SubLocationType.wilderness)
+        {
+
+        }
+    },
+    new Dictionary<Encounter, int>
+    {
+        { EncounterLibrary.FoundCoins, 100}
+    }, "Rootbound Empire");
+
+    public static Location ElderwoodVigil = new Location("Elderwood Vigil", new System.Numerics.Vector2(4, 1), 0, new List<SubLocation>
+    {
+        new SubLocation("Graveyard", SubLocationType.graveyard)
+        {
+        },
+        new SubLocation("Wilderness",SubLocationType.wilderness)
+        {
+
+        }
+    },
+    new Dictionary<Encounter, int>
+    {
+        { EncounterLibrary.FoundCoins, 100}
+    }, "Rootbound Empire");
+
+
+    #endregion
+
     public static List<Location> locations = new List<Location>
     {
         Maplecross, Greenhollow, Ironpeak, Mistport, MossGate, Nightreach, SilverfallRuins,
         WhisperWood, SaltmarshShore, ShattershoreCliffs, WitheredRuins, FrozenWastes,
-        TundraMarch, SnowfallRidge, EternalIcefall, FrostfangCrag, Everwinter, IceboundPort
+        TundraMarch, SnowfallRidge, EternalIcefall, FrostfangCrag, Everwinter, IceboundPort,
+
+        //new---
+        SylvanVeil, SerenityPass, FaelandGlen, ElderwoodVigil, SvalbardWastes, WillowWeave,Fernshade
     };
 
     public static Dictionary<string, Location> locationMap = locations.ToDictionary(l => l.name);
