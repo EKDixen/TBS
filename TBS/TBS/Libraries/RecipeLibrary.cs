@@ -29,9 +29,10 @@ public class Recipe
     public int MoneyCost { get; set; } = 0;
     public string AreaTag { get; set; } // e.g. "Coastal Alliance", "Frostborn Dominion"
 }
-#region Coastal Alliance Recipes
+
 public static class RecipeLibrary
 {
+    #region Coastal Alliance Recipes
     public static readonly Recipe StarterIronHelm = new Recipe
     {
         Id = "starter_iron_helm",
@@ -76,6 +77,21 @@ public static class RecipeLibrary
             new MaterialCost(ItemLibrary.rock, 4)
         },
         MoneyCost = 20,
+        AreaTag = "Coastal Alliance"
+    };
+    public static readonly Recipe FishSword = new Recipe
+    {
+        Id = "fish_sword",
+        Name = "Fish Sword",
+        Station = CraftingStationType.Forge,
+        OutputItem = ItemLibrary.FishSword,
+        OutputQuantity = 1,
+        Materials = new List<MaterialCost>
+        {
+            new MaterialCost(ItemLibrary.sword, 1),
+            new MaterialCost(ItemLibrary.fish, 15)
+        },
+        MoneyCost = 5,
         AreaTag = "Coastal Alliance"
     };
     #endregion
@@ -212,6 +228,7 @@ public static class RecipeLibrary
         MoneyCost = 100,
         AreaTag = "Frostborn Dominion"
     };
+    #endregion
     public static readonly List<Recipe> AllRecipes = new List<Recipe>
     {
         StarterIronHelm,
@@ -224,7 +241,8 @@ public static class RecipeLibrary
         IronWarhammerRecipe,
         GlacierReaverRecipe,
         WinterfangGauntletRecipe,
-        SpineBreakerRecipe
+        SpineBreakerRecipe,
+        FishSword
     };
 
     public static IEnumerable<Recipe> GetRecipesFor(string areaTag, CraftingStationType station)
@@ -235,5 +253,5 @@ public static class RecipeLibrary
                 yield return r;
         }
     }
-    #endregion
+    
 }

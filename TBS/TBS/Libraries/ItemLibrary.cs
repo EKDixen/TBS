@@ -121,8 +121,15 @@
         detailsLore = "A massive iron hammer, Hits with incredible force and \nshattering enemy defenses.",
         equipmentType = EquipmentType.weapon,
         weaponAttack = AttackLibrary.HeavySlam
-    }; 
-    
+    };
+
+    public static Item FishSword = new Item("Fish Sword", "Heavy Slam", 15, 6, ItemType.equipment)
+    {
+        detailsLore = "a sword coated in fish intestines",
+        equipmentType = EquipmentType.weapon,
+        weaponAttack = AttackLibrary.FishCut
+    };
+
     public static Item GlacierReaver = new Item("Glacier Reaver", "Glacial Sweep", 150, 25, ItemType.equipment)
     {
         detailsLore = "A massive sharp blade carved from a single big shard of ice",
