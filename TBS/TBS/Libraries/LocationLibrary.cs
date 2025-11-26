@@ -607,7 +607,12 @@ new Dictionary<Encounter, int>
     },
         new Dictionary<Encounter, int>
         {
-        { EncounterLibrary.FoundCoins, 100}
+        { EncounterLibrary.FoundCoins, 30},
+        { EncounterLibrary.ElvenScout, 20},
+        { EncounterLibrary.ElvenPatrol, 20},
+        { EncounterLibrary.LynxAmbush, 20},
+        { EncounterLibrary.ElfWarband, 20},
+        { EncounterLibrary.HunterAndBeast, 20}
         }, "Rootbound Empire");
 
     public static Location SerenityPass = new Location("Serenity Pass", new System.Numerics.Vector2(3, 2), 0, new List<SubLocation>
@@ -633,7 +638,13 @@ new Dictionary<Encounter, int>
     },
     new Dictionary<Encounter, int>
     {
-        { EncounterLibrary.FoundCoins, 100}
+        { EncounterLibrary.FoundCoins, 30},
+        { EncounterLibrary.ElvenScout, 20},
+        { EncounterLibrary.ElvenPatrol, 20},
+        { EncounterLibrary.LynxAmbush, 20},
+        { EncounterLibrary.ElfWarband, 20},
+        { EncounterLibrary.HunterAndBeast, 20},
+        { EncounterLibrary.AbandonedBackpack, 5}
     }, "Rootbound Empire");
 
     public static Location FaelandGlen = new Location("Faeland Glen", new System.Numerics.Vector2(4, 2), 0, new List<SubLocation>
@@ -652,7 +663,12 @@ new Dictionary<Encounter, int>
     },
     new Dictionary<Encounter, int>
     {
-        { EncounterLibrary.FoundCoins, 100}
+        { EncounterLibrary.FoundCoins, 30},
+        { EncounterLibrary.ElvenScout, 20},
+        { EncounterLibrary.ElvenPatrol, 20},
+        { EncounterLibrary.LynxAmbush, 20},
+        { EncounterLibrary.ElfWarband, 20},
+        { EncounterLibrary.HunterAndBeast, 20}
     }, "Rootbound Empire");
 
     public static Location WillowWeave = new Location("WillowWeave", new System.Numerics.Vector2(4, 0), 0, new List<SubLocation>
@@ -664,7 +680,7 @@ new Dictionary<Encounter, int>
         {
 
         },
-        new SubLocation("Willowwright's Nook", SubLocationType.shop)
+        new SubLocation("Shop", SubLocationType.shop)
         {
             shopItems = new List<Item>
             {
@@ -678,7 +694,12 @@ new Dictionary<Encounter, int>
     },
     new Dictionary<Encounter, int>
     {
-        { EncounterLibrary.FoundCoins, 100}
+        { EncounterLibrary.FoundCoins, 30},
+        { EncounterLibrary.ElvenScout, 20},
+        { EncounterLibrary.ElvenPatrol, 20},
+        { EncounterLibrary.LynxAmbush, 20},
+        { EncounterLibrary.ElfWarband, 20},
+        { EncounterLibrary.HunterAndBeast, 20}
     }, "Rootbound Empire");
 
     public static Location ElderwoodVigil = new Location("Elderwood Vigil", new System.Numerics.Vector2(4, 1), 0, new List<SubLocation>
@@ -689,12 +710,21 @@ new Dictionary<Encounter, int>
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
 
+        },
+        new SubLocation("Blacksmith", SubLocationType.blacksmith)
+        {
+
         }
 
     },
     new Dictionary<Encounter, int>
     {
-        { EncounterLibrary.FoundCoins, 100}
+        { EncounterLibrary.FoundCoins, 30},
+        { EncounterLibrary.ElvenScout, 20},
+        { EncounterLibrary.ElvenPatrol, 20},
+        { EncounterLibrary.LynxAmbush, 20},
+        { EncounterLibrary.ElfWarband, 20},
+        { EncounterLibrary.HunterAndBeast, 20}
     }, "Rootbound Empire");
 
 

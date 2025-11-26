@@ -61,6 +61,22 @@
     {
         detailsLore = "Radiates cold. Used in advanced frost-based crafting.",
     };
+
+    public static Item Shadowleaf = new Item("Shadowleaf", "A dark leaf that blends into shadows.", 15, 0, ItemType.material)
+    {
+        detailsLore = "",
+    };
+
+    public static Item ShadowClaw = new Item("Shadow Claw", "a razor sharp dark claw.", 18, 0, ItemType.material)
+    {
+        detailsLore = "",
+    };
+
+    public static Item MoonstoneShard = new Item("Moonstone Shard", "A crystal humming with lunar energy.", 25, 0, ItemType.material)
+    {
+        detailsLore = "",
+    };
+
     #endregion
 
     #region craftable equipment (not sold in stores)

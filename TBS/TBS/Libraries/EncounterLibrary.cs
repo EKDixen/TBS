@@ -385,6 +385,55 @@ public static class EncounterLibrary
 );
     #endregion
 
+    #region Combat Encounters - Rootbound Empire
+
+    public static Encounter ElvenScout = new Encounter(
+        "ElvenScout",
+        true,
+        "An Elf Hunter steps out from the dense foliage, nocking an arrow.",
+        new List<Enemy> { EnemyLibrary.ElfHunter },
+        null,
+        EncounterType.Combat
+    );
+
+    public static Encounter LynxAmbush = new Encounter(
+        "LynxAmbush",
+        true,
+        "A pair of Shadow Lynx drop silently from the branches above!",
+        new List<Enemy> { EnemyLibrary.ShadowLynx, EnemyLibrary.ShadowLynx },
+        null,
+        EncounterType.Combat
+    );
+
+    public static Encounter ElvenPatrol = new Encounter(
+        "ElvenPatrol",
+        true,
+        "An elven patrol spots you! \nA hunter draws their bow as a mystic begins to chant.",
+        new List<Enemy> { EnemyLibrary.ElfHunter, EnemyLibrary.ElfMystic },
+        null,
+        EncounterType.Combat
+    );
+
+    public static Encounter HunterAndBeast = new Encounter(
+        "HunterAndBeast",
+        true,
+        "You hear a low growl as a Shadow Lynx emerges, \nan Elf Hunter right behind it.",
+        new List<Enemy> { EnemyLibrary.ElfHunter, EnemyLibrary.ShadowLynx },
+        null,
+        EncounterType.Combat
+    );
+
+    public static Encounter ElfWarband = new Encounter(
+        "ElfWarband",
+        true,
+        "A full elven warband blocks your path, supported by their beast!",
+        new List<Enemy> { EnemyLibrary.ElfHunter, EnemyLibrary.ElfMystic, EnemyLibrary.ShadowLynx, EnemyLibrary.ElfHunter },
+        null,
+        EncounterType.Combat
+    );
+
+    #endregion
+
     #region Event Encounters
     public static Encounter StrangeMushrooms = new Encounter(
         "StrangeMushrooms",

@@ -280,4 +280,59 @@ public static class EnemyLibrary
     };
     #endregion
 
+    #region Rootbound Empire
+    public static Enemy ElfHunter = new Enemy("Elf Hunter", 5, 30, 35, 11, 4, 20, 70, 20, 140, 10, 5, 14)
+    {
+        attacks = new List<Attack>
+        {
+            AttackLibrary.WillowShot 
+        },
+        attackWeights = new Dictionary<Attack, int>
+        {
+            { AttackLibrary.WillowShot, 100 }
+        },
+        materialDrops = new List<MaterialDrop>
+        {
+            new MaterialDrop(ItemLibrary.Shadowleaf, 1, 2, 0.4f)
+        }
+    };
+
+    public static Enemy ShadowLynx = new Enemy("Shadow Lynx", 5, 40, 45, 14, 6, 6, 10, 30, 150, 0, 10, 10)
+    {
+        attacks = new List<Attack>
+        {
+            AttackLibrary.Bite,
+            AttackLibrary.Slash
+        },
+        attackWeights = new Dictionary<Attack, int>
+        {
+            { AttackLibrary.Bite, 60 },
+            { AttackLibrary.Slash, 40 }
+        },
+        materialDrops = new List<MaterialDrop>
+        {
+            new MaterialDrop(ItemLibrary.ShadowClaw, 1, 1, 0.25f)
+        }
+    };
+
+    public static Enemy ElfMystic = new Enemy("Elf Mystic", 4, 30, 30, 17, 3, 5, 50, 15, 100, 20, 0, 18)
+    {
+        attacks = new List<Attack>
+        {
+            AttackLibrary.GroupHeal,
+            AttackLibrary.Slash
+        },
+        attackWeights = new Dictionary<Attack, int>
+        {
+            { AttackLibrary.GroupHeal, 70 },
+            { AttackLibrary.EtherealTouch, 30 }
+        },
+        materialDrops = new List<MaterialDrop>
+        {
+            new MaterialDrop(ItemLibrary.MoonstoneShard, 1, 1, 0.3f)
+        }
+    };
+
+    #endregion
+
 }
