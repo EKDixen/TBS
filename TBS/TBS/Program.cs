@@ -234,14 +234,14 @@ namespace Game.Class
             MainUI.WriteInMainArea("What do you wish to do? (type the number next to it)");
             MainUI.WriteInMainArea("");
             MainUI.WriteInMainArea("Go somewhere : 0");
-            MainUI.WriteInMainArea("Check Inventory : 1");
-            MainUI.WriteInMainArea("Check Moves : 2");
+            MainUI.WriteInMainArea("Open Inventory : 1");
+            MainUI.WriteInMainArea("Manage Moves : 2");
             MainUI.WriteInMainArea($"Do something at {player.currentLocation} : 3");
             MainUI.WriteInMainArea("Check stats : 4");
-            MainUI.WriteInMainArea("Check main map : 5");
-            //MainUI.WriteInMainArea("Check Encyclopedia : 6");
+            MainUI.WriteInMainArea("Look at main map : 5");
+            MainUI.WriteInMainArea("Read Encyclopedia : 6");
 
-            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input) == false || input > 5 || input < 0)
+            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input) == false || input > 6 || input < 0)
             {
                 MainUI.WriteInMainArea("\nyou gotta type 0, 1, 2, 3, 4, or 5");
                 MainUI.WriteInMainArea("Press enter to continue...");
@@ -320,6 +320,7 @@ namespace Game.Class
             }
             else if (input == 4) ShowPlayerStats();
             else if (input == 5) Minimap.DisplayMainmap(4,7,75);
+            else if (input == 6) Encyclopedia.EncyclopediaLogic();
 
             // Save in background without blocking UI
             _ = Task.Run(() => db.SavePlayer(player));

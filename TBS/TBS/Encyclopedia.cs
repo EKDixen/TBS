@@ -1,21 +1,16 @@
 ﻿using Game.Class;
 using System.ComponentModel.Design;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 
 
-public static class Encyclopedia
-
+public class Encyclopedia
 {
-    private static Player player;
-
+    private static int itemsearch = 0;
     private static int currentPage = 1;
     private static int itemsPerPage = 9;
     private static string searchTerm = "";
-    private static string itemtype = "";
     private static List<Item> filteredItems; // This will hold the items we are currently viewing
-
-    static float exponent = 1.5f;
-    static float scale = 0.1f;
 
     //  public static void Add
 
@@ -27,11 +22,11 @@ public static class Encyclopedia
             MainUI.WriteInMainArea("Welcome to the Encyclopedia!");
             MainUI.WriteInMainArea($"What would you like to view?\n");
             MainUI.WriteInMainArea("1 : View items");
-            MainUI.WriteInMainArea("2 : View Enemies");
-            MainUI.WriteInMainArea("3 : View Locations");
+           // MainUI.WriteInMainArea("2 : View Enemies");
+           // MainUI.WriteInMainArea("3 : View Locations");
             MainUI.WriteInMainArea("0 : Leave");
 
-            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input) == false || input > 3 || input < 0)
+            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input) == false || input > /*3*/ 1 || input < 0)
             {
                 MainUI.WriteInMainArea(" \nyou gotta type a number from 0-4");
                 Thread.Sleep(1000);
@@ -67,10 +62,10 @@ public static class Encyclopedia
             MainUI.ClearMainArea();
             MainUI.WriteInMainArea("Welcome to the Encyclopedia!");
             MainUI.WriteInMainArea($"What type of item would you like to view?\n");
-            MainUI.WriteInMainArea("1 : View Materials");
+            MainUI.WriteInMainArea("1 : View Consumables");
             MainUI.WriteInMainArea("2 : View Equipment");
             MainUI.WriteInMainArea("3 : View Artifacts");
-            MainUI.WriteInMainArea("4 : View Consumables");
+            MainUI.WriteInMainArea("4 : View Materials");
             MainUI.WriteInMainArea("0 : Back");
 
             if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input) == false || input > 4 || input < 0)
@@ -82,10 +77,10 @@ public static class Encyclopedia
                 return;
             }
             else if (input == 0) EncyclopediaLogic();
-            else if (input == 1) itemtype = "material";
-            else if (input == 2) itemtype = "equipment";
-            else if (input == 3) itemtype = "artifact";
-            else if (input == 4) itemtype = "consumable";
+            else if (input == 1) itemsearch = 0;
+            else if (input == 2) itemsearch = 1;
+            else if (input == 3) itemsearch = 2;
+            else if (input == 4) itemsearch = 3;
             break;
         }
 
@@ -94,19 +89,19 @@ public static class Encyclopedia
             // Update the filtered list based on the search term
             if (string.IsNullOrEmpty(searchTerm))
             {
-                filteredItems = Program.player.knownItems
-                .Where(item =>   item.type.Equals(ItemType.material))
+                filteredItems = Program.player.knownItems.Where(item => item.type.Equals((ItemType)itemsearch))
                 .ToList();       // full list
 
             }
             else
             {
+
                 filteredItems = Program.player.knownItems
                     .Where(item => item.name.ToLower().Contains(searchTerm.ToLower()) ||
                                    item.description.ToLower().Contains(searchTerm.ToLower()) ||
                                    item.GetDescription().ToLower().Contains(searchTerm.ToLower()) ||
-                                   item.type.Equals(itemtype))
-                                  
+                                   item.type.Equals((ItemType)itemsearch))
+
                     .ToList();
             }
 
@@ -146,7 +141,6 @@ public static class Encyclopedia
             MainUI.WriteInMainArea("");
             MainUI.WriteInMainArea("Type item number (1-9) to interact, or:");
             MainUI.WriteInMainArea("[N] Next Page  [P] Prev Page  [S] Search  [0] Back to Main Menu");
-            MainUI.WriteInMainArea(itemtype);
 
 
             string inputString = Console.ReadKey(true).KeyChar.ToString().ToLower() ?? "";
@@ -209,7 +203,7 @@ public static class Encyclopedia
             {
                 MainUI.ClearMainArea();
                 MainUI.WriteInMainArea($"you've picked {selectedItem.name}\n");
-                MainUI.WriteInMainArea($"{selectedItem.GetDescription()}\n");
+                MainUI.WriteInMainArea($"\n{selectedItem.GetDescription()}\n");
 
                 MainUI.WriteInMainArea($"Press Enter to continue...");
                 Console.ReadLine();
