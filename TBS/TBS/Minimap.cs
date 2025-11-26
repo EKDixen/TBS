@@ -171,13 +171,16 @@ public static class Minimap
 
     }
     static int viewOffsetX = 0;  
-    static int viewOffsetY = 0;  
+    static int viewOffsetY = 0;
+    static int maxViewOffsetX = 6;
+    static int maxViewOffsetY = 5;
     public static void DisplayMainmap(int startX, int startY, int maxContentWidth)
     {
         while (true)
         {
             MainUI.ClearMainArea();
-
+            MainUI.WriteInMainArea("Press enter to continue...");
+            MainUI.WriteInMainArea("W A S D or the arrow keys, to move");
             int rows = 9;
             int cols = 5;
 
@@ -319,44 +322,43 @@ public static class Minimap
             switch (keyInfo.Key)
             {
                 case ConsoleKey.LeftArrow:
-                    viewOffsetX--;
+                    if(viewOffsetX > -maxViewOffsetX)viewOffsetX--;
                     break;
 
                 case ConsoleKey.RightArrow:
-                    viewOffsetX++;
+                    if (viewOffsetX < maxViewOffsetX) viewOffsetX++;
                     break;
 
                 case ConsoleKey.UpArrow:
-                    viewOffsetY++;
+                    if (viewOffsetY < maxViewOffsetY) viewOffsetY++;
                     break;
 
                 case ConsoleKey.DownArrow:
-                    viewOffsetY--;
+                    if (viewOffsetY > -maxViewOffsetY) viewOffsetY--;
                     break;
 
                 case ConsoleKey.A:
-                    viewOffsetX--;
+                    if (viewOffsetX > -maxViewOffsetX) viewOffsetX--;
                     break;
 
                 case ConsoleKey.D:
-                    viewOffsetX++;
+                    if (viewOffsetX < maxViewOffsetX) viewOffsetX++;
                     break;
 
                 case ConsoleKey.W:
-                    viewOffsetY++;
+                    if (viewOffsetY < maxViewOffsetY) viewOffsetY++;
                     break;
 
                 case ConsoleKey.S:
-                    viewOffsetY--;
+                    if (viewOffsetY > -maxViewOffsetY) viewOffsetY--;
                     break;
-
 
                 case ConsoleKey.Enter:
                     Program.MainMenu();
                     return;
                     
             }
-            Thread.Sleep(200);
+            
             continue;
         }
     }

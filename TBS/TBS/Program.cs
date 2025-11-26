@@ -6,7 +6,7 @@ namespace Game.Class
 {
     public class Program
     {
-        private const string CURRENT_VERSION = "1.0.25"; // Update this with each release
+        private const string CURRENT_VERSION = "1.0.26"; // Update this with each release
         private const string GITHUB_API_URL = "https://api.github.com/repos/EKDixen/TBS/releases/latest";
 
         static bool stopMultibleLoad = false;
@@ -318,7 +318,7 @@ namespace Game.Class
                 }
             }
             else if (input == 4) ShowPlayerStats();
-            else if (input == 5) Minimap.DisplayMainmap(5,7,75);
+            else if (input == 5) Minimap.DisplayMainmap(4,7,75);
 
             // Save in background without blocking UI
             _ = Task.Run(() => db.SavePlayer(player));
