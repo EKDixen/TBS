@@ -219,11 +219,27 @@ public static class LocationLibrary
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
 
-        }
+        },
+        new SubLocation("Store", SubLocationType.shop)
+        {
+            shopItems = new List<Item>
+            {
+                (ItemLibrary.WildBerries),
+                (ItemLibrary.bigHealthPotion)
+            }
+        },
     },
     new Dictionary<Encounter, int>
     {
-        { EncounterLibrary.FoundCoins, 100}
+        { EncounterLibrary.GoblinPack, 50},
+        { EncounterLibrary.StrangeMushrooms, 30},
+        { EncounterLibrary.FoundCoins, 20 },
+        { EncounterLibrary.FallenIntoTrap, 40},
+        { EncounterLibrary.FoundTreasure, 10},
+        { EncounterLibrary.RoadGambling, 10},
+        { EncounterLibrary.DireWolfPack, 20},
+        { EncounterLibrary.AbandonedBackpack, 5},
+        { EncounterLibrary.WeakRopeBridge, 10}
     }, "Greenwood Territories");
     #endregion
 
