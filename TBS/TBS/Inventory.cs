@@ -266,7 +266,7 @@ public static class Inventory
     public static void AddItem(Item templateItem, int tAmount)
     {
         // Materials are routed into the material bag instead of normal inventory
-        if (templateItem.type == ItemType.Material)
+        if (templateItem.type == ItemType.material)
         {
             AddMaterial(templateItem, tAmount);
             return;
@@ -276,14 +276,14 @@ public static class Inventory
 
         if (existingItem != null && templateItem.type != ItemType.equipment)
         {
-            if (existingItem.type == ItemType.Artifact)
+            if (existingItem.type == ItemType.artifact)
             {
                 RemoveEffects(existingItem,tAmount); 
             }
 
             existingItem.amount += tAmount;
 
-            if (existingItem.type == ItemType.Artifact)
+            if (existingItem.type == ItemType.artifact)
             {
                 ApplyEffects(existingItem, null); 
             }
@@ -305,7 +305,7 @@ public static class Inventory
             player.ownedItems.Add(newItem);
             player.knownItems.Add(newItem);
 
-            if (newItem.type == ItemType.Artifact)
+            if (newItem.type == ItemType.artifact)
             {
                 ApplyEffects(newItem, null);
             }
@@ -409,7 +409,7 @@ public static class Inventory
         int bonus = 0;
         foreach (var item in p.ownedItems)
         {
-            if (item.type == ItemType.Artifact && item.stats != null && item.stats.ContainsKey("materialCapacity"))
+            if (item.type == ItemType.artifact && item.stats != null && item.stats.ContainsKey("materialCapacity"))
             {
                 bonus += item.stats["materialCapacity"] * item.amount;
             }
@@ -426,7 +426,7 @@ public static class Inventory
             UnequipItem(equippedSlot);
         }
 
-        if (Titem.type == ItemType.Artifact)
+        if (Titem.type == ItemType.artifact)
         {
             RemoveEffects(Titem,quantity);
         }
@@ -439,7 +439,7 @@ public static class Inventory
         {
             Titem.amount -= quantity;
 
-            if (Titem.type == ItemType.Artifact)
+            if (Titem.type == ItemType.artifact)
             {
                 ApplyEffects(Titem,null);
             }

@@ -1073,7 +1073,7 @@ public static class AdminTools
                     itemToAdd.amount = 1;
                 }
                 
-                if (itemToAdd.type == ItemType.Material)
+                if (itemToAdd.type == ItemType.material)
                 {
                     player.materialItems.Add(itemToAdd);
                 }

@@ -24,40 +24,40 @@
 
 
     #region material
-    public static Item rock = new Item("Rock", "A common crafting material.", 3, 0, ItemType.Material)
+    public static Item rock = new Item("Rock", "A common crafting material.", 3, 0, ItemType.material)
     {
         detailsLore = "Its just a small pebble. Useful for basic crafting, or throwing at kings.",
     };
-    public static Item iron = new Item("Iron", "Raw iron ore used for basic forging.", 3, 0, ItemType.Material)
+    public static Item iron = new Item("Iron", "Raw iron ore used for basic forging.", 3, 0, ItemType.material)
     {
         detailsLore = "Some nice iron ore. Useful for crafting weapons and armor.",
     };
-    public static Item fish = new Item("Fish", "A fresh fish, sometimes used in recipes.", 1, 0, ItemType.Material)
+    public static Item fish = new Item("Fish", "A fresh fish, sometimes used in recipes.", 1, 0, ItemType.material)
     {
         detailsLore = "It's a fish. You like fish.",
     };
 
     // Monster-specific materials
-    public static Item bone = new Item("Bone", "A piece of bone", 5, 2, ItemType.Material)
+    public static Item bone = new Item("Bone", "A piece of bone", 5, 2, ItemType.material)
     {
         detailsLore = "A piece of skeletal remains, sharp enough to fashion into tools.",
     };
-    public static Item goblinEar = new Item("Goblin Ear", "A trophy from a defeated goblin.", 5, 0, ItemType.Material)
+    public static Item goblinEar = new Item("Goblin Ear", "A trophy from a defeated goblin.", 5, 0, ItemType.material)
     {
         detailsLore = "Goblins have surprisingly large ears. Useful for certain crafts.",
     };
 
-    public static Item spiderSilk = new Item("Spider Silk", "Strong silk from a forest spider.", 8, 0, ItemType.Material)
+    public static Item spiderSilk = new Item("Spider Silk", "Strong silk from a forest spider.", 8, 0, ItemType.material)
     {
         detailsLore = "Incredibly strong and flexible. Prized by armorers.",
     };
 
-    public static Item wolfPelt = new Item("Wolf Pelt", "Thick fur from a dire wolf.", 12, 0, ItemType.Material)
+    public static Item wolfPelt = new Item("Wolf Pelt", "Thick fur from a dire wolf.", 12, 0, ItemType.material)
     {
         detailsLore = "Warm and durable. Perfect for crafting protective gear.",
     };
 
-    public static Item frostCore = new Item("Frost Core", "A frozen crystal from an ice wolf.", 20, 0, ItemType.Material)
+    public static Item frostCore = new Item("Frost Core", "A frozen crystal from an ice wolf.", 20, 0, ItemType.material)
     {
         detailsLore = "Radiates cold. Used in advanced frost-based crafting.",
     };
@@ -148,18 +148,18 @@
     #endregion
 
     #region artifacts
-    public static Item VampireRing = new Item("Vampire Ring", "+4% CritChance", 11,1, ItemType.Artifact)
+    public static Item VampireRing = new Item("Vampire Ring", "+4% CritChance", 11,1, ItemType.artifact)
     {
         detailsLore = "Silver ring rumored to strengthen \nits wearer’s blood using magic.",
         stats = { ["critChance"] = 4 },
     };
 
-    public static Item BasicBackpack = new Item("Basic Backpack", "A simple backpack", 50, 2, ItemType.Artifact)
+    public static Item BasicBackpack = new Item("Basic Backpack", "A simple backpack", 50, 2, ItemType.artifact)
     {
         stats = { ["materialCapacity"] = 50 },
         detailsLore = "A sturdy canvas backpack. Increases how many materials you can carry without weighing you down."
     };
-    public static Item SilverfallAmulet = new Item("Silverfall Amulet", "+5 maxHP, +3% critChance", 12,1, ItemType.Artifact)
+    public static Item SilverfallAmulet = new Item("Silverfall Amulet", "+5 maxHP, +3% critChance", 12,1, ItemType.artifact)
     {
         stats = { ["maxHP"] = 5, ["critChance"] = 3},
         detailsLore = "Old amulet with a tiny silver waterfall engraved\n hums faintly with magic" 

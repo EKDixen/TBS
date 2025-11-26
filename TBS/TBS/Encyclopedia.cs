@@ -1,115 +1,230 @@
 ﻿using Game.Class;
+using System.ComponentModel.Design;
+using System.Numerics;
 
 
 public static class Encyclopedia
-{
 
-    
-  //  public static void Add
+{
+    private static Player player;
+
+    private static int currentPage = 1;
+    private static int itemsPerPage = 9;
+    private static string searchTerm = "";
+    private static string itemtype = "";
+    private static List<Item> filteredItems; // This will hold the items we are currently viewing
+
+    static float exponent = 1.5f;
+    static float scale = 0.1f;
+
+    //  public static void Add
 
     public static void EncyclopediaLogic()
-{
-    while (true)
     {
-        MainUI.ClearMainArea();
-        MainUI.WriteInMainArea("Welcome to the Encyclopedia!");
-        MainUI.WriteInMainArea($"What would you like to view?\n");
-        MainUI.WriteInMainArea("1 : View items");
-        MainUI.WriteInMainArea("2 : View Enemies");
-        MainUI.WriteInMainArea("3 : View Locations");
-        MainUI.WriteInMainArea("0 : Leave");
-
-        if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input) == false || input > 3 || input < 0)
+        while (true)
         {
-            MainUI.WriteInMainArea(" \nyou gotta type a number from 0-4");
-            Thread.Sleep(1000);
-            continue;
-        }
+            MainUI.ClearMainArea();
+            MainUI.WriteInMainArea("Welcome to the Encyclopedia!");
+            MainUI.WriteInMainArea($"What would you like to view?\n");
+            MainUI.WriteInMainArea("1 : View items");
+            MainUI.WriteInMainArea("2 : View Enemies");
+            MainUI.WriteInMainArea("3 : View Locations");
+            MainUI.WriteInMainArea("0 : Leave");
 
-        switch (input)
-        {
-            case 0:
-                Program.MainMenu();
-                return;
-            case 1:
-                ViewItems();
-                break;
-            case 2:
-                ViewItems();
-                break;
-            case 3:
-                ViewItems();
-                break;
-        }
-        Program.SavePlayer();
-    }
-}
-
-
-private static void ViewItems()
-{
-
-    while (true)
-    {
-        MainUI.ClearMainArea();
-        MainUI.WriteInMainArea("Select an item to view");
-        MainUI.WriteInMainArea("");
-        MainUI.WriteInMainArea("nr     Name        Description      Value   Weight");
-        MainUI.WriteInMainArea("--------------------------------------------------");
-
-        if (Program.player.knownItems.Count == 0)
-        {
-            MainUI.WriteInMainArea("You havent discovered any items.");
-            MainUI.WriteInMainArea("");
-            MainUI.WriteInMainArea("0 : Back");
-        }
-        else
-        {
-            for (int i = 0; i < Program.player.knownItems.Count; i++)
+            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input) == false || input > 3 || input < 0)
             {
-                var item = Program.player.knownItems[i];
-                MainUI.WriteInMainArea($"{i + 1,-7}{item.name,-25} {item.description,-5} {item.value} {item.weight}");
+                MainUI.WriteInMainArea(" \nyou gotta type a number from 0-4");
+                Thread.Sleep(1000);
+                continue;
+            }
+
+            switch (input)
+            {
+                case 0:
+                    Program.MainMenu();
+                    return;
+                case 1:
+                    ViewItems();
+                    break;
+                case 2:
+                    ViewItems();
+                    break;
+                case 3:
+                    ViewItems();
+                    break;
+            }
+            Program.SavePlayer();
+        }
+    }
+
+
+
+    public static void ViewItems()
+    {
+
+        while (true)
+        {
+            MainUI.ClearMainArea();
+            MainUI.WriteInMainArea("Welcome to the Encyclopedia!");
+            MainUI.WriteInMainArea($"What type of item would you like to view?\n");
+            MainUI.WriteInMainArea("1 : View Materials");
+            MainUI.WriteInMainArea("2 : View Equipment");
+            MainUI.WriteInMainArea("3 : View Artifacts");
+            MainUI.WriteInMainArea("4 : View Consumables");
+            MainUI.WriteInMainArea("0 : Back");
+
+            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input) == false || input > 4 || input < 0)
+            {
+                MainUI.WriteInMainArea("\nyou gotta type 0, 1, 2, 3, or 4");
+                MainUI.WriteInMainArea("Press enter to continue...");
+                Console.ReadLine();
+                EncyclopediaLogic();
+                return;
+            }
+            else if (input == 0) EncyclopediaLogic();
+            else if (input == 1) itemtype = "material";
+            else if (input == 2) itemtype = "equipment";
+            else if (input == 3) itemtype = "Artifact";
+            else if (input == 4) itemtype = "consumable";
+
+
+        }
+
+        while (true)
+        {
+            // Update the filtered list based on the search term
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                filteredItems = Program.player.knownItems; // full list
+            }
+            else
+            {
+                filteredItems = Program.player.knownItems
+                    .Where(item => item.name.ToLower().Contains(searchTerm.ToLower()) ||
+                                   item.description.ToLower().Contains(searchTerm.ToLower()) ||
+                                   item.GetDescription().ToLower().Contains(searchTerm.ToLower()) ||
+                                   item.type.Equals("")) 
+                                  
+                    .ToList();
+            }
+
+
+            // Calculate total pages and get the items for the current page
+            int totalItems = filteredItems.Count;
+            int totalPages = (int)Math.Ceiling((double)totalItems / itemsPerPage);
+            if (totalPages == 0) totalPages = 1;
+            if (currentPage > totalPages) currentPage = totalPages; // Fix if we are on a page that no longer exists
+            if (currentPage < 1) currentPage = 1;
+
+            List<Item> pageItems = filteredItems
+                .Skip((currentPage - 1) * itemsPerPage) // Skip items on previous pages
+                .Take(itemsPerPage)                     // Get just the items for this page
+                .ToList();
+
+
+            MainUI.ClearMainArea();
+
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                MainUI.WriteInMainArea($"\nShowing results for: \"{searchTerm}\"");
+            }
+
+            MainUI.WriteInMainArea("");
+            MainUI.WriteInMainArea("nr     Name                   Value      Type      Weight");
+            MainUI.WriteInMainArea("----------------------------------------------------------------");
+            int i = 0;
+            foreach (var item in pageItems)
+            {
+                i++;
+                MainUI.WriteInMainArea($"{i,-7}{item.name,-25} {item.value,-5} {item.type,-20} {item.weight}");
             }
             MainUI.WriteInMainArea("");
-            MainUI.WriteInMainArea("0 : Back");
+            MainUI.WriteInMainArea($"--- Page {currentPage} of {totalPages} ---");
+            MainUI.WriteInMainArea("");
+            MainUI.WriteInMainArea("Type item number (1-9) to interact, or:");
+            MainUI.WriteInMainArea("[N] Next Page  [P] Prev Page  [S] Search  [0] Back to Main Menu");
+
+
+            string inputString = Console.ReadKey(true).KeyChar.ToString().ToLower() ?? "";
+
+            if (inputString == "n")
+            {
+                if (currentPage < totalPages) currentPage++;
+                continue;
+            }
+            if (inputString == "p")
+            {
+                if (currentPage > 1) currentPage--;
+                continue;
+            }
+            if (inputString == "s")
+            {
+                HandleSearch();
+                continue;
+            }
+
+            var n = int.TryParse(inputString, out int input);
+
+            if (input == 0) { Program.MainMenu(); return; }
+
+            if (!n || input < 1 || input > pageItems.Count)
+            {
+                MainUI.ClearMainArea();
+                MainUI.WriteInMainArea("sweetie you gotta type a usable number *from this page* ");
+                MainUI.WriteInMainArea("");
+                MainUI.WriteInMainArea("Press Enter to continue...");
+                Console.ReadLine();
+                continue;
+            }
+
+            Item selectedItem = pageItems[input - 1];
+
+            MainUI.ClearMainArea();
+            MainUI.WriteInMainArea($"you've picked {selectedItem.name}");
+
+            MainUI.WriteInMainArea("0 : cancel");
+            MainUI.WriteInMainArea("1 : details");
+            MainUI.WriteInMainArea("");
+            MainUI.WriteInMainArea("type out the number next to the action you want to perform");
+
+            var k = int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int ik);
+            if (!k || ik < 0 || ik > 1)
+            {
+                MainUI.ClearMainArea();
+                MainUI.WriteInMainArea("my love would you please type a number this time\n ");
+
+                MainUI.WriteInMainArea("Press Enter to continue...");
+                Console.ReadLine();
+                continue;
+            }
+            else if (ik == 0)
+            {
+                continue;
+            }
+            else if (ik == 1)
+            {
+                MainUI.ClearMainArea();
+                MainUI.WriteInMainArea($"you've picked {selectedItem.name}\n");
+                MainUI.WriteInMainArea($"{selectedItem.GetDescription()}\n");
+
+                MainUI.WriteInMainArea($"Press Enter to continue...");
+                Console.ReadLine();
+                continue;
+            }
+
+            Program.SavePlayer();
+            Program.MainMenu();
+            break;
         }
-
-        string inputString = Console.ReadLine() ?? "";
-        var n = int.TryParse(inputString, out int input);
-
-        if (input == 0)
-        {
-            return;
-        }
-
-        if (!n || input < 1 || input > Program.player.knownItems.Count)
-        {
-            MainUI.WriteInMainArea("\nInvalid selection. Please type a number from the list.");
-            Thread.Sleep(1000);
-            continue;
-        }
-
-        var selectedItem = Program.player.knownItems[input - 1];
-        int quantity = 1;
-
-        Inventory.AddItem(selectedItem, quantity);
-
-        // --- Remove from bank ---
-        if (selectedItem.type == ItemType.equipment || selectedItem.amount == quantity)
-        {
-            // Remove the item completely from bank
-            Program.player.bankItems.RemoveAt(input - 1);
-        }
-        else
-        {
-            // Just subtract the amount
-            selectedItem.amount -= quantity;
-
-        }
-
-        MainUI.WriteInMainArea($"\nWithdrew {quantity}x {selectedItem.name}.");
-        Thread.Sleep(1000);
-            
     }
-}
+
+    private static void HandleSearch()
+    {
+        MainUI.ClearMainArea();
+        MainUI.WriteInMainArea("Enter search term (or leave empty to clear):");
+        MainUI.WriteInMainArea("> ");
+        searchTerm = Console.ReadLine()?.ToLower() ?? "";
+        currentPage = 1; // ALWAYS reset to page 1 after a search
+    }
 }
