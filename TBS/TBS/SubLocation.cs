@@ -516,7 +516,7 @@ public class SubLocation
             Program.player.bankItems.Add((Program.player.currentLocation, itemToBank));
 
             // Handle Stats & Effects
-            if (selectedItem.type == ItemType.Artifact)
+            if (selectedItem.type == ItemType.artifact)
             {
                 Inventory.RemoveEffects(selectedItem, null); // Remove stats for the whole stack
             }
@@ -538,7 +538,7 @@ public class SubLocation
             }
 
             // Re-apply artifact stats if some items are left
-            if (selectedItem.type == ItemType.Artifact && Program.player.ownedItems.Contains(selectedItem))
+            if (selectedItem.type == ItemType.artifact && Program.player.ownedItems.Contains(selectedItem))
             {
                 Inventory.ApplyEffects(selectedItem, null); 
             }
@@ -1867,7 +1867,7 @@ public class SubLocation
                     }
 
                     // Handle Stats & Effects
-                    if (selectedItem.type == ItemType.Artifact)
+                    if (selectedItem.type == ItemType.artifact)
                     {
                         Inventory.RemoveEffects(selectedItem, null); // Remove stats for the whole stack
                     }
@@ -1885,7 +1885,7 @@ public class SubLocation
                     }
 
                     // Re-apply artifact stats if some items are left
-                    if (selectedItem.type == ItemType.Artifact && Program.player.ownedItems.Contains(selectedItem))
+                    if (selectedItem.type == ItemType.artifact && Program.player.ownedItems.Contains(selectedItem))
                     {
                         Inventory.ApplyEffects(selectedItem, null);
                     }

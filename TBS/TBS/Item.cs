@@ -4,8 +4,8 @@ public enum ItemType
 {
     consumable,
     equipment,
-    Artifact,
-    Material
+    artifact,
+    material
 }
 public enum EquipmentType
 {
@@ -71,7 +71,7 @@ public class Item
     public string GetDescription()
     {
         List<string> parts = new List<string>();
-        if (type == ItemType.equipment && equipmentType != EquipmentType.weapon || type == ItemType.Artifact)
+        if (type == ItemType.equipment && equipmentType != EquipmentType.weapon || type == ItemType.artifact)
         {
             foreach (var stat in stats)
             {
