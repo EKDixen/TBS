@@ -113,7 +113,6 @@ public class Encyclopedia
             if (currentPage > totalPages) currentPage = totalPages; // Fix if we are on a page that no longer exists
             if (currentPage < 1) currentPage = 1;
 
-            //var sortedlist = filteredItems.OrderBy(x => x).ToList();
             filteredItems.Sort((x, y) => string.Compare(x.name, y.name));
 
             List<Item> pageItems = filteredItems
