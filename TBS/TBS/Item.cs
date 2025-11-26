@@ -122,6 +122,7 @@ public class Item
         else if (type == ItemType.equipment && equipmentType == EquipmentType.weapon) 
         {
             parts.Add($"gives you the move {weaponAttack.name} as long as its equipped\n");
+            parts.Add($"{weaponAttack.GetDescription()}\n");
         }
         parts.Add($"Weighs {weight}\n");
         parts.Add(detailsLore);
