@@ -153,6 +153,28 @@ namespace Game.Class
             atkManager = new AttackManager(player);
             MainUI.InitializeConsole();
             CheckPlayerLevel();
+            if (player.GetStat("isInCombat") == 1)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("╔════════════════════════════════════════╗");
+                Console.WriteLine("║                                        ║");
+                Console.WriteLine("║      COMBAT LOG DETECTED!              ║");
+                Console.WriteLine("║                                        ║");
+                Console.WriteLine("╚════════════════════════════════════════╝");
+                Console.ResetColor();
+                Console.WriteLine();
+                Console.WriteLine("You disconnected during combat!");
+                Console.WriteLine("This counts as a death...");
+                Console.WriteLine();
+                Console.WriteLine("Press Enter to continue...");
+                Console.ReadLine();
+                
+                player.HP = 0;
+                player.SetStat("isInCombat", 0);
+                db.SavePlayer(player);
+                CheckPlayerDeath();
+            }
             MainMenu();
         }
 

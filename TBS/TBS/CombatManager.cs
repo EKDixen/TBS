@@ -51,6 +51,8 @@ public class CombatManager
     {
         playerFled = false;
         playerInCombat = true;
+        player.SetStat("isInCombat", 1);
+        Program.SavePlayer();
 
         ui.AddToLog("--- Combat Started! ---");
         ui.RenderCombatScreen(player, combatants);
@@ -91,6 +93,9 @@ public class CombatManager
             ui.WriteInMainArea(2, "�          FLED!                         �");
             ui.WriteInMainArea(3, "+----------------------------------------+");
             ui.WriteInMainArea(4, "You managed to escape from battle...");
+            player.SetStat("isInCombat", 0);
+            playerInCombat = false;
+            Program.SavePlayer();
             if (previousLocation != null)
             {
                 ui.WriteInMainArea(6, $"Returning to {previousLocation.name}...");
@@ -175,9 +180,12 @@ public class CombatManager
         Console.Clear();
         Console.CursorVisible = true;
         
+        player.SetStat("isInCombat", 0);
+        playerInCombat = false;
+        Program.SavePlayer();
+        
         // Check if player died
         Program.CheckPlayerDeath();
-        playerInCombat = false;
 
         MainUI.RenderMainMenuScreen(player);
         MainUI.LoopRenderMain();
@@ -812,7 +820,7 @@ public class CombatManager
             }
             actor.ActionGauge -= ActionThreshold;
             if (actor.ActionGauge < 0) actor.ActionGauge = 0;
-
+            
         }
 
         private void UseConsumableInCombat(Player player, Item item)
