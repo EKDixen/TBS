@@ -113,6 +113,8 @@ public class Encyclopedia
             if (currentPage > totalPages) currentPage = totalPages; // Fix if we are on a page that no longer exists
             if (currentPage < 1) currentPage = 1;
 
+            filteredItems.Sort((x, y) => string.Compare(x.name, y.name));
+
             List<Item> pageItems = filteredItems
                 .Skip((currentPage - 1) * itemsPerPage) // Skip items on previous pages
                 .Take(itemsPerPage)                     // Get just the items for this page
@@ -128,13 +130,13 @@ public class Encyclopedia
             }
 
             MainUI.WriteInMainArea("");
-            MainUI.WriteInMainArea("nr     Name                   Value      Type      Weight");
+            MainUI.WriteInMainArea("nr     Name                   Value         Type          Weight");
             MainUI.WriteInMainArea("----------------------------------------------------------------");
             int i = 0;
             foreach (var item in pageItems)
             {
                 i++;
-                MainUI.WriteInMainArea($"{i,-7}{item.name,-25} {item.value,-5} {item.type,-20} {item.weight}");
+                MainUI.WriteInMainArea($"{i,-7}{item.name,-24} {item.value,-10} {item.type,-17} {item.weight}");
             }
             MainUI.WriteInMainArea("");
             MainUI.WriteInMainArea($"--- Page {currentPage} of {totalPages} ---");

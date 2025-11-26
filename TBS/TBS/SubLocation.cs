@@ -486,7 +486,7 @@ public class SubLocation
             int quantity = 1;
 
             // If stackable, ask how many
-            if (selectedItem.type != ItemType.equipment)
+            if (selectedItem.type != ItemType.Equipment)
             {
                 MainUI.WriteInMainArea($"How many {selectedItem.name} would you like to deposit? (Max: {selectedItem.amount})");
                 string quantityString = Console.ReadLine() ?? "";
@@ -516,7 +516,7 @@ public class SubLocation
             Program.player.bankItems.Add((Program.player.currentLocation, itemToBank));
 
             // Handle Stats & Effects
-            if (selectedItem.type == ItemType.artifact)
+            if (selectedItem.type == ItemType.Artifact)
             {
                 Inventory.RemoveEffects(selectedItem, null); // Remove stats for the whole stack
             }
@@ -526,7 +526,7 @@ public class SubLocation
 
 
             // Handle Item List
-            if (selectedItem.type == ItemType.equipment || selectedItem.amount <= quantity)
+            if (selectedItem.type == ItemType.Equipment || selectedItem.amount <= quantity)
             {
                 // Remove the item completely
                 Program.player.ownedItems.Remove(selectedItem);
@@ -538,7 +538,7 @@ public class SubLocation
             }
 
             // Re-apply artifact stats if some items are left
-            if (selectedItem.type == ItemType.artifact && Program.player.ownedItems.Contains(selectedItem))
+            if (selectedItem.type == ItemType.Artifact && Program.player.ownedItems.Contains(selectedItem))
             {
                 Inventory.ApplyEffects(selectedItem, null); 
             }
@@ -596,7 +596,7 @@ public class SubLocation
             int quantity = 1;
 
             // If stackable, ask how many
-            if (selectedItem.type != ItemType.equipment)
+            if (selectedItem.type != ItemType.Equipment)
             {
                 MainUI.ClearMainArea();
                 MainUI.WriteInMainArea($"How many {selectedItem.name} would you like to withdraw? (Max: {selectedItem.amount})");
@@ -615,7 +615,7 @@ public class SubLocation
             Inventory.AddItem(selectedItem, quantity);
 
             // --- Remove from bank ---
-            if (selectedItem.type == ItemType.equipment || selectedItem.amount == quantity)
+            if (selectedItem.type == ItemType.Equipment || selectedItem.amount == quantity)
             {
                 // Remove the item completely from bank
                 Program.player.bankItems.RemoveAt(input - 1);
@@ -1843,7 +1843,7 @@ public class SubLocation
                     int quantity = 1;
 
                     // If stackable, ask how many
-                    if (selectedItem.type != ItemType.equipment)
+                    if (selectedItem.type != ItemType.Equipment)
                     {
                         MainUI.WriteInMainArea($"How many {selectedItem.name} would you like to sell? (Max: {selectedItem.amount})");
                         string quantityString = Console.ReadLine() ?? "";
@@ -1867,13 +1867,13 @@ public class SubLocation
                     }
 
                     // Handle Stats & Effects
-                    if (selectedItem.type == ItemType.artifact)
+                    if (selectedItem.type == ItemType.Artifact)
                     {
                         Inventory.RemoveEffects(selectedItem, null); // Remove stats for the whole stack
                     }
 
                     // Handle Item List
-                    if (selectedItem.type == ItemType.equipment || selectedItem.amount <= quantity)
+                    if (selectedItem.type == ItemType.Equipment || selectedItem.amount <= quantity)
                     {
                         // Remove the item completely
                         Program.player.ownedItems.Remove(selectedItem);
@@ -1885,7 +1885,7 @@ public class SubLocation
                     }
 
                     // Re-apply artifact stats if some items are left
-                    if (selectedItem.type == ItemType.artifact && Program.player.ownedItems.Contains(selectedItem))
+                    if (selectedItem.type == ItemType.Artifact && Program.player.ownedItems.Contains(selectedItem))
                     {
                         Inventory.ApplyEffects(selectedItem, null);
                     }

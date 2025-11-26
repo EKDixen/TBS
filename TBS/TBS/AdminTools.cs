@@ -1045,7 +1045,7 @@ public static class AdminTools
             itemList.Add(item);
             
             string typeInfo = item.type.ToString();
-            if (item.type == ItemType.equipment)
+            if (item.type == ItemType.Equipment)
             {
                 typeInfo = $"{item.equipmentType} {item.type}";
             }
@@ -1077,7 +1077,7 @@ public static class AdminTools
                     itemToAdd.amount = 1;
                 }
                 
-                if (itemToAdd.type == ItemType.material)
+                if (itemToAdd.type == ItemType.Material)
                 {
                     player.materialItems.Add(itemToAdd);
                 }

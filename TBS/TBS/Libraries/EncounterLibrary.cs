@@ -53,7 +53,7 @@ public static class EncounterLibrary
                        System.Reflection.BindingFlags.FlattenHierarchy)
                     .Where(f => f.FieldType == typeof(Item))
                     .Select(f => (Item)f.GetValue(null))
-                    .Where(i => i.type == ItemType.material)
+                    .Where(i => i.type == ItemType.Material)
                     .ToList();
 
         if (materialItems.Count == 0)
