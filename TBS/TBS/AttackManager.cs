@@ -7,7 +7,7 @@ public class AttackManager
     private Player player;
 
     private int currentPage = 1;
-    private int movesPerPage = 8;
+    private int movesPerPage = 4;
     private string searchTerm = "";
     private List<Attack> filteredMoves; // This will hold the moves we are currently viewing
     public AttackManager(Player p)
@@ -43,7 +43,7 @@ public class AttackManager
             return;
         }
 
-        if (attack.requiredClass != null && player.playerClass != attack.requiredClass)
+        if (attack.requiredClass != null && player.playerClass.name != attack.requiredClass.name)
         {
             MainUI.WriteInMainArea($"{attack.name} can only be used by the {attack.requiredClass.name} class!");
             return;
@@ -133,18 +133,23 @@ public class AttackManager
                 
                 // Check if player can use this attack
                 string classRestriction = "";
-                if (atk.requiredClass != null && player.playerClass != atk.requiredClass)
+                if (atk.requiredClass != null && player.playerClass.name != atk.requiredClass.name)
                 {
                     classRestriction = $" [Requires {atk.requiredClass.name}]";
                 }
 
-                MainUI.WriteInMainArea($"{i + 1}. {atk.name} {equippedInfo}{classRestriction}");
-                MainUI.WriteInMainArea($"   -> {atk.GetDescription()}");
+                MainUI.WriteInMainArea($"\n{i + 1}. {atk.name} {equippedInfo}{classRestriction}");
+                
+                // Display each effect on its own line
+                foreach (var effect in atk.effects)
+                {
+                    MainUI.WriteInMainArea($"   {GetEffectDescription(effect)}");
+                }
             }
             MainUI.WriteInMainArea("");
             MainUI.WriteInMainArea($"--- Page {currentPage} of {totalPages} ---");
             MainUI.WriteInMainArea("");
-            MainUI.WriteInMainArea("Type move number (1-8) to interact, or:");
+            MainUI.WriteInMainArea("Type move number (1-4) to interact, or:");
             MainUI.WriteInMainArea("[N] Next Page  [P] Prev Page  [S] Search  [0] Back to Main Menu");
 
             string inputString = Console.ReadKey(true).KeyChar.ToString().ToLower() ?? "";
@@ -182,7 +187,7 @@ public class AttackManager
             Attack chosen = pageMoves[input - 1];
 
             // Check if player can use this attack
-            if (chosen.requiredClass != null && player.playerClass != chosen.requiredClass)
+            if (chosen.requiredClass != null && player.playerClass.name != chosen.requiredClass.name)
             {
                 MainUI.WriteInMainArea($"\n{chosen.name} can only be used by the {chosen.requiredClass.name} class!");
                 MainUI.WriteInMainArea("\n-press Enter to continue-");
@@ -272,5 +277,55 @@ public class AttackManager
         MainUI.WriteInMainArea("> ");
         searchTerm = Console.ReadLine()?.ToLower() ?? "";
         currentPage = 1; // ALWAYS reset to page 1 after a search
+    }
+
+    private string GetEffectDescription(AttackEffect effect)
+    {
+        string target = effect.targetType switch
+        {
+            "self" => "you",
+            "allEnemies" => "all enemies",
+            _ => "enemy"
+        };
+
+        bool isNegativeOnSelf = effect.targetType == "self" && effect.value < 0;
+        int absValue = Math.Abs(effect.value);
+
+        string durationStr = effect.duration > 0 ? $" for {effect.duration} {(effect.duration == 1 ? "turn" : "turns")}" : "";
+
+        string desc = effect.type switch
+        {
+            "damage" => $"Deal {effect.value} damage to {target}{durationStr}",
+            "heal" => isNegativeOnSelf 
+                ? $"Remove {absValue} HP from {target}{durationStr}"
+                : $"Heal {effect.value} HP to {target}{durationStr}",
+            "armor" => isNegativeOnSelf
+                ? $"Remove {absValue} armor from {target}{durationStr}"
+                : $"Add {effect.value} armor to {target}{durationStr}",
+            "critChance" => isNegativeOnSelf
+                ? $"Remove {absValue}% crit chance from {target}{durationStr}"
+                : $"Add {effect.value}% crit chance to {target}{durationStr}",
+            "critDamage" => isNegativeOnSelf
+                ? $"Remove {absValue}% crit damage from {target}{durationStr}"
+                : $"Add {effect.value}% crit damage to {target}{durationStr}",
+            "dodge" => isNegativeOnSelf
+                ? $"Remove {absValue}% dodge from {target}{durationStr}"
+                : $"Add {effect.value}% dodge to {target}{durationStr}",
+            "dodgeNegation" => isNegativeOnSelf
+                ? $"Remove {absValue}% dodge resistance from {target}{durationStr}"
+                : $"Add {effect.value}% dodge resistance to {target}{durationStr}",
+            "stun" => isNegativeOnSelf
+                ? $"Remove {absValue}% stun chance from {target}{durationStr}"
+                : $"Add {effect.value}% stun chance to {target}{durationStr}",
+            "stunNegation" => isNegativeOnSelf
+                ? $"Remove {absValue}% stun resistance from {target}{durationStr}"
+                : $"Add {effect.value}% stun resistance to {target}{durationStr}",
+            "speed" => isNegativeOnSelf
+                ? $"Remove {absValue} speed from {target}{durationStr}"
+                : $"Add {effect.value} speed to {target}{durationStr}",
+            _ => $"{effect.type} {effect.value} to {target}{durationStr}"
+        };
+
+        return desc;
     }
 }

@@ -86,6 +86,34 @@ public class CombatManager
 
         if (playerFled)
         {
+            if (player.activeEffects != null && player.activeEffects.Count > 0)
+            {
+                foreach (var ae in player.activeEffects)
+                {
+                    switch (ae.type)
+                    {
+                        case "dodge": player.dodge -= ae.value; break;
+                        case "dodgeNegation": player.dodgeNegation -= ae.value; break;
+                        case "critChance": player.critChance -= ae.value; break;
+                        case "critDamage": player.critDamage -= ae.value; break;
+                        case "armor": player.armor -= ae.value; break;
+                        case "stun": player.stun -= ae.value; break;
+                        case "stunNegation": player.stunNegation -= ae.value; break;
+                        case "speed": player.speed -= ae.value; break;
+                    }
+                }
+                player.activeEffects.Clear();
+            }
+            
+            if (player.damageOverTimeEffects != null)
+            {
+                player.damageOverTimeEffects.Clear();
+            }
+            if (player.healOverTimeEffects != null)
+            {
+                player.healOverTimeEffects.Clear();
+            }
+            
             ui.AddToLog("--- You fled from combat! ---");
             ui.ClearMainArea();
             ui.RenderCombatScreen(player, combatants);
@@ -138,9 +166,32 @@ public class CombatManager
                     }
                 }
             }
-            if (player.activeEffects != null)
+            if (player.activeEffects != null && player.activeEffects.Count > 0)
             {
+                foreach (var ae in player.activeEffects)
+                {
+                    switch (ae.type)
+                    {
+                        case "dodge": player.dodge -= ae.value; break;
+                        case "dodgeNegation": player.dodgeNegation -= ae.value; break;
+                        case "critChance": player.critChance -= ae.value; break;
+                        case "critDamage": player.critDamage -= ae.value; break;
+                        case "armor": player.armor -= ae.value; break;
+                        case "stun": player.stun -= ae.value; break;
+                        case "stunNegation": player.stunNegation -= ae.value; break;
+                        case "speed": player.speed -= ae.value; break;
+                    }
+                }
                 player.activeEffects.Clear();
+            }
+            
+            if (player.damageOverTimeEffects != null)
+            {
+                player.damageOverTimeEffects.Clear();
+            }
+            if (player.healOverTimeEffects != null)
+            {
+                player.healOverTimeEffects.Clear();
             }
             ui.AddToLog("--- VICTORY! ---");
             string rewardText = $"Rewards: +{totalExp} EXP, +{totalMoney} Rai";
@@ -165,6 +216,34 @@ public class CombatManager
         }
         else
         {
+            if (player.activeEffects != null && player.activeEffects.Count > 0)
+            {
+                foreach (var ae in player.activeEffects)
+                {
+                    switch (ae.type)
+                    {
+                        case "dodge": player.dodge -= ae.value; break;
+                        case "dodgeNegation": player.dodgeNegation -= ae.value; break;
+                        case "critChance": player.critChance -= ae.value; break;
+                        case "critDamage": player.critDamage -= ae.value; break;
+                        case "armor": player.armor -= ae.value; break;
+                        case "stun": player.stun -= ae.value; break;
+                        case "stunNegation": player.stunNegation -= ae.value; break;
+                        case "speed": player.speed -= ae.value; break;
+                    }
+                }
+                player.activeEffects.Clear();
+            }
+            
+            if (player.damageOverTimeEffects != null)
+            {
+                player.damageOverTimeEffects.Clear();
+            }
+            if (player.healOverTimeEffects != null)
+            {
+                player.healOverTimeEffects.Clear();
+            }
+            
             ui.ClearMainArea();
             ui.RenderCombatScreen(player, combatants);
             ui.WriteInMainArea(1, "+----------------------------------------+");
@@ -705,7 +784,7 @@ public class CombatManager
                     // They chose an attack
                     var chosen = moves[choice - 1];
 
-                    if (chosen.requiredClass != null && player.playerClass != chosen.requiredClass)
+                    if (chosen.requiredClass != null && player.playerClass.name != chosen.requiredClass.name)
                     {
                         ui.AddToLog($"{player.name} cannot use {chosen.name} - requires {chosen.requiredClass.name} class!");
                         ui.RenderCombatScreen(player, combatants);
