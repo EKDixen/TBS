@@ -894,5 +894,99 @@ public static class EncounterLibrary
 
 
 
+    public static Encounter InjuredWolf = new Encounter(
+        "InjuredWolf",
+        false,
+        "You find a Dire Wolf lying on the ground, badly injured and bleeding.",
+        null,
+        (player) => {
+            MainUI.WriteInMainArea("The wolf looks at you with desperate, pleading eyes.");
+            MainUI.WriteInMainArea("It's losing blood fast and needs immediate help.");
+            MainUI.WriteInMainArea("\nOffer a Big Healing Potion to heal it? (y/n): ");
+            string choice = Console.ReadKey(true).KeyChar.ToString().ToLower();
+            
+            if (choice == "y" || choice == "yes")
+            {
+                var bigHealingPotion = player.ownedItems.FirstOrDefault(i => i.name == "Big Healing Potion" && i.amount > 0);
+                
+                if (bigHealingPotion == null)
+                {
+                    MainUI.WriteInMainArea("\nYou don't have a Big Healing Potion!");
+                    MainUI.WriteInMainArea("The wolf whimpers as you walk away empty-handed.");
+                    return;
+                }
+                
+                int attackRoll = rng.Next(1, 4);
+                if (attackRoll == 1)
+                {
+                    MainUI.WriteInMainArea("\nAs you approach with the potion, the wolf panics!");
+                    MainUI.WriteInMainArea("In its pain and fear, it sees you as a threat!");
+                    MainUI.WriteInMainArea("The Dire Wolf attacks!");
+                    MainUI.WriteInMainArea("\nPress Enter to continue...");
+                    Console.ReadLine();
+                    
+                    var combat = new CombatManager(player, new List<Enemy> { EnemyLibrary.DireWolf }, true, null);
+                    combat.StartCombat();
+                    return;
+                }
+                
+                int maxCompanions = CompanionSystem.GetMaxCompanions(player);
+                var currentCompanions = CompanionSystem.GetCompanions(player);
+                
+                if (maxCompanions == 0)
+                {
+                    MainUI.WriteInMainArea($"\nYour class ({player.playerClass.name}) cannot have companions!");
+                    MainUI.WriteInMainArea("You use the potion anyway out of kindness.");
+                    bigHealingPotion.amount--;
+                    if (bigHealingPotion.amount <= 0)
+                    {
+                        player.ownedItems.Remove(bigHealingPotion);
+                    }
+                    MainUI.WriteInMainArea("The wolf recovers and runs off into the forest.");
+                }
+                else if (currentCompanions.Count >= maxCompanions)
+                {
+                    MainUI.WriteInMainArea($"\nYou already have the maximum number of companions ({maxCompanions}).");
+                    MainUI.WriteInMainArea("You use the potion anyway out of kindness.");
+                    bigHealingPotion.amount--;
+                    if (bigHealingPotion.amount <= 0)
+                    {
+                        player.ownedItems.Remove(bigHealingPotion);
+                    }
+                    MainUI.WriteInMainArea("The wolf recovers but sadly cannot join you.");
+                    MainUI.WriteInMainArea("It howls gratefully before disappearing into the woods.");
+                }
+                else
+                {
+                    bigHealingPotion.amount--;
+                    if (bigHealingPotion.amount <= 0)
+                    {
+                        player.ownedItems.Remove(bigHealingPotion);
+                    }
+                    
+                    MainUI.WriteInMainArea("\nYou carefully pour the Big Healing Potion over the wolf's wounds.");
+                    MainUI.WriteInMainArea("The wolf's injuries begin to close and its breathing steadies.");
+                    MainUI.WriteInMainArea("It stands up, fully healed, and looks at you with deep gratitude.");
+                    MainUI.WriteInMainArea("The wolf nuzzles your hand and refuses to leave your side!");
+                    
+                    bool success = CompanionSystem.RecruitByName(player, "dire wolf");
+                    
+                    if (success)
+                    {
+                        MainUI.WriteInMainArea("\nThe Dire Wolf has joined your party as a loyal companion!");
+                    }
+                }
+                
+                Program.SavePlayer();
+            }
+            else
+            {
+                MainUI.WriteInMainArea("\nYou decide not to use your potion.");
+                MainUI.WriteInMainArea("The wolf's breathing grows weaker as you walk away...");
+            }
+        },
+        EncounterType.Event
+    );
+
     #endregion
 }

@@ -93,7 +93,7 @@ namespace Game.Class
                 Console.Clear();
                 Console.CursorVisible = false;
 
-                DrawPlayerPanel(player);
+                DrawPlayerPanel(player, allCombatants);
                 DrawTurnOrderPanel(allCombatants);
                 DrawCombatLogPanel();
                 DrawMainArea(mainAreaContent);
@@ -102,18 +102,62 @@ namespace Game.Class
             }
         }
 
-        private void DrawPlayerPanel(Player player)
+        private int currentPartyMemberIndex = 0;
+        
+        private void DrawPlayerPanel(Player player, List<Combatant> allCombatants)
         {
             int x = MainAreaWidth + 1;
             int y = 0;
 
-            DrawBox(x, y, RightPanelWidth, PlayerPanelHeight, "Player");
+            var partyMembers = allCombatants
+                .Where(c => c is Player || (c is Enemy && ((Enemy)c).IsAlly))
+                .ToList();
+            
+            if (currentPartyMemberIndex >= partyMembers.Count)
+            {
+                currentPartyMemberIndex = 0;
+            }
+            
+            var displayedMember = partyMembers[currentPartyMemberIndex];
+            bool isPlayer = displayedMember is Player;
+            bool isDead = !displayedMember.IsAlive();
+            
+            DrawBox(x, y, RightPanelWidth, PlayerPanelHeight, "Party");
+
+            if (partyMembers.Count > 1)
+            {
+                Console.SetCursorPosition(x + 2, y + 1);
+                Console.Write($"[{currentPartyMemberIndex + 1}/{partyMembers.Count}] ← → to switch");
+            }
 
             Console.SetCursorPosition(x + 2, y + 2);
-            Console.Write($"{player.name} - Lvl {player.level}");
+            string memberType = isPlayer ? "You" : "Ally";
+            string deadTag = isDead ? " [DEAD]" : "";
+            Console.Write($"{displayedMember.name} ({memberType}) - Lvl {displayedMember.level}{deadTag}");
 
             Console.SetCursorPosition(x + 2, y + 3);
-            DrawHealthBar(player.HP, player.maxHP, RightPanelWidth - 4);
+            DrawHealthBar(displayedMember.HP, displayedMember.maxHP, RightPanelWidth - 4);
+        }
+        
+        public void CyclePartyMember(bool forward)
+        {
+            if (forward)
+            {
+                currentPartyMemberIndex++;
+            }
+            else
+            {
+                currentPartyMemberIndex--;
+                if (currentPartyMemberIndex < 0)
+                {
+                    currentPartyMemberIndex = 0;
+                }
+            }
+        }
+        
+        public void ResetPartyMemberIndex()
+        {
+            currentPartyMemberIndex = 0;
         }
 
         private void DrawTurnOrderPanel(List<Combatant> allCombatants)
@@ -170,8 +214,20 @@ namespace Game.Class
             {
                 var combatant = turnOrder[i];
                 string displayName = displayNames[i];
-                string type = combatant.IsPlayer ? "(You)" : 
-                             (combatant is Player) ? "(Ally)" : "(Enemy)";
+                
+                string type;
+                if (combatant is Player)
+                {
+                    type = "(You)";
+                }
+                else if (combatant.IsAlly)
+                {
+                    type = "(Ally)";
+                }
+                else
+                {
+                    type = "(Enemy)";
+                }
 
                 string arrow = i == 0 ? "->" : "  ";
 

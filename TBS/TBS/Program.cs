@@ -397,14 +397,14 @@ namespace Game.Class
 
             MainUI.WriteInMainArea($"\nAccount Name: {player.name} \n\n1 : Level: {player.level} \n2 : Class: {player.playerClass.name} \n3 : HP: {player.HP}/{player.maxHP} \n4 : Speed: {player.speed} \n5 : armor: {player.armor}" +
                 $"\n6 : Dodge: {player.dodge}% \n7 : DodgeNegation: {player.dodgeNegation}% \n8 : Crit-chance: {player.critChance}% \n9 : Crit-Damage: {player.critDamage}% \n 10 : Stun: {player.stun}%" +
-                $"\n11 : StunNegation: {player.stunNegation}%\n\n");
+                $"\n11 : StunNegation: {player.stunNegation}%\n12 : Companions\n\n");
 
             Thread.Sleep(400);
             MainUI.WriteInMainArea("0 : Cancel");
             MainUI.WriteInMainArea("Press any stat's corresponding number for details about it");
             string st = Console.ReadLine();
 
-            if (int.TryParse(st, out int input) == false || input > 11 || input < 0)
+            if (int.TryParse(st, out int input) == false || input > 12 || input < 0)
             {
                 MainUI.ClearMainArea();
                 MainUI.WriteInMainArea(" \nyou gotta type a real number:)");
@@ -488,11 +488,104 @@ namespace Game.Class
                     case 11:
                         MainUI.WriteInMainArea("Your stunNegation stat makes it harder for your opponent to stun you");
                         break;
+                    case 12:
+                        ShowCompanionsMenu();
+                        return;
                 }
 
                 MainUI.WriteInMainArea(" \nPress enter to continue...");
                 Console.ReadLine();
                 ShowPlayerStats();
+            }
+        }
+        
+        public static void ShowCompanionsMenu()
+        {
+            while (true)
+            {
+                MainUI.ClearMainArea();
+                
+                int maxCompanions = CompanionSystem.GetMaxCompanions(player);
+                var companions = CompanionSystem.GetCompanions(player);
+                
+                MainUI.WriteInMainArea($"=== Your Companions ({companions.Count}/{maxCompanions}) ===\n");
+                
+                if (companions.Count == 0)
+                {
+                    MainUI.WriteInMainArea("You don't have any companions.\n");
+                }
+                else
+                {
+                    for (int i = 0; i < companions.Count; i++)
+                    {
+                        var c = companions[i];
+                        MainUI.WriteInMainArea($"{i + 1}. {c.name} - Lvl {c.level} - HP: {c.HP}/{c.maxHP}");
+                    }
+                    MainUI.WriteInMainArea("");
+                }
+                
+                MainUI.WriteInMainArea("1. Dismiss a companion");
+                MainUI.WriteInMainArea("2. Dismiss all companions");
+                MainUI.WriteInMainArea("0. Back\n");
+                
+                if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int choice) == false || choice > 2 || choice < 0)
+                {
+                    MainUI.WriteInMainArea("\nInvalid choice. Press enter to continue...");
+                    Console.ReadLine();
+                    continue;
+                }
+                
+                if (choice == 0)
+                {
+                    ShowPlayerStats();
+                    return;
+                }
+                else if (choice == 1)
+                {
+                    if (companions.Count == 0)
+                    {
+                        MainUI.WriteInMainArea("\nYou don't have any companions to dismiss.");
+                        MainUI.WriteInMainArea("Press enter to continue...");
+                        Console.ReadLine();
+                        continue;
+                    }
+                    
+                    MainUI.WriteInMainArea("\nEnter the number of the companion to dismiss (0 to cancel): ");
+                    if (int.TryParse(Console.ReadLine(), out int index) && index > 0 && index <= companions.Count)
+                    {
+                        string companionName = companions[index - 1].name;
+                        CompanionSystem.RemoveCompanion(player, index - 1);
+                        MainUI.WriteInMainArea($"\n{companionName} has left your party.");
+                        MainUI.WriteInMainArea("Press enter to continue...");
+                        Console.ReadLine();
+                    }
+                    else if (index != 0)
+                    {
+                        MainUI.WriteInMainArea("\nInvalid selection.");
+                        MainUI.WriteInMainArea("Press enter to continue...");
+                        Console.ReadLine();
+                    }
+                }
+                else if (choice == 2)
+                {
+                    if (companions.Count == 0)
+                    {
+                        MainUI.WriteInMainArea("\nYou don't have any companions to dismiss.");
+                        MainUI.WriteInMainArea("Press enter to continue...");
+                        Console.ReadLine();
+                        continue;
+                    }
+                    
+                    MainUI.WriteInMainArea("\nAre you sure you want to dismiss all companions? (type YES): ");
+                    string confirm = Console.ReadLine();
+                    if (confirm == "YES")
+                    {
+                        CompanionSystem.DismissAllCompanions(player);
+                        MainUI.WriteInMainArea("\nAll companions have been dismissed.");
+                        MainUI.WriteInMainArea("Press enter to continue...");
+                        Console.ReadLine();
+                    }
+                }
             }
         }
 

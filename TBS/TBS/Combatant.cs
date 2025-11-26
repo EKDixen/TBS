@@ -23,6 +23,7 @@ public class Combatant
 
     public double ActionGauge;
     public bool IsPlayer;
+    public bool IsAlly;
 
     public List<ActiveEffect> activeEffects = new List<ActiveEffect>();
     public List<DamageOverTimeEffect> damageOverTimeEffects = new List<DamageOverTimeEffect>();

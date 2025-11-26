@@ -33,6 +33,19 @@ public class CombatManager
 
         combatants = new List<Combatant>();
         combatants.Add(player);
+        
+        // Add companions from CompanionSystem
+        var companions = CompanionSystem.GetCompanions(player);
+        foreach (var companion in companions)
+        {
+            if (companion.IsAlive())
+            {
+                companion.IsAlly = true;
+                companion.IsPlayer = false;
+                combatants.Add(companion);
+            }
+        }
+        
         combatants.AddRange(enemies);
 
         foreach (var combatant in combatants)
@@ -259,6 +272,15 @@ public class CombatManager
         Console.Clear();
         Console.CursorVisible = true;
         
+
+        var companionsAfterCombat = combatants
+            .Where(c => c is Enemy && ((Enemy)c).IsAlly)
+            .Cast<Enemy>()
+            .ToList();
+        
+        CompanionSystem.SaveCompanions(player, companionsAfterCombat);
+        CompanionSystem.RemoveDeadCompanions(player);
+        
         player.SetStat("isInCombat", 0);
         playerInCombat = false;
         Program.SavePlayer();
@@ -303,8 +325,8 @@ public class CombatManager
 
     private int CalculateFleeChance()
     {
-        // Get alive allies (just the player for now, but extensible for party members)
-        var aliveAllies = combatants.Where(c => c.IsAlive() && c.IsPlayer).ToList();
+        // Get alive allies (player + companions)
+        var aliveAllies = combatants.Where(c => c.IsAlive() && (c.IsPlayer || c.IsAlly)).ToList();
         var aliveEnemies = enemies.Where(e => e.IsAlive()).ToList();
 
         // Calculate total speed for allies and enemies
@@ -680,10 +702,35 @@ public class CombatManager
                 Thread.Sleep(300);
                 ui.RenderCombatScreen(player, combatants);
                 ui.WriteInMainArea(12, "");
-                ui.WriteInMainArea(13, "Press Enter to continue...");
+                ui.WriteInMainArea(13, "Press Enter to continue (← → to view party)...");
                 ui.SetCursorInMainArea(22);
-                Console.ReadLine();
                 
+                while (true)
+                {
+                    var key = Console.ReadKey(true);
+                    if (key.Key == ConsoleKey.Enter)
+                    {
+                        break;
+                    }
+                    else if (key.Key == ConsoleKey.RightArrow)
+                    {
+                        ui.CyclePartyMember(true);
+                        ui.RenderCombatScreen(player, combatants);
+                        ui.WriteInMainArea(12, "");
+                        ui.WriteInMainArea(13, "Press Enter to continue (← → to view party)...");
+                        ui.SetCursorInMainArea(22);
+                    }
+                    else if (key.Key == ConsoleKey.LeftArrow)
+                    {
+                        ui.CyclePartyMember(false);
+                        ui.RenderCombatScreen(player, combatants);
+                        ui.WriteInMainArea(12, "");
+                        ui.WriteInMainArea(13, "Press Enter to continue (← → to view party)...");
+                        ui.SetCursorInMainArea(22);
+                    }
+                }
+                
+                ui.ResetPartyMemberIndex();
                 player.UpdateActivity();
 
                 var moves = player.equippedAttacks.Where(a => a != null).ToList();
@@ -738,17 +785,106 @@ public class CombatManager
                 }
                 
                 ui.SetCursorInMainArea(lineNum);
-                Console.Write("Choose action: ");
+                Console.Write("Choose action (← → to view party): ");
 
                 int choice = -1;
                 int totalOptions = moves.Count + consumables.Count;
                 while (true)
                 {
-                    if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out choice) && choice >= 0 && choice <= totalOptions)
+                    var key = Console.ReadKey(true);
+                    
+                    if (key.Key == ConsoleKey.RightArrow)
+                    {
+                        ui.CyclePartyMember(true);
+                        ui.RenderCombatScreen(player, combatants);
+                        
+                        ui.ClearMainArea();
+                        ui.WriteInMainArea(0, "--- Your Turn ---");
+                        ui.WriteInMainArea(1, "");
+                        
+                        lineNum = 2;
+                        if (moves.Count > 0)
+                        {
+                            ui.WriteInMainArea(lineNum++, "ATTACKS:");
+                            for (int i = 0; i < moves.Count; i++)
+                            {
+                                ui.WriteInMainArea(lineNum++, $"{i + 1}. {moves[i].name} - {moves[i].GetDescription()}");
+                            }
+                            lineNum++;
+                        }
+                        
+                        itemStartIndex = moves.Count + 1;
+                        if (consumables.Count > 0)
+                        {
+                            ui.WriteInMainArea(lineNum++, "ITEMS:");
+                            for (int i = 0; i < consumables.Count; i++)
+                            {
+                                ui.WriteInMainArea(lineNum++, $"{itemStartIndex + i}. {consumables[i].name} x{consumables[i].amount} - {consumables[i].description}");
+                            }
+                            lineNum++;
+                        }
+                        
+                        if (canFlee)
+                        {
+                            int displayFleeChance = CalculateFleeChance();
+                            ui.WriteInMainArea(lineNum++, $"0. FLEE ({displayFleeChance}% chance)");
+                            lineNum++;
+                        }
+                        
+                        ui.SetCursorInMainArea(lineNum);
+                        Console.Write("Choose action (← → to view party): ");
+                        continue;
+                    }
+                    else if (key.Key == ConsoleKey.LeftArrow)
+                    {
+                        ui.CyclePartyMember(false);
+                        ui.RenderCombatScreen(player, combatants);
+                        
+                        ui.ClearMainArea();
+                        ui.WriteInMainArea(0, "--- Your Turn ---");
+                        ui.WriteInMainArea(1, "");
+                        
+                        lineNum = 2;
+                        if (moves.Count > 0)
+                        {
+                            ui.WriteInMainArea(lineNum++, "ATTACKS:");
+                            for (int i = 0; i < moves.Count; i++)
+                            {
+                                ui.WriteInMainArea(lineNum++, $"{i + 1}. {moves[i].name} - {moves[i].GetDescription()}");
+                            }
+                            lineNum++;
+                        }
+                        
+                        itemStartIndex = moves.Count + 1;
+                        if (consumables.Count > 0)
+                        {
+                            ui.WriteInMainArea(lineNum++, "ITEMS:");
+                            for (int i = 0; i < consumables.Count; i++)
+                            {
+                                ui.WriteInMainArea(lineNum++, $"{itemStartIndex + i}. {consumables[i].name} x{consumables[i].amount} - {consumables[i].description}");
+                            }
+                            lineNum++;
+                        }
+                        
+                        if (canFlee)
+                        {
+                            int displayFleeChance = CalculateFleeChance();
+                            ui.WriteInMainArea(lineNum++, $"0. FLEE ({displayFleeChance}% chance)");
+                            lineNum++;
+                        }
+                        
+                        ui.SetCursorInMainArea(lineNum);
+                        Console.Write("Choose action (← → to view party): ");
+                        continue;
+                    }
+                    
+                    if (int.TryParse(key.KeyChar.ToString(), out choice) && choice >= 0 && choice <= totalOptions)
                     {
                         player.UpdateActivity();
+                        ui.ResetPartyMemberIndex();
                         break;
                     }
+                    
                     ui.SetCursorInMainArea(lineNum + 1);
                     Console.Write("Invalid choice. Try again: ");
                 }
@@ -814,7 +950,7 @@ public class CombatManager
                     }
                     else if (isAoEAllies)
                     {
-                        var allAllies = combatants.Where(c => c.IsAlive() && c.IsPlayer).ToList();
+                        var allAllies = combatants.Where(c => c.IsAlive() && (c.IsPlayer || c.IsAlly)).ToList();
                         ExecuteAttackAoE(player, chosen, allAllies);
                     }
                     else if (targetsSelfOrAlly)
@@ -885,24 +1021,50 @@ public class CombatManager
                 }
                 var chosen = enemy.SelectWeightedAttack();
                 
-                enemyAttackedThisCombat = true;
+                bool isCompanion = enemy.IsAlly;
+                
+                if (!isCompanion)
+                {
+                    enemyAttackedThisCombat = true;
+                }
                 
                 bool isAoEEnemies = chosen.effects.Any(e => e.targetType == "allEnemies");
                 bool isAoEAllies = chosen.effects.Any(e => e.targetType == "allAllies");
                 
                 if (isAoEEnemies)
                 {
-                    var allPlayers = combatants.Where(c => c.IsAlive() && c.IsPlayer).ToList();
-                    ExecuteAttackAoE(enemy, chosen, allPlayers);
+                    var targets = isCompanion 
+                        ? combatants.Where(c => c.IsAlive() && !c.IsPlayer && !c.IsAlly).ToList()
+                        : combatants.Where(c => c.IsAlive() && (c.IsPlayer || c.IsAlly)).ToList();
+                    ExecuteAttackAoE(enemy, chosen, targets);
                 }
                 else if (isAoEAllies)
                 {
-                    var allEnemyAllies = combatants.Where(c => c.IsAlive() && !c.IsPlayer).ToList();
-                    ExecuteAttackAoE(enemy, chosen, allEnemyAllies);
+                    var targets = isCompanion
+                        ? combatants.Where(c => c.IsAlive() && (c.IsPlayer || c.IsAlly)).ToList()
+                        : combatants.Where(c => c.IsAlive() && !c.IsPlayer && !c.IsAlly).ToList();
+                    ExecuteAttackAoE(enemy, chosen, targets);
                 }
                 else
                 {
-                    ExecuteAttackSingle(enemy, chosen, player);
+                    if (isCompanion)
+                    {
+                        var aliveEnemies = enemies.Where(e => e.IsAlive()).ToList();
+                        if (aliveEnemies.Count > 0)
+                        {
+                            var target = aliveEnemies[rng.Next(aliveEnemies.Count)];
+                            ExecuteAttackSingle(enemy, chosen, target);
+                        }
+                    }
+                    else
+                    {
+                        var aliveAllies = combatants.Where(c => c.IsAlive() && (c.IsPlayer || c.IsAlly)).ToList();
+                        if (aliveAllies.Count > 0)
+                        {
+                            var target = aliveAllies[rng.Next(aliveAllies.Count)];
+                            ExecuteAttackSingle(enemy, chosen, target);
+                        }
+                    }
                 }
             }
             actor.ActionGauge -= ActionThreshold;

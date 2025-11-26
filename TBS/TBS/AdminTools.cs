@@ -544,6 +544,7 @@ public static class AdminTools
                 Console.WriteLine("  9. Items");
                 Console.WriteLine("  10. Moves/Attacks");
                 Console.WriteLine("  11. StatTracker");
+                Console.WriteLine("  12. Companions");
                 Console.WriteLine();
                 Console.WriteLine("  S. Save Changes");
                 Console.WriteLine("  0. Cancel (discard changes)");
@@ -586,6 +587,9 @@ public static class AdminTools
                         break;
                     case "11":
                         ModifyStatTracker(player);
+                        break;
+                    case "12":
+                        ModifyCompanions(player);
                         break;
                     case "S":
                         if (SavePlayerChanges(player, baseUrl, http))
@@ -1386,6 +1390,127 @@ public static class AdminTools
                     break;
                 case "0":
                     return;
+                default:
+                    Console.WriteLine("\nInvalid choice.");
+                    PressAnyKey();
+                    break;
+            }
+        }
+    }
+
+    private static void ModifyCompanions(Player player)
+    {
+        while (true)
+        {
+            int maxCompanions = CompanionSystem.GetMaxCompanions(player);
+            var companions = CompanionSystem.GetCompanions(player);
+            
+            Console.Clear();
+            Console.WriteLine("╔════════════════════════════════════════╗");
+            Console.WriteLine("║       MODIFY COMPANIONS                ║");
+            Console.WriteLine("╚════════════════════════════════════════╝");
+            Console.WriteLine();
+            
+            Console.WriteLine($"Max Companions: {maxCompanions}");
+            Console.WriteLine($"Current Companions: {companions.Count}\n");
+            
+            if (companions.Count > 0)
+            {
+                Console.WriteLine("Current Companions:");
+                for (int i = 0; i < companions.Count; i++)
+                {
+                    var c = companions[i];
+                    string status = c.IsAlive() ? "Alive" : "Dead";
+                    Console.WriteLine($"  {i + 1}. {c.name} - Lvl {c.level} - HP: {c.HP}/{c.maxHP} ({status})");
+                }
+                Console.WriteLine();
+            }
+            
+            Console.WriteLine("1. Add Companion");
+            Console.WriteLine("2. Remove Companion");
+            Console.WriteLine("3. Remove All Companions");
+            Console.WriteLine("4. Set Max Companions");
+            Console.WriteLine("5. Heal All Companions");
+            Console.WriteLine();
+            Console.WriteLine("0. Back");
+            Console.WriteLine();
+            Console.Write("Choice: ");
+            
+            var choice = Console.ReadLine();
+            
+            switch (choice)
+            {
+                case "1":
+                    Console.Write("\nEnter companion name (e.g., goblin, thug, dire wolf): ");
+                    string name = Console.ReadLine();
+                    if (!string.IsNullOrWhiteSpace(name))
+                    {
+                        bool success = CompanionSystem.RecruitByName(player, name);
+                        if (!success)
+                        {
+                            Console.WriteLine("\n✗ Failed to add companion.");
+                        }
+                    }
+                    PressAnyKey();
+                    break;
+                    
+                case "2":
+                    if (companions.Count == 0)
+                    {
+                        Console.WriteLine("\nNo companions to remove.");
+                    }
+                    else
+                    {
+                        Console.Write("\nEnter companion number to remove: ");
+                        if (int.TryParse(Console.ReadLine(), out int index) && index > 0 && index <= companions.Count)
+                        {
+                            bool success = CompanionSystem.RemoveCompanion(player, index - 1);
+                            if (success)
+                            {
+                                Console.WriteLine("\n✓ Companion removed!");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("✗ Invalid selection.");
+                        }
+                    }
+                    PressAnyKey();
+                    break;
+                    
+                case "3":
+                    Console.Write("\nAre you sure you want to remove all companions? (type YES): ");
+                    if (Console.ReadLine() == "YES")
+                    {
+                        CompanionSystem.DismissAllCompanions(player);
+                        Console.WriteLine("✓ All companions removed!");
+                    }
+                    PressAnyKey();
+                    break;
+                    
+                case "4":
+                    Console.Write($"\nCurrent max companions: {maxCompanions}");
+                    Console.Write("\nEnter new max companions: ");
+                    if (int.TryParse(Console.ReadLine(), out int newMax) && newMax >= 0)
+                    {
+                        CompanionSystem.SetMaxCompanions(player, newMax);
+                        Console.WriteLine($"✓ Max companions set to: {newMax}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("✗ Invalid number.");
+                    }
+                    PressAnyKey();
+                    break;
+                    
+                case "5":
+                    CompanionSystem.HealAllCompanions(player);
+                    PressAnyKey();
+                    break;
+                    
+                case "0":
+                    return;
+                    
                 default:
                     Console.WriteLine("\nInvalid choice.");
                     PressAnyKey();

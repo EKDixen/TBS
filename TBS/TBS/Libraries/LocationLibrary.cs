@@ -182,6 +182,7 @@ public static class LocationLibrary
         { EncounterLibrary.StrangeMushrooms, 20},
         { EncounterLibrary.FoundTreasure, 15},
         { EncounterLibrary.AbandonedBackpack, 5},
+        { EncounterLibrary.InjuredWolf, 2},
         { EncounterLibrary.WeakRopeBridge, 5}
     }, "Greenwood Territories");
 
@@ -239,6 +240,7 @@ public static class LocationLibrary
         { EncounterLibrary.RoadGambling, 10},
         { EncounterLibrary.DireWolfPack, 20},
         { EncounterLibrary.AbandonedBackpack, 5},
+        { EncounterLibrary.InjuredWolf, 5},
         { EncounterLibrary.WeakRopeBridge, 10}
     }, "Greenwood Territories");
     #endregion
