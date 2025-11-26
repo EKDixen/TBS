@@ -197,6 +197,13 @@
         detailsLore = "Elegant mask that makes all opponents freeze in fear"
     };
 
+    public static Item ThornlaceCirclet = new Item("Thornlace Circlet", "+12 dodgeNegation, +2 armor", 40, 1, ItemType.equipment)
+    {
+        stats = { ["dodgeNegation"] = 12, ["armor"] = 2 },
+        equipmentType = EquipmentType.head,
+        detailsLore = "A delicate circlet that gives insight into enemy motions, reducing their chance to evade."
+    };
+
     public static Item FallenGuardHelmet = new Item("Fallen Guard's Helmet", "+5 maxHP, +2 Armor...", 14,9, ItemType.equipment)
     {
         stats = { ["maxHP"] = 5, ["armor"] = 2, ["stunNegation"] = 1 },
@@ -235,6 +242,12 @@
         stats ={ ["maxHP"] = 10, ["speed"] = 2 },
         equipmentType = EquipmentType.torso,
         detailsLore = "A vest made of tough canvas. \nIt's light enough to enhance movement",
+    };
+    public static Item WillowwovenCloak = new Item("Willowwoven Cloak", "+25% dodge, +70 dodgeNegation", 120, 3, ItemType.equipment)
+    {
+        stats = { ["dodge"] = 25, ["dodgeNegation"] = 70 },
+        equipmentType = EquipmentType.torso,
+        detailsLore = "A cloak braided with thorn-silk; it hides steps and tangles evasive tricks."
     };
     #endregion
 

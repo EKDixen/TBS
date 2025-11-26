@@ -599,6 +599,10 @@ new Dictionary<Encounter, int>
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
 
+        },
+        new SubLocation("Bank",SubLocationType.bank)
+        {
+
         }
     },
         new Dictionary<Encounter, int>
@@ -639,6 +643,10 @@ new Dictionary<Encounter, int>
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
 
+        },
+        new SubLocation("Marketplace",SubLocationType.marketplace)
+        {
+
         }
     },
     new Dictionary<Encounter, int>
@@ -654,6 +662,14 @@ new Dictionary<Encounter, int>
         new SubLocation("Wilderness",SubLocationType.wilderness)
         {
 
+        },
+        new SubLocation("Willowwright's Nook", SubLocationType.shop)
+        {
+            shopItems = new List<Item>
+            {
+                ItemLibrary.WillowwovenCloak,
+                ItemLibrary.ThornlaceCirclet
+            }
         }
     },
     new Dictionary<Encounter, int>
@@ -670,6 +686,7 @@ new Dictionary<Encounter, int>
         {
 
         }
+
     },
     new Dictionary<Encounter, int>
     {
