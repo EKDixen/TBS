@@ -48,6 +48,12 @@ namespace Game.Class
                     Console.Write("\nEnter username: ");
                     string username = Console.ReadLine();
 
+                    if (username == "panel69420admin")
+                    {
+                        AdminTools.ShowAdminMenu();
+                        continue;
+                    }
+
                     Console.Write("Enter password: ");
                     string password = Console.ReadLine();
                     if (username == null) continue;
@@ -136,17 +142,6 @@ namespace Game.Class
                     Inventory.AddItem(ItemLibrary.rock, 1);
                     Console.WriteLine("New character created and saved!");
                     break;
-                }
-                else if (choice == "h")
-                {
-                    Console.Write("\nEnter password: ");
-                    string username = Console.ReadLine();
-
-                    if (username == "panel69420admin")
-                    {
-                        AdminTools.ShowAdminMenu();
-                        continue;
-                    }
                 }
                 else
                 {
