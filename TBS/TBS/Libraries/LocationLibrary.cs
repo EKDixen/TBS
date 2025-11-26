@@ -624,6 +624,7 @@ new Dictionary<Encounter, int>
             shopItems = new List<Item>
             {
                 ItemLibrary.MoonleafGreaves,
+                ItemLibrary.MoonveilSigil,
                 ItemLibrary.ElixirOfEvasion,
                 ItemLibrary.LeafsongSolution,
                 ItemLibrary.WillowTea
@@ -667,8 +668,11 @@ new Dictionary<Encounter, int>
         {
             shopItems = new List<Item>
             {
+                ItemLibrary.WillowChargebow,
                 ItemLibrary.WillowwovenCloak,
-                ItemLibrary.ThornlaceCirclet
+                ItemLibrary.ThornlaceCirclet,
+                ItemLibrary.WindspiritCharm,
+                ItemLibrary.WardenStone
             }
         }
     },

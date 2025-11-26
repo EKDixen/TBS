@@ -171,10 +171,27 @@
         stats = { ["maxHP"] = 5, ["critChance"] = 3},
         detailsLore = "Old amulet with a tiny silver waterfall engraved\n hums faintly with magic" 
     };
+    public static Item MoonveilSigil = new Item("Moonveil Sigil",
+    "+20% dodge, +1 speed", 120, 3, ItemType.artifact)
+    {
+        stats = { ["dodge"] = 20, ["speed"] =  1},
+        detailsLore = "An etched sigil that shimmers with soft moonlight, \nshifting the bearer away from danger."
+    };
+    public static Item WindspiritCharm = new Item("Windspirit Charm",
+    "+10% dodge, +20 dodgeNegation", 100, 3, ItemType.artifact)
+    {
+        stats = { ["dodge"] = 10, ["dodgeNegation"] = 20 },
+        detailsLore = "A charm woven of gentle wind spirits, \nguides the bearer while disrupting swift opponents"
+    };
+    public static Item WardenStone = new Item("Warden Stone",
+    "+25 dodgeNegation, +2 armor", 300, 5, ItemType.artifact)
+    {
+        stats = { ["dodgeNegation"] = 25, ["armor"] = 2 },
+        detailsLore = "A carved stone humming with deep-forest strength, making enemy evasions falter."
+    };
     #endregion
 
     #region equipment
-    
 
     #region head
     public static Item baseballCap = new Item("Baseball Cap", "+1 armor", 5,2, ItemType.equipment)
@@ -197,7 +214,7 @@
         detailsLore = "Elegant mask that makes all opponents freeze in fear"
     };
 
-    public static Item ThornlaceCirclet = new Item("Thornlace Circlet", "+12 dodgeNegation, +2 armor", 40, 1, ItemType.equipment)
+    public static Item ThornlaceCirclet = new Item("Thornlace Circlet", "+12 dodgeNegation, +2 armor", 40, 2, ItemType.equipment)
     {
         stats = { ["dodgeNegation"] = 12, ["armor"] = 2 },
         equipmentType = EquipmentType.head,
@@ -243,7 +260,7 @@
         equipmentType = EquipmentType.torso,
         detailsLore = "A vest made of tough canvas. \nIt's light enough to enhance movement",
     };
-    public static Item WillowwovenCloak = new Item("Willowwoven Cloak", "+25% dodge, +70 dodgeNegation", 120, 3, ItemType.equipment)
+    public static Item WillowwovenCloak = new Item("Willowwoven Cloak", "+25% dodge, +70 dodgeNegation", 120, 10, ItemType.equipment)
     {
         stats = { ["dodge"] = 25, ["dodgeNegation"] = 70 },
         equipmentType = EquipmentType.torso,
@@ -289,7 +306,7 @@
         
     };
 
-    public static Item MoonleafGreaves = new Item("Moonleaf Greaves", "+20% dodge, +40% dodgeNegation", 40, 2, ItemType.equipment)
+    public static Item MoonleafGreaves = new Item("Moonleaf Greaves", "+20% dodge, +40% dodgeNegation", 80, 8, ItemType.equipment)
     {
         stats = { ["dodge"] = 20, ["dodgeNegation"] = 40 },
         equipmentType = EquipmentType.legs,
@@ -330,6 +347,12 @@
         weaponAttack = AttackLibrary.FoulThrust,
         equipmentType = EquipmentType.weapon,
         detailsLore = "A rusty, crude hook.. It’s dirty and unbalanced, \nbut the sharp point can easily catch clothing or skin.",
+    };
+    public static Item WillowChargebow = new Item("WillowCharge bow", "Willowrend Shot", 120, 8, ItemType.equipment)
+    {
+        detailsLore = "A bow of braided willow \nusing arrows that make opponents a lot less slippery",
+        equipmentType = EquipmentType.weapon,
+        weaponAttack = AttackLibrary.WillowShot
     };
 
     #endregion
