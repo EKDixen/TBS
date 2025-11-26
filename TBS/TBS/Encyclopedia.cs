@@ -84,10 +84,9 @@ public static class Encyclopedia
             else if (input == 0) EncyclopediaLogic();
             else if (input == 1) itemtype = "material";
             else if (input == 2) itemtype = "equipment";
-            else if (input == 3) itemtype = "Artifact";
+            else if (input == 3) itemtype = "artifact";
             else if (input == 4) itemtype = "consumable";
-
-
+            break;
         }
 
         while (true)
@@ -95,7 +94,10 @@ public static class Encyclopedia
             // Update the filtered list based on the search term
             if (string.IsNullOrEmpty(searchTerm))
             {
-                filteredItems = Program.player.knownItems; // full list
+                filteredItems = Program.player.knownItems
+                .Where(item =>   item.type.Equals(ItemType.material))
+                .ToList();       // full list
+
             }
             else
             {
@@ -103,7 +105,7 @@ public static class Encyclopedia
                     .Where(item => item.name.ToLower().Contains(searchTerm.ToLower()) ||
                                    item.description.ToLower().Contains(searchTerm.ToLower()) ||
                                    item.GetDescription().ToLower().Contains(searchTerm.ToLower()) ||
-                                   item.type.Equals("")) 
+                                   item.type.Equals(itemtype))
                                   
                     .ToList();
             }
@@ -144,6 +146,7 @@ public static class Encyclopedia
             MainUI.WriteInMainArea("");
             MainUI.WriteInMainArea("Type item number (1-9) to interact, or:");
             MainUI.WriteInMainArea("[N] Next Page  [P] Prev Page  [S] Search  [0] Back to Main Menu");
+            MainUI.WriteInMainArea(itemtype);
 
 
             string inputString = Console.ReadKey(true).KeyChar.ToString().ToLower() ?? "";
