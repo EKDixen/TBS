@@ -104,14 +104,17 @@ public static class AttackLibrary
         new AttackEffect("damage", 10, 0, "enemy"),       
         new AttackEffect("stunNegation", -25, 3, "enemy")
     });
+
     public static Attack FoulThrust = new Attack("Foul Thrust", new List<AttackEffect> {
         new AttackEffect("damage", 15, 0, "enemy"),       
         new AttackEffect("dodge", -15, 1, "enemy")        
     });
+
     public static Attack Lunge = new Attack("Lunge", new List<AttackEffect> {
         new AttackEffect("damage", 30, 0, "enemy"),
         new AttackEffect("speed", -5, 2, "self")
     }, ClassLibrary.Rogue);
+
     public static Attack Bloodieddagger = new Attack("Bloodied Dagger", new List<AttackEffect> {
         new AttackEffect("damage", 40, 0, "enemy"),
         new AttackEffect("damage", -15, 0, "self")

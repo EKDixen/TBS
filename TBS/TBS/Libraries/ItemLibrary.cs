@@ -188,21 +188,21 @@
         detailsLore = "Old amulet with a tiny silver waterfall engraved\n hums faintly with magic" 
     };
     public static Item MoonveilSigil = new Item("Moonveil Sigil",
-    "+20% dodge, +1 speed", 120, 3, ItemType.Artifact)
+    "+10% dodge", 120, 3, ItemType.Artifact)
     {
-        stats = { ["dodge"] = 20, ["speed"] =  1},
+        stats = { ["dodge"] = 10},
         detailsLore = "An etched sigil that shimmers with soft moonlight, \nshifting the bearer away from danger."
     };
     public static Item WindspiritCharm = new Item("Windspirit Charm",
-    "+10% dodge, +20 dodgeNegation", 100, 3, ItemType.Artifact)
+    "+5% dodge, +10 dodgeNegation", 100, 3, ItemType.Artifact)
     {
-        stats = { ["dodge"] = 10, ["dodgeNegation"] = 20 },
+        stats = { ["dodge"] = 5, ["dodgeNegation"] = 10 },
         detailsLore = "A charm woven of gentle wind spirits, \nguides the bearer while disrupting swift opponents"
     };
     public static Item WardenStone = new Item("Warden Stone",
-    "+25 dodgeNegation, +2 armor", 300, 5, ItemType.Artifact)
+    "+25 dodgeNegation, +1 armor", 300, 5, ItemType.Artifact)
     {
-        stats = { ["dodgeNegation"] = 25, ["armor"] = 2 },
+        stats = { ["dodgeNegation"] = 25, ["armor"] = 1 },
         detailsLore = "A carved stone humming with deep-forest strength, making enemy evasions falter."
     };
     #endregion
