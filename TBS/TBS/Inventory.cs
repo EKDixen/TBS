@@ -273,23 +273,24 @@ public static class Inventory
         }
 
         Item existingItem = player.ownedItems.FirstOrDefault(i => i.name == templateItem.name);
+        Item existingItemEncyc = player.knownItems.FirstOrDefault(i => i.name == templateItem.name);
 
         if (existingItem != null && templateItem.type != ItemType.Equipment)
         {
             if (existingItem.type == ItemType.Artifact)
             {
-                RemoveEffects(existingItem,tAmount); 
+                RemoveEffects(existingItem, tAmount);
             }
 
             existingItem.amount += tAmount;
 
             if (existingItem.type == ItemType.Artifact)
             {
-                ApplyEffects(existingItem, null); 
+                ApplyEffects(existingItem, null);
             }
 
         }
-        else if(templateItem.type == ItemType.Equipment)
+        else if (templateItem.type == ItemType.Equipment)
         {
             for (int i = 0; i < tAmount; i++)
             {
@@ -303,7 +304,7 @@ public static class Inventory
 
             newItem.amount = tAmount;
             player.ownedItems.Add(newItem);
-            player.knownItems.Add(newItem);
+            
 
             if (newItem.type == ItemType.Artifact)
             {
@@ -311,6 +312,13 @@ public static class Inventory
             }
 
         }
+
+        if (existingItemEncyc == null)
+        {
+            Item newItem = new Item(templateItem);
+            player.knownItems.Add(newItem);
+        }
+
         UpdateWeight();
     }
 
@@ -356,6 +364,7 @@ public static class Inventory
 
         // Try to find an existing stack of this material
         Item existingMaterial = player.materialItems.FirstOrDefault(i => i.name == templateItem.name);
+        Item existingMaterialEncyc = player.knownItems.FirstOrDefault(i => i.name == templateItem.name);
 
         if (existingMaterial != null)
         {
@@ -366,6 +375,12 @@ public static class Inventory
             Item newItem = new Item(templateItem); // copy template
             newItem.amount = toAdd;
             player.materialItems.Add(newItem);
+            
+        }
+
+        if (existingMaterialEncyc == null)
+        {
+            Item newItem = new Item(templateItem); // copy template
             player.knownItems.Add(newItem);
         }
 
