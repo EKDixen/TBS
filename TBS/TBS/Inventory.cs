@@ -196,7 +196,7 @@ public static class Inventory
                 MainUI.WriteInMainArea($"\nyou drop the {selectedItem.name}");
                 DropItem(selectedItem,1);
             }
-            else if (ik == 3 && selectedItem.type == ItemType.Equipment && selectedItem.equipmentType != EquipmentType.weapon)
+            else if (ik == 3 && selectedItem.type == ItemType.Equipment && selectedItem.equipmentType != EquipmentType.Weapon)
             {
 
                 Item chosen = selectedItem;
@@ -212,10 +212,10 @@ public static class Inventory
                 {
                     // equip
                     int slot = 0;
-                    if (chosen.equipmentType == EquipmentType.head) slot = 1;
-                    if (chosen.equipmentType == EquipmentType.torso) slot = 2;
-                    if (chosen.equipmentType == EquipmentType.legs) slot = 3;
-                    if (chosen.equipmentType == EquipmentType.feet) slot = 4;
+                    if (chosen.equipmentType == EquipmentType.Head) slot = 1;
+                    if (chosen.equipmentType == EquipmentType.Torso) slot = 2;
+                    if (chosen.equipmentType == EquipmentType.Legs) slot = 3;
+                    if (chosen.equipmentType == EquipmentType.Feet) slot = 4;
 
                     if(player.equippedItems[slot - 1] != null)UnequipItem(slot-1);
 
@@ -228,7 +228,7 @@ public static class Inventory
 
 
             }
-            else if (ik == 3 && selectedItem.type == ItemType.Equipment && selectedItem.equipmentType == EquipmentType.weapon)
+            else if (ik == 3 && selectedItem.type == ItemType.Equipment && selectedItem.equipmentType == EquipmentType.Weapon)
             {
                 Item chosen = selectedItem;
 

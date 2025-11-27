@@ -85,14 +85,14 @@
     public static Item goblinSkullHelm = new Item("Goblin Skull Helm", "+2 armor, +5% dodge", 25, 5, ItemType.Equipment)
     {
         stats = { ["armor"] = 2, ["dodge"] = 5 },
-        equipmentType = EquipmentType.head,
+        equipmentType = EquipmentType.Head,
         detailsLore = "A crude helmet fashioned from goblin trophies and reinforced cloth.\nLightweight but surprisingly effective."
     };
 
     public static Item frostforgedHelm = new Item("Frostforged Helm", "+4 armor, +10 maxHP", 80, 12, ItemType.Equipment)
     {
         stats = { ["armor"] = 4, ["maxHP"] = 10 },
-        equipmentType = EquipmentType.head,
+        equipmentType = EquipmentType.Head,
         detailsLore = "A helmet infused with frost magic. The cold never bothered you anyway."
     };
     #endregion
@@ -101,14 +101,14 @@
     public static Item spidersilkVest = new Item("Spidersilk Vest", "+3 armor, +15% dodge", 60, 7, ItemType.Equipment)
     {
         stats = { ["armor"] = 3, ["dodge"] = 15 },
-        equipmentType = EquipmentType.torso,
+        equipmentType = EquipmentType.Torso,
         detailsLore = "Woven from spider silk and reinforced with wolf pelt.\nFlexible yet protective."
     };
 
     public static Item reinforcedIronPlate = new Item("Reinforced Iron Plate", "+6 armor, +15 maxHP, -1 speed", 70, 15, ItemType.Equipment)
     {
         stats = { ["armor"] = 6, ["maxHP"] = 15, ["speed"] = -1 },
-        equipmentType = EquipmentType.torso,
+        equipmentType = EquipmentType.Torso,
         detailsLore = "Heavy iron plating reinforced with quality materials.\nProvides excellent protection at the cost of mobility."
     };
     #endregion
@@ -117,7 +117,7 @@
     public static Item spidersilkLeggings = new Item("Spidersilk Leggings", "+1 armor, +25% dodge, +1 speed", 55, 4, ItemType.Equipment)
     {
         stats = { ["armor"] = 1, ["dodge"] = 25, ["speed"] = 1 },
-        equipmentType = EquipmentType.legs,
+        equipmentType = EquipmentType.Legs,
         detailsLore = "Lightweight leggings woven from spider silk.\nEnhances agility significantly."
     };
     #endregion
@@ -126,7 +126,7 @@
     public static Item wolfhideBoots = new Item("Wolfhide Boots", "+2 speed, +2 armor", 40, 3, ItemType.Equipment)
     {
         stats = { ["speed"] = 2, ["armor"] = 2 },
-        equipmentType = EquipmentType.feet,
+        equipmentType = EquipmentType.Feet,
         detailsLore = "Sturdy boots lined with wolf pelt.\nProvides both protection and mobility."
     };
     #endregion
@@ -135,35 +135,35 @@
     public static Item IronWarhammer = new Item("Iron Warhammer", "Heavy Slam", 50, 18, ItemType.Equipment)
     {
         detailsLore = "A massive iron hammer, Hits with incredible force and \nshattering enemy defenses.",
-        equipmentType = EquipmentType.weapon,
+        equipmentType = EquipmentType.Weapon,
         weaponAttack = AttackLibrary.HeavySlam
     };
 
     public static Item FishSword = new Item("Fish Sword", "Heavy Slam", 15, 6, ItemType.Equipment)
     {
         detailsLore = "a sword coated in fish intestines",
-        equipmentType = EquipmentType.weapon,
+        equipmentType = EquipmentType.Weapon,
         weaponAttack = AttackLibrary.FishCut
     };
 
     public static Item GlacierReaver = new Item("Glacier Reaver", "Glacial Sweep", 150, 25, ItemType.Equipment)
     {
         detailsLore = "A massive sharp blade carved from a single big shard of ice",
-        equipmentType = EquipmentType.weapon,
+        equipmentType = EquipmentType.Weapon,
         weaponAttack = AttackLibrary.GlacialSweep
     };
 
     public static Item WinterfangGauntlet = new Item("Winterfang Gauntlet", "Frost Barrier", 500, 30, ItemType.Equipment)
     {
         detailsLore = "A reinforced gauntlet using it to strike an enemy instantly coats the wearer in a brittle layer of protective frost.",
-        equipmentType = EquipmentType.weapon,
+        equipmentType = EquipmentType.Weapon,
         weaponAttack = AttackLibrary.FrostBarrier
     };
 
     public static Item SpineBreaker = new Item("Spine Breaker", "Bone Shatter", 40, 12, ItemType.Equipment)
     {
         detailsLore = "A jagged, heavy bone club fashioned from a large spine, \nMakes the target extremely vulnerable to future stuns",
-        equipmentType = EquipmentType.weapon,
+        equipmentType = EquipmentType.Weapon,
         weaponAttack = AttackLibrary.BoneShatter
     };
     #endregion
@@ -213,40 +213,40 @@
     public static Item baseballCap = new Item("Baseball Cap", "+1 armor", 5,2, ItemType.Equipment)
     {
         stats = { ["armor"] = 1},
-        equipmentType = EquipmentType.head,
+        equipmentType = EquipmentType.Head,
         detailsLore = "cool Cap.. somehow makes it harder to punch your head off"
     };
     public static Item knightHelmet = new Item("Knight Helmet", "+3 armor, -1 speed",7,10,ItemType.Equipment)
     {
         stats = { ["armor"] = 3, ["speed"] = -1},
-        equipmentType = EquipmentType.head,
+        equipmentType = EquipmentType.Head,
         detailsLore = "heavy knight helmet.. makes it much harder to cut your head off, \nbut its a little too heavy to move properly in"
     };
 
     public static Item VampireMask = new Item("Vampire Mask", "+20% stun", 23,4, ItemType.Equipment)
     {
         stats = { ["stun"] = 20 },
-        equipmentType = EquipmentType.head,
+        equipmentType = EquipmentType.Head,
         detailsLore = "Elegant mask that makes all opponents freeze in fear"
     };
 
     public static Item ThornlaceCirclet = new Item("Thornlace Circlet", "+12 dodgeNegation, +2 armor", 40, 2, ItemType.Equipment)
     {
         stats = { ["dodgeNegation"] = 12, ["armor"] = 2 },
-        equipmentType = EquipmentType.head,
+        equipmentType = EquipmentType.Head,
         detailsLore = "A delicate circlet that gives insight into enemy motions, reducing their chance to evade."
     };
 
     public static Item FallenGuardHelmet = new Item("Fallen Guard's Helmet", "+5 maxHP, +2 Armor...", 14,9, ItemType.Equipment)
     {
         stats = { ["maxHP"] = 5, ["armor"] = 2, ["stunNegation"] = 1 },
-        equipmentType = EquipmentType.head,
+        equipmentType = EquipmentType.Head,
         detailsLore = "Cracked iron helmet of a long dead town guard"
     };
     public static Item TatteredHat = new Item("Tattered Hat", "+1 armor, +1 dodge", 5,3, ItemType.Equipment)
     {
         stats = { ["armor"] = 1, ["dodge"] = 1 },
-        equipmentType = EquipmentType.head,
+        equipmentType = EquipmentType.Head,
         detailsLore = "A weather-worn hat from a long-forgotten villager"
     };
     #endregion
@@ -255,31 +255,31 @@
     public static Item constructionVest = new Item("Construction Vest", "+2 armor, -40% dodge",6,5,ItemType.Equipment)
     {
         stats = { ["armor"] = 2, ["dodge"] = -40 },
-        equipmentType = EquipmentType.torso,
+        equipmentType = EquipmentType.Torso,
         detailsLore = "a bright yellow construction vest... \ndefends you a bit, but its hard to dodge in"
     };
     public static Item CloakofDusk = new Item("Cloak of Dusk", "+1 speed, +40% dodge", 35,6, ItemType.Equipment)
     {
         stats = { ["speed"] = 1, ["dodge"] = 40 },
-        equipmentType = EquipmentType.torso,
+        equipmentType = EquipmentType.Torso,
         detailsLore = "Black velvet cloak that blends perfectly with shadows"
     };
     public static Item frozenChestplate = new Item("Frozen chestplate", "+50 max hp, +5 armor", 350, 13, ItemType.Equipment)
     {
         stats = { ["maxHP"] = 50, ["armor"] = 5 },
-        equipmentType = EquipmentType.torso,
+        equipmentType = EquipmentType.Torso,
         detailsLore = "Black velvet cloak that blends perfectly with shadows"
     };
     public static Item ExpeditionVest = new Item("Expedition Vest", "+10 maxHP, +2 speed", 20, 13, ItemType.Equipment)
     {
         stats ={ ["maxHP"] = 10, ["speed"] = 2 },
-        equipmentType = EquipmentType.torso,
+        equipmentType = EquipmentType.Torso,
         detailsLore = "A vest made of tough canvas. \nIt's light enough to enhance movement",
     };
     public static Item WillowwovenCloak = new Item("Willowwoven Cloak", "+25% dodge, +70 dodgeNegation", 120, 10, ItemType.Equipment)
     {
         stats = { ["dodge"] = 25, ["dodgeNegation"] = 70 },
-        equipmentType = EquipmentType.torso,
+        equipmentType = EquipmentType.Torso,
         detailsLore = "A cloak braided with thorn-silk; it hides steps and tangles evasive tricks."
     };
     #endregion
@@ -288,14 +288,14 @@
     public static Item camoPants = new Item("Camo Pants", "+20% dodge", 5,2, ItemType.Equipment)
     {
         stats = { ["dodge"] = 20 },
-        equipmentType = EquipmentType.legs,
+        equipmentType = EquipmentType.Legs,
         detailsLore = "military grade camo pants..\n makes it harder to hit you"
     };
 
     public static Item RoughTrousers = new Item("Rough Trousers", "+1 armor", 4, 2, ItemType.Equipment)
     {
         stats = { ["armor"] = 1 },
-        equipmentType = EquipmentType.legs, 
+        equipmentType = EquipmentType.Legs, 
         detailsLore = "Simple, thick trousers reinforced with leather patches \nThey offer a tiny bit of defense",
     };
     #endregion
@@ -304,20 +304,20 @@
     public static Item sandals = new Item("Sandals", "+1 speed", 5,1, ItemType.Equipment)
     {
         stats = { ["speed"] = 1 },
-        equipmentType = EquipmentType.feet,
+        equipmentType = EquipmentType.Feet,
         detailsLore = "some nice sandals.. decently fine to run in"
     };
     public static Item speedBoots = new Item("Speed Boots", "+3 speed", 8,2, ItemType.Equipment)
     {
         stats = { ["speed"] = 3 },
-        equipmentType = EquipmentType.feet,
+        equipmentType = EquipmentType.Feet,
         detailsLore = "some beautiful boots of speed.. really nice to run in"
     };
 
     public static Item NightStalkerGreaves = new Item("Night Stalker Greaves", "+50% dodgeNegation", 17,4, ItemType.Equipment)
     {
         stats = { ["dodgeNegation"] = 50 },
-        equipmentType = EquipmentType.feet,
+        equipmentType = EquipmentType.Feet,
         detailsLore = "Dark greaves that allow for perfect stalking of the pray\n no matter how agile it may be",
         
     };
@@ -325,14 +325,14 @@
     public static Item MoonleafGreaves = new Item("Moonleaf Greaves", "+20% dodge, +40% dodgeNegation", 80, 8, ItemType.Equipment)
     {
         stats = { ["dodge"] = 20, ["dodgeNegation"] = 40 },
-        equipmentType = EquipmentType.legs,
+        equipmentType = EquipmentType.Legs,
         detailsLore = "Light greaves that allow for very swift movement"
     };
 
     public static Item iceSkates = new Item("Ice Skates", "+5 speed, -2 armor ", 250, 4, ItemType.Equipment)
     {
         stats = { ["speed"] = 5, ["armor"] = -2 },
-        equipmentType = EquipmentType.feet,
+        equipmentType = EquipmentType.Feet,
         detailsLore = "Dark greaves that allow for perfect stalking of the pray\n no matter how agile it may be",
 
     };
@@ -343,31 +343,31 @@
     public static Item sword = new Item("Sword", "Slash", 11, 5, ItemType.Equipment)
     {
         detailsLore = "Just a simple sword, can cut a bit",
-        equipmentType = EquipmentType.weapon,
+        equipmentType = EquipmentType.Weapon,
         weaponAttack = AttackLibrary.Slash
     };
     public static Item CrudePoisonSpear = new Item("Crude Poison Spear", "Venom Strike", 20, 4, ItemType.Equipment)
     {
         detailsLore = "A simple stone tipped spear coated in a foul smelling venom",
-        equipmentType = EquipmentType.weapon,
+        equipmentType = EquipmentType.Weapon,
         weaponAttack = AttackLibrary.VenomStrike
     };
     public static Item StoneMaul = new Item("Two-Handed Stone Maul", "Reckless Swing", 15, 30, ItemType.Equipment)
     {
         detailsLore = "BIG STONE ON A STICK:D",
-        equipmentType = EquipmentType.weapon,
+        equipmentType = EquipmentType.Weapon,
         weaponAttack = AttackLibrary.RecklessSwing
     };
     public static Item FoulHook = new Item("Foul Hook", "Foul Thrust", 15, 6, ItemType.Equipment)
     {
         weaponAttack = AttackLibrary.FoulThrust,
-        equipmentType = EquipmentType.weapon,
+        equipmentType = EquipmentType.Weapon,
         detailsLore = "A rusty, crude hook.. It’s dirty and unbalanced, \nbut the sharp point can easily catch clothing or skin.",
     };
     public static Item WillowChargebow = new Item("WillowCharge bow", "Willowrend Shot", 120, 8, ItemType.Equipment)
     {
         detailsLore = "A bow of braided willow \nusing arrows that make opponents a lot less slippery",
-        equipmentType = EquipmentType.weapon,
+        equipmentType = EquipmentType.Weapon,
         weaponAttack = AttackLibrary.WillowShot
     };
 

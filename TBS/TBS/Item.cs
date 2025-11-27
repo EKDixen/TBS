@@ -71,7 +71,7 @@ public class Item
     public string GetDescription()
     {
         List<string> parts = new List<string>();
-        if (type == ItemType.Equipment && equipmentType != EquipmentType.weapon || type == ItemType.Artifact)
+        if (type == ItemType.Equipment && equipmentType != EquipmentType.Weapon || type == ItemType.Artifact)
         {
             foreach (var stat in stats)
             {
@@ -119,7 +119,7 @@ public class Item
                 parts.Add(desc);
             }
         }
-        else if (type == ItemType.Equipment && equipmentType == EquipmentType.weapon) 
+        else if (type == ItemType.Equipment && equipmentType == EquipmentType.Weapon) 
         {
             parts.Add($"gives you the move {weaponAttack.name} as long as its equipped\n");
             parts.Add($"{weaponAttack.GetDescription()}\n");
