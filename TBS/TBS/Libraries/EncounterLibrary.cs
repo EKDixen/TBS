@@ -910,16 +910,16 @@ public static class EncounterLibrary
         (player) => {
             MainUI.WriteInMainArea("The wolf looks at you with desperate, pleading eyes.");
             MainUI.WriteInMainArea("It's losing blood fast and needs immediate help.");
-            MainUI.WriteInMainArea("\nOffer a Big Healing Potion to heal it? (y/n): ");
+            MainUI.WriteInMainArea("\nOffer a Big Health Potion to heal it? (y/n): ");
             string choice = Console.ReadKey(true).KeyChar.ToString().ToLower();
             
             if (choice == "y" || choice == "yes")
             {
-                var bigHealingPotion = player.ownedItems.FirstOrDefault(i => i.name == "Big Healing Potion" && i.amount > 0);
+                var bigHealingPotion = player.ownedItems.FirstOrDefault(i => i.name == "Big Health Potion" && i.amount > 0);
                 
                 if (bigHealingPotion == null)
                 {
-                    MainUI.WriteInMainArea("\nYou don't have a Big Healing Potion!");
+                    MainUI.WriteInMainArea("\nYou don't have a Big Health Potion!");
                     MainUI.WriteInMainArea("The wolf whimpers as you walk away empty-handed.");
                     return;
                 }
@@ -972,7 +972,7 @@ public static class EncounterLibrary
                         player.ownedItems.Remove(bigHealingPotion);
                     }
                     
-                    MainUI.WriteInMainArea("\nYou carefully pour the Big Healing Potion over the wolf's wounds.");
+                    MainUI.WriteInMainArea("\nYou carefully pour the Big Health Potion over the wolf's wounds.");
                     MainUI.WriteInMainArea("The wolf's injuries begin to close and its breathing steadies.");
                     MainUI.WriteInMainArea("It stands up, fully healed, and looks at you with deep gratitude.");
                     MainUI.WriteInMainArea("The wolf nuzzles your hand and refuses to leave your side!");
