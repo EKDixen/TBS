@@ -9,11 +9,11 @@ public enum ItemType
 }
 public enum EquipmentType
 {
-    head,
-    torso,
-    legs,
-    feet,
-    weapon
+    Head,
+    Torso,
+    Legs,
+    Feet,
+    Weapon
 }
 
 public class Item

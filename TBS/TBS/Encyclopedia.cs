@@ -130,13 +130,30 @@ public class Encyclopedia
             }
 
             MainUI.WriteInMainArea("");
-            MainUI.WriteInMainArea("nr     Name                   Value         Type          Weight");
-            MainUI.WriteInMainArea("----------------------------------------------------------------");
+            if (itemsearch == 1)
+            {
+            MainUI.WriteInMainArea("nr     Name                   Value          Slot         Weight");
+            }
+            else
+            {
+            MainUI.WriteInMainArea("nr     Name                   Value          type         Weight");
+            }
+
+                MainUI.WriteInMainArea("----------------------------------------------------------------");
             int i = 0;
             foreach (var item in pageItems)
             {
                 i++;
+                if (itemsearch == 1)
+                {
+                MainUI.WriteInMainArea($"{i,-7}{item.name,-24} {item.value,-13} {item.equipmentType,-17} {item.weight}");
+                }
+                else
+                {
                 MainUI.WriteInMainArea($"{i,-7}{item.name,-24} {item.value,-10} {item.type,-17} {item.weight}");
+                }
+                
+                
             }
             MainUI.WriteInMainArea("");
             MainUI.WriteInMainArea($"--- Page {currentPage} of {totalPages} ---");
