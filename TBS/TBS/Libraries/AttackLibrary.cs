@@ -117,7 +117,7 @@ public static class AttackLibrary
 
     public static Attack Bloodieddagger = new Attack("Bloodied Dagger", new List<AttackEffect> {
         new AttackEffect("damage", 40, 0, "enemy"),
-        new AttackEffect("damage", -15, 0, "self")
+        new AttackEffect("damage", 15, 0, "self")
     }, ClassLibrary.Rogue);
 
     public static Attack WillowShot = new Attack("Willowrend Shot", new List<AttackEffect> {

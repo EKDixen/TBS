@@ -789,7 +789,7 @@ public static class AdminTools
                 case "1":
                     Console.Write($"\nCurrent HP: {player.HP}");
                     Console.Write("\nEnter new HP: ");
-                    if (int.TryParse(Console.ReadLine(), out int newHP) && newHP >= 0)
+                    if (int.TryParse(Console.ReadLine(), out int newHP))
                     {
                         player.HP = newHP;
                         Console.WriteLine($"✓ HP changed to: {newHP}");
@@ -799,7 +799,7 @@ public static class AdminTools
                 case "2":
                     Console.Write($"\nCurrent Base Max HP: {player.baseMaxHP}");
                     Console.Write("\nEnter new Base Max HP: ");
-                    if (int.TryParse(Console.ReadLine(), out int newMaxHP) && newMaxHP > 0)
+                    if (int.TryParse(Console.ReadLine(), out int newMaxHP))
                     {
                         player.baseMaxHP = newMaxHP;
                         player.RecalculateStats();
