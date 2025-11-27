@@ -97,9 +97,11 @@ public class Encyclopedia
             {
 
                 filteredItems = Program.player.knownItems
-                    .Where(item => item.name.ToLower().Contains(searchTerm.ToLower()) ||
-                                   item.description.ToLower().Contains(searchTerm.ToLower()) ||
-                                   item.GetDescription().ToLower().Contains(searchTerm.ToLower()) ||
+                    .Where(item => item.name.ToLower().Contains(searchTerm.ToLower()) &&
+                                   item.type.Equals((ItemType)itemsearch) ||
+                                   item.description.ToLower().Contains(searchTerm.ToLower()) &&
+                                   item.type.Equals((ItemType)itemsearch) ||
+                                   item.GetDescription().ToLower().Contains(searchTerm.ToLower()) &&
                                    item.type.Equals((ItemType)itemsearch))
 
                     .ToList();
@@ -130,23 +132,38 @@ public class Encyclopedia
             }
 
             MainUI.WriteInMainArea("");
-            if (itemsearch == 1)
+            if (itemsearch == 0)
+            {
+            MainUI.WriteInMainArea("nr     Name                   Value         Usable         Weight");
+            }
+            else if (itemsearch == 1)
             {
             MainUI.WriteInMainArea("nr     Name                   Value          Slot         Weight");
             }
             else
             {
-            MainUI.WriteInMainArea("nr     Name                   Value          type         Weight");
+            MainUI.WriteInMainArea("nr     Name                   Value          Type         Weight");
             }
 
-                MainUI.WriteInMainArea("----------------------------------------------------------------");
+                MainUI.WriteInMainArea("-----------------------------------------------------------------");
             int i = 0;
             foreach (var item in pageItems)
             {
                 i++;
-                if (itemsearch == 1)
+                if (itemsearch == 0)
                 {
-                MainUI.WriteInMainArea($"{i,-7}{item.name,-24} {item.value,-13} {item.equipmentType,-17} {item.weight}");
+                    string usable = "";
+                    
+                    if (item.duration == 0) { usable = "Anywhere"; }
+                    else if (item.duration > 0) { usable = "Battle"; }
+                    else { usable = "Overworld"; }
+
+                    MainUI.WriteInMainArea($"{i,-7}{item.name,-24} {item.value,-11} {usable,-16} {item.weight}");
+
+                }
+                else if (itemsearch == 1)
+                {
+                MainUI.WriteInMainArea($"{i,-7}{item.name,-24} {item.value,-12} {item.equipmentType,-16} {item.weight}");
                 }
                 else
                 {
