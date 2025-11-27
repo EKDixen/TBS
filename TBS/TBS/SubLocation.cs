@@ -28,14 +28,6 @@ public class SubLocation
 
     public List<Item> shopItems = new List<Item>();
 
-    List<string> suits = new List<string>
-    {
-        new string("hearts"),
-        new string("diamonds"),
-        new string("clubs"),
-        new string("spades")
-    };
-
     public int casinoMaxBet = 0;
 
     public SubLocation() { } //Deserialize
@@ -715,337 +707,269 @@ public class SubLocation
     #region casino
     void BlackjackLogic()
     {
-        MainUI.WriteInMainArea($"how much do you want to bet?  current Rai: {Program.player.money} \nthe max bet is {casinoMaxBet}");
-        int.TryParse(Console.ReadLine(), out int bet);
-        if (bet == null || bet > casinoMaxBet || bet < 0)
+        MainUI.ClearMainArea();
+        MainUI.WriteInMainArea($"=== Blackjack ===");
+        MainUI.WriteInMainArea($"Current Rai: {Program.player.money}");
+        MainUI.WriteInMainArea($"Max bet: {casinoMaxBet}");
+        MainUI.WriteInMainArea("");
+        MainUI.WriteInMainArea("How much do you want to bet? (0 to leave)");
+
+        if (!int.TryParse(Console.ReadLine(), out int bet) || bet < 0 || bet > casinoMaxBet)
+        {
+            MainUI.WriteInMainArea($"\nPlease enter a valid bet between 0 and {casinoMaxBet}.");
+            Thread.Sleep(1500);
+            DoSubLocation();
+            return;
+        }
+
+        if (bet == 0)
         {
             MainUI.ClearMainArea();
-            MainUI.WriteInMainArea("sweetie you gotta type a number that we can use\n ");
             DoSubLocation();
             return;
         }
-        else if (bet > Program.player.money)
+
+        if (bet > Program.player.money)
         {
-            MainUI.WriteInMainArea("\nyou dont have that much Rai\n ");
+            MainUI.WriteInMainArea("\nYou don't have enough Rai.");
+            Thread.Sleep(1500);
             DoSubLocation();
             return;
         }
-        MainUI.WriteInMainArea($"you bet: {bet}");
+
         Program.player.money -= bet;
         Program.SavePlayer();
 
         Random rand = new Random();
-        int dealer1 = rand.Next(1, 14);
-        int dealer1Suit = rand.Next(1, 4);
+        List<(int rank, string suit)> playerCards = new List<(int, string)>();
+        List<(int rank, string suit)> dealerCards = new List<(int, string)>();
 
+        playerCards.Add(DrawRandomCard(rand));
+        dealerCards.Add(DrawRandomCard(rand));
+        playerCards.Add(DrawRandomCard(rand));
+        dealerCards.Add(DrawRandomCard(rand));
 
-        string dealString = "\ndealer shows a";
-        
-        if (dealer1 == 1) dealString += $"n ace of {suits[dealer1Suit]} (worth 11 and 1)";
-        else if (dealer1 < 11) dealString += $" {dealer1} of {suits[dealer1Suit]}";
-        else dealString += $" 10 of {suits[dealer1Suit]}";
+        MainUI.ClearMainArea();
+        MainUI.WriteInMainArea("=== Blackjack ===\n");
+        MainUI.WriteInMainArea("Dealer's hand:");
+        MainUI.WriteInMainArea($"  {FormatCard(dealerCards[0])}");
+        MainUI.WriteInMainArea("  [Hidden Card]\n");
 
-        MainUI.WriteInMainArea(dealString);
-
-
-        int player1 = rand.Next(1, 14);
-        int player1Suit = rand.Next(1, 4);
-
-        int player2 = rand.Next(1, 14);
-        int player2Suit = rand.Next(1, 4);
-
-        string playString = $"\nyou have a";
-
-        if (player1 == 1) playString += $"n ace of {suits[player1Suit]} (worth 11 and 1)";
-        else if (player1 < 11) playString +=($" {player1} of {suits[player1Suit]}");
-        else playString +=($" 10 of {suits[player1Suit]}");
-
-        MainUI.WriteInMainArea(playString);
-
-        playString =$"and a";
-        if (player2 == 1) playString += $"n ace of {suits[player2Suit]} (worth 11 and 1)";
-        else if (player2 < 11) playString += ($" {player2} of {suits[player2Suit]}");
-        else playString += ($" 10 of {suits[player2Suit]}");
-
-        MainUI.WriteInMainArea(playString);
-
-        int playerValue = 0;
-        int dealerValue = 0;
-        if (player1 > 10) playerValue += 10;
-        else if (player1 == 1 && playerValue + 11 <= 21) playerValue += 11;
-        else { playerValue += player1; player1 = 0; }
-
-        if (player2 > 10) playerValue += 10;
-        else if (player2 == 1 && playerValue + 11 <= 21) playerValue += 11;
-        else { playerValue += player2; player2 = 0; }
-
-        int player3 = 0;
-
-        MainUI.WriteInMainArea($"your card sum: {playerValue}");
-
-        bool doTurns = true;
-        if (playerValue == 21)
+        MainUI.WriteInMainArea("Your hand:");
+        foreach (var card in playerCards)
         {
-            int dealer2 = rand.Next(1, 14);
-            int dealer2Suit = rand.Next(1, 4);
-
-            Thread.Sleep(700);
-
-            dealString = ($"\ndealer shows a");
-            if (dealer2 == 1) dealString += ($"n ace of {suits[dealer2Suit]} (worth 11 and 1)");
-            else if (dealer2 < 11) dealString += ($" {dealer2} of {suits[dealer2Suit]}");
-            else dealString += ($" 10 of {suits[dealer2Suit]}");
-
-            MainUI.WriteInMainArea(dealString);
-
-
-            if (dealer2 > 10) dealerValue += 10;
-            else if (dealer2 == 1 && dealerValue + 11 <= 21) dealerValue += 11;
-            else { dealerValue += dealer2; dealer2 = 0; }
-
-            MainUI.WriteInMainArea($"dealer card sum: {dealerValue}");
-            
-            doTurns = false;
-
+            MainUI.WriteInMainArea($"  {FormatCard(card)}");
         }
-        while (doTurns)
+        int playerValue = CalculateHandValue(playerCards);
+        MainUI.WriteInMainArea($"Total: {playerValue}");
+
+        bool playerBlackjack = playerValue == 21 && playerCards.Count == 2;
+        if (playerBlackjack)
         {
-            if (playerValue > 21)
+            MainUI.WriteInMainArea("\nBLACKJACK!");
+            Thread.Sleep(1500);
+        }
+
+        bool playerBust = false;
+        if (!playerBlackjack)
+        {
+            while (true)
             {
-                if (player1 == 1) { playerValue -= 10; player1 = 0; continue; }
-                if (player2 == 1) { playerValue -= 10; player2 = 0; continue; }
-                if (player3 == 1) { playerValue -= 10; player3 = 0; continue; }
-                MainUI.WriteInMainArea("\nyou bust");
-                break;
-            }
+                MainUI.WriteInMainArea("\n1 : Hit");
+                MainUI.WriteInMainArea("2 : Stand");
 
-            MainUI.WriteInMainArea("\ndo you wish to hit : 1\nor stand : 2");
-
-            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input2);
-            if (input2 == null || input2 > 2 || input2 < 0)
-            {
-                MainUI.ClearMainArea();
-                MainUI.WriteInMainArea("sweetie you gotta type a number that we can use\n ");
-                DoSubLocation();
-                return;
-            }
-            else if (input2 == 1)
-            {
-                player3 = rand.Next(1, 14);
-                int player3Suit = rand.Next(1, 4);
-
-                playString=($"\nyou get a");
-                if (player3 == 1) playString += ($"n ace of {suits[player3Suit]} (worth 11 and 1)");
-                else if (player3 < 11) playString += ($" {player3} of {suits[player3Suit]}");
-                else playString += ($" 10 of {suits[player3Suit]}");
-
-                MainUI.WriteInMainArea(playString);
-
-                if (player3 > 10) playerValue += 10;
-                else if (player3 == 1 && playerValue + 11 <= 21) playerValue += 11;
-                else { playerValue += player3; player3 = 0; }
-
-                MainUI.WriteInMainArea($"your card sum: {playerValue}");
-                continue;
-            }
-            else if (input2 == 2)
-            {
-                int dealer2 = rand.Next(1, 14);
-                int dealer2Suit = rand.Next(1, 4);
-
-                Thread.Sleep(700);
-
-                dealString = ($"\ndealer shows a");
-                if (dealer2 == 1) dealString += ($"n ace of {suits[dealer2Suit]} (worth 11 and 1)");
-                else if (dealer2 < 11) dealString += ($" {dealer2} of {suits[dealer2Suit]}");
-                else dealString += ($" 10 of {suits[dealer2Suit]}");
-
-                MainUI.WriteInMainArea(dealString);
-
-                if (dealer1 > 10) dealerValue += 10;
-                else if (dealer1 == 1 && dealerValue + 11 <= 21) dealerValue += 11;
-                else { dealerValue += dealer1; dealer1 = 0; }
-
-                if (dealer2 > 10) dealerValue += 10;
-                else if (dealer2 == 1 && dealerValue + 11 <= 21) dealerValue += 11;
-                else { dealerValue += dealer2; dealer2 = 0; }
-
-                Thread.Sleep(700);
-
-                MainUI.WriteInMainArea($"dealer card sum: {dealerValue}");
-                while (dealerValue < 17)
+                if (!int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int choice) || choice < 1 || choice > 2)
                 {
-                    
-
-                    int dealer3 = rand.Next(1, 14);
-                    int dealer3Suit = rand.Next(1, 4);
-
-                    Thread.Sleep(700);
-
-                    dealString=($"\ndealer shows a");
-                    if (dealer3 == 1) dealString+=($"n ace of {suits[dealer3Suit]} (worth 11 and 1)");
-                    else if (dealer3 < 11) dealString+=($" {dealer3} of {suits[dealer3Suit]}");
-                    else dealString+=($" 10 of {suits[dealer3Suit]}");
-
-                    MainUI.WriteInMainArea(dealString);
-
-                    if (dealer3 > 10) dealerValue += 10;
-                    else if (dealer3 == 1 && dealerValue + 11 <= 21) dealerValue += 11;
-                    else { dealerValue += dealer3; dealer3 = 0; }
-
-                    if (dealerValue > 21)
-                    {
-                        if (dealer1 == 1) { dealerValue -= 10; dealer1 = 0; continue; }
-                        if (dealer2 == 1) { dealerValue -= 10; dealer2 = 0; continue; }
-                        if (dealer3 == 1) { dealerValue -= 10; dealer3 = 0; continue; }
-                    }
-                    Thread.Sleep(500);
-                    MainUI.WriteInMainArea($"dealer card sum: {dealerValue}");
+                    MainUI.WriteInMainArea("\nPlease choose 1 or 2.");
+                    Thread.Sleep(1000);
+                    continue;
                 }
 
-                break;
+                if (choice == 1)
+                {
+                    playerCards.Add(DrawRandomCard(rand));
+                    MainUI.ClearMainArea();
+                    MainUI.WriteInMainArea("=== Blackjack ===\n");
+                    MainUI.WriteInMainArea("Dealer's hand:");
+                    MainUI.WriteInMainArea($"  {FormatCard(dealerCards[0])}");
+                    MainUI.WriteInMainArea("  [Hidden Card]\n");
+
+                    MainUI.WriteInMainArea("Your hand:");
+                    foreach (var card in playerCards)
+                    {
+                        MainUI.WriteInMainArea($"  {FormatCard(card)}");
+                    }
+                    playerValue = CalculateHandValue(playerCards);
+                    MainUI.WriteInMainArea($"Total: {playerValue}");
+
+                    if (playerValue > 21)
+                    {
+                        MainUI.WriteInMainArea("\nBUST! You went over 21.");
+                        playerBust = true;
+                        Thread.Sleep(1500);
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
             }
         }
-        if (playerValue > 21)
-        {
-            MainUI.WriteInMainArea($"\nyou lose your bet of {bet} cash");
-            Program.SavePlayer();
 
-            MainUI.WriteInMainArea("\nGamble some more!! : 1\nLeave : 0");
-            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input3);
-            if (input3 == null || input3 > 2 || input3 < 0)
+        int dealerValue = CalculateHandValue(dealerCards);
+        if (!playerBust)
+        {
+            MainUI.ClearMainArea();
+            MainUI.WriteInMainArea("=== Blackjack ===\n");
+            MainUI.WriteInMainArea("Dealer reveals their hand...");
+            Thread.Sleep(1000);
+
+            MainUI.WriteInMainArea("\nDealer's hand:");
+            foreach (var card in dealerCards)
             {
-                MainUI.ClearMainArea();
-                MainUI.WriteInMainArea("sweetie you gotta type a number that we can use\n ");
-                DoSubLocation();
-                return;
+                MainUI.WriteInMainArea($"  {FormatCard(card)}");
             }
-            else if (input3 == 1)
+            dealerValue = CalculateHandValue(dealerCards);
+            MainUI.WriteInMainArea($"Total: {dealerValue}");
+            Thread.Sleep(1000);
+
+            while (dealerValue < 17)
             {
-                MainUI.ClearMainArea();
-                DoSubLocation();
-                return;
+                MainUI.WriteInMainArea("\nDealer hits...");
+                Thread.Sleep(700);
+
+                dealerCards.Add(DrawRandomCard(rand));
+                MainUI.WriteInMainArea($"  {FormatCard(dealerCards[dealerCards.Count - 1])}");
+                dealerValue = CalculateHandValue(dealerCards);
+                MainUI.WriteInMainArea($"Total: {dealerValue}");
+                Thread.Sleep(700);
+            }
+
+            if (dealerValue > 21)
+            {
+                MainUI.WriteInMainArea("\nDealer busts!");
+                Thread.Sleep(1000);
             }
             else
             {
-                MainUI.ClearMainArea();
-                Program.MainMenu();
-                return;
+                MainUI.WriteInMainArea($"\nDealer stands at {dealerValue}.");
+                Thread.Sleep(1000);
             }
+        }
+
+        MainUI.WriteInMainArea("\n" + new string('=', 40));
+        
+        if (playerBust)
+        {
+            MainUI.WriteInMainArea($"You lose! You lost {bet} Rai.");
         }
         else if (dealerValue > 21)
         {
-            Program.player.money += bet * 2;
-            MainUI.WriteInMainArea($"\nyou win your bet of {bet} cash");
-            Program.SavePlayer();
-
-            MainUI.WriteInMainArea("\nGamble some more!! : 1\nLeave : 0");
-            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input3);
-            if (input3 == null || input3 > 2 || input3 < 0)
+            int winnings = playerBlackjack ? (int)(bet * 2.5) : bet * 2;
+            Program.player.money += winnings;
+            
+            if (playerBlackjack)
             {
-                MainUI.ClearMainArea();
-                MainUI.WriteInMainArea("sweetie you gotta type a number that we can use\n ");
-                DoSubLocation();
-                return;
-            }
-            else if (input3 == 1)
-            {
-                MainUI.ClearMainArea();
-                DoSubLocation();
-                return;
+                MainUI.WriteInMainArea($"BLACKJACK! Dealer busts! You win {winnings} Rai!");
             }
             else
             {
-                MainUI.ClearMainArea();
-                Program.MainMenu();
-                return;
+                MainUI.WriteInMainArea($"Dealer busts! You win {bet} Rai (total: {winnings} Rai)");
             }
         }
         else if (playerValue > dealerValue)
         {
-            Program.player.money += bet * 2;
-
-            MainUI.WriteInMainArea($"\nyou win your bet of {bet} cash");
-            Program.SavePlayer();
-
-            MainUI.WriteInMainArea( "\nGamble some more!! : 1\nLeave : 0");
-            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input3);
-            if (input3 == null || input3 > 2 || input3 < 0)
+            int winnings = playerBlackjack ? (int)(bet * 2.5) : bet * 2;
+            Program.player.money += winnings;
+            
+            if (playerBlackjack)
             {
-                MainUI.ClearMainArea();
-                MainUI.WriteInMainArea("sweetie you gotta type a number that we can use\n ");
-                DoSubLocation();
-                return;
-            }
-            else if (input3 == 1)
-            {
-                MainUI.ClearMainArea();
-                DoSubLocation();
-                return;
+                MainUI.WriteInMainArea($"BLACKJACK! You win {winnings} Rai!");
             }
             else
             {
-                MainUI.ClearMainArea();
-                Program.MainMenu();
-                return;
+                MainUI.WriteInMainArea($"You win! You gain {bet} Rai (total: {winnings} Rai)");
             }
         }
         else if (playerValue < dealerValue)
         {
-            MainUI.WriteInMainArea($"\nyou lose your bet of {bet} cash");
-            Program.SavePlayer();
-
-            MainUI.WriteInMainArea("\nGamble some more!! : 1\nLeave : 0");
-            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input3);
-            if (input3 == null || input3 > 2 || input3 < 0)
-            {
-                MainUI.ClearMainArea();
-                MainUI.WriteInMainArea("sweetie you gotta type a number that we can use\n ");
-                DoSubLocation();
-                return;
-            }
-            else if (input3 == 1)
-            {
-                MainUI.ClearMainArea();
-                DoSubLocation();
-                return;
-            }
-            else
-            {
-                MainUI.ClearMainArea();
-                Program.MainMenu();
-                return;
-            }
+            MainUI.WriteInMainArea($"You lose! You lost {bet} Rai.");
         }
-        else if (playerValue == dealerValue)
+        else
         {
             Program.player.money += bet;
-            MainUI.WriteInMainArea($"\nyou draw");
+            MainUI.WriteInMainArea($"Push! It's a tie. Your bet of {bet} Rai is returned.");
+        }
 
-            Program.SavePlayer();
+        MainUI.WriteInMainArea($"Current Rai: {Program.player.money}");
+        MainUI.WriteInMainArea(new string('=', 40));
+        Program.SavePlayer();
 
-            MainUI.WriteInMainArea("\nGamble some more!! : 1\nLeave : 0");
-            int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int input3);
-            if (input3 == null || input3 > 2 || input3 < 0)
+        MainUI.WriteInMainArea("\n1 : Play again");
+        MainUI.WriteInMainArea("0 : Leave");
+
+        if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out int playAgain) && playAgain == 1)
+        {
+            BlackjackLogic();
+        }
+        else
+        {
+            MainUI.ClearMainArea();
+            DoSubLocation();
+        }
+    }
+
+    private (int rank, string suit) DrawRandomCard(Random rand)
+    {
+        string[] suits = { "Hearts", "Diamonds", "Clubs", "Spades" };
+        int rank = rand.Next(1, 14);
+        string suit = suits[rand.Next(suits.Length)];
+        return (rank, suit);
+    }
+
+    private string FormatCard((int rank, string suit) card)
+    {
+        string rankStr = card.rank switch
+        {
+            1 => "Ace",
+            11 => "Jack",
+            12 => "Queen",
+            13 => "King",
+            _ => card.rank.ToString()
+        };
+        return $"{rankStr} of {card.suit}";
+    }
+
+    private int CalculateHandValue(List<(int rank, string suit)> cards)
+    {
+        int value = 0;
+        int aceCount = 0;
+
+        foreach (var card in cards)
+        {
+            if (card.rank == 1)
             {
-                MainUI.ClearMainArea();
-                MainUI.WriteInMainArea("sweetie you gotta type a number that we can use\n ");
-                DoSubLocation();
-                return;
+                aceCount++;
+                value += 11;
             }
-            else if (input3 == 1)
+            else if (card.rank >= 11)
             {
-                MainUI.ClearMainArea();
-                DoSubLocation();
-                return;
+                value += 10;
             }
             else
             {
-                MainUI.ClearMainArea();
-                Program.MainMenu();
-                return;
+                value += card.rank;
             }
         }
+
+        while (value > 21 && aceCount > 0)
+        {
+            value -= 10;
+            aceCount--;
+        }
+
+        return value;
     }
     void RouletteLogic()
     {

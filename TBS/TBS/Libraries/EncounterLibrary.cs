@@ -559,23 +559,31 @@ public static class EncounterLibrary
                     MainUI.WriteInMainArea("\nyou dont have that much Rai\n ");
                     return;
                 }
-                MainUI.WriteInMainArea($"you bet: {bet}");
-                Program.player.money -= bet;
-                Program.SavePlayer();
-
-                Random rand = new Random();
-                int coin = rand.Next(1, 3);
-                if (coin == 1)
+                int roll = rng.Next(1, 20);
+                if (roll == 9)
                 {
-                    MainUI.WriteInMainArea($"The coin landed on heads, you win {bet} Rai!");
-                    Program.player.money += bet * 2;
+                    MainUI.WriteInMainArea($"The man takes your bet of {bet} and runs off");
+                    Program.player.money -= bet;
+                    
                 }
                 else
                 {
-                    MainUI.WriteInMainArea("The coin landed on tails, you lost...");
+                    MainUI.WriteInMainArea($"you bet: {bet}");
+                    Program.player.money -= bet;
+                    Program.SavePlayer();
+
+                    Random rand = new Random();
+                    int coin = rand.Next(1, 3);
+                    if (coin == 1)
+                    {
+                        MainUI.WriteInMainArea($"The coin landed on heads, you win {bet} Rai!");
+                        Program.player.money += bet * 2;
+                    }
+                    else
+                    {
+                        MainUI.WriteInMainArea("The coin landed on tails, you lost...");
+                    }
                 }
-
-
             }
             else
             {
