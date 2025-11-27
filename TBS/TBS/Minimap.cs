@@ -173,26 +173,59 @@ public static class Minimap
     }
     static int viewOffsetX = 0;  
     static int viewOffsetY = 0;
-    static int maxViewOffsetX = 6;
-    static int maxViewOffsetY = 5;
+    static int maxViewOffsetXNeg = 6;
+    static int maxViewOffsetYNeg = 5;
+    static int maxViewOffsetXPos = 6;
+    static int maxViewOffsetYPos = 5;
     public static void DisplayMainmap(int startX, int startY, int maxContentWidth)
     {
+
+        int rows = 9;
+        int cols = 5;
+
+        int maxNegX = 0;
+        int maxPosY = 0;
+        int maxPosX = 0;
+        int maxNegY = 0;
+
+        var current = LocationLibrary.Get(Program.player.currentLocation).location;
+        int centerCol = cols / 2; 
+        int centerRow = rows / 2; 
+
+        foreach (var loca in LocationLibrary.locations)
+        {
+            var loc = loca.location;
+            
+            int x = (int)(loc.X - current.X);
+            int y = (int)(loc.Y - current.Y);
+
+            if (x < 0) maxNegX = Math.Min(maxNegX, x);
+            if (x > 0) maxPosX = Math.Max(maxPosX, x);
+            if (y < 0) maxNegY = Math.Min(maxNegY, y);
+            if (y > 0) maxPosY = Math.Max(maxPosY, y);
+        }
+
+        maxViewOffsetXNeg = Math.Abs(maxNegX) - centerCol;
+        maxViewOffsetXPos = maxPosX - centerCol;
+        maxViewOffsetYNeg = Math.Abs(maxNegY) - centerRow; 
+        maxViewOffsetYPos = maxPosY - centerRow;
+
+        maxViewOffsetXNeg = Math.Max(0, maxViewOffsetXNeg);
+        maxViewOffsetXPos = Math.Max(0, maxViewOffsetXPos);
+        maxViewOffsetYNeg = Math.Max(0, maxViewOffsetYNeg);
+        maxViewOffsetYPos = Math.Max(0, maxViewOffsetYPos);
+
+        viewOffsetX = Math.Clamp(viewOffsetX, -maxViewOffsetXNeg, maxViewOffsetXPos);
+        viewOffsetY = Math.Clamp(viewOffsetY, -maxViewOffsetYNeg, maxViewOffsetYPos);
         while (true)
         {
             MainUI.ClearMainArea();
             MainUI.WriteInMainArea("Press enter to continue...");
             MainUI.WriteInMainArea("W A S D or the arrow keys, to move");
-            int rows = 9;
-            int cols = 5;
+
 
             int totalCells = rows * cols;
             List<int?> travelLocations = Enumerable.Repeat<int?>(null, totalCells).ToList();
-
-            var current = LocationLibrary.Get(Program.player.currentLocation).location;
-
-
-            int centerRow = rows / 2;
-            int centerCol = cols / 2;
 
             for (int i = 0; i < LocationLibrary.locations.Count; i++)
             {
@@ -320,46 +353,39 @@ public static class Minimap
 
             var keyInfo = Console.ReadKey(true);
 
+            int maxViewOffsetX = maxViewOffsetXPos;
+            int minViewOffsetX = -maxViewOffsetXNeg;
+            int maxViewOffsetY = maxViewOffsetYPos;
+            int minViewOffsetY = -maxViewOffsetYNeg;
+
             switch (keyInfo.Key)
             {
                 case ConsoleKey.LeftArrow:
-                    if(viewOffsetX > -maxViewOffsetX)viewOffsetX--;
+                case ConsoleKey.A:
+                    if (viewOffsetX > minViewOffsetX) viewOffsetX--;
                     break;
 
                 case ConsoleKey.RightArrow:
-                    if (viewOffsetX < maxViewOffsetX) viewOffsetX++;
-                    break;
-
-                case ConsoleKey.UpArrow:
-                    if (viewOffsetY < maxViewOffsetY) viewOffsetY++;
-                    break;
-
-                case ConsoleKey.DownArrow:
-                    if (viewOffsetY > -maxViewOffsetY) viewOffsetY--;
-                    break;
-
-                case ConsoleKey.A:
-                    if (viewOffsetX > -maxViewOffsetX) viewOffsetX--;
-                    break;
-
                 case ConsoleKey.D:
                     if (viewOffsetX < maxViewOffsetX) viewOffsetX++;
                     break;
 
+                case ConsoleKey.UpArrow:
                 case ConsoleKey.W:
                     if (viewOffsetY < maxViewOffsetY) viewOffsetY++;
                     break;
 
+                case ConsoleKey.DownArrow:
                 case ConsoleKey.S:
-                    if (viewOffsetY > -maxViewOffsetY) viewOffsetY--;
+                    if (viewOffsetY > minViewOffsetY) viewOffsetY--;
                     break;
 
                 case ConsoleKey.Enter:
                     Program.MainMenu();
                     return;
-                    
+
             }
-            
+
             continue;
         }
     }
