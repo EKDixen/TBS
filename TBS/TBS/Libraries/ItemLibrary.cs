@@ -307,11 +307,11 @@
         equipmentType = EquipmentType.feet,
         detailsLore = "some nice sandals.. decently fine to run in"
     };
-    public static Item runningShoes = new Item("Running Shoes", "+3 speed", 8,2, ItemType.Equipment)
+    public static Item speedBoots = new Item("Speed Boots", "+3 speed", 8,2, ItemType.Equipment)
     {
         stats = { ["speed"] = 3 },
         equipmentType = EquipmentType.feet,
-        detailsLore = "some beautiful running shoes.. really nice to run in"
+        detailsLore = "some beautiful boots of speed.. really nice to run in"
     };
 
     public static Item NightStalkerGreaves = new Item("Night Stalker Greaves", "+50% dodgeNegation", 17,4, ItemType.Equipment)

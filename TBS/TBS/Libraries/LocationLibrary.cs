@@ -124,7 +124,7 @@ public static class LocationLibrary
             {
                 (ItemLibrary.smallHealthPotion),
                 (ItemLibrary.bigHealthPotion),
-                (ItemLibrary.runningShoes),
+                (ItemLibrary.speedBoots),
                 (ItemLibrary.camoPants)
             }
         },
@@ -256,7 +256,7 @@ public static class LocationLibrary
             shopItems = new List<Item>
             {
                 (ItemLibrary.bigHealthPotion),
-                (ItemLibrary.runningShoes),
+                (ItemLibrary.speedBoots),
                 (ItemLibrary.knightHelmet),
                 (ItemLibrary.constructionVest),
                 (ItemLibrary.StoneMaul)
@@ -569,7 +569,7 @@ new Dictionary<Encounter, int>
             shopItems = new List<Item>
             {
                 (ItemLibrary.bigHealthPotion),
-                (ItemLibrary.runningShoes)
+                (ItemLibrary.speedBoots)
             }
         },
         new SubLocation("Port", SubLocationType.port)
