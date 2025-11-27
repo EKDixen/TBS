@@ -86,7 +86,7 @@ public static class AttackLibrary
     });
 
     public static Attack VenomStrike = new Attack("Venom Strike", new List<AttackEffect> {   
-        new AttackEffect("damage", 5, 5, "enemy")        
+        new AttackEffect("damage", 6, 6, "enemy")        
     });
 
     public static Attack RecklessSwing = new Attack("Reckless Swing", new List<AttackEffect> {
